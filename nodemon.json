@@ -1,0 +1,8 @@
+{
+    "env": 
+    {
+        "MONGO_USER":"Sinco",
+        "MONGO_PASSWORD":"TemporaryPassword123",
+        "MONGO_DEFAULT_DB:":"node"
+    }
+}

@@ -1,0 +1,16 @@
+admin specific views
+- add product
+- edit product
+- order list
+- admin products
+
+anon views
+- index
+- login
+- register
+
+course:
+ajax
+pagination
+email api sendgrid
+payment gateway stripe

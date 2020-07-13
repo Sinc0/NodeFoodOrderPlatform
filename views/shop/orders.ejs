@@ -1,0 +1,57 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <!-- admin view -->
+    <% if(admin == true) { %>
+        <%- include('../snippets/html_nav_menu_admin.ejs') %>
+    
+    <!-- logged in user view -->
+    <% } else if(loggedIn == true) { %>
+        <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
+    
+    <!-- anonmymous view -->
+    <% } else { %>
+        <%- include('../snippets/html_nav_menu_anon.ejs') %>
+    <% } %>
+
+    <main>
+        <% if (orders != null) { %>
+        <div class="grid">
+            <% let counter = orders.length + 1; %>
+            <% for (let order of orders.reverse()) { counter-- %>
+                <article class="card product-item">
+                    <header class="card__header">
+                        <p class="product__description"><b><%= counter %></b> | <%= order.date %></p>
+                    </header>
+                    <div class="card__content">
+                        <p class="product__description"><%= order._id %></p>
+                    </div>
+                    <div class="card__content">
+                        <p class="product__description"><a href="/reciepts/<%= order._id %>">Order Reciept PDF</a></p>
+                    </div>
+                    <div class="card__content">
+                        <p class="product__description">Total Items: <%= order.products.length %></p>
+                    </div>
+
+                    <div class="card__content">
+                        <p class="product__description">Total Amount: <%= order.totalPrice %></p>
+                    </div>
+                    <br/>
+                </article>
+            <% } %>
+        </div>
+        <% } else { %>
+            <h1> No orders found</h1>
+        <% } %>
+    </main>
+
+</body>
+</html>
