@@ -1,15 +1,15 @@
 <header class="main-header">
     <nav class="main-header__nav">
-        <ul class="main-header__item-list">
+
+        <ul class="main-header__item-list_left">
             
             <li class="main-header__item">
-                <a class="<%= path === '/' ? 'active' : '' %>" href="/">Shop</a>
+                <a class="<%= path === '/' ? 'active' : '' %>" href="/">Home</a>
             </li>
 
             <li class="main-header__item">
-                <a class="<%= path === '/product-list' ? 'active' : '' %>" href="/product-list">Products</a>
+                <a class="<%= path === '/product-list' ? 'active' : '' %>" href="/product-list">Restaurants</a>
             </li>
-
             <li class="main-header__item">
                 <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
             </li>
@@ -17,6 +17,15 @@
             <li class="main-header__item">
                 <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">Orders</a>
             </li>
+        </ul>
+
+        <ul class="main-header__item-list_right">
+            
+            <li class="main-header__item">
+                <a class="" href="/">Profile</a>
+            </li>
+
+
 
             <li class="main-header__item">
                 <a class="<%= path === '/logout/' ? 'active' : '' %>" href="/logout">Logout</a>

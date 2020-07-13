@@ -22,20 +22,76 @@
         <%- include('../snippets/html_nav_menu_anon.ejs') %>
     <% } %>
 
-    <main class="centered">
-        <h1><%= product.title %></h1>
-        <hr>
-        <p><%= product._id %></p>
-        <div class="card__image">
-            <img src="/<%= product.imageUrl %>">
+    <main id="main-menu" class="centered">
+        <div id="menu">
+            <h1><%= product.title %></h1>
+            <hr>
+            <p><%= product._id %></p>
+            <div class="card__image">
+                <img src="/<%= product.imageUrl %>">
+            </div>
+            <h2><%= product.price %></h2>
+            <p><%= product.description %></p>
+            
+            <form action="/cart" method="POST">
+                <button class="btn" type="submit">Add to cart</button>
+                <input type="hidden" name="productId" value="<%= product.id %>">
+            </form>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
         </div>
-        <h2><%= product.price %></h2>
-        <p><%= product.description %></p>
         
-        <form action="/cart" method="POST">
-            <button class="btn" type="submit">Add to cart</button>
-            <input type="hidden" name="productId" value="<%= product.id %>">
-        </form>
+        <div id="side-cart">
+            <div>
+                <button id="order-button">Submit</button>
+            </div>
+
+            <div class="cart-item">
+                <p> asdasdsx </p>
+            </div>
+            
+            <div class="cart-item">
+                <p> asdasdsx </p>
+            </div>
+
+            <div class="cart-item">
+                <p> asdasdsx </p>
+            </div>
+
+            <div class="cart-item">
+                <p> asdasdsx </p>
+            </div>
+
+            <div class="cart-item">
+                <p> asdasdsx </p>
+            </div>
+            
+        </div>
     </main>
 </body>
 </html>

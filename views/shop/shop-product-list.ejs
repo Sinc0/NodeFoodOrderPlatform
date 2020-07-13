@@ -21,31 +21,38 @@
             <%- include('../snippets/html_nav_menu_anon.ejs') %>
         <% } %>
 
-    <main>
+    <main id="main-restaurants">
         <!-- <h1>My Products</h1>
         <p> List of all the products...</p> -->
         <% if (prods.length > 0) { %>
-        <div class="grid">
-        <% for (let product of prods) { %>
-            <article class="card product-item">
-                <header class="card__header">
-                    <h1 class="product__title"><%= product.title %></h1>
-                </header>
-
+            <div id="grid-restaurants" class="grid">
+                <% for (let product of prods) { %>
+                    <a style="text-decoration: none; color: black" href="/products/<%= product._id %>">
+            <article id="restaurant" class="card product-item">
                 <div class="card__image">
                     <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
                 </div>
                 
+                <div>
+                    <header class="card__header">
+                        <h1 class="product__title">Restaurant</h1>
+                    </header>
+                </div>  
+
                 <div class="card__content">
-                    <h2 class="product__price">$<%= product.price %></h2>
-                    <p class="product__description"><%= product.description %></p>
+                    <h3 class="product__price">Open</h3>
+                    <h3 class="product__price">Type</h3>
+                    <h3 class="product__price">Location</h3>
+                    <h3 class="product__price">Hours</h3>
                 </div>
                 
+                <!--
                 <div class="card__actions">
-                    <button><a href="/products/<%= product._id %>" class="btn">Details</a></button>
-                    <button><a href="/cart/<%= product._id %>" class="btn">Cart</a></button>
+                    <a href="/products/<%= product._id %>" class="btn"><button>Details</button></a>
                 </div>
+                -->
             </article>
+        </a>
         <% } %>
     </div>
     <% } else { %>

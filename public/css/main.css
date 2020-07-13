@@ -1,36 +1,108 @@
 body {
-    padding: 0;
-    margin: 0;
+    overflow-y: scroll;
     font-family: sans-serif;
+    padding: 0px;
+    margin: 0px;
+}
+
+#restaurant
+{
+    /* display: inline-block; */   
+    background-color: burlywood;
+    border: 1px solid black;
+    width: 20%;
+    padding: 0px;
+    /* padding-bottom: 5px; */
+    margin: auto;
+    margin-top: 30px;
+}
+
+#restaurant img
+{
+    height: 100%;
+    width: 100%;
+}
+
+#restaurant h1, h2, p, button
+{
+    margin: 0px;
+    margin-bottom: 5px;
+}
+
+#restaurant button
+{
+    height: 50px;
+    width: 100%;
+    margin-bottom: 0px;
+}
+
+#restaurant:hover 
+{
+    transform: scale(1.03);
+}
+
+#main-restaurants
+{
+    background-color: green;
+    margin: auto;
+    padding-bottom: 30px;
+}
+
+#grid-restaurants
+{
+    text-align: center;
+}
+
+img
+{
+    height: 50px;
+    width: 50px;
 }
 
 main {
-    padding: 1rem;
+    padding-right: 0px;
 }
 
 .main-header {
     width: 100%;
-    height: 3.5rem;
+    height: 100%;
     background-color: #dbc441;
-    padding: 0 1.5rem;
+    padding: 0px;
+    margin: 0px;
 }
 
 .main-header__nav {
+    background-color: gray;
     height: 100%;
+    width: 100%;
     display: flex;
-    align-items: center;
+    padding: 0px;
+    margin: 0px;
+    /* align-items: center; */
 }
 
-.main-header__item-list {
+.main-header__item-list_right {
+    /* background-color: orange; */
     list-style: none;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    margin-left: auto;
+    padding: 0px;
+    display: flex;
+}
+
+.main-header__item-list_left {
+    /* background-color: orange; */
+    list-style: none;
+    margin: 0px;    
+    padding: 0px;
+    padding-left: 10px;
     display: flex;
 }
 
 .main-header__item {
-    margin: 0 1rem;
-    padding: 0;
+    background-color: purple;
+    margin: 0px 10px 0px 0px;
+    padding: 10px;
 }
 
 .main-header__item a {
@@ -46,4 +118,63 @@ main {
 
 .centered {
     text-align: center;
+}
+
+#main-menu
+{
+    background-color: rosybrown;
+    margin-left: auto;
+    width: 80%;
+}
+
+#menu
+{
+    display: inline-block;
+    background-color: orange;
+    height: 100%;
+    width: 69%;
+    padding: 0px;
+    margin: 0px;
+    margin-top: 0.2%;
+}
+
+#side-cart
+{
+    display: inline-block;
+    /* background-color: green; */
+    vertical-align: top;
+    height: 100%;
+    width: 30%;
+    padding: 0px;
+    margin-top: 0.2%;
+}
+
+.cart-item
+{
+    background-color: royalblue;
+    height: 100%;
+    padding: 0px;
+    padding-top: 0px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.cart-item p
+{
+    /* background-color: salmon; */
+    height: 100%;
+    width: 100%;
+    padding: 0px;
+    padding-top: 15px;
+    padding-bottom: 15px;   
+}
+
+#order-button
+{
+    border-style: none;
+    border-radius: 0px;
+    height: 50px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
 }

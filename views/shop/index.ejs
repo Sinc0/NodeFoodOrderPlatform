@@ -10,21 +10,21 @@
     <!-- admin view -->
     <% if(admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
-        <main>
+        <main id="main-index">
         <p> Home Page for admin </p>
         </main>
     
     <!-- logged in user view -->
     <% } else if(loggedIn == true) { %>
         <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
-        <main>
+        <main id="main-index">
         <p> Home Page for logged in </p>
         </main>
     
     <!-- anonmymous view -->
     <% } else { %>
         <%- include('../snippets/html_nav_menu_anon.ejs') %>
-        <main>
+        <main id="main-index">
             <p> Home Page for anonymous </p>
         </main>
     <% } %>
