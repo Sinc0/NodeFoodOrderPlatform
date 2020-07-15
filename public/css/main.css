@@ -123,8 +123,7 @@ main {
 #main-menu
 {
     background-color: rosybrown;
-    margin-left: auto;
-    width: 80%;
+    width: 100%;
 }
 
 #menu
@@ -132,27 +131,60 @@ main {
     display: inline-block;
     background-color: orange;
     height: 100%;
-    width: 69%;
+    width: 730px;
     padding: 0px;
     margin: 0px;
-    margin-top: 0.2%;
+}
+
+#menu-item
+{
+    /* display: inline-block; */  
+    background-color: thistle;
+    border: 0.1px solid black;
+    width: 520px;
+    padding: 10px 0px 10px 0px;
+    margin: auto;
+    margin-top: 15px;
+}
+
+#menu-item p
+{
+    text-align: left;
+    margin-left: 10px;
+}
+
+#menu-item-texts
+{
+    display: inline-block; width: 84%;
+}
+
+#menu-item-add-to-cart-button
+{
+    display: inline-block; 
+    vertical-align: top; width: 15%;
+}
+
+#menu-item:hover
+{
+    /* background-image: url("https://i.imgur.com/PtkPoW4.jpg"); */  
+    background-color: gray;
 }
 
 #side-cart
 {
     display: inline-block;
+    position: absolute;
     /* background-color: green; */
     vertical-align: top;
-    height: 100%;
-    width: 30%;
+    width: 300px;
     padding: 0px;
-    margin-top: 0.2%;
+    margin: 0px;
+    margin-left: 5px;
 }
 
 .cart-item
 {
     background-color: royalblue;
-    height: 100%;
     padding: 0px;
     padding-top: 0px;
     margin-top: 5px;
@@ -162,11 +194,17 @@ main {
 .cart-item p
 {
     /* background-color: salmon; */
-    height: 100%;
-    width: 100%;
     padding: 0px;
     padding-top: 15px;
     padding-bottom: 15px;   
+}
+
+.cart-add-to-cart-button
+{
+    border-style: none;
+    border-radius: 0px; 
+    padding: 10px 15px 10px 15px;
+    margin: 15px;
 }
 
 #order-button
@@ -177,4 +215,13 @@ main {
     width: 100%;
     margin: 0px;
     padding: 0px;
+}
+
+#total-price
+{
+    background-color: white;
+    height: 100%;
+    padding: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }

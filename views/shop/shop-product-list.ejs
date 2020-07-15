@@ -27,7 +27,7 @@
         <% if (prods.length > 0) { %>
             <div id="grid-restaurants" class="grid">
                 <% for (let product of prods) { %>
-                    <a style="text-decoration: none; color: black" href="/products/<%= product._id %>">
+                    <a style="text-decoration: none; color: black" href="/restaurant/<%= product._id %>">
             <article id="restaurant" class="card product-item">
                 <div class="card__image">
                     <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
@@ -49,11 +49,12 @@
                 <!--
                 <div class="card__actions">
                     <a href="/products/<%= product._id %>" class="btn"><button>Details</button></a>
+                    <a href="/cart/<%= product._id %>" class="btn"><button>Details</button></a>
                 </div>
                 -->
             </article>
         </a>
-        <% } %>
+       <% } %>
     </div>
     <% } else { %>
         <h1> No products found</h1>

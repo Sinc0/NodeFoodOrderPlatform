@@ -100,7 +100,7 @@ class Product
             .then(product => {
                 if(product != null)
                 {
-                    //console.log(product);
+                    console.log(product);
                     return product;
                 }
 

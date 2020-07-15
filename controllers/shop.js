@@ -224,6 +224,165 @@ exports.getCart = (req, res, next) => {
 
 }
 
+exports.getRestaurant = (req, res, next) => {
+    console.log('getCartx');
+    let validation = res.locals.validation;
+    let userEmail = res.locals.userEmail;
+    let cartProducts = [];
+    console.log('postCartx >');
+    const productId = req.params.productId;
+    console.log(productId);
+    let addToCartSuccessful = 1;
+    let addoCartFailed = 0;
+
+    //console.log(productId);
+    //console.log(userEmail);
+    
+    //logged in user
+    if(validation.status == true)
+    {
+        Product.findById(ObjectId(productId))
+        .then(resultProduct => 
+        {
+
+            User.fetchCart(userEmail).then(cartProducts => {
+                res.render('shop/product-detail', {
+                    admin: validation.isAdmin,
+                    loggedIn: true,
+                    productImage: "",
+                    product: resultProduct,
+                    cartProducts: cartProducts,
+                    path: '/products'
+            });
+
+            }).catch(err => {console.log(err)});
+        
+        }).catch(err => {console.log(err)});
+    }
+
+    //anon user
+    else
+    {
+        res.redirect('/');
+    }       
+    
+}
+
+exports.getAddToCart = (req, res, next) => {
+    console.log('getCartx');
+    let validation = res.locals.validation;
+    let userEmail = res.locals.userEmail;
+    let cartProducts = [];
+    console.log('postCartx >');
+    const productId = req.params.productId;
+    const menuItemId = req.params.menuItemId;
+    console.log(productId);
+    console.log(menuItemId);
+    let addToCartSuccessful = 1;
+    let addoCartFailed = 0;
+
+    //console.log(productId);
+    //console.log(userEmail);
+    
+    //logged in user
+    if(validation.status == true)
+    {
+        Product.findById(ObjectId(productId))
+        .then(resultProduct => 
+        {
+            let menuItemsArray = resultProduct.menu;
+            let menuItem = null;
+            console.log(resultProduct.menu);
+
+            for(let c = 0; c < menuItemsArray.length; c++)
+            {
+                if(menuItemsArray[c].productId == menuItemId)
+                {
+                    menuItem = c;
+                }
+            }
+
+            let title = menuItemsArray[menuItem].title;
+            let price = menuItemsArray[menuItem].price;
+            let description = menuItemsArray[menuItem].description;
+            let cartArray = [];
+            let checkProductExists = false;
+
+            User.fetchCart(userEmail)
+            .then(result => {
+                //if users cart have items in it
+                if(result != null)
+                {
+                    cartArray = result;
+                    
+                    //checks if product already exists in cart and if true increments quantity
+                    for (elementCtr = 0; elementCtr < cartArray.length; elementCtr++) 
+                    {   
+                        if(cartArray[elementCtr].productId == menuItemId)
+                        {
+                            cartArray[elementCtr].quantity++;
+                            checkProductExists = true;
+                        }
+                    }
+
+                    if(checkProductExists != true)
+                    {
+                        cartArray.push({productId: menuItemId, title: title, quantity: 1, price: price, description: description});
+                        //cartArray.push({productId: ObjectId(productId), title: title, quantity: 1, price: price, description: description});
+                    }
+                    
+                    User.addToCart(userEmail, cartArray)
+                    .then(result => {
+                        if(result == addToCartSuccessful)
+                        {
+                            console.log('add item to cart: successful');
+                            res.redirect("/restaurant/" + productId);
+                        }
+
+                        else 
+                        {
+                            console.log('add item to cart: failed');
+                            res.redirect('/product-list');
+                        }
+                    })
+                    .catch(err => {console.log(err)});
+                }
+
+                //if users cart is empty
+                else
+                {
+                    cartArray.push({productId: menuItemId, title: title, quantity: 1, price: price, description: description});
+                    
+                    User.addToCart(userEmail, cartArray)
+                    .then(result => {
+                        if(result == addToCartSuccessful)
+                        {
+                            console.log('add item to cart: successful');
+                            res.redirect("/restaurant/" + productId);
+                        }
+
+                        else 
+                        {
+                            console.log('add item to cart: failed');
+                            res.redirect('/product-list');
+                        }
+                    })
+                    .catch(err => {console.log(err)});
+                }
+
+            }).catch(err => {console.log(err)});
+        
+        }).catch(err => {console.log(err)});
+    }
+
+    //anon user
+    else
+    {
+        res.redirect('/');
+    }       
+    
+}
+
 exports.postCart = (req, res, next) => {   
     console.log('postCart >');
     const productId = req.params.productId;

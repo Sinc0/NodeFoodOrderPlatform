@@ -30,6 +30,11 @@ router.get('/cart/:productId', validation, shopController.postCart);
 
 router.get('/cart', validation, shopController.getCart);
 
+
+router.get('/restaurant/:productId', validation, shopController.getRestaurant);
+router.get('/addToCart/:productId&:menuItemId', validation, shopController.getAddToCart);
+
+
 router.get('/cart/:productId', validation, shopController.postCart);
 
 router.get('/orders', validation, shopController.getOrders);
