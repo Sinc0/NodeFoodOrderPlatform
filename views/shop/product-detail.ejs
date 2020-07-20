@@ -6,75 +6,10 @@
     <title></title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/product.css">
+    <script src="/js/functionality.js"></script>
 </head>
-<script>
-    function x()
-    {
-        document.getElementById("temp").remove();
-    }
 
-    function y(buttonNumber, itemName, itemPrice)
-    {
-        let itemsArray = [];
-        let duplicateCheck = false;
-
-        let cart = localStorage.getItem("restaurantName");
-        console.log(cart);
-               
-        if(cart == null)
-        {
-            itemsArray.push({id: buttonNumber, name: itemName, price: itemPrice, quantity: 1});
-            localStorage.setItem("restaurantName", JSON.stringify({items: itemsArray}));
-        }
-
-        else
-        {
-            cart = JSON.parse(localStorage.getItem("restaurantName"));
-            
-            //populate itemsArray with items from cart
-            for(let c = 0; c < cart.items.length; c++)
-            {
-                itemsArray.push(cart.items[c]);
-            }
-            
-            //check if item already exists in cart
-            for(let c = 0; c < itemsArray.length; c++)
-            {
-                if(itemsArray[c].id === buttonNumber)
-                {
-                    console.log(":)");
-
-                    duplicateCheck = true;
-                    let itemQuantity = itemsArray[c].quantity;
-                    console.log(itemQuantity);
-                    itemsArray[c].quantity = ++itemQuantity;
-                }
-            }
-
-            //itemsArray.filter(item => item.id === buttonNumber).length > 0
-            if(duplicateCheck)
-            {
-                localStorage.setItem("restaurantName", JSON.stringify({items: itemsArray}));
-                console.log(itemsArray);
-            }
-
-            else
-            {
-                itemsArray.push({id: buttonNumber, name: itemName, price: itemPrice, quantity: 1});
-                localStorage.setItem("restaurantName", JSON.stringify({items: itemsArray}));
-            }
-            
-        }
-
-        var x = document.createElement("div");
-        x.id = "cart-item-" + "#";
-        x.className = "cart-item";
-        x.innerHTML = "<p>" + buttonNumber + " " + itemName + " " + itemPrice + "</p>";
-        document.getElementById("t").prepend(x);
-    }
-
-</script>
-<body>
+<body onload="loadSideCart()">
 
     <!-- admin view -->
     <% if(admin == true) { %>
@@ -128,7 +63,7 @@
                     </div>
                     <div id="menu-item-add-to-cart-button">
                         <% let buttonNumber = c %>
-                        <button onclick="y(<%=buttonNumber %>, '<%=product.menu[c].title %>', '<%=product.menu[c].price %>')" class="cart-add-to-cart-button">+</button></a>
+                        <button onclick="updateCart(<%=buttonNumber %>, '<%=product.menu[c].title %>', '<%=product.menu[c].price %>')" class="cart-add-to-cart-button">+</button></a>
                         <!-- <a href="/addToCart/<%= product._id %>&<%= product.menu[c].productId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
                     </div>
                 </div>
@@ -174,7 +109,16 @@
         </div>
         
         <div id="side-cart">
+            <div>
+                <button id="order-button">Submit</button>
+            </div>
             
+            <div id="cart-items"></div> 
+
+            <div class="">
+                <h2 id="total-price"></h2>
+            </div>
+            <!--
             <% let totalPrice = 0 %>
             <% if (cartProducts != null) { %>
                     <div>
@@ -193,20 +137,21 @@
                     <div class="">
                         <h2 id="total-price">Total: $<%= totalPrice %></h2>
                     </div>
-                        <!--
+                    
                     -->    
                 <!-- 
                 <form action="/order-post" method="POST">
                     <button class="btn" type="submit">Submit Order</button>
                 </form> 
-                -->  
-                
+                --> 
+
+                <!--
                 <% } else { %>
                     <div>
                         <button id="order-button">Cart Empty</button>
                     </div>
                 <% } %>
-
+                -->
         </div>
     </main>
 </body>

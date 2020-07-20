@@ -172,11 +172,12 @@ main {
 
 #side-cart
 {
+    visibility: hidden;
     display: inline-block;
-    position: absolute;
+    position: fixed;
     /* background-color: green; */
     vertical-align: top;
-    width: 300px;
+    width: 350px;
     padding: 0px;
     margin: 0px;
     margin-left: 5px;
@@ -185,24 +186,61 @@ main {
 .cart-item
 {
     background-color: royalblue;
-    padding: 0px;
-    padding-top: 0px;
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
+.cart-item div
+{
+    display: inline-block;
+    width: 70%;
+    padding: 0px;
+    margin: 0px;
+}
+
+.cart-item button
+{
+    display: inline-block;
+    background-color: royalblue;
+    border-style: none;
+    border-radius: 0px; 
+    outline: none;
+    font-size: large;
+    color: black; 
+    height: 52.5px;
+    width: 52.5px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.cart-item button:hover
+{
+    background-color: #3e00a1;
+    color: white;
+}
+
+/*
+.cart-item button
+{   
+    display: inline-block;
+}
+
 .cart-item p
 {
-    /* background-color: salmon; */
+    background-color: salmon;
     padding: 0px;
     padding-top: 15px;
     padding-bottom: 15px;   
 }
+*/
 
 .cart-add-to-cart-button
 {
     border-style: none;
-    border-radius: 0px; 
+    border-radius: 0px;
+    outline: none;
+    font-size: large;
+    color: black; 
     padding: 10px 15px 10px 15px;
     margin: 15px;
 }
