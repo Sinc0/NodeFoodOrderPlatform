@@ -10,7 +10,6 @@
 </head>
 
 <body onload="loadSideCart()">
-
     <!-- admin view -->
     <% if(admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
@@ -69,9 +68,8 @@
                 </div>
                 <% } %>
             </div>
-                
             <br />
-
+            
             <hr>
             <!--
                 <a href="/cartx/<%= product._id %>" class="btn"><button>Cart</button></a>
@@ -107,17 +105,22 @@
             <br />
             <br />
         </div>
-        
+ 
         <div id="side-cart">
-            <div>
-                <button id="order-button">Submit</button>
-            </div>
-            
-            <div id="cart-items"></div> 
-
-            <div class="">
-                <h2 id="total-price"></h2>
-            </div>
+            <form action="/order-post" method="POST">
+                <button id="order-button" type="submit">Submit Order</button>
+                
+                <input id="commentToRestaurant" name="commentToRestaurant" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>
+                
+                <div id="cart-items"></div> 
+                                
+                <div class="">
+                    <h2 id="total-price"></h2>
+                </div>
+                
+                <input hidden id="cartAllItems" name="cartAllItems"></input>
+                <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
+            </form>
             <!--
             <% let totalPrice = 0 %>
             <% if (cartProducts != null) { %>

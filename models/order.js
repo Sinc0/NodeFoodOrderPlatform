@@ -7,7 +7,7 @@ const ObjectId = mongodb.ObjectId;
 
 class Order 
 {
-    static createOrder(userEmail, productArray, totalPrice)
+    static createOrder(userEmail, productArray, totalPrice, comment)
     {
         const db = getDb()
 
@@ -17,34 +17,10 @@ class Order
             .insertOne({
                 user: userEmail,
                 date: Date(),
-                products: productArray,
-                totalPrice: totalPrice
+                totalPrice: "$" + totalPrice,
+                comment: comment,
+                products: productArray
             })  
-            .then(result => {
-                if(result.insertedCount == insertSuccessful)
-                {
-                    User.emptyCart(userEmail).then(result => {
-                        if(result.modifiedCount == 1)
-                        {
-                            console.log('empty cart: successful')
-                        }
-                        
-                        else
-                        {
-                            console.log('empty cart: failed')
-                        }
-                    }
-                    ).catch(err => {console.log(err)})
-                    //console.log('insert of session document successful');
-                    //console.log(r.ops)
-                    return result;
-                }
-
-                else
-                {
-                    return null;
-                }
-            })
             .catch(err => {
                 console.log(err); 
                 //console.log('insert of session document failed'); 

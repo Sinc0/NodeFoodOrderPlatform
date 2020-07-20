@@ -233,7 +233,7 @@ exports.getRestaurant = (req, res, next) => {
     const productId = req.params.productId;
     console.log(productId);
     let addToCartSuccessful = 1;
-    let addoCartFailed = 0;
+    let addoCartFailed = 0;    
 
     //console.log(productId);
     //console.log(userEmail);
@@ -539,110 +539,92 @@ exports.postOrder = (req, res, next) => {
     let validation = res.locals.validation;
     let userEmail = res.locals.userEmail;
     let insertSuccessful = 1;
-    let orderProducts = [];
-    let totalPrice = null;
+    let cartItems = req.body.cartAllItems;
+    let orderProducts = JSON.parse(cartItems);
+    let totalPrice = req.body.cartTotalPrice;
+    let commentToRestaurant = req.body.commentToRestaurant;
 
     //logged in user
     if(validation.status == true)
     {
-        User.fetchCart(userEmail).then(cartProducts => {
-
-            //console.log(cartProducts);
-
-            if(cartProducts != null)
+        Order.createOrder(userEmail, orderProducts, totalPrice , commentToRestaurant)
+        .then(result => {
+            if(result.insertedCount != null)
             {
-                orderProducts = cartProducts;
-                //checks if product already exists in cart
-                for (elementCtr = 0; elementCtr < orderProducts.length; elementCtr++) 
-                {   
-                    totalPrice += parseFloat(orderProducts[elementCtr].price) * parseFloat(orderProducts[elementCtr].quantity);
+                console.log('create order: successful');
+                res.redirect('/orders');
+                
+                /*
+                let order;
+                order = result.ops;
+
+                let id = order[0]._id;
+                let user = order[0].user;
+                let date = order[0].date;
+                let products = order[0].products;
+                let totalPrice = order[0].totalPrice;
+                                        
+                //create order pdf
+                const reciept = 'Reciept=' + id + '.pdf';
+                const recieptPath = path.join(__dirname, '..', 'public/' + 'orderReciepts', reciept);
+                const pdfReciept = new pdfDocument();
+            
+                //console.log(reciept);
+                
+                res.setHeader('Content-Type', 'application/pdf');
+                res.setHeader('Content-Disposition', 'inline; filename="' + reciept + '"');
+                
+                pdfReciept.pipe(fs.createWriteStream(recieptPath));
+                //pdfReciept.pipe(res); redirects to pdf document
+                //pdfReciept.fontSize(26).text('Reciept', {
+                    //underline: true
+                //})
+
+                //write pdf start
+                try 
+                {
+                    pdfReciept.text('Order: ' + id)
+                    pdfReciept.text('\n');
+                    pdfReciept.text('Date: ' + date);
+                    pdfReciept.text('\n');
+                    pdfReciept.text('User: ' + user);
+                    pdfReciept.text('\n');
+                    pdfReciept.text('Total Products: ' + products.length);
+                    pdfReciept.text('\n');
+                    pdfReciept.text('Total Amount: ' + totalPrice);
+                    pdfReciept.text('\n');
+                    for(elementCounter = 0; elementCounter < products.length; elementCounter++)
+                    {
+                        pdfReciept.text('\n');
+                        pdfReciept.text('#' + (elementCounter + 1));
+                        pdfReciept.text(products[elementCounter].title);
+                        pdfReciept.text('quantity: ' + products[elementCounter].quantity);
+                        pdfReciept.text('price: ' + products[elementCounter].price);
+                        pdfReciept.text('description: ' + products[elementCounter].description);
+                        pdfReciept.text('\n');
+                    }
+                    pdfReciept.end();
+
+                    console.log('create pdf: successful');
+                    res.redirect('/orders');
+                } 
+                catch (error) 
+                {
+                    console.log('create pdf: failed');
+                    console.log(error);
+                    res.redirect('/orders');   
                 }
+                */
 
-                totalPrice = parseFloat(totalPrice.toFixed(2));
-
-                Order.createOrder(userEmail, orderProducts, totalPrice)
-                .then(result => {
-                    if(result.insertedCount != null)
-                    {
-                        console.log('create order: successful');
-
-                        let order;
-                        order = result.ops;
-
-                        let id = order[0]._id;
-                        let user = order[0].user;
-                        let date = order[0].date;
-                        let products = order[0].products;
-                        let totalPrice = order[0].totalPrice;
-                                               
-                        //create order pdf
-                        const reciept = 'Reciept=' + id + '.pdf';
-                        const recieptPath = path.join(__dirname, '..', 'public/' + 'orderReciepts', reciept);
-                        const pdfReciept = new pdfDocument();
-                    
-                        //console.log(reciept);
-                        
-                        res.setHeader('Content-Type', 'application/pdf');
-                        res.setHeader('Content-Disposition', 'inline; filename="' + reciept + '"');
-                        
-                        pdfReciept.pipe(fs.createWriteStream(recieptPath));
-                        //pdfReciept.pipe(res); redirects to pdf document
-                        //pdfReciept.fontSize(26).text('Reciept', {
-                            //underline: true
-                        //})
-
-                        //write pdf start
-                        try 
-                        {
-                            pdfReciept.text('Order: ' + id)
-                            pdfReciept.text('\n');
-                            pdfReciept.text('Date: ' + date);
-                            pdfReciept.text('\n');
-                            pdfReciept.text('User: ' + user);
-                            pdfReciept.text('\n');
-                            pdfReciept.text('Total Products: ' + products.length);
-                            pdfReciept.text('\n');
-                            pdfReciept.text('Total Amount: ' + totalPrice);
-                            pdfReciept.text('\n');
-                            for(elementCounter = 0; elementCounter < products.length; elementCounter++)
-                            {
-                                pdfReciept.text('\n');
-                                pdfReciept.text('#' + (elementCounter + 1));
-                                pdfReciept.text(products[elementCounter].title);
-                                pdfReciept.text('quantity: ' + products[elementCounter].quantity);
-                                pdfReciept.text('price: ' + products[elementCounter].price);
-                                pdfReciept.text('description: ' + products[elementCounter].description);
-                                pdfReciept.text('\n');
-                            }
-                            pdfReciept.end();
-
-                            console.log('create pdf: successful');
-                            res.redirect('/orders');
-                        } 
-                        catch (error) 
-                        {
-                            console.log('create pdf: failed');
-                            console.log(error);
-                            res.redirect('/orders');   
-                        }
-
-                    }
-                    
-                    else
-                    {
-                        console.log('create order: failed');
-                        res.redirect('/cart');
-                    }
-                })    
-                .catch(err => {console.log(err)});
             }
-
+            
             else
             {
-                res.redirect('/cart')
+                console.log('create order: failed');
+                res.redirect('/cart');
             }
-        
-        })
+        })    
+        .catch(err => {console.log(err)});
     }
 
     //anonymous user

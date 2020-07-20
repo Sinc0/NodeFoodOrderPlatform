@@ -1,15 +1,37 @@
+function fillCartFormData()
+{
+    var cartItems = localStorage.getItem("restaurantName");
+    //cartItems = JSON.parse(cartItems);
+    console.log(cartItems);
+    document.getElementById("cartAllItems").value = cartItems;
+
+    var cartItems = localStorage.getItem("restaurantName");
+    cartItems = JSON.parse(cartItems);
+    var cartItem = cartItems.items;
+    var totalPrice = null;
+    console.log(cartItems);
+
+    for(let c = 0; c < cartItems.items.length; c++)
+    {
+        totalPrice += (cartItem[c].quantity * cartItem[c].price);
+    }
+
+    document.getElementById("cartTotalPrice").value = totalPrice;
+}
+
 function cartTotalPrice()
 {
     var cartItems = localStorage.getItem("restaurantName");
     cartItems = JSON.parse(cartItems);
     var cartItem = cartItems.items;
     var totalPrice = null;
+    console.log(cartItems);
 
     for(let c = 0; c < cartItems.items.length; c++)
     {
         totalPrice += (cartItem[c].quantity * cartItem[c].price);
     }
-    
+
     return totalPrice;
 }
 
@@ -145,8 +167,12 @@ function loadSideCart()
             document.getElementById("cart-item-" + cartItem[c].id).prepend(buttonRemove);
         }
         
+        fillCartFormData();
+        
         var totalPrice = document.getElementById("total-price").innerHTML = "Total: " + "$" + cartTotalPrice();
         var sideCartVisibility = document.getElementById("side-cart").style.visibility = "visible";
+
+
     }
 }
 

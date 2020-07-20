@@ -263,3 +263,11 @@ main {
     padding-top: 10px;
     padding-bottom: 10px;
 }
+
+#commentToRestaurant
+{
+    font-size: large;
+    text-align: center;
+    width: 348px;
+    margin-left: -1px;
+}
