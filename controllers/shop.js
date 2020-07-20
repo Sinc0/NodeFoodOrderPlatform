@@ -244,19 +244,13 @@ exports.getRestaurant = (req, res, next) => {
         Product.findById(ObjectId(productId))
         .then(resultProduct => 
         {
-
-            User.fetchCart(userEmail).then(cartProducts => {
-                res.render('shop/product-detail', {
-                    admin: validation.isAdmin,
-                    loggedIn: true,
-                    productImage: "",
-                    product: resultProduct,
-                    cartProducts: cartProducts,
-                    path: '/products'
+            res.render('shop/product-detail', {
+                admin: validation.isAdmin,
+                loggedIn: true,
+                productImage: "",
+                product: resultProduct,
+                path: '/products'
             });
-
-            }).catch(err => {console.log(err)});
-        
         }).catch(err => {console.log(err)});
     }
 

@@ -2,14 +2,14 @@ function fillCartFormData()
 {
     var cartItems = localStorage.getItem("restaurantName");
     //cartItems = JSON.parse(cartItems);
-    console.log(cartItems);
+    //console.log(cartItems);
     document.getElementById("cartAllItems").value = cartItems;
 
     var cartItems = localStorage.getItem("restaurantName");
     cartItems = JSON.parse(cartItems);
     var cartItem = cartItems.items;
     var totalPrice = null;
-    console.log(cartItems);
+    //console.log(cartItems);
 
     for(let c = 0; c < cartItems.items.length; c++)
     {
@@ -25,7 +25,7 @@ function cartTotalPrice()
     cartItems = JSON.parse(cartItems);
     var cartItem = cartItems.items;
     var totalPrice = null;
-    console.log(cartItems);
+    //console.log(cartItems);
 
     for(let c = 0; c < cartItems.items.length; c++)
     {
@@ -39,7 +39,7 @@ function cartItemPlus(item)
 {
     let itemsArray = [];
 
-    console.log("inside cart item plus");
+    //console.log("inside cart item plus");
 
     cart = JSON.parse(localStorage.getItem("restaurantName"));
         
@@ -58,7 +58,7 @@ function cartItemPlus(item)
 
                 duplicateCheck = true;
                 let itemQuantity = itemsArray[c].quantity;
-                console.log(itemQuantity);
+                //console.log(itemQuantity);
                 itemsArray[c].quantity = ++itemQuantity;
             }
         }
@@ -66,7 +66,7 @@ function cartItemPlus(item)
         if(duplicateCheck)
         {
             localStorage.setItem("restaurantName", JSON.stringify({items: itemsArray}));
-            console.log(itemsArray);
+            //console.log(itemsArray);
         }
 
         loadSideCart();
@@ -74,7 +74,7 @@ function cartItemPlus(item)
 
 function cartItemMinus(item)
 {
-    console.log("inside cart item minus");
+    //console.log("inside cart item minus");
 
     let itemsArray = [];
 
@@ -95,13 +95,13 @@ function cartItemMinus(item)
 
                 duplicateCheck = true;
                 let itemQuantity = itemsArray[c].quantity;
-                console.log(itemQuantity);
+                //console.log(itemQuantity);
                 itemsArray[c].quantity = --itemQuantity;
             }
 
             if(itemsArray[c].quantity == 0)
             {
-                console.log("item 0 quantity");
+                //console.log("item 0 quantity");
                 document.getElementById("cart-item-" + itemsArray[c].id).remove();
                 itemsArray.splice(c, 1);
             }
@@ -110,7 +110,7 @@ function cartItemMinus(item)
         if(duplicateCheck)
         {
             localStorage.setItem("restaurantName", JSON.stringify({items: itemsArray}));
-            console.log(itemsArray);
+            //console.log(itemsArray);
         }
 
         loadSideCart();
@@ -132,7 +132,7 @@ function loadSideCart()
         cartItems = JSON.parse(cartItems);
         var cartItem = cartItems.items;
         
-        console.log(cartItems.items.length);
+        //console.log(cartItems.items.length);
     
         var cartItemsDiv = document.getElementById("cart-items").innerHTML = "";
     
@@ -149,13 +149,13 @@ function loadSideCart()
             
             //buttons
             var buttonAdd = document.createElement("button");
-            buttonAdd.id = "cart-item-add-one-button";
+            buttonAdd.className = "cart-item-add-one-button";
             buttonAdd.value = cartItem[c].id;
             buttonAdd.onclick = function(){cartItemPlus(cartItem[c].id)};
             buttonAdd.innerHTML = " + ";
             
             var buttonRemove = document.createElement("button");
-            buttonRemove.id = "cart-item-remove-one-button";
+            buttonRemove.className = "cart-item-remove-one-button";
             buttonRemove.value = cartItem[c].id;
             buttonRemove.onclick = function(){cartItemMinus(cartItem[c].id)};
             buttonRemove.innerHTML = " - ";
@@ -182,7 +182,7 @@ function updateCart(buttonNumber, itemName, itemPrice)
     let duplicateCheck = false;
 
     let cart = localStorage.getItem("restaurantName");
-    console.log(cart);
+    //console.log(cart);
             
     if(cart == null)
     {
@@ -209,7 +209,7 @@ function updateCart(buttonNumber, itemName, itemPrice)
 
                 duplicateCheck = true;
                 let itemQuantity = itemsArray[c].quantity;
-                console.log(itemQuantity);
+                //console.log(itemQuantity);
                 itemsArray[c].quantity = ++itemQuantity;
             }
         }
@@ -218,7 +218,7 @@ function updateCart(buttonNumber, itemName, itemPrice)
         if(duplicateCheck)
         {
             localStorage.setItem("restaurantName", JSON.stringify({items: itemsArray}));
-            console.log(itemsArray);
+            //console.log(itemsArray);
         }
 
         else

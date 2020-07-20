@@ -133,6 +133,7 @@ main {
     height: 100%;
     width: 730px;
     padding: 0px;
+    padding-bottom: 70px;
     margin: 0px;
 }
 
@@ -270,4 +271,9 @@ main {
     text-align: center;
     width: 348px;
     margin-left: -1px;
+}
+
+#menu-restaurant-title
+{
+    margin-top: 13px;
 }

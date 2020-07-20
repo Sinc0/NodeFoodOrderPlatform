@@ -24,86 +24,71 @@
     <% } %>
 
     <main id="main-menu" class="centered">
-        <div id="menu">
-            
-            <h1>Restaurant Title</h1>
+        <div id="menu">            
+            <div>
+                <h1><%= product.title %></h1>
+            </div>
             <!-- <h1><%= product.title %></h1> -->
             <hr>
-
-            <br />
             
-            <p>Restaurant Id</p>
-            <!-- <p><%= product._id %></p> -->
+            <br />
             
             <div class="card__image">
                 <img src="/<%= product.imageUrl %>">
             </div>
-            
-            <h2>Hours</h2>
-            <!-- <h2><%= product.price %></h2> -->
-            
-            <p>Description of Restaurant</p>
-            <!-- <p><%= product.description %></p> -->
-            
+
             <br />
-            
-            <hr>
 
             <div>
-                <h2>Category</h2>
-                
-                <% for(let c = 0; c < product.menu.length; c++) { %>
-                <div id="menu-item">
-                    <!-- <p><%= product.menu[c].productId %></p> -->
-                    <div id="menu-item-texts">
-                        <p><b><%= product.menu[c].title %></b></p>
-                        <p>$<%= product.menu[c].price %></p>
-                        <p>Ingredients: <%= product.menu[c].description %></p>
-                    </div>
-                    <div id="menu-item-add-to-cart-button">
-                        <% let buttonNumber = c %>
-                        <button onclick="updateCart(<%=buttonNumber %>, '<%=product.menu[c].title %>', '<%=product.menu[c].price %>')" class="cart-add-to-cart-button">+</button></a>
-                        <!-- <a href="/addToCart/<%= product._id %>&<%= product.menu[c].productId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
-                    </div>
-                </div>
-                <% } %>
+            <!-- <p><%= product._id %></p> -->
+            <% for(let c = 0; c < product.hours.length; c++) { %>
+                <p><%= product.hours[c] %></p>
+            <% } %>
+            <!-- <h2><%= product.price %></h2> -->
             </div>
+            
+            <br />
+            
+            <div>
+            <p><%= product.description %></p>
+            <!-- <p><%= product.description %></p> -->
+            </div>
+            
             <br />
             
             <hr>
-            <!--
-                <a href="/cartx/<%= product._id %>" class="btn"><button>Cart</button></a>
-            -->
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-
-
-
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
+            <% for(let c = 0; c < product.menuCategories.length; c++) { %>
+                <% let p = product.menuCategories[c] %>
+                <div>
+                <h2 id="menu-restaurant-title"><%= p.charAt(0).toUpperCase() + p.slice(1) %></h2>
+                </div>
+                
+                <div>
+                <% for(let c = 0; c < product.menu.length; c++) { %>
+                
+                    <% if(product.menu[c].category == p) { %>
+                    <div id="menu-item">
+                        <!-- <p><%= product.menu[c].productId %></p> -->
+                        <div id="menu-item-texts">
+                            <p><b><%= product.menu[c].title %></b></p>
+                            <p>$<%= product.menu[c].price %></p>
+                            <p>Ingredients: <%= product.menu[c].description %></p>
+                        </div>
+                        <div id="menu-item-add-to-cart-button">
+                            <% let buttonNumber = c %>
+                            <button onclick="updateCart(<%=buttonNumber %>, '<%=product.menu[c].title %>', '<%=product.menu[c].price %>')" class="cart-add-to-cart-button">+</button></a>
+                            <!-- <a href="/addToCart/<%= product._id %>&<%= product.menu[c].productId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
+                        </div>
+                    </div>
+                    <% } else { %>
+                    <% } %>
+                
+                <% } %>
+                </div>
+                <br />
+                
+                <hr>
+            <% } %>
         </div>
  
         <div id="side-cart">
@@ -121,40 +106,6 @@
                 <input hidden id="cartAllItems" name="cartAllItems"></input>
                 <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
             </form>
-            <!--
-            <% let totalPrice = 0 %>
-            <% if (cartProducts != null) { %>
-                    <div>
-                        <button id="order-button">Submit</button>
-                    </div>
-
-                    <div id="t">
-                    <% for (let product of cartProducts.reverse()) { %>
-                        <% totalPrice += (parseFloat(product.price) * product.quantity) %>
-                        <div class="cart-item">
-                            <p>(<%= product.quantity %>) <%= product.title %> - $<%=(product.price * product.quantity) %></p>
-                        </div>
-                        <% } %>
-                    </div>
-
-                    <div class="">
-                        <h2 id="total-price">Total: $<%= totalPrice %></h2>
-                    </div>
-                    
-                    -->    
-                <!-- 
-                <form action="/order-post" method="POST">
-                    <button class="btn" type="submit">Submit Order</button>
-                </form> 
-                --> 
-
-                <!--
-                <% } else { %>
-                    <div>
-                        <button id="order-button">Cart Empty</button>
-                    </div>
-                <% } %>
-                -->
         </div>
     </main>
 </body>
