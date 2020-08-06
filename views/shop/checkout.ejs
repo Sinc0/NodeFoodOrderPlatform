@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/product.css">
+    <script src="/js/functionality.js"></script>
+</head>
+<body id="body-checkout" onload="cartAllItems()">
+    
+    <div id="checkoutCartItems">
+        <button onclick="goBack()">Go Back</button>
+        <h2>Confirm Order</h2>
+        <h3>Items</h3>
+    </div>
+
+    <div id="checkoutTotalPrice">
+        <h3>Total</h3>
+        <p>$<%=cartTotalPrice %></p>
+    </div>
+    
+    <% if(commentToRestaurant != "") { %>
+    <div id="checkoutCommentToRestaurant">
+        <h3>Comment</h3>
+        <p><%=commentToRestaurant %></p>
+    </div>
+    <% } %>
+
+    <div id="checkoutSendOrder">
+        <form action="/order-post" method="POST">
+            <button type="submit" onclick="clearCart()">Pay</button>
+            <input hidden id="commentToRestaurant" name="commentToRestaurant" value="<%=commentToRestaurant %>" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>          
+            <input hidden id="cartAllItems" name="cartAllItems"></input>
+            <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
+        </form>
+    </div>
+</body>
+</html>

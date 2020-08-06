@@ -113,6 +113,32 @@ class Product
             })
             .catch(err => console.log(err))
     }
+
+    static findByUrl(url)
+    {
+        const db = getDb();
+
+       //TODO check if prodId characters are by the rules or else redirect
+        
+        return db
+            .collection('products')
+            .findOne({url: url})
+            .then(product => {
+                if(product != null)
+                {
+                    console.log(product);
+                    return product;
+                }
+
+                else
+                {
+                    //console.log('no product found')
+                    return null;
+                }
+
+            })
+            .catch(err => console.log(err))
+    }
 }
 
 module.exports = Product;

@@ -31,8 +31,10 @@ router.get('/cart/:productId', validation, shopController.postCart);
 router.get('/cart', validation, shopController.getCart);
 
 
-router.get('/restaurant/:productId', validation, shopController.getRestaurant);
+router.get('/restaurant/:productUrl', validation, shopController.getRestaurant);
 router.get('/addToCart/:productId&:menuItemId', validation, shopController.getAddToCart);
+router.post('/checkout', validation, shopController.getCheckout);
+router.get('/profile', validation, shopController.getProfile);
 
 
 router.get('/cart/:productId', validation, shopController.postCart);

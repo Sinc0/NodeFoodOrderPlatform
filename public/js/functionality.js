@@ -1,3 +1,51 @@
+function goBack()
+{
+    window.history.back();
+}
+
+function clearCart()
+{
+    localStorage.removeItem("restaurantName");
+    document.getElementById("commentToRestaurant").value = "x";
+}
+
+function cartAllItems()
+{
+    var cartItems = localStorage.getItem("restaurantName");
+    cartItems = JSON.parse(cartItems);
+    var p = "";
+    //console.log(cartItems);
+    
+    if(cartItems != null)
+    {
+        for(let c = cartItems.items.length - 1; c >= 0; c--)
+        {
+            p = "<p>" + "(" + cartItems.items[c].quantity + ") " + cartItems.items[c].name + " - " + "$" + (cartItems.items[c].quantity * cartItems.items[c].price); + "</p>"
+            var text = document.createElement("div");
+            text.innerHTML = p;
+            document.getElementById("checkoutCartItems").append(text);  
+        }
+
+        fillCartFormData();
+    }
+    
+    /*
+    var select = document.createElement("select");
+    var option_1 = document.createElement("option");
+    var option_2 = document.createElement("option");
+    var option_3 = document.createElement("option");
+    option_1.text = "Payment Option 1";
+    select.add(option_1);
+    document.getElementById("checkoutCartItems").append(select);
+    option_2.text = "Payment Option 2";
+    select.add(option_2);
+    option_3.text = "Payment Option 3";
+    select.add(option_3);
+    */
+    
+    //return cartItems;
+}
+
 function fillCartFormData()
 {
     var cartItems = localStorage.getItem("restaurantName");
@@ -121,7 +169,7 @@ function loadSideCart()
     var cartItems = localStorage.getItem("restaurantName");
     cartItems = JSON.parse(cartItems);
     
-    if(cartItems.items == 0 || cartItems == null)
+    if(cartItems == null || cartItems.items.length == 0)
     {
         document.getElementById("side-cart").style.visibility = "hidden";
     }
@@ -167,12 +215,10 @@ function loadSideCart()
             document.getElementById("cart-item-" + cartItem[c].id).prepend(buttonRemove);
         }
         
-        fillCartFormData();
-        
         var totalPrice = document.getElementById("total-price").innerHTML = "Total: " + "$" + cartTotalPrice();
         var sideCartVisibility = document.getElementById("side-cart").style.visibility = "visible";
 
-
+        fillCartFormData();
     }
 }
 

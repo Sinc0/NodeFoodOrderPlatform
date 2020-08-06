@@ -16,7 +16,14 @@ class Order
         return db.collection('orders')
             .insertOne({
                 user: userEmail,
+                name: null,
+                phone: null,
+                address: null,
                 date: Date(),
+                pickUp: null,
+                pickUpTime: null,
+                delivery: null,
+                deliveryTime: null,
                 totalPrice: "$" + totalPrice,
                 comment: comment,
                 products: productArray

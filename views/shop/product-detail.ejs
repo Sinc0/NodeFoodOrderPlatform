@@ -58,15 +58,15 @@
             
             <hr>
             <% for(let c = 0; c < product.menuCategories.length; c++) { %>
-                <% let p = product.menuCategories[c] %>
+                <% let productCategory = product.menuCategories[c] %>
                 <div>
-                <h2 id="menu-restaurant-title"><%= p.charAt(0).toUpperCase() + p.slice(1) %></h2>
+                <h2 id="menu-restaurant-title"><%= productCategory.charAt(0).toUpperCase() + productCategory.slice(1) %></h2>
                 </div>
                 
                 <div>
                 <% for(let c = 0; c < product.menu.length; c++) { %>
                 
-                    <% if(product.menu[c].category == p) { %>
+                    <% if(product.menu[c].category == productCategory) { %>
                     <div id="menu-item">
                         <!-- <p><%= product.menu[c].productId %></p> -->
                         <div id="menu-item-texts">
@@ -92,8 +92,8 @@
         </div>
  
         <div id="side-cart">
-            <form action="/order-post" method="POST">
-                <button id="order-button" type="submit">Submit Order</button>
+            <form action="/checkout" method="POST">
+                <button id="order-button" type="submit">Checkout</button>
                 
                 <input id="commentToRestaurant" name="commentToRestaurant" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>
                 

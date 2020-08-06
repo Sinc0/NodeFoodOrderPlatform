@@ -5,16 +5,27 @@ body {
     margin: 0px;
 }
 
+#body-checkout h3 
+{
+    padding: 0px;
+    padding-top: 5px;
+    margin: 0px;
+    /* background-color: yellow; */
+}
+
 #restaurant
 {
-    /* display: inline-block; */   
+    display: inline-block;   
     background-color: burlywood;
     border: 1px solid black;
-    width: 20%;
+    width: 200px;
     padding: 0px;
     /* padding-bottom: 5px; */
     margin: auto;
-    margin-top: 30px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-right: 7px;
+    margin-left: 7px;
 }
 
 #restaurant img
@@ -44,13 +55,23 @@ body {
 #main-restaurants
 {
     background-color: green;
+}
+
+#main-orders
+{
     margin: auto;
-    padding-bottom: 30px;
 }
 
 #grid-restaurants
 {
+    background-color: orange;
     text-align: center;
+}
+
+#grid-orders
+{
+    width: 386px;
+    margin: auto;
 }
 
 img
@@ -252,8 +273,8 @@ main {
     border-radius: 0px;
     height: 50px;
     width: 100%;
-    margin: 0px;
     padding: 0px;
+    margin: 0px;
 }
 
 #total-price
@@ -276,4 +297,103 @@ main {
 #menu-restaurant-title
 {
     margin-top: 13px;
+}
+
+#checkoutCartItems
+{
+    position: relative;
+    text-align: center;
+    margin: auto;
+    margin-top: 100px;
+    padding: 0px;
+    background-color: green;
+    width: 300px;
+}
+
+#checkoutCartItems p
+{
+    margin: 0px;
+    padding: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#checkoutCartItems button
+{
+    border-radius: 0%;
+    width: 100%;
+    margin: 0px;
+    padding: 10px;
+}
+
+#checkoutCartItems h2
+{
+    margin: 0px;
+    padding-top: 5px;
+    padding-bottom: 0px;
+}
+
+#checkoutSendOrder
+{
+    position: relative;
+    margin: auto;
+    text-align: center;
+}
+
+#checkoutSendOrder button
+{
+    border-radius: 0%;
+    height: 40px;
+    width: 300px;
+    margin-top: 0px;
+    padding: 0px;
+}
+
+#checkoutCommentToRestaurant
+{
+    position: relative;
+    background-color: green;
+    margin: auto;
+    text-align: center;
+    width: 300px;
+}
+
+#checkoutCommentToRestaurant p
+{
+    margin: 0px;
+    padding: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+}
+
+#checkoutTotalPrice
+{
+    position: relative;
+    background-color: green;
+    margin: auto;
+    text-align: center;
+    width: 300px;
+}
+
+#checkoutTotalPrice p
+{
+    margin: 0px;
+    padding: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+}
+
+#order-item
+{
+    padding: 5px 5px 4px 5px;
+    margin: 0px;
+    border: 1px solid black;
+}
+
+#order-item p
+{
+    margin: 0px;
+    padding: 0px;
 }
