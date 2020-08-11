@@ -1,6 +1,6 @@
 function goBack()
 {
-    window.history.back();
+   window.history.back();
 }
 
 function clearCart()
@@ -277,4 +277,19 @@ function updateCart(buttonNumber, itemName, itemPrice)
 
     loadSideCart();
 
+}
+
+function selectPaymentOption(value)
+{
+    console.log(value);
+
+    if(value == 0)
+    {
+        document.getElementById("payment-option-stripe").style.display = "none";
+    }
+
+    if(value == 1)
+    {
+        document.getElementById("payment-option-stripe").style.display = "block";
+    }
 }

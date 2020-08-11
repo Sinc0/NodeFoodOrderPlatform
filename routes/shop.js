@@ -4,6 +4,8 @@ const express = require('express');
 const shopController = require('../controllers/shop');
 const router = express.Router();
 const validation = require('../validation/userValidation');
+const stripe = require("stripe")("");
+
 
 
 
@@ -33,8 +35,11 @@ router.get('/cart', validation, shopController.getCart);
 
 router.get('/restaurant/:productUrl', validation, shopController.getRestaurant);
 router.get('/addToCart/:productId&:menuItemId', validation, shopController.getAddToCart);
-router.post('/checkout', validation, shopController.getCheckout);
-router.get('/profile', validation, shopController.getProfile);
+//router.post('/checkout', validation, shopController.getCheckout);
+router.get('/profile', validation, shopController.getProfile); 
+router.get('/stripe', validation, shopController.getStripe);
+router.get('/order-details', validation, shopController.getOrderDetails)
+router.get('/order-process', validation, shopController.getOrderProcess)
 
 
 router.get('/cart/:productId', validation, shopController.postCart);
@@ -46,7 +51,7 @@ router.post('/order-post', validation, shopController.postOrder);
 router.get('/reciepts/:orderId', validation, shopController.getReciept);
 
 
-router.get('/checkout', validation, shopController.getCheckout);
+router.all('/checkout', validation, shopController.getCheckout);
 
 
 router.get('/logout', validation, shopController.getLogout);

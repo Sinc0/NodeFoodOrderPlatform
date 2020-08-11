@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const pdfDocument = require('pdfkit');
 const mongodb = require('mongodb');
-
+const stripe = require('stripe')('sk_test_51HEENaLFUjzCbJftCmqLgpLjLGgjY1OOI81cAAzEBmozVIetOISREohGCuuJq55KX3FGhFHvx9FENcU2zRdrIGmn00wIaynLwu');
 
 
 //******* variables *******
@@ -707,16 +707,24 @@ exports.getReciept = (req, res, next) => {
     */
 }
 
-exports.getCheckout = (req, res, next) => {
+exports.getCheckout = async (req, res, next) => {
     console.log('getCheckout');
     let validation = res.locals.validation;
     let cartItems = req.body.cartAllItems;
     let commentToRestaurant = req.body.commentToRestaurant;
     let cartTotalPrice = req.body.cartTotalPrice;
+    //let currency = req.body.currency;
     //console.log(req.body.cartAllItems);
     //console.log(req.body.cartTotalPrice);
-    console.log(req.body);
+    //console.log(req.body);
 
+    const intent = await stripe.paymentIntents.create({
+        amount: 100, //cartTotalPrice 
+        currency: 'usd',
+        // Verify your integration in this guide by including this parameter
+        metadata: {integration_check: 'accept_a_payment'},
+    });    
+    
     //logged in user
     if(validation.status == true && cartItems != null)
     {
@@ -725,7 +733,10 @@ exports.getCheckout = (req, res, next) => {
             path: '/checkout',
             pageTitle: 'Checkout',
             commentToRestaurant: commentToRestaurant,
-            cartTotalPrice: cartTotalPrice
+            cartTotalPrice: cartTotalPrice,
+            amount: intent.amount,
+            currency: intent.currency,
+            client_secret: intent.client_secret 
         });
     }
 
@@ -945,4 +956,43 @@ exports.getProfile = (req, res, next) => {
         pageTitle: 'Profile',
         path: '/profile',
     });
+}
+
+exports.getStripe = async (req, res, next) => {
+    console.log('\ngetStripe');
+
+    const intent = await stripe.paymentIntents.create({
+        amount: 100,
+        currency: 'usd',
+        // Verify your integration in this guide by including this parameter
+        metadata: {integration_check: 'accept_a_payment'},
+      });
+    
+    res.render('shop/stripe', 
+    { 
+        amount: intent.amount,
+        currency: intent.currency,
+        client_secret: intent.client_secret 
+    });
+
+}
+
+exports.getOrderDetails = (req, res, next) => {
+    console.log('\ngetOrderDetails');
+    
+    res.render('shop/order-details', 
+    { 
+
+    });
+
+}
+
+exports.getOrderProcess = (req, res, next) => {
+    console.log('\ngetOrderProcess');
+    
+    res.render('shop/order-process', 
+    { 
+
+    });
+
 }

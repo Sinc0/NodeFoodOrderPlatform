@@ -299,6 +299,7 @@ main {
     margin-top: 13px;
 }
 
+/* checkout */
 #checkoutCartItems
 {
     position: relative;
@@ -314,8 +315,8 @@ main {
 {
     margin: 0px;
     padding: 0px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 0px;
+    padding-bottom: 10px;
 }
 
 #checkoutCartItems button
@@ -396,4 +397,39 @@ main {
 {
     margin: 0px;
     padding: 0px;
+}
+
+#selected-payment-option
+{
+    position: relative;
+    display: block;
+    height: 170px;
+    width: 500px;
+    margin: auto;
+    margin-top: 10px;
+}
+
+#payment-option-stripe
+{
+    display: none;
+}
+
+#list-of-payment-options
+{
+    position: relative;
+    width: 300px;
+    margin: auto;
+}
+
+#list-of-payment-options select
+{
+    height: 30px;
+    width: 300px;
+    font-weight: bold;
+    text-align-last: center;
+}
+
+option
+{
+    font-weight: bold;
 }
