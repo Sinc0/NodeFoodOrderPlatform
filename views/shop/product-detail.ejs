@@ -93,7 +93,7 @@
  
         <div id="side-cart">
             <form action="/checkout" method="POST">
-                <button id="order-button" type="submit">Checkout</button>
+                <button id="order-button" onclick="commentToLocalStorage()" type="submit">Checkout</button>
                 
                 <input id="commentToRestaurant" name="commentToRestaurant" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>
                 

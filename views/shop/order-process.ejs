@@ -1,1 +1,20 @@
-<p>waiting for restaurant to set estimated time</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/functionality.js"></script>
+    <title>Document</title>
+</head>
+<body onload="fillCartFormData()">
+    <form action="/order-post" method="POST">
+        <button type="submit" onclick="clearCart()">Pay</button>
+        <input id="commentToRestaurant" name="commentToRestaurant" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>          
+        <input id="cartAllItems" name="cartAllItems"></input>
+        <input id="cartTotalPrice" name="cartTotalPrice"></input>
+    </form>
+    
+    <p>payment successful</p>
+    <p>waiting for restaurant to confirm time</p>
+</body>
+</html>

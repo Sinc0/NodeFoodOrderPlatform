@@ -35,3 +35,5 @@ old cart:
         </div>
     <% } %>
 -->
+
+checkout --> pay --> order details --> restaurant response --> send est time --> order details

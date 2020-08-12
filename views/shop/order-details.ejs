@@ -1,1 +1,18 @@
-<p>payment successful</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+</head>
+<body>
+    <p><b>id:</b> <%=orderId %></p>
+    <p><b>date:</b> <%=orderDate %></p>
+    <p><b>total:</b> <%=totalPrice %></p>
+    <b>items</b>
+    <% for(var c = 0; c < orderItems.length; c++) { %>
+        <p>&emsp;<%=orderItems[c].name %> - <%=orderItems[c].quantity %> - ($<%=orderItems[c].quantity * orderItems[c].price %>)</p>
+        <% } %>
+    
+</body>
+</html>

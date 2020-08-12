@@ -85,5 +85,13 @@
             </form>
         </div>
     </div>
+
+    <div hidden>
+        <form id="post-order-form" action="/order-post" method="POST">
+            <input hidden id="commentToRestaurant" name="commentToRestaurant" value="<%=commentToRestaurant %>" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>          
+            <input hidden id="cartAllItems" name="cartAllItems"></input>
+            <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
+        </form>
+    </div>
 </body>
 </html>

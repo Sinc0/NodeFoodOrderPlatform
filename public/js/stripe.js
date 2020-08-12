@@ -52,6 +52,7 @@ form.addEventListener('submit', function(ev) {
       {
         card: card,
         billing_details: {
+          email: 'jenny.rosen@gmail.com',
           name: 'Jenny Rosen'
       }
     }
@@ -67,10 +68,10 @@ form.addEventListener('submit', function(ev) {
         orderComplete(result.paymentIntent.id);
         console.log(result.paymentIntent);
         console.log("payment successful");
+        postOrder();
+        clearCart();
         
-        
-        
-        window.location.href = "/order-process";
+        //window.location.href = "/order-process";
         //windows.location.replace = "/";
         // There's a risk of the customer closing the window before callback
         // execution. Set up a webhook or plugin to listen for the

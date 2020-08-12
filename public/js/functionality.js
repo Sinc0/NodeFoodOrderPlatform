@@ -49,8 +49,10 @@ function cartAllItems()
 function fillCartFormData()
 {
     var cartItems = localStorage.getItem("restaurantName");
+    var commentToRestaurant = localStorage.getItem("commentToRestaurant");
     //cartItems = JSON.parse(cartItems);
     //console.log(cartItems);
+    document.getElementById("commentToRestaurant").value = commentToRestaurant;
     document.getElementById("cartAllItems").value = cartItems;
 
     var cartItems = localStorage.getItem("restaurantName");
@@ -292,4 +294,15 @@ function selectPaymentOption(value)
     {
         document.getElementById("payment-option-stripe").style.display = "block";
     }
+}
+
+function commentToLocalStorage(comment)
+{
+    localStorage.setItem("commentToRestaurant", comment);
+}
+
+function postOrder()
+{
+    var form = document.getElementById("post-order-form");
+    form.submit();
 }

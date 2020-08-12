@@ -533,20 +533,28 @@ exports.postOrder = async (req, res, next) => {
     let validation = res.locals.validation;
     let userEmail = res.locals.userEmail;
     let insertSuccessful = 1;
+    //let cartItems = req.body.cartAllItems;
+    //let totalPrice = req.body.cartTotalPrice;
+    //let commentToRestaurant = req.body.commentToRestaurant;
+
     let cartItems = req.body.cartAllItems;
-    let orderProducts = JSON.parse(cartItems);
     let totalPrice = req.body.cartTotalPrice;
     let commentToRestaurant = req.body.commentToRestaurant;
+    
+    let orderProducts = JSON.parse(cartItems);
 
     //logged in user
     if(validation.status == true)
     {
         var createOrder = await Order.createOrder(userEmail, orderProducts, totalPrice , commentToRestaurant);
         
+        var orderId = createOrder.ops[0]._id;
+
         if(createOrder.insertedCount != null)
         {
             console.log('create order: successful');
-            res.redirect('/orders');
+            //res.redirect('/orders');
+            res.redirect("/order-details/" + orderId);
             
             /*
             let order;
@@ -977,12 +985,23 @@ exports.getStripe = async (req, res, next) => {
 
 }
 
-exports.getOrderDetails = (req, res, next) => {
+exports.getOrderDetails = async (req, res, next) => {
     console.log('\ngetOrderDetails');
+
+    orderId = req.params.orderId;
+
+    var order = await Order.findById(orderId);
+
+    var totalPrice = order.totalPrice;
+    var orderDate = order.date;
+    var orderItems = order.products.items;
     
     res.render('shop/order-details', 
     { 
-
+        orderId, orderId,
+        orderDate: orderDate,
+        totalPrice: totalPrice,
+        orderItems: orderItems
     });
 
 }
@@ -992,7 +1011,48 @@ exports.getOrderProcess = (req, res, next) => {
     
     res.render('shop/order-process', 
     { 
-
+        
     });
 
+}
+
+exports.postWebhook = (req, res, next) => {
+    console.log('\npostWebhook Test');
+
+    //console.log(req.body);
+    
+    let event = req.body;
+
+    /*
+    try 
+    {
+        event = JSON.parse(req.body);
+    } 
+    catch (err) 
+    {
+        res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+    */
+    
+    // Handle the event
+    if(event.type == 'payment_intent.succeeded') 
+    {
+        const paymentIntent = event.data.object;
+        console.log('PaymentIntent was successful!');
+        // Return a 200 response to acknowledge receipt of the event  
+        res.json({received: true});
+    }
+    else if(event.type == 'payment_method.attached')
+    {
+        const paymentMethod = event.data.object;
+        console.log('PaymentMethod was attached to a Customer!');
+        // Return a 200 response to acknowledge receipt of the event  
+        res.json({received: true});
+    }
+    else
+    {
+        // Unexpected event type
+        return res.status(400).end();   
+    }
+  
 }

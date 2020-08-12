@@ -6,9 +6,6 @@ const router = express.Router();
 const validation = require('../validation/userValidation');
 const stripe = require("stripe")("");
 
-
-
-
 //route handling no validation
 router.post('/register-post', shopController.postRegister)
 
@@ -38,8 +35,9 @@ router.get('/addToCart/:productId&:menuItemId', validation, shopController.getAd
 //router.post('/checkout', validation, shopController.getCheckout);
 router.get('/profile', validation, shopController.getProfile); 
 router.get('/stripe', validation, shopController.getStripe);
-router.get('/order-details', validation, shopController.getOrderDetails)
-router.get('/order-process', validation, shopController.getOrderProcess)
+router.get('/order-details/:orderId', validation, shopController.getOrderDetails);
+router.all('/order-process', validation, shopController.getOrderProcess);
+router.post('/webhook', shopController.postWebhook)
 
 
 router.get('/cart/:productId', validation, shopController.postCart);
