@@ -1006,6 +1006,25 @@ exports.getOrderDetails = async (req, res, next) => {
 
 }
 
+
+exports.postOrderDetails = async (req, res, next) => {
+    console.log('\npostOrderDetails Test');
+
+    console.log(req.body);
+    
+    let event = req.body;
+    
+    /*
+    res.render('shop/order-details', 
+    { 
+        orderId, orderId,
+        orderDate: orderDate,
+        totalPrice: totalPrice,
+        orderItems: orderItems
+    });
+    */
+}
+
 exports.getOrderProcess = (req, res, next) => {
     console.log('\ngetOrderProcess');
     
@@ -1055,4 +1074,16 @@ exports.postWebhook = (req, res, next) => {
         return res.status(400).end();   
     }
   
+}
+
+exports.getConfirmOrder = async (req, res, next) => {
+    console.log('\ngetConfirmOrder');
+
+    var orders = await Order.fetchAll();
+    
+    res.render('shop/confirm-order', 
+    { 
+        orders: orders
+    });
+
 }

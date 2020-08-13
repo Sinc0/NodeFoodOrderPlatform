@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temp Title</title>
+</head>
+<body>
+    <script>
+        var socket = new WebSocket("ws://localhost:1001");
+        
+        function openWebSocket()
+        {
+            socket.send("websocket test message");
+            socket.close();
+        }
+        
+        /*
+        socket.onopen = function(event) {
+        //alert("socket is connected");
+        console.log("socket is open");
+        socket.close();
+        };
+
+        socket.onclose = function(event) {
+            console.log("socket is closed");
+        }
+        */
+    </script>
+
+    <h1>confirm order</h1>
+    <% for(var c = 85; c < 89; c++) { %>
+    <div>
+        <%= orders[c]._id %>
+        
+        <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
+            <p><%= orders[c].products.items[x].name %></p>
+        <% } %>    
+        <button onclick="openWebSocket()">&#10003;</button>
+        <button>X</button>
+        <!-- <label>set time:</label> -->
+        <select>
+            <option>15 min</option>
+            <option>20</option>
+            <option>25</option>
+            <option>30</option>
+            <option>35</option>
+            <option>40</option>
+            <option>45</option>
+            <option>50</option>
+            <option>55</option>
+            <option>60</option>
+        </select>
+        </div>
+        <br />
+    <% } %>
+</body>
+</html>
+

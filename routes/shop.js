@@ -36,8 +36,10 @@ router.get('/addToCart/:productId&:menuItemId', validation, shopController.getAd
 router.get('/profile', validation, shopController.getProfile); 
 router.get('/stripe', validation, shopController.getStripe);
 router.get('/order-details/:orderId', validation, shopController.getOrderDetails);
+router.post('/order-details/:orderId', shopController.postOrderDetails);
 router.all('/order-process', validation, shopController.getOrderProcess);
-router.post('/webhook', shopController.postWebhook)
+router.post('/webhook', shopController.postWebhook);
+router.get('/confirm-order', shopController.getConfirmOrder);
 
 
 router.get('/cart/:productId', validation, shopController.postCart);

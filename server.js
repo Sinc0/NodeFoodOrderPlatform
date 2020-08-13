@@ -11,6 +11,7 @@ const multer = require('multer');
 const helmet = require('helmet');
 const compression = require('compression');
 const morgan = require('morgan');
+const ws = require('ws').Server;
 
 const multerStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -100,6 +101,7 @@ app.use(errorController.get404ErrorPage);
 
 
 mongoConnect(() => {
+    webSocket = new ws({port: 1001});
     app.listen(process.env.PORT || 3000);
     //******* test area below *******
 
