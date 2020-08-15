@@ -28,19 +28,5 @@
             <p> Home Page for anonymous </p>
         </main>
     <% } %>
-
-    <script>
-        var socket = new WebSocket("ws://localhost:1001");
-        socket.onopen = function(event) {
-            //alert("socket is connected");
-            socket.send("websocket test message");
-            console.log("socket is open");
-            socket.close();
-        };
-
-        socket.onclose = function(event) {
-            console.log("socket is closed");
-        }
-    </script>
 </body>
 </html>

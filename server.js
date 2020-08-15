@@ -101,7 +101,26 @@ app.use(errorController.get404ErrorPage);
 
 
 mongoConnect(() => {
-    webSocket = new ws({port: 1001});
+    webSocket = new ws({port: 65535});
+    
+    webSocket.on('connection', function(ws){
+        console.log("client connected");
+        console.log("number of clients:", webSocket.clients.size);
+        
+        ws.on('message', function(message){
+            console.log("message recieved: " + message);
+            ws.send("response message");
+            //ws.close();
+            
+            webSocket.clients.forEach(function event(client){
+                client.send(message);
+                //client.send("another message");
+                //client.close();
+            });
+
+        });
+    });
+
     app.listen(process.env.PORT || 3000);
     //******* test area below *******
 

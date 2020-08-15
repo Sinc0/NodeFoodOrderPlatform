@@ -433,3 +433,16 @@ option
 {
     font-weight: bold;
 }
+
+#confirmOrderTitle
+{
+    text-align: center;
+}
+
+.customerOrder
+{
+    background-color: darkgray;
+    border: 1px solid black;
+    width: 500px;
+    margin: auto;
+}

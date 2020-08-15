@@ -3,18 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="js/functionality.js"></script>
+    <!-- <script src="js/functionality.js"></script> -->
     <title>Document</title>
 </head>
-<body onload="fillCartFormData()">
+<body onload=""> <!-- "fillCartFormData()" -->
+
+    <script>
+        var socket = new WebSocket("ws://localhost:65535");
+
+        function x(orderId) 
+        {
+            console.log("orderId: " + orderId);
+            socket.send(orderId);
+        }  
+
+        function t(orderId)
+        {
+            socket.send(orderId);
+        }
+
+        socket.onopen = function(event) {
+            //alert("socket is connected");
+            socket.send("adasdasdasdaxdawad");
+        };
+
+        socket.onmessage = function(message) {
+            //console.log(message.data);
+            
+            if(message.data == "order:<%=orderId %>:accepted:time=15")
+            {
+                console.log(":)");
+                document.getElementById("tmp").innerHTML = ":)";
+                socket.close();
+            }
+
+            if(message.data == "order:<%=orderId %>:declined")
+            {
+                console.log(":(");
+                document.getElementById("tmp").innerHTML = ":(";
+                socket.close();
+            }
+            
+            //console.log(message);
+            //console.log("confirm order");
+        };
+        
+        /*
+        socket.onopen = function(event) {
+            alert("socket is connected");
+            socket.send("websocket test message");
+            console.log("socket is open");
+            socket.close();
+        };
+        */
+
+        /*
+        socket.onclose = function(event) {
+            console.log("socket is closed");
+        }
+        */
+    </script>
+
+    <!--
     <form action="/order-post" method="POST">
         <button type="submit" onclick="clearCart()">Pay</button>
         <input id="commentToRestaurant" name="commentToRestaurant" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>          
         <input id="cartAllItems" name="cartAllItems"></input>
         <input id="cartTotalPrice" name="cartTotalPrice"></input>
     </form>
+    -->
     
-    <p>payment successful</p>
+    <button onclick="">button</button>
+    <p id="tmp">payment successful</p>
+    <p><%=orderId %></p>
     <p>waiting for restaurant to confirm time</p>
 </body>
 </html>

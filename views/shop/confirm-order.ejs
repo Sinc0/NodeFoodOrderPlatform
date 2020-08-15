@@ -4,15 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Temp Title</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
     <script>
-        var socket = new WebSocket("ws://localhost:1001");
+        var socket = new WebSocket("ws://localhost:65535");
         
-        function openWebSocket()
+        function orderAccepted(buttonValue, orderId, time)
         {
-            socket.send("websocket test message");
-            socket.close();
+
+            socket.send("order:" + orderId + ":accepted:" + "time=" + time);
+            //socket.close();
+
+            console.log(buttonValue);
+            document.getElementById("customerOrder#" + buttonValue).remove();
+            
+        }
+
+        function orderDeclined(buttonValue, orderId)
+        {
+            
+            socket.send("order:" + orderId + ":declined");
+            //socket.close();
+
+            console.log(buttonValue);
+            document.getElementById("customerOrder#" + buttonValue).remove();
+            
+        }
+
+        function a(orderNumber, time)
+        {
+            document.getElementById("psd#" + orderNumber).innerHTML = time;
+            document.getElementById("acceptCustomerOrder#" + orderNumber).value = time;
+
+            document.getElementById("inputOrderTime#" + orderNumber).value = time;
+            document.getElementById("inputOrderTime#" + orderNumber).value = time;
+            document.getElementById("inputOrderTime#" + orderNumber).value = time;
         }
         
         /*
@@ -26,22 +53,23 @@
             console.log("socket is closed");
         }
         */
-    </script>
+        
+        </script>
 
-    <h1>confirm order</h1>
-    <% for(var c = 85; c < 89; c++) { %>
-    <div>
-        <%= orders[c]._id %>
+    <h1 id="confirmOrderTitle">confirm order</h1>
+    <% for(var c = orders.length - 1; c > 0; c--) { %>
+    <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
+        <p><%= orders[c]._id %></p>
         
         <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
             <p><%= orders[c].products.items[x].name %></p>
-        <% } %>    
-        <button onclick="openWebSocket()">&#10003;</button>
-        <button>X</button>
+        <% } %>
+        
         <!-- <label>set time:</label> -->
-        <select>
-            <option>15 min</option>
-            <option>20</option>
+        <select id="customerOrderSetTime" onchange="a(<%=c %>, this.value)">
+            <option disabled selected hidden>Set Estimated Time</option>
+            <option value="15">15 min</option>
+            <option value="20">20m</option>
             <option>25</option>
             <option>30</option>
             <option>35</option>
@@ -51,6 +79,18 @@
             <option>55</option>
             <option>60</option>
         </select>
+
+        <p id="psd#<%=c %>"></p>
+        
+        <form id="updateOrderWithTime#<%=c %>" action="/tmp" method="POST">
+            <input value=<%=orderId %>></input>
+            <input id="inputOrderTime#<%=c %>"></input>
+        </form>
+
+        <button id="acceptCustomerOrder#<%=c %>" onclick="orderAccepted(<%=c %>, '<%= orders[c]._id %>', value)">&#10003;</button> <!-- onclick = ws data to client, update db, ws data to restaurant -->
+
+        <button id="declineCustomerOrder#<%=c %>" onclick="orderDeclined(<%=c %>, '<%= orders[c]._id %>')" type="submit">X</button>
+
         </div>
         <br />
     <% } %>

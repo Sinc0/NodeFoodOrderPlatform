@@ -991,18 +991,27 @@ exports.getOrderDetails = async (req, res, next) => {
     orderId = req.params.orderId;
 
     var order = await Order.findById(orderId);
+    console.log(order);
 
-    var totalPrice = order.totalPrice;
-    var orderDate = order.date;
-    var orderItems = order.products.items;
-    
-    res.render('shop/order-details', 
-    { 
-        orderId, orderId,
-        orderDate: orderDate,
-        totalPrice: totalPrice,
-        orderItems: orderItems
-    });
+    if(order != null)
+    {
+        var totalPrice = order.totalPrice;
+        var orderDate = order.date;
+        var orderItems = order.products.items;
+        
+        res.render('shop/order-details', 
+        { 
+            orderId, orderId,
+            orderDate: orderDate,
+            totalPrice: totalPrice,
+            orderItems: orderItems
+        });
+    }
+
+    else
+    {
+        res.redirect('/');
+    }
 
 }
 
@@ -1025,13 +1034,30 @@ exports.postOrderDetails = async (req, res, next) => {
     */
 }
 
-exports.getOrderProcess = (req, res, next) => {
+exports.getOrderProcess = async (req, res, next) => {
     console.log('\ngetOrderProcess');
     
-    res.render('shop/order-process', 
-    { 
-        
-    });
+    orderId = req.params.orderId;
+
+    var order = await Order.findById(orderId);
+    console.log(order);
+
+    if(order != null)
+    {
+        var totalPrice = order.totalPrice;
+        var orderDate = order.date;
+        var orderItems = order.products.items;
+    
+        res.render('shop/order-process', 
+        { 
+            orderId: order._id
+        });
+    }
+
+    else
+    {
+        res.redirect('/');
+    }
 
 }
 
