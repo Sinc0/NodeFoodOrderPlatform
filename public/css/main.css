@@ -439,6 +439,16 @@ option
     text-align: center;
 }
 
+#confirmOrderPendingOrderInfo
+{
+    text-align: center;
+}
+
+#confirmOrderHeader
+{
+    text-align: center;
+}
+
 .customerOrder
 {
     background-color: darkgray;

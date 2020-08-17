@@ -13,7 +13,7 @@
 
         function x(orderId) 
         {
-            console.log("orderId: " + orderId);
+            //console.log("orderId: " + orderId);
             socket.send(orderId);
         }  
 
@@ -24,13 +24,19 @@
 
         socket.onopen = function(event) {
             //alert("socket is connected");
-            socket.send("adasdasdasdaxdawad");
+            //socket.send("socket is connected");
         };
 
         socket.onmessage = function(message) {
             //console.log(message.data);
+
+            var regex = new RegExp("^order:<%=orderId %>:accepted:time=\\d\\d$");
+            var str = message.data;
+            //console.log(str);
+            var regexMatch = regex.test(str);
+            //console.log(result);
             
-            if(message.data == "order:<%=orderId %>:accepted:time=15")
+            if(regexMatch == true)
             {
                 console.log(":)");
                 document.getElementById("tmp").innerHTML = ":)";

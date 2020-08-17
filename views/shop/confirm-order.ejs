@@ -5,10 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Temp Title</title>
     <link rel="stylesheet" href="/css/main.css">
-</head>
-<body>
+    <script src="/js/functionality.js"></script>
     <script>
         var socket = new WebSocket("ws://localhost:65535");
+
+        function removeOrderDiv(buttonValue)
+        {
+            document.getElementById("updateOrderWithTime#" + buttonValue).submit();
+            //document.getElementById("customerOrder#" + buttonValue).remove();
+        }
         
         function orderAccepted(buttonValue, orderId, time)
         {
@@ -17,9 +22,10 @@
             //socket.close();
 
             console.log(buttonValue);
-            document.getElementById("customerOrder#" + buttonValue).remove();
-            
+            //document.getElementById("customerOrder#" + buttonValue).remove();
+            setTimeout(removeOrderDiv(buttonValue), 3000);
         }
+        
 
         function orderDeclined(buttonValue, orderId)
         {
@@ -41,7 +47,26 @@
             document.getElementById("inputOrderTime#" + orderNumber).value = time;
             document.getElementById("inputOrderTime#" + orderNumber).value = time;
         }
+
+        function saveScrollPosition()
+        {
+            var y = window.scrollY;
+            localStorage.setItem("scrollPositionY", y);
+        }
+
+        function loadSavedScrollPosition()
+        {
+            var positionY = localStorage.getItem("scrollPositionY");
+            window.scrollTo(0, positionY)
+        }
+
+        function refreshPage()
+        {
+            location.reload()
+        }
         
+        setInterval(refreshPage, 60000);
+
         /*
         socket.onopen = function(event) {
         //alert("socket is connected");
@@ -55,11 +80,19 @@
         */
         
         </script>
-
-    <h1 id="confirmOrderTitle">confirm order</h1>
+</head>
+<body onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
+    <header id="confirmOrderHeader">
+        <h1> confirm orders</h1>
+        <h2 id="confirmOrderTitle">total unconfirmed orders: <%=orders.length %></h2>
+        <!-- <p id="confirmOrderPendingOrderInfo">total pending orders: <%=orders.length %></p> -->
+    </header>
+    <br />
     <% for(var c = orders.length - 1; c > 0; c--) { %>
     <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
-        <p><%= orders[c]._id %></p>
+        <!-- <p>#<%=c %></p> -->
+        <p><%=orders[c]._id %></p>
+        <p>placed: <%=orders[c].date %></p>
         
         <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
             <p><%= orders[c].products.items[x].name %></p>
@@ -82,17 +115,15 @@
 
         <p id="psd#<%=c %>"></p>
         
-        <form id="updateOrderWithTime#<%=c %>" action="/tmp" method="POST">
-            <input value=<%=orderId %>></input>
-            <input id="inputOrderTime#<%=c %>"></input>
+        <form id="updateOrderWithTime#<%=c %>" action="/order-update" method="POST">
+            <input id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
+            <input id="inputOrderTime#<%=c %>" name="estimatedTime"></input>
+            <button id="acceptCustomerOrder#<%=c %>" type="button" onclick="orderAccepted('<%=c %>', '<%= orders[c]._id %>', value)">&#10003;</button> <!-- onclick = ws data to client, update db, ws data to restaurant -->
+            <button id="declineCustomerOrder#<%=c %>" type="button" onclick="orderDeclined('<%=c %>', '<%= orders[c]._id %>')" type="submit">X</button>
         </form>
 
-        <button id="acceptCustomerOrder#<%=c %>" onclick="orderAccepted(<%=c %>, '<%= orders[c]._id %>', value)">&#10003;</button> <!-- onclick = ws data to client, update db, ws data to restaurant -->
-
-        <button id="declineCustomerOrder#<%=c %>" onclick="orderDeclined(<%=c %>, '<%= orders[c]._id %>')" type="submit">X</button>
-
-        </div>
-        <br />
+    </div>
+    <br />
     <% } %>
 </body>
 </html>

@@ -991,7 +991,7 @@ exports.getOrderDetails = async (req, res, next) => {
     orderId = req.params.orderId;
 
     var order = await Order.findById(orderId);
-    console.log(order);
+    //console.log(order);
 
     if(order != null)
     {
@@ -1015,32 +1015,13 @@ exports.getOrderDetails = async (req, res, next) => {
 
 }
 
-
-exports.postOrderDetails = async (req, res, next) => {
-    console.log('\npostOrderDetails Test');
-
-    console.log(req.body);
-    
-    let event = req.body;
-    
-    /*
-    res.render('shop/order-details', 
-    { 
-        orderId, orderId,
-        orderDate: orderDate,
-        totalPrice: totalPrice,
-        orderItems: orderItems
-    });
-    */
-}
-
 exports.getOrderProcess = async (req, res, next) => {
     console.log('\ngetOrderProcess');
     
     orderId = req.params.orderId;
 
     var order = await Order.findById(orderId);
-    console.log(order);
+    //console.log(order);
 
     if(order != null)
     {
@@ -1059,6 +1040,35 @@ exports.getOrderProcess = async (req, res, next) => {
         res.redirect('/');
     }
 
+}
+
+exports.postOrderUpdate = async (req, res, next) => {
+    console.log('\npostOrderUpdate Test');
+
+    orderId = req.body.orderId;
+    estimatedTime = req.body.estimatedTime + " min";
+
+    var order = await Order.updateOne(orderId, estimatedTime);
+
+    res.redirect('/order-confirm');
+}
+
+exports.postOrderDetails = async (req, res, next) => {
+    console.log('\npostOrderDetails Test');
+
+    console.log(req.body);
+    
+    let event = req.body;
+    
+    /*
+    res.render('shop/order-details', 
+    { 
+        orderId, orderId,
+        orderDate: orderDate,
+        totalPrice: totalPrice,
+        orderItems: orderItems
+    });
+    */
 }
 
 exports.postWebhook = (req, res, next) => {

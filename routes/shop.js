@@ -40,6 +40,7 @@ router.post('/order-details/:orderId', shopController.postOrderDetails);
 router.all('/order-process/:orderId', validation, shopController.getOrderProcess);
 router.post('/webhook', shopController.postWebhook);
 router.get('/order-confirm', shopController.getConfirmOrder);
+router.post('/order-update', shopController.postOrderUpdate);
 
 
 router.get('/cart/:productId', validation, shopController.postCart);
