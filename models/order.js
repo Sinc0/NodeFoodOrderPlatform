@@ -12,6 +12,12 @@ class Order
         const db = getDb()
 
         let insertSuccessful = 1;
+
+        var dateObject = new Date().toString();
+        var sub1 = dateObject.substring(15, 24);
+        var sub2 = dateObject.substring(0, 15);
+        var dateFormatted = sub1 + " - " + sub2;
+
     
         return db.collection('orders')
             .insertOne({
@@ -19,10 +25,15 @@ class Order
                 name: null,
                 phone: null,
                 address: null,
-                date: Date(),
+                date: dateFormatted,
+                placedAt: null,
+                confirmedAt: null,
+                completedAt: null,
+                restaurant: null,
+                status: "unconfirmed",
                 pickUp: null,
                 delivery: null,
-                estimatedTime,
+                estimatedCompletionTime: null,
                 totalPrice: "$" + totalPrice,
                 comment: comment,
                 products: productArray
@@ -73,7 +84,7 @@ class Order
             .catch(err => console.log(err))
     }
 
-    static updateOne(orderId, estimatedTime)
+    static updateOne(orderId, status, estimatedTime)
     {
         const db = getDb();
 
@@ -84,6 +95,7 @@ class Order
             .updateOne({_id: ObjectId(orderId)},         
                 {$set: 
                 {
+                    status: status,
                     estimatedTime: estimatedTime
                 }
             } )
@@ -133,6 +145,42 @@ class Order
         return db
             .collection('orders')
             .find()
+            .toArray()
+            .then(orders => { /* { console.log(orders) */ return orders })
+            .catch(err => console.log(err));
+    }
+
+    static fetchAllUnconfirmed()
+    {
+        const db = getDb();
+
+        return db
+            .collection('orders')
+            .find({status: "unconfirmed"})
+            .toArray()
+            .then(orders => { /* { console.log(orders) */ return orders })
+            .catch(err => console.log(err));
+    }
+
+    static fetchAllConfirmed()
+    {
+        const db = getDb();
+
+        return db
+            .collection('orders')
+            .find({status: "confirmed"})
+            .toArray()
+            .then(orders => { /* { console.log(orders) */ return orders })
+            .catch(err => console.log(err));
+    }
+
+    static fetchAllCompleted()
+    {
+        const db = getDb();
+
+        return db
+            .collection('orders')
+            .find({status: "completed"})
             .toArray()
             .then(orders => { /* { console.log(orders) */ return orders })
             .catch(err => console.log(err));

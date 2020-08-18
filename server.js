@@ -103,35 +103,23 @@ app.use(errorController.get404ErrorPage);
 mongoConnect(() => {
     webSocket = new ws({port: 65535});
     
-    var clients = [];
-    
     webSocket.on('connection', function(ws, req){
 
-        var clientIp = req.socket.remoteAddress;
-        var clientKey = req.headers['sec-websocket-key'];
+        //var clientIp = req.socket.remoteAddress;
+        //var clientKey = req.headers['sec-websocket-key'];
 
-        console.log("client " + clientKey + " connected");
-
-        var counter = clients.length || 0;
-
-        clients.push({id: clientKey, connection: ws});
-
-        for(var c = 0; c < clients.length; c++)
-        {
-            console.log(clients[c].id);
-        }
+        //console.log("client " + clientKey + " connected");
 
         console.log("number of clients:", webSocket.clients.size);
-        console.log("client array:", clients.length);
         
         ws.on('message', function(message){
-            console.log("\nmessage recieved: " + message);
+            //console.log("\nmessage recieved: " + message);
             //ws.send("response message");
             //ws.close();
             
             webSocket.clients.forEach(function event(client){
-                console.log(client);
-                //client.send(message);
+                //console.log(client);
+                client.send(message);
                 //client.send("another message");
                 //client.close();
             });

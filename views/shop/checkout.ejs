@@ -25,6 +25,22 @@
         <h3>Items</h3>
     </div>
 
+    <div style="width: 300px; margin: auto;">
+        <form id="post-order-form" action="/order-post" method="POST">
+            <input hidden id="commentToRestaurant" name="commentToRestaurant" value="<%=commentToRestaurant %>" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>          
+            <input hidden id="cartAllItems" name="cartAllItems"></input>
+            <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
+            <input placeholder="name"></input>
+            <input type="tel" placeholder="phone"></input>
+            <input placeholder="address"></input>
+            <div style="width: 150px; margin: auto; padding-top: 3px; padding-bottom: 7px;">
+            <input id="aksldaskld123123" style="padding: 0px; margin: 0px; margin-bottom: 5px; margin-right: -10px; height: 20px; width: 50px; vertical-align: top;" type="radio" name="deliveryMethod">Delivery</input>
+            <br />
+            <input id="aksldaskld123123" style="padding: 0px; margin: 0px; margin-right: -10px; height: 20px; width: 50px; vertical-align: top;" type="radio" name="deliveryMethod">Pick Up</input>
+            </div>
+        </form>
+    </div>
+
     <div id="list-of-payment-options">
         <select onchange="selectPaymentOption(this.value)">
             <option value="0" disabled selected hidden>Select Payment Option</option>
@@ -86,12 +102,19 @@
         </div>
     </div>
 
-    <div hidden>
+    <!--
+    <div>
         <form id="post-order-form" action="/order-post" method="POST">
             <input hidden id="commentToRestaurant" name="commentToRestaurant" value="<%=commentToRestaurant %>" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>          
             <input hidden id="cartAllItems" name="cartAllItems"></input>
             <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
+            <input placeholder="name"></input>
+            <input placeholder="phone"></input>
+            <input placeholder="address"></input>
+            <input type="radio" name="deliveryMethod">Delivery</input>
+            <input type="radio" name="deliveryMethod">Pickup</input>
         </form>
     </div>
+    -->
 </body>
 </html>

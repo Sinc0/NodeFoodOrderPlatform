@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <script src="js/functionality.js"></script> -->
     <title>Document</title>
-</head>
-<body onload=""> <!-- "fillCartFormData()" -->
-
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/functionality.js"></script>
     <script>
         var socket = new WebSocket("ws://localhost:65535");
 
@@ -34,12 +33,13 @@
             var str = message.data;
             //console.log(str);
             var regexMatch = regex.test(str);
+            var substringTime = str.substring(str.length - 2, str.length);
             //console.log(result);
             
             if(regexMatch == true)
             {
-                console.log(":)");
-                document.getElementById("tmp").innerHTML = ":)";
+                //console.log(":)");
+                orderProcessOrderConfirmed(substringTime, <%=order.delivery %>, <%=order.pickUp %>);
                 socket.close();
             }
 
@@ -69,6 +69,8 @@
         }
         */
     </script>
+</head>
+<body onload=""> <!-- "fillCartFormData()" -->
 
     <!--
     <form action="/order-post" method="POST">
@@ -78,10 +80,18 @@
         <input id="cartTotalPrice" name="cartTotalPrice"></input>
     </form>
     -->
-    
-    <button onclick="">button</button>
-    <p id="tmp">payment successful</p>
-    <p><%=orderId %></p>
-    <p>waiting for restaurant to confirm time</p>
+    <div id="order-process-content">
+        <p>order id: <%=order._id %></p>
+        <p id="tmp">payment was successful </p>
+        <img id="orderProcessImgLoadingGif" src="https://retchhh.files.wordpress.com/2015/03/loading2.gif"></img>
+        <img hidden id="orderProcessImgCheckmarkPng" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fb%2Fbd%2FCheckmark_green.svg%2F2000px-Checkmark_green.svg.png&f=1&nofb=1"></img>
+        <p hidden id="orderProcessEstimatedTime"></p>
+        <p id="orderProcessInfoText">waiting for restaurant to confirm time</p>
+        <a href="/order-details/<%=orderId %>" hidden id="OrderProcessWhenConfirmedDetailsLink" onclick="">show details</button>
+        <br />
+        <a href="/" hidden id="OrderProcessWhenConfirmedStartLink" onclick="">show start</button>
+        <br />
+        <!-- <a href="/orders" hidden id="OrderProcessWhenConfirmedAllOrdersLink" onclick="">show all orders</button> -->
+    </div>
 </body>
 </html>

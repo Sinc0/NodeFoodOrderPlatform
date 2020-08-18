@@ -95,16 +95,17 @@
             <form action="/checkout" method="POST">
                 <button id="order-button" onclick="commentToLocalStorage()" type="submit">Checkout</button>
                 
-                <input id="commentToRestaurant" name="commentToRestaurant" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>
                 
                 <div id="cart-items"></div> 
-                                
+                
                 <div class="">
                     <h2 id="total-price"></h2>
                 </div>
                 
                 <input hidden id="cartAllItems" name="cartAllItems"></input>
                 <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
+                
+                <input id="commentToRestaurant" name="commentToRestaurant" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>
             </form>
         </div>
     </main>

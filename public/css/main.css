@@ -434,6 +434,12 @@ option
     font-weight: bold;
 }
 
+.acceptCustomerOrder, .declineCustomerOrder
+{
+    width: 140px;
+}
+
+
 #confirmOrderTitle
 {
     text-align: center;
@@ -455,4 +461,14 @@ option
     border: 1px solid black;
     width: 500px;
     margin: auto;
+}
+
+#order-process-content
+{
+    width: 500px;
+    margin: auto;
+    margin-top: 100px;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid black;
 }

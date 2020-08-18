@@ -1001,10 +1001,7 @@ exports.getOrderDetails = async (req, res, next) => {
         
         res.render('shop/order-details', 
         { 
-            orderId, orderId,
-            orderDate: orderDate,
-            totalPrice: totalPrice,
-            orderItems: orderItems
+            order: order
         });
     }
 
@@ -1023,15 +1020,17 @@ exports.getOrderProcess = async (req, res, next) => {
     var order = await Order.findById(orderId);
     //console.log(order);
 
-    if(order != null)
+    if(order != null && order.status == "unconfirmed")
     {
         var totalPrice = order.totalPrice;
         var orderDate = order.date;
         var orderItems = order.products.items;
+        var orderPickup = order.pickUp;
+        var orderDelivery = order.delivery;
     
         res.render('shop/order-process', 
         { 
-            orderId: order._id
+            order: order
         });
     }
 
@@ -1046,11 +1045,12 @@ exports.postOrderUpdate = async (req, res, next) => {
     console.log('\npostOrderUpdate Test');
 
     orderId = req.body.orderId;
+    status = req.body.status;
     estimatedTime = req.body.estimatedTime + " min";
 
-    var order = await Order.updateOne(orderId, estimatedTime);
+    var order = await Order.updateOne(orderId, status, estimatedTime);
 
-    res.redirect('/order-confirm');
+    res.redirect('/orders-unconfirmed');
 }
 
 exports.postOrderDetails = async (req, res, next) => {
@@ -1112,12 +1112,36 @@ exports.postWebhook = (req, res, next) => {
   
 }
 
-exports.getConfirmOrder = async (req, res, next) => {
+exports.getUnconfirmedOrders = async (req, res, next) => {
     console.log('\ngetConfirmOrder');
 
-    var orders = await Order.fetchAll();
+    var orders = await Order.fetchAllUnconfirmed();
     
-    res.render('shop/confirm-order', 
+    res.render('shop/unconfirmed-orders', 
+    { 
+        orders: orders
+    });
+
+}
+
+exports.getConfirmedOrders = async (req, res, next) => {
+    console.log('\ngetConfirmOrder');
+
+    var orders = await Order.fetchAllConfirmed();
+    
+    res.render('shop/confirmed-orders', 
+    { 
+        orders: orders
+    });
+
+}
+
+exports.getCompletedOrders = async (req, res, next) => {
+    console.log('\ngetConfirmOrder');
+
+    var orders = await Order.fetchAllCompleted();
+    
+    res.render('shop/completed-orders', 
     { 
         orders: orders
     });

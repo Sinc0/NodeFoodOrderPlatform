@@ -306,3 +306,24 @@ function postOrder()
     var form = document.getElementById("post-order-form");
     form.submit();
 }
+
+function orderProcessOrderConfirmed(estimatedTime, delivery, pickUp)
+{
+    document.getElementById("orderProcessImgLoadingGif").remove();
+    document.getElementById("orderProcessImgCheckmarkPng").hidden = false;
+    document.getElementById("OrderProcessWhenConfirmedDetailsLink").hidden = false;
+    
+    if(delivery == true)
+    {
+        document.getElementById("orderProcessEstimatedTime").innerHTML = "estimated " + estimatedTime + " mins for order to be delivered";
+    }
+
+    if(delivery == false)
+    {
+        document.getElementById("orderProcessEstimatedTime").innerHTML = "estimated " + estimatedTime + " mins for pick up to be ready";
+    }
+    
+    document.getElementById("orderProcessEstimatedTime").hidden = false;
+    document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false;
+    document.getElementById("orderProcessInfoText").innerHTML = "order confirmed by restaurant";
+}

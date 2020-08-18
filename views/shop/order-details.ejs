@@ -7,12 +7,12 @@
 </head>
 <body>
 
-    <p><b>id:</b> <%=orderId %></p>
-    <p><b>date:</b> <%=orderDate %></p>
-    <p><b>total:</b> <%=totalPrice %></p>
+    <p><b>id:</b> <%=order._id %></p>
+    <p><b>date:</b> <%=order.date %></p>
+    <p><b>total:</b> <%=order.totalPrice %></p>
     <b>items</b>
-    <% for(var c = 0; c < orderItems.length; c++) { %>
-        <p>&emsp;<%=orderItems[c].name %> - <%=orderItems[c].quantity %> - ($<%=orderItems[c].quantity * orderItems[c].price %>)</p>
+    <% for(var c = 0; c < order.products.items.length; c++) { %>
+        <p>&emsp;<%=order.products.items[c].name %> - <%=order.products.items[c].quantity %> - ($<%=order.products.items[c].quantity * order.products.items[c].price %>)</p>
         <% } %>
     
 </body>

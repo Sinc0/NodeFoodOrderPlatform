@@ -39,7 +39,9 @@ router.get('/order-details/:orderId', validation, shopController.getOrderDetails
 router.post('/order-details/:orderId', shopController.postOrderDetails);
 router.all('/order-process/:orderId', validation, shopController.getOrderProcess);
 router.post('/webhook', shopController.postWebhook);
-router.get('/order-confirm', shopController.getConfirmOrder);
+router.get('/orders-unconfirmed', shopController.getUnconfirmedOrders);
+router.get('/orders-confirmed', shopController.getConfirmedOrders);
+router.get('/orders-completed', shopController.getCompletedOrders);
 router.post('/order-update', shopController.postOrderUpdate);
 
 
