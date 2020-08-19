@@ -39,14 +39,14 @@
             if(regexMatch == true)
             {
                 //console.log(":)");
-                orderProcessOrderConfirmed(substringTime, <%=order.delivery %>, <%=order.pickUp %>);
+                orderProcessOrderConfirmed(substringTime, '<%=order.delivery %>', '<%=order.pickUp %>');
                 socket.close();
             }
 
             if(message.data == "order:<%=orderId %>:declined")
             {
-                console.log(":(");
-                document.getElementById("tmp").innerHTML = ":(";
+                //console.log(":(");
+                orderProcessOrderDeclined();
                 socket.close();
             }
             
@@ -82,14 +82,21 @@
     -->
     <div id="order-process-content">
         <p>order id: <%=order._id %></p>
-        <p id="tmp">payment was successful </p>
+        <p id="orderProcessPaymentInfoText">payment was successful </p>
+        
         <img id="orderProcessImgLoadingGif" src="https://retchhh.files.wordpress.com/2015/03/loading2.gif"></img>
         <img hidden id="orderProcessImgCheckmarkPng" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fb%2Fbd%2FCheckmark_green.svg%2F2000px-Checkmark_green.svg.png&f=1&nofb=1"></img>
-        <p hidden id="orderProcessEstimatedTime"></p>
+        <img hidden id="orderProcessImgDeclineCrossPng" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pngall.com%2Fwp-content%2Fuploads%2F2016%2F04%2FRed-Cross-Mark-Free-PNG-Image.png&f=1&nofb=1"></img>
+        
         <p id="orderProcessInfoText">waiting for restaurant to confirm time</p>
+        <p hidden id="orderProcessEstimatedTime"></p>
+        
         <a href="/order-details/<%=orderId %>" hidden id="OrderProcessWhenConfirmedDetailsLink" onclick="">show details</button>
+        
         <br />
+        
         <a href="/" hidden id="OrderProcessWhenConfirmedStartLink" onclick="">show start</button>
+        
         <br />
         <!-- <a href="/orders" hidden id="OrderProcessWhenConfirmedAllOrdersLink" onclick="">show all orders</button> -->
     </div>

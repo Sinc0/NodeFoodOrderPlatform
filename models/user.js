@@ -6,10 +6,10 @@ const ObjectId = mongodb.ObjectId;
 
 class User
 {
-    constructor(email, username, password, admin, cart, isLoggedIn, loginCookie, orders)
+    constructor(email, name, password, admin, cart, isLoggedIn, loginCookie, orders)
     {
         this.email = email;
-        this.username = username;
+        this.name = name;
         this.password = password;
         this.admin = admin;
         this.cart = cart;

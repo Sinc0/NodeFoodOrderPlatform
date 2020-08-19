@@ -327,3 +327,11 @@ function orderProcessOrderConfirmed(estimatedTime, delivery, pickUp)
     document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false;
     document.getElementById("orderProcessInfoText").innerHTML = "order confirmed by restaurant";
 }
+
+function orderProcessOrderDeclined(estimatedTime, delivery, pickUp)
+{
+    document.getElementById("orderProcessImgLoadingGif").remove();
+    document.getElementById("orderProcessImgDeclineCrossPng").hidden = false;
+    document.getElementById("orderProcessInfoText").innerHTML = "<p> order declined by restaurant </p> <p> money will be refunded within a week </p>";
+    document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false;
+}

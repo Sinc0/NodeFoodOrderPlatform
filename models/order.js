@@ -26,7 +26,7 @@ class Order
                 phone: null,
                 address: null,
                 date: dateFormatted,
-                placedAt: null,
+                placedAt: dateFormatted,
                 confirmedAt: null,
                 completedAt: null,
                 restaurant: null,
