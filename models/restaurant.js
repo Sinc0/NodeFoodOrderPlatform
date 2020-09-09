@@ -29,7 +29,7 @@ const path = require('path');
 const ObjectId = mongodb.ObjectId;
 //const MongoClient = mongodb.MongoClient;
 
-class Product 
+class Restaurant 
 {
     constructor(title, price, description, imageUrl) 
     {
@@ -43,7 +43,7 @@ class Product
     {
         const db = getDb();
 
-        return db.collection('products')
+        return db.collection('restaurants')
             .insertOne(this)
             .then(/* result => console.log(result) */)
             .catch(err => console.log(err));
@@ -81,10 +81,10 @@ class Product
         const db = getDb();
         
         return db
-            .collection('products')
+            .collection('restaurants')
             .find()
             .toArray()
-            .then(products => {/* console.log(products) */; return products;})
+            .then(restaurants => {/* console.log(products) */; return restaurants;})
             .catch(err => console.log(err));
     }
 
@@ -121,13 +121,13 @@ class Product
        //TODO check if prodId characters are by the rules or else redirect
         
         return db
-            .collection('products')
+            .collection('restaurants')
             .findOne({url: url})
-            .then(product => {
-                if(product != null)
+            .then(restaurant => {
+                if(restaurant != null)
                 {
-                    console.log(product);
-                    return product;
+                    //console.log(restaurant);
+                    return restaurant;
                 }
 
                 else
@@ -141,4 +141,4 @@ class Product
     }
 }
 
-module.exports = Product;
+module.exports = Restaurant;

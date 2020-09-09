@@ -11,26 +11,26 @@
     <%- include('../snippets/html_nav_menu_admin.ejs') %>
 
     <main>
-        <!-- <h1>My Products</h1>
-        <p> List of all the products...</p> -->
+        <!-- <h1>My Restaurants</h1>
+        <p> List of all the restaurants...</p> -->
         <% if (orders.length > 0) { %>
         <div class="grid">
         <% for (let order of orders) { %>
-            <article class="card product-item">
+            <article class="card restaurant-item">
                 <p><%= order._id %> | <%= order.user %> | <%= order.totalPrice %> <button><a href="/admin/delete-order/<%= order._id %> ">X</a></button></p>
                 <!--
-                <% for (elementCounter = 0; elementCounter < order.products.length; elementCounter++) { %>
-                    <p><%= order.products[elementCounter].title %></p>
-                    <p><%= order.products[elementCounter].quantity %></p>
-                    <p><%= order.products[elementCounter].price %></p>
-                    <p><%= order.products[elementCounter].description %></p>
+                <% for (elementCounter = 0; elementCounter < order.restaurants.length; elementCounter++) { %>
+                    <p><%= order.restaurants[elementCounter].title %></p>
+                    <p><%= order.restaurants[elementCounter].quantity %></p>
+                    <p><%= order.restaurants[elementCounter].price %></p>
+                    <p><%= order.restaurants[elementCounter].description %></p>
                 <% } %>
                 -->
             </article>
         <% } %>
     </div>
     <% } else { %>
-        <h1> No products found</h1>
+        <h1> No Restaurants found</h1>
     <% } %>
     </main>
 </body>

@@ -8,7 +8,7 @@ const connectionString = `mongodb+srv://${process.env.MONGO_USER}:${process.env.
 const  mongoConnect = (callback) => {
     MongoClient.connect(connectionString)
     .then(client => {
-        db = client.db('node');
+        db = client.db('nodeRestaurant');
         callback(client);
         console.log('Successful connection!')})
     .catch(err => {

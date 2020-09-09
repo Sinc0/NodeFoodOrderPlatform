@@ -9,17 +9,17 @@ const validation = require('../validation/userValidation');
 
 
 //route handling admin validation
-router.get('/add-product', validation, adminController.addProduct);
+router.get('/add-restaurant', validation, adminController.addRestaurant);
 
-router.get('/product-list', validation, adminController.getProducts)
+router.get('/restaurant-list', validation, adminController.getRestaurants)
 
-router.post('/product', validation, adminController.postProduct);
+router.post('/restaurant', validation, adminController.postRestaurant);
 
-router.get('/edit-product/:productId', validation, adminController.getEditProduct)
+router.get('/edit-restaurant/:restaurantId', validation, adminController.getEditRestaurant)
 
-router.post('/edit-product-post', validation, adminController.postEditProduct)
+router.post('/edit-restaurant-post', validation, adminController.postEditRestaurant)
 
-router.post('/delete-product/:productId', validation, adminController.postDeleteProduct);
+router.post('/delete-restaurant/:restaurantId', validation, adminController.postDeleteRestaurant);
 
 router.get('/delete-order/:orderId', validation, adminController.postDeleteOrder);
 

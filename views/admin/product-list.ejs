@@ -11,30 +11,30 @@
     <%- include('../snippets/html_nav_menu_admin.ejs') %>
 
     <main>
-        <!-- <h1>My Products</h1>
-        <p> List of all the products...</p> -->
+        <!-- <h1>My Restaurants</h1>
+        <p> List of all the restaurants...</p> -->
         <% if (prods.length > 0) { %>
         <div class="grid">
-        <% for (let product of prods) { %>
-            <article class="card product-item">
+        <% for (let restaurant of restaurants) { %>
+            <article class="card restaurant-item">
                 <header class="card__header">
-                    <h1 class="product__title"><%= product.title %></h1>
+                    <h1 class="restaurant"><%= product.title %></h1>
                 </header>
-                <p><%= product._id %></p>
+                <p><%= restaurant._id %></p>
 
                 <div class="card__image">
-                    <img src="/<%= product.imageUrl %>" alt="<%= product.title %>"> <!-- uses slash to avoid /admin in imageUrl --> 
+                    <img src="/<%= restaurant.imageUrl %>" alt="<%= restaurant.title %>"> <!-- uses slash to avoid /admin in imageUrl --> 
                 </div>
                 
                 <div class="card__content">
-                    <h2 class="product__price">$<%= product.price %></h2>
-                    <p class="product__description"><%= product.description %></p>
+                    <h2 class="restaurant">$<%= product.price %></h2>
+                    <p class="restaurant"><%= product.description %></p>
                 </div>
                 
                 <div class="card__actions">
-                    <button><a href="/admin/edit-product/<%= product._id %>">Edit</a></button>
+                    <button><a href="/admin/edit-restaurant/<%= restaurant._id %>">Edit</a></button>
                     
-                    <form action="/admin/delete-product/<%= product._id %>" method="POST">
+                    <form action="/admin/delete-restaurant/<%= restaurant._id %>" method="POST">
                         <button class="btn" type="submit">Delete</button>
                     </form>
                 </div>
@@ -42,7 +42,7 @@
         <% } %>
     </div>
     <% } else { %>
-        <h1> No products found</h1>
+        <h1> No Restaurants found</h1>
     <% } %>
     </main>
 </body>

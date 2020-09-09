@@ -42,7 +42,7 @@ const ShopController = require('./controllers/shop.js');
 const errorController = require('./controllers/error');
 const User = require('./models/user');
 const Session = require('./models/session');
-const Product = require('./models/product');
+const Restaurant = require('./models/restaurant');
 const Order = require('./models/order.js');
 
 const mongoConnect = require('./helpers/database').mongoConnect; //db
@@ -134,9 +134,10 @@ mongoConnect(() => {
     //Order.deleteOne('5ee8fdc204550299110cef58');
     //Order.FindByUser('andersson@mail.com')
     //Order.findById('5ee755d867fa4b4d5dfd4734');
-    Order.updateOne('5f3673e095408d19ee244ea4', "15 min");
-    //Product.findById('5ebeac773c4721f4f1ca4369');
-    //Product.delete('5ebeaa2052e60df379eb3d1d');
+    //Order.updateOne('5f3673e095408d19ee244ea4', "15 min");
+    //Order.findById("5f3d20a18b452d3ffee4353c", "orders");
+    //Restaurant.findById('5ebeac773c4721f4f1ca4369');
+    //Restaurant.delete('5ebeaa2052e60df379eb3d1d');
     //User.emptyCart('andersson@mail.com');
     //User.fetchCart('andersson@mail.com');
     //User.findById('5ecbe168d0e1f9d4753f5fd5');

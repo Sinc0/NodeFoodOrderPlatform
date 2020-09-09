@@ -1,4 +1,4 @@
-const Product = require('../models/product');
+const Restaurant = require('../models/restaurant');
 const Cart = require('../models/cart');
 const User = require('../models/user');
 const Session = require('../models/session');
@@ -54,21 +54,21 @@ function parseLoginCookie(cookieId)
 
 
 //******* uses login validation *******
-exports.getProducts = (req, res, next) => {
-    console.log('getProducts');
+exports.getRestaurants = (req, res, next) => {
+    console.log('getRestaurants');
     let validation = res.locals.validation;
 
     //logged in user
     if(validation.status == true)
     {
-        Product.fetchAll()
-        .then(products => {
-            res.render('shop/shop-product-list', {
+        Restaurant.fetchAll()
+        .then(restaurants => {
+            res.render('shop/shop-restaurant-list', {
                 admin: validation.isAdmin,
                 loggedIn: true,
-                prods: products,
-                path: '/products',
-                pageTitle: 'All Products'
+                prods: restaurants,
+                path: '/restaurants',
+                pageTitle: 'All Restaurants'
 
             });
         })
@@ -96,26 +96,27 @@ exports.getProducts = (req, res, next) => {
     */
 }
 
-exports.getProductDetail = (req, res, next) => {
-    console.log('getProductDetail');
-    const prodId = req.params.productId;
-    //console.log('ProdId: ' + String(req.params.productId));
+exports.getRestaurantDetail = (req, res, next) => {
+    console.log('getRestaurantDetail');
+    const restaurantUrl = req.params.restaurantUrl;
+    //console.log('ProdId: ' + String(req.params.restaurantId));
     let validation = res.locals.validation;
 
     //logged in user
     if(validation.status == true)
     {
-        Product
-        .findById(prodId)
-        .then(product => {
-            if(product != null)
+        Restaurant
+        .findByUrl(restaurantUrl)
+        .then(restaurant => {
+            if(restaurant != null)
             {   
-                res.render('shop/product-detail', {
+                res.render('shop/restaurant-detail', {
                     admin: validation.isAdmin,
                     loggedIn: true,
-                    productImage: "",
-                    product: product,
-                    path: '/products'
+                    restaurant: restaurant,
+                    restaurantImage: "",
+                    restaurantUrl: restaurantUrl,
+                    path: '/restaurants'
                 });
             }
             else
@@ -224,32 +225,30 @@ exports.getCart = (req, res, next) => {
 
 }
 
-exports.getRestaurant = (req, res, next) => {
-    console.log('getCartx');
+exports.getRestaurantList = (req, res, next) => {
+    console.log('getRestaurantList');
     let validation = res.locals.validation;
     let userEmail = res.locals.userEmail;
-    let cartProducts = [];
-    console.log('postCartx >');
-    const productUrl = req.params.productUrl;
-    console.log(productUrl);
+    const restaurantUrl = req.params.restaurantUrl;
+    console.log(restaurantUrl);
     let addToCartSuccessful = 1;
     let addoCartFailed = 0;    
 
-    //console.log(productId);
+    //console.log(restaurantId);
     //console.log(userEmail);
     
     //logged in user
     if(validation.status == true)
     {
-        Product.findByUrl(productUrl)
-        .then(resultProduct => 
+        Restaurant.fetchAll()
+        .then(restaurants => 
         {
-            res.render('shop/product-detail', {
+            res.render('shop/shop-restaurant-list', {
                 admin: validation.isAdmin,
                 loggedIn: true,
-                productImage: "",
-                product: resultProduct,
-                path: '/products'
+                restaurantImage: "",
+                restaurants: restaurants,
+                path: '/restaurants'
             });
         }).catch(err => {console.log(err)});
     }
@@ -281,7 +280,7 @@ exports.getAddToCart = (req, res, next) => {
     //logged in user
     if(validation.status == true)
     {
-        Product.findById(ObjectId(productId))
+        Restaurant.findById(ObjectId(productId))
         .then(resultProduct => 
         {
             let menuItemsArray = resultProduct.menu;
@@ -391,7 +390,7 @@ exports.postCart = (req, res, next) => {
     //logged in user
     if(validation.status == true)
     {
-        Product.findById(ObjectId(productId))
+        Restaurant.findById(ObjectId(productId))
         .then(result => 
         {
             let title = result.title;
@@ -539,14 +538,19 @@ exports.postOrder = async (req, res, next) => {
 
     let cartItems = req.body.cartAllItems;
     let totalPrice = req.body.cartTotalPrice;
-    let commentToRestaurant = req.body.commentToRestaurant;
+    let restaurant = req.body.restaurant;
+    let customerName = req.body.customerName;
+    let customerPhone = req.body.customerPhone;
+    let customerAddress = req.body.customerAddress;
+    let customerDelivery = req.body.customerDelivery;
+    let customerComment = req.body.customerComment;
     
     let orderProducts = JSON.parse(cartItems);
 
     //logged in user
     if(validation.status == true)
     {
-        var createOrder = await Order.createOrder(userEmail, orderProducts, totalPrice , commentToRestaurant);
+        var createOrder = await Order.createOrder(userEmail, orderProducts, totalPrice, customerComment, restaurant, customerName, customerPhone, customerAddress, customerDelivery);
         
         var orderId = createOrder.ops[0]._id;
 
@@ -719,8 +723,9 @@ exports.getCheckout = async (req, res, next) => {
     console.log('getCheckout');
     let validation = res.locals.validation;
     let cartItems = req.body.cartAllItems;
-    let commentToRestaurant = req.body.commentToRestaurant;
+    let customerComment = req.body.customerComment;
     let cartTotalPrice = req.body.cartTotalPrice;
+    let restaurant = req.body.restaurant;
     //let currency = req.body.currency;
     //console.log(req.body.cartAllItems);
     //console.log(req.body.cartTotalPrice);
@@ -740,8 +745,9 @@ exports.getCheckout = async (req, res, next) => {
         {
             path: '/checkout',
             pageTitle: 'Checkout',
-            commentToRestaurant: commentToRestaurant,
+            customerComment: customerComment,
             cartTotalPrice: cartTotalPrice,
+            restaurant: restaurant,
             amount: intent.amount,
             currency: intent.currency,
             client_secret: intent.client_secret 
@@ -1046,9 +1052,9 @@ exports.postOrderUpdate = async (req, res, next) => {
 
     orderId = req.body.orderId;
     status = req.body.status;
-    estimatedTime = req.body.estimatedTime + " min";
+    estimatedCompletionTime = req.body.estimatedTime + " min";
 
-    var order = await Order.updateOne(orderId, status, estimatedTime);
+    var order = await Order.updateOne(orderId, status, estimatedCompletionTime);
 
     res.redirect('/orders-unconfirmed');
 }
@@ -1113,11 +1119,11 @@ exports.postWebhook = (req, res, next) => {
 }
 
 exports.getUnconfirmedOrders = async (req, res, next) => {
-    console.log('\ngetConfirmOrder');
+    console.log('\ngetUnconfirmedOrders');
 
     var orders = await Order.fetchAllUnconfirmed();
     
-    res.render('shop/unconfirmed-orders', 
+    res.render('shop/orders-unconfirmed', 
     { 
         orders: orders
     });
@@ -1125,11 +1131,11 @@ exports.getUnconfirmedOrders = async (req, res, next) => {
 }
 
 exports.getConfirmedOrders = async (req, res, next) => {
-    console.log('\ngetConfirmOrder');
+    console.log('\ngetConfirmedOrders');
 
     var orders = await Order.fetchAllConfirmed();
     
-    res.render('shop/confirmed-orders', 
+    res.render('shop/orders-confirmed', 
     { 
         orders: orders
     });
@@ -1137,11 +1143,11 @@ exports.getConfirmedOrders = async (req, res, next) => {
 }
 
 exports.getCompletedOrders = async (req, res, next) => {
-    console.log('\ngetConfirmOrder');
+    console.log('\ngetCompletedOrders');
 
     var orders = await Order.fetchAllCompleted();
     
-    res.render('shop/completed-orders', 
+    res.render('shop/orders-completed', 
     { 
         orders: orders
     });

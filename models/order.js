@@ -7,36 +7,48 @@ const ObjectId = mongodb.ObjectId;
 
 class Order 
 {
-    static createOrder(userEmail, productArray, totalPrice, comment)
+    static async createOrder(userEmail, productArray, totalPrice, customerComment, restaurant, customerName, customerPhone, customerAddress, customerDelivery)
     {
-        const db = getDb()
+        const db = getDb();
 
         let insertSuccessful = 1;
 
         var dateObject = new Date().toString();
-        var sub1 = dateObject.substring(15, 24);
+        var sub1 = dateObject.substring(16, 24);
         var sub2 = dateObject.substring(0, 15);
         var dateFormatted = sub1 + " - " + sub2;
+        
+        if(customerDelivery == "delivery")
+        {
+            var delivery = true;
+            var pickUp = false;
+        }
 
-    
+        if(customerDelivery = "pickUp")
+        {
+            delivery = false;
+            pickUp = true;
+        }
+   
         return db.collection('orders')
             .insertOne({
                 user: userEmail,
-                name: null,
-                phone: null,
-                address: null,
-                date: dateFormatted,
+                date: new Date(),
                 placedAt: dateFormatted,
                 confirmedAt: null,
                 completedAt: null,
-                restaurant: null,
-                status: "unconfirmed",
-                pickUp: null,
-                delivery: null,
                 estimatedCompletionTime: null,
+                status: "unconfirmed",
+                restaurant: restaurant,
                 totalPrice: "$" + totalPrice,
-                comment: comment,
-                products: productArray
+                customerName: customerName,
+                customerPhone: customerPhone,
+                customerAddress: customerAddress,
+                customerComment: customerComment,
+                delivery: delivery,
+                pickUp: pickUp,
+                products: productArray,
+                rating: null,
             })  
             .catch(err => {
                 console.log(err); 
@@ -52,7 +64,7 @@ class Order
         //check if userId characters are by the rules or else redirect
         
         return db
-            .collection('orders')
+            .collection("orders")
             .findOne({_id: ObjectId(orderId)})
             .then(order => {
                 //console.log(order); 
@@ -66,7 +78,7 @@ class Order
         const db = getDb();
 
         return db
-            .collection('orders')
+            .collection("orders")
             .find({user: userEmail})
             .toArray()
             .then(order => {
@@ -84,19 +96,25 @@ class Order
             .catch(err => console.log(err))
     }
 
-    static updateOne(orderId, status, estimatedTime)
+    static updateOne(orderId, status, estimatedCompletionTime)
     {
         const db = getDb();
 
         let updateSuccessful = 1;
         let updateFailed = 0;
+        
+        var dateObject = new Date().toString();
+        var sub1 = dateObject.substring(16, 24);
+        var sub2 = dateObject.substring(0, 15);
+        var dateFormatted = sub1 + " - " + sub2;
 
-        return db.collection('orders')
+        return db.collection("orders")
             .updateOne({_id: ObjectId(orderId)},         
                 {$set: 
                 {
                     status: status,
-                    estimatedTime: estimatedTime
+                    estimatedCompletionTime: estimatedCompletionTime,
+                    confirmedAt: dateFormatted
                 }
             } )
             .then(result => {
@@ -121,7 +139,7 @@ class Order
         let deleteSuccessful = 1;
         let deleteFailed = 0;
 
-        return db.collection('orders')
+        return db.collection("orders")
             .deleteOne({_id: ObjectId(orderId)})
             .then(result => {
                 if(result.deletedCount == deleteSuccessful)
@@ -143,7 +161,7 @@ class Order
         const db = getDb();
 
         return db
-            .collection('orders')
+            .collection("orders")
             .find()
             .toArray()
             .then(orders => { /* { console.log(orders) */ return orders })
@@ -155,7 +173,7 @@ class Order
         const db = getDb();
 
         return db
-            .collection('orders')
+            .collection("orders")
             .find({status: "unconfirmed"})
             .toArray()
             .then(orders => { /* { console.log(orders) */ return orders })
@@ -167,7 +185,7 @@ class Order
         const db = getDb();
 
         return db
-            .collection('orders')
+            .collection("orders")
             .find({status: "confirmed"})
             .toArray()
             .then(orders => { /* { console.log(orders) */ return orders })
@@ -179,7 +197,7 @@ class Order
         const db = getDb();
 
         return db
-            .collection('orders')
+            .collection("orders")
             .find({status: "completed"})
             .toArray()
             .then(orders => { /* { console.log(orders) */ return orders })

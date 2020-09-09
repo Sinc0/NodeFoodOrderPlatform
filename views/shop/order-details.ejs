@@ -7,13 +7,39 @@
 </head>
 <body>
 
+    <!-- meta -->
     <p><b>id:</b> <%=order._id %></p>
-    <p><b>date:</b> <%=order.date %></p>
+    <p><b>rating:</b> <%=order.rating %></p>
+    <p><b>status:</b> <%=order.status %></p>
+    
+    <br />
+
+    <!-- date info -->
+    <p><b>placed at:</b> <%=order.placedAt %></p>
+    <p><b>confirmed at:</b> <%=order.confirmedAt %></p>
+    <p><b>completed at:</b> <%=order.completedAt %></p>
+    
+    <br />
+    
+    <!-- customer info -->
+    <p><b>customer name:</b> <%=order.customerName %></p>
+    <p><b>customer address:</b> <%=order.customerAddress %></p>
+    <p><b>customer phone:</b> <%=order.customerPhone %></p>
+    
+    <br />
+    
+    <!-- order info -->
     <p><b>total:</b> <%=order.totalPrice %></p>
+    <p><b>restaurant:</b> <%=order.restaurant %></p>
+    <p><b>delivery:</b> <%=order.delivery %></p>
+    <p><b>pickup:</b> <%=order.pickUp %></p>
+    <p><b>comment:</b> <%=order.customerComment %></p>
     <b>items</b>
     <% for(var c = 0; c < order.products.items.length; c++) { %>
         <p>&emsp;<%=order.products.items[c].name %> - <%=order.products.items[c].quantity %> - ($<%=order.products.items[c].quantity * order.products.items[c].price %>)</p>
-        <% } %>
-    
+    <% } %>
+
+    <br />
+
 </body>
 </html>

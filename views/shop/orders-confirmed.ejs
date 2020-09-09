@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temp Title</title>
+    <title>Confirmed Orders</title>
     <link rel="stylesheet" href="/css/main.css">
     <script src="/js/functionality.js"></script>
     <script>
-        
+
         function saveScrollPosition()
         {
             var y = window.scrollY;
@@ -32,7 +32,7 @@
 <body onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
     <header id="confirmOrderHeader">
         <br />
-        <h2 id="confirmOrderTitle">total completed orders: <%=orders.length %></h2>
+        <h2 id="confirmOrderTitle">total confirmed orders: <%=orders.length %></h2>
         <!-- <p id="confirmOrderPendingOrderInfo">total pending orders: <%=orders.length %></p> -->
     </header>
     <br />
@@ -56,7 +56,17 @@
         <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
             <p><%= orders[c].products.items[x].name %> (<%= orders[c].products.items[x].quantity %>)</p>
         <% } %>
+
+        <br />
+        
+        <form id="updateOrderCompletionTime#<%=c %>" action="/order-update" method="POST">
+            <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
+            <input hidden id="inputOrderStatus#<%=c %>" name="status" value="completed"></input>
+            <button id="completeCustomerOrder#<%=c %>" class="completeCustomerOrder" type="button" onclick="orderCompleted('<%=c %>', '<%= orders[c]._id %>', value)">&#10003; mark as completed</button> <!-- onclick = ws data to client, update db, ws data to restaurant -->
+        </form>
+
     </div>
+    
     <br />
     <% } %>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temp Title</title>
+    <title>Unconfirmed Orders</title>
     <link rel="stylesheet" href="/css/main.css">
     <script src="/js/functionality.js"></script>
     <script>
@@ -85,6 +85,7 @@
         <!-- <p id="confirmOrderPendingOrderInfo">total pending orders: <%=orders.length %></p> -->
     </header>
     <br />
+    <% orders = orders.sort((a, b) => b.date - a.date) %>
     <% for(var c = orders.length - 1; c >= 0; c--) { %>
     <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
         <!-- <p>#<%=c %></p> -->
@@ -95,6 +96,7 @@
         <p>name: <%=orders[c].name %></p>
         <p>address: <%=orders[c].name %></p>
         <p>phone: <%=orders[c].phone %></p>
+        <p>restaurant: <%=orders[c].restaurant %></p>
         <p>total price: <%=orders[c].totalPrice %></p>
         <p>comment: <%=orders[c].comment %></p>
         <p>delivery: <%=orders[c].delivery %></p>
@@ -118,7 +120,7 @@
         </form>
         
         <b style="font-weight: normal;">set time:</b>
-        <select id="customerOrderSetTime" onchange="orderTime(<%=c %>, this.value)">
+        <select id="customerOrderSetTime" onchange="orderTime('<%=c %>', this.value)">
             <option value="60">60 min</option>
             <option value="55">55 min</option>
             <option value="50">50 min</option>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/product.css">
+    <link rel="stylesheet" href="/css/restaurant.css">
     <link rel="stylesheet" href="css/stripeForm.css" />
     <script src="/js/functionality.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
@@ -18,25 +18,24 @@
         <h2>Confirm Order</h2>
         <h3>Total</h3>
         <p>$<%=cartTotalPrice %></p>
-        <% if(commentToRestaurant != "") { %>
-        <h3>Comment</h3>
-        <% } %>
-        <p><%=commentToRestaurant %></p>
         <h3>Items</h3>
     </div>
 
     <div style="width: 300px; margin: auto;">
-        <form id="post-order-form" action="/order-post" method="POST">
-            <input hidden id="commentToRestaurant" name="commentToRestaurant" value="<%=commentToRestaurant %>" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>          
+        <form id="post-order-form" action="/order-post" method="POST" style="background-color: green; border-radius: 0%">
             <input hidden id="cartAllItems" name="cartAllItems"></input>
             <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
-            <input placeholder="name"></input>
-            <input type="tel" placeholder="phone"></input>
-            <input placeholder="address"></input>
+            <input hidden id="choosenRestaurant" name="restaurant" value="<%=restaurant %>"></input>
+            <input hidden id="customerDelivery"></input>
+            <input id="customerName" name="customerName" placeholder="name"></input>
+            <input id="customerPhone" name="customerPhone" type="tel" placeholder="phone"></input>
+            <input id="customerAddress" name="customerAddress" placeholder="address"></input>
+            <input id="customerCommentCheckout" name="customerComment" value="<%=customerComment %>" placeholder="comment to restaurant"></input>
+            
             <div style="width: 150px; margin: auto; padding-top: 3px; padding-bottom: 7px;">
-            <input id="aksldaskld123123" style="padding: 0px; margin: 0px; margin-bottom: 5px; margin-right: -10px; height: 20px; width: 50px; vertical-align: top;" type="radio" name="deliveryMethod">Delivery</input>
-            <br />
-            <input id="aksldaskld123123" style="padding: 0px; margin: 0px; margin-right: -10px; height: 20px; width: 50px; vertical-align: top;" type="radio" name="deliveryMethod">Pick Up</input>
+                <input id="customerDeliveryRadioButton" type="radio" onclick="customerDeliverySelector()" name="customerDelivery" value="delivery">Delivery</input>
+                <br />
+                <input id="customerPickUpRadioButton" type="radio" onclick="customerDeliverySelector()" name="customerDelivery" value="pickUp">Pick Up</input>
             </div>
         </form>
     </div>
@@ -50,28 +49,7 @@
         </select>
     </div>
 
-    <!--
-    <div id="checkoutTotalPrice">
-        <h3>Total</h3>
-        <p>$<%=cartTotalPrice %></p>
-    </div>
-    
-    <% if(commentToRestaurant != "") { %>
-    <div id="checkoutCommentToRestaurant">
-        <h3>Comment</h3>
-        <p><%=commentToRestaurant %></p>
-    </div>
-    <% } %>
-    -->
 
-    <!-- <div id="checkoutSendOrder" style="display: none">
-        <form action="/order-post" method="POST">
-            <button type="submit" onclick="clearCart()">Pay</button>
-            <input hidden id="commentToRestaurant" name="commentToRestaurant" value="<%=commentToRestaurant %>" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>          
-            <input hidden id="cartAllItems" name="cartAllItems"></input>
-            <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
-        </form>
-    </div> -->
 
     <div id="selected-payment-option">   
         <!-- payment option #1 -->
@@ -102,19 +80,5 @@
         </div>
     </div>
 
-    <!--
-    <div>
-        <form id="post-order-form" action="/order-post" method="POST">
-            <input hidden id="commentToRestaurant" name="commentToRestaurant" value="<%=commentToRestaurant %>" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>          
-            <input hidden id="cartAllItems" name="cartAllItems"></input>
-            <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
-            <input placeholder="name"></input>
-            <input placeholder="phone"></input>
-            <input placeholder="address"></input>
-            <input type="radio" name="deliveryMethod">Delivery</input>
-            <input type="radio" name="deliveryMethod">Pickup</input>
-        </form>
-    </div>
-    -->
 </body>
 </html>

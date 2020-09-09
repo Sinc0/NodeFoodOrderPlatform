@@ -6,7 +6,6 @@ function goBack()
 function clearCart()
 {
     localStorage.removeItem("restaurantName");
-    document.getElementById("commentToRestaurant").value = "x";
 }
 
 function cartAllItems()
@@ -49,10 +48,8 @@ function cartAllItems()
 function fillCartFormData()
 {
     var cartItems = localStorage.getItem("restaurantName");
-    var commentToRestaurant = localStorage.getItem("commentToRestaurant");
     //cartItems = JSON.parse(cartItems);
     //console.log(cartItems);
-    document.getElementById("commentToRestaurant").value = commentToRestaurant;
     document.getElementById("cartAllItems").value = cartItems;
 
     var cartItems = localStorage.getItem("restaurantName");
@@ -296,11 +293,6 @@ function selectPaymentOption(value)
     }
 }
 
-function commentToLocalStorage(comment)
-{
-    localStorage.setItem("commentToRestaurant", comment);
-}
-
 function postOrder()
 {
     var form = document.getElementById("post-order-form");
@@ -334,4 +326,10 @@ function orderProcessOrderDeclined(estimatedTime, delivery, pickUp)
     document.getElementById("orderProcessImgDeclineCrossPng").hidden = false;
     document.getElementById("orderProcessInfoText").innerHTML = "<p> order declined by restaurant </p> <p> money will be refunded within a week </p>";
     document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false;
+}
+
+function customerDeliverySelector()
+{
+    var text = document.querySelector('input[name="customerDelivery"]:checked').value;
+    document.getElementById("customerDelivery").value = text;
 }

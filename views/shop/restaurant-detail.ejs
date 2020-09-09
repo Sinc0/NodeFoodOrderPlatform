@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/product.css">
+    <link rel="stylesheet" href="/css/restaurant.css">
     <script src="/js/functionality.js"></script>
 </head>
 
@@ -26,58 +26,58 @@
     <main id="main-menu" class="centered">
         <div id="menu">            
             <div>
-                <h1><%= product.title %></h1>
+                <h1><%=restaurant.title %></h1>
             </div>
-            <!-- <h1><%= product.title %></h1> -->
+            <!-- <h1><%= restaurant.title %></h1> -->
             <hr>
             
             <br />
             
             <div class="card__image">
-                <img src="/<%= product.imageUrl %>">
+                <img src="/<%= restaurant.imageUrl %>">
             </div>
 
             <br />
 
             <div>
-            <!-- <p><%= product._id %></p> -->
-            <% for(let c = 0; c < product.hours.length; c++) { %>
-                <p><%= product.hours[c] %></p>
+            <!-- <p><%= restaurant._id %></p> -->
+            <% for(let c = 0; c < restaurant.hours.length; c++) { %>
+                <p><%= restaurant.hours[c] %></p>
             <% } %>
-            <!-- <h2><%= product.price %></h2> -->
+            <!-- <h2><%= restaurant.price %></h2> -->
             </div>
             
             <br />
             
             <div>
-            <p><%= product.description %></p>
-            <!-- <p><%= product.description %></p> -->
+            <p><%= restaurant.description %></p>
+            <!-- <p><%= restaurant.description %></p> -->
             </div>
             
             <br />
             
             <hr>
-            <% for(let c = 0; c < product.menuCategories.length; c++) { %>
-                <% let productCategory = product.menuCategories[c] %>
+            <% for(let c = 0; c < restaurant.menuCategories.length; c++) { %>
+                <% let restaurantCategory = restaurant.menuCategories[c] %>
                 <div>
-                <h2 id="menu-restaurant-title"><%= productCategory.charAt(0).toUpperCase() + productCategory.slice(1) %></h2>
+                <h2 id="menu-restaurant-title"><%= restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></h2>
                 </div>
                 
                 <div>
-                <% for(let c = 0; c < product.menu.length; c++) { %>
+                <% for(let c = 0; c < restaurant.menu.length; c++) { %>
                 
-                    <% if(product.menu[c].category == productCategory) { %>
+                    <% if(restaurant.menu[c].category == restaurantCategory) { %>
                     <div id="menu-item">
-                        <!-- <p><%= product.menu[c].productId %></p> -->
+                        <!-- <p><%= restaurant.menu[c].restaurantId %></p> -->
                         <div id="menu-item-texts">
-                            <p><b><%= product.menu[c].title %></b></p>
-                            <p>$<%= product.menu[c].price %></p>
-                            <p>Ingredients: <%= product.menu[c].description %></p>
+                            <p><b><%= restaurant.menu[c].title %></b></p>
+                            <p>$<%= restaurant.menu[c].price %></p>
+                            <p>Ingredients: <%= restaurant.menu[c].description %></p>
                         </div>
                         <div id="menu-item-add-to-cart-button">
                             <% let buttonNumber = c %>
-                            <button onclick="updateCart(<%=buttonNumber %>, '<%=product.menu[c].title %>', '<%=product.menu[c].price %>')" class="cart-add-to-cart-button">+</button></a>
-                            <!-- <a href="/addToCart/<%= product._id %>&<%= product.menu[c].productId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
+                            <button onclick="updateCart(<%=buttonNumber %>, '<%=restaurant.menu[c].title %>', '<%=restaurant.menu[c].price %>')" class="cart-add-to-cart-button">+</button></a>
+                            <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menu[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
                         </div>
                     </div>
                     <% } else { %>
@@ -93,8 +93,7 @@
  
         <div id="side-cart">
             <form action="/checkout" method="POST">
-                <button id="order-button" onclick="commentToLocalStorage()" type="submit">Checkout</button>
-                
+                <button id="order-button" type="submit">Checkout</button>
                 
                 <div id="cart-items"></div> 
                 
@@ -104,8 +103,8 @@
                 
                 <input hidden id="cartAllItems" name="cartAllItems"></input>
                 <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
-                
-                <input id="commentToRestaurant" name="commentToRestaurant" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>
+                <input hidden name="restaurant" value='<%=restaurantUrl %>'></input>
+                <input id="customerComment" name="customerComment" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>
             </form>
         </div>
     </main>

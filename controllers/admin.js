@@ -1,4 +1,4 @@
-const Product = require('../models/product');
+const Restaurant = require('../models/restaurant');
 const User = require('../models/user');
 const mongodb = require('mongodb');
 const fs = require('fs');
@@ -52,19 +52,19 @@ function parseLoginCookie(cookieId)
     }
 }
 
-exports.addProduct = (req, res, next) => {
+exports.addRestaurant = (req, res, next) => {
     //console.log('In the middleware');
     //res.sendFile(path.join(__dirname, '../', 'views', 'add-product.html'));
 
-    console.log('getAdminAddProducts');
+    console.log('getAdminAddRestaurants');
     let validation = res.locals.validation;
 
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
-        res.render('admin/add-product', { 
-            pageTitle: 'Add Product',
-            path: 'admin/add-product',
+        res.render('admin/add-restaurant', { 
+            pageTitle: 'Add Restaurant',
+            path: 'admin/add-restaurant',
             formsCSS: true,
             productCSS: true,
             activeAddProduct: true,
@@ -79,9 +79,9 @@ exports.addProduct = (req, res, next) => {
 
 }
 
-exports.postProduct =  (req, res, next) => {
+exports.postRestaurant =  (req, res, next) => {
 
-    console.log('postAddAdminProduct >');
+    console.log('postAddAdminRestaurant >');
     let validation = res.locals.validation;
 
     //user is admin
@@ -106,11 +106,11 @@ exports.postProduct =  (req, res, next) => {
 
         if(imageSize > imageSizeLimit)
         {
-            console.log('add product: file too large');
-            console.log('add product: failed');
-            res.render('admin/add-product', {
-                path: '/add-product',
-                pageTitle: 'Add Product',
+            console.log('add restaurant image: file too large');
+            console.log('add restaurant image: failed');
+            res.render('admin/add-restaurant', {
+                path: '/add-restaurant',
+                pageTitle: 'Add Restaurant',
                 statusText: 'Error: file to large' 
             })
         }
@@ -118,15 +118,15 @@ exports.postProduct =  (req, res, next) => {
         else if(!imageUrl) {
             const imagePath = '../images/standardImage.jpg';
 
-            const product = new Product(title, price, description, imagePath);
+            const restaurant = new Restaurant(title, price, description, imagePath);
 
-            product
+            restaurant
                 .save()
                 .then(result => {
                     //console.log(result)
-                    console.log('add product: ' + title + ' added sucessfully');
-                    //console.log(product);
-                    res.redirect('/admin/product-list')
+                    console.log('add restaurant: ' + title + ' added sucessfully');
+                    //console.log(restaurant);
+                    res.redirect('/admin/restaurant-list')
                 })
                 .catch(err => console.log(err));
 
@@ -141,15 +141,15 @@ exports.postProduct =  (req, res, next) => {
         {   
             const imagePath = imageUrl.path;
 
-            const product = new Product(title, price, description, imagePath);
+            const restaurant = new Restaurant(title, price, description, imagePath);
 
-            product
+            restaurant
                 .save()
                 .then(result => {
                     //console.log(result)
-                    console.log('add product: ' + title + ' added sucessfully');
+                    console.log('add restaurant: ' + title + ' added sucessfully');
                     //console.log(product);
-                    res.redirect('/admin/product-list')
+                    res.redirect('/admin/restaurant-list')
                 })
                 .catch(err => console.log(err));
         }
@@ -163,22 +163,22 @@ exports.postProduct =  (req, res, next) => {
 
 }
 
-exports.getProducts = (req, res, next) => {
+exports.getRestaurants = (req, res, next) => {
     
-    console.log('getAdminProductList');
+    console.log('getAdminRestaurantList');
     let validation = res.locals.validation;
 
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
-        Product.fetchAll()
-        .then(products => {
-            res.render('admin/product-list', { 
+        Restaurant.fetchAll()
+        .then(restaurants => {
+            res.render('admin/restaurant-list', { 
                 admin: validation.isAdmin,
                 loggedIn: true,
-                prods: products,
-                path: '/products',
-                pageTitle: 'Admin Products'
+                restaurants: restaurants,
+                path: '/restaurants',
+                pageTitle: 'Admin Restaurants'
             });
         })
         .catch(err => console.log(err));
@@ -194,23 +194,23 @@ exports.getProducts = (req, res, next) => {
 
 }
 
-exports.getEditProduct = (req, res, next) => {
+exports.getEditRestaurant = (req, res, next) => {
 
-    console.log('getAdminEditProduct');
-    const prodId = req.params.productId;
+    console.log('getAdminEditRestaurant');
+    const restaurantId = req.params.restaurantId;
     let validation = res.locals.validation;
 
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
 
-        Product
-        .findById(prodId)
-        .then(product => { 
-            res.render('admin/edit-product', {
-                pageTitle: product.title,
-                product: product,
-                path: '/edit-product'
+        Restaurant
+        .findById(restaurantId)
+        .then(restaurant => { 
+            res.render('admin/edit-restaurant', {
+                pageTitle: restaurant.title,
+                restaurant: restaurant,
+                path: '/edit-restaurant'
             });
         })
         .catch(err => console.log(err));
@@ -235,15 +235,15 @@ exports.getEditProduct = (req, res, next) => {
     */
 }
 
-exports.postEditProduct = (req, res, next) => {
+exports.postEditRestaurant = (req, res, next) => {
 
-    console.log('postEditAdminProduct >');
+    console.log('postEditAdminRestaurant >');
     let validation = res.locals.validation;
 
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
-        const productId = req.body.id;
+        const restaurantId = req.body.id;
         const updatedTitle = req.body.title;
         const updatedPrice = req.body.price;
         const updatedDescription = req.body.description;
@@ -274,45 +274,45 @@ exports.postEditProduct = (req, res, next) => {
             
             //const product = new Product(updatedId, updatedTitle, updatedPrice, updatedDescription, updatedImagePath);
     
-            Product
-                .update(productId, updatedTitle, updatedPrice, updatedDescription, updatedImageUrl.path)
+            Restaurant
+                .update(restaurantId, updatedTitle, updatedPrice, updatedDescription, updatedImageUrl.path)
                 .then(result => {
                     //console.log(result.title)
-                    //console.log('Product Updated')
-                    console.log('edit product: ' + productId + ' successful')
-                    res.redirect('/admin/product-list')
+                    //console.log('Restaurant Updated')
+                    console.log('edit restaurant: ' + restaurantId + ' successful')
+                    res.redirect('/admin/restaurant-list')
                 })
                 .catch(err => console.log(err));
         }
 
-        //if no image is selected and product have image from before
+        //if no image is selected and restaurant have image from before
         else if(updatedImageUrl == null && imageCheck != null && imageSize < imageSizeLimit)
         {
             const updatedImagePath = imageCheck;
     
-            Product
-                .update(productId, updatedTitle, updatedPrice, updatedDescription, updatedImagePath)
+            Restaurant
+                .update(restaurantId, updatedTitle, updatedPrice, updatedDescription, updatedImagePath)
                 .then(result => {
                     //console.log(result.title)
-                    //console.log('Product Updated')
-                    console.log('edit product: ' + productId + ' successful')
-                    res.redirect('/admin/product-list')
+                    //console.log('Restaurant Updated')
+                    console.log('edit restaurant: ' + restaurantId + ' successful')
+                    res.redirect('/admin/restaurant-list')
                 })
                 .catch(err => console.log(err));
         }
 
-        //if no image selected and product have no image from before
+        //if no image selected and restaurant have no image from before
         else if(updatedImageUrl == null && imageCheck == null && imageSize < imageSizeLimit) 
         {   
             const updatedImagePath = standardImage;
     
-            Product
-                .update(productId, updatedTitle, updatedPrice, updatedDescription, updatedImagePath)
+            Restaurant
+                .update(restaurantId, updatedTitle, updatedPrice, updatedDescription, updatedImagePath)
                 .then(result => {
                     //console.log(result.title)
-                    //console.log('Product Updated')
-                    console.log('edit product: ' + productId + ' successful')
-                    res.redirect('/admin/product-list')
+                    //console.log('Restaurant Updated')
+                    console.log('edit restaurant: ' + restaurantId + ' successful')
+                    res.redirect('/admin/restaurant-list')
                 })
                 .catch(err => console.log(err));
         }
@@ -321,16 +321,16 @@ exports.postEditProduct = (req, res, next) => {
         {
             if(imageSize > imageSizeLimit)
             {
-                console.log('edit product: image file to large')
-                console.log('edit product: failed');
-                res.redirect('/admin/edit-product/' + productId);
+                console.log('edit restaurant: image file to large')
+                console.log('edit restaurant: failed');
+                res.redirect('/admin/edit-restaurant/' + restaurantId);
             }
 
             else
             {
-                console.log('edit product: image file type not supported');
-                console.log('edit product: failed');
-                res.redirect('/admin/edit-product/' + productId);
+                console.log('edit restaurant: image file type not supported');
+                console.log('edit restaurant: failed');
+                res.redirect('/admin/edit-restaurant/' + restaurantId);
             }
         
         }
@@ -344,40 +344,40 @@ exports.postEditProduct = (req, res, next) => {
 
 }
 
-exports.postDeleteProduct = (req, res, next) => {
+exports.postDeleteRestaurant = (req, res, next) => {
     
-    console.log('postDeleteAdminProduct >');
-    const productId = req.params.productId;
+    console.log('postDeleteAdminRestaurant >');
+    const restaurantId = req.params.restaurantId;
     let validation = res.locals.validation;
-    let productImagePath = null;
+    let restaurantImagePath = null;
     let deleteSuccessful = 1;
 
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
-        Product.findById(productId)
+        Restaurant.findById(restaurantId)
         .then(result => {
 
             //console.log(result)
-            productImagePath = result.imageUrl;
+            restaurantImagePath = result.imageUrl;
 
-            if(productImagePath.includes('standardImage.jpg') == false)
+            if(restaurantImagePath.includes('standardImage.jpg') == false)
             {
-                fs.unlink(productImagePath, (err) => {
+                fs.unlink(restaurantImagePath, (err) => {
                     if(err)
                     {
                         console.log(err);
-                        //console.log('delete product: image file deleted failed');
-                        console.log('delete product: ' + productId + ' failed');
-                        res.redirect('/admin/product-list');
+                        //console.log('delete restaurant: image file deleted failed');
+                        console.log('delete restaurant: ' + restaurantId + ' failed');
+                        res.redirect('/admin/restaurant-list');
                     }
     
                     else
                     {
     
-                        //console.log('delete product: image file deleted successfully');
-                        Product
-                        .delete(productId)
+                        //console.log('delete restaurant: image file deleted successfully');
+                        Restaurant
+                        .delete(restaurantId)
                         .then(result => {
                             
                             //console.log(result);
@@ -385,14 +385,14 @@ exports.postDeleteProduct = (req, res, next) => {
                             
                             if(result == deleteSuccessful)
                             {
-                                console.log('delete product: ' + productId + ' successful');
-                                res.redirect('/admin/product-list');
+                                console.log('delete restaurant: ' + restaurantId + ' successful');
+                                res.redirect('/admin/restaurant-list');
                             }
                 
                             else
                             {
-                                console.log('delete product: ' + productId + ' failed');
-                                res.redirect('/admin/product-list');
+                                console.log('delete restaurant: ' + restaurantId + ' failed');
+                                res.redirect('/admin/restaurant-list');
                             }
                             
                         })
@@ -403,8 +403,8 @@ exports.postDeleteProduct = (req, res, next) => {
 
             else
             {
-                Product
-                .delete(productId)
+                Restaurant
+                .delete(restaurantId)
                 .then(result => {
                     
                     //console.log(result);
@@ -412,14 +412,14 @@ exports.postDeleteProduct = (req, res, next) => {
                     
                     if(result == deleteSuccessful)
                     {
-                        console.log('delete product: ' + productId + ' successful');
-                        res.redirect('/admin/product-list');
+                        console.log('delete restaurant: ' + restaurantId + ' successful');
+                        res.redirect('/admin/restaurant-list');
                     }
         
                     else
                     {
-                        console.log('delete product: ' + productId + ' failed');
-                        res.redirect('/admin/product-list');
+                        console.log('delete restaurant: ' + restaurantId + ' failed');
+                        res.redirect('/admin/restaurant-list');
                     }
                     
                 })
@@ -442,21 +442,21 @@ exports.postDeleteOrder = (req, res, next) => {
     console.log('postDeleteOrder >');
     const orderId = req.params.orderId;
     let validation = res.locals.validation;
-    let productImagePath = null;
+    let restaurantImagePath = null;
     let deleteSuccessful = 1;
     
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
-        productImagePath = path.join(__dirname, '..', 'public', 'orderReciepts', '/Reciept=' + orderId + '.pdf');
+        restaurantImagePath = path.join(__dirname, '..', 'public', 'orderReciepts', '/Reciept=' + orderId + '.pdf');
 
-        fs.unlink(productImagePath, (err) => {
+        fs.unlink(restaurantImagePath, (err) => {
             if(err)
             {
                 console.log(err);
-                //console.log('delete product: image file deleted failed');
+                //console.log('delete restaurant: image file deleted failed');
                 console.log('delete order: ' + orderId + ' failed');
-                res.redirect('/admin/product-list');
+                res.redirect('/admin/restaurant-list');
             }
 
             else

@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/product.css">
+    <link rel="stylesheet" href="/css/restaurant.css">
 </head>
 <body>
 
     <%- include('../snippets/html_nav_menu_admin.ejs') %>
 
     <main>
-        <form class="product-form" action="product" method="POST" enctype="multipart/form-data">
+        <form class="restaurant-form" action="restaurant" method="POST" enctype="multipart/form-data">
             <p><%= statusText %></p>
             <div class="form-control">
                 <label for="title">Title</label>
@@ -38,7 +38,7 @@
                 <label for="description">Description</label>
                 <textarea name="description" id="description" rows="5"></textarea>
             </div>
-                <button type="submit">Add Product</button>
+                <button type="submit">Add Restaurant</button>
         </form>
     </main>
 
