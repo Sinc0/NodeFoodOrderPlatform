@@ -190,6 +190,38 @@ class User
             .catch(err => console.log(err));
     }
 
+    static updateCredentials(oldEmail, newEmail, name, address, phone)
+    {
+        const db = getDb();
+
+        let updateSuccessful = 1;
+        let updateFailed = 0;
+
+        return db.collection('users')
+            .updateOne({email: oldEmail},         
+                {$set: 
+                {
+                    email: newEmail,
+                    name: name,
+                    address: address,
+                    phone: phone
+                }
+            } )
+            .then(result => {
+                if(result.modifiedCount == updateSuccessful)
+                {
+                    //console.log('update ' + email + ' document successful');
+                    return updateSuccessful;
+                } 
+                else
+                {
+                    //console.log('update ' + email + ' document failed');
+                    return updateFailed;
+                }
+            })
+            .catch(err => console.log(err));
+    }
+
     static fetchAll()
     {
         const db = getDb();
@@ -247,6 +279,23 @@ class User
                 return u.loginCookie;
             }
         }
+    }
+
+    static findByCookieIdReturnUserObject(cookie)
+    {
+        const db = getDb();
+
+        let u;
+
+        return db
+            .collection('users')
+            .find({loginCookie: cookie})
+            .next()
+            .then(user => {
+                u = user;
+                return user;
+            })
+            .catch(err => console.log(err))
     }
     
     static findByUsername(username)

@@ -3,43 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Details</title>
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
-<body>
-
-    <!-- meta -->
-    <p><b>id:</b> <%=order._id %></p>
-    <p><b>rating:</b> <%=order.rating %></p>
-    <p><b>status:</b> <%=order.status %></p>
+<nav>
+    <!-- admin view -->
+    <% if(admin == true) { %>
+        <%- include('../snippets/html_nav_menu_admin.ejs') %>
     
-    <br />
-
-    <!-- date info -->
-    <p><b>placed at:</b> <%=order.placedAt %></p>
-    <p><b>confirmed at:</b> <%=order.confirmedAt %></p>
-    <p><b>completed at:</b> <%=order.completedAt %></p>
+    <!-- logged in user view -->
+    <% } else if(loggedIn == true) { %>
+        <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
     
-    <br />
-    
-    <!-- customer info -->
-    <p><b>customer name:</b> <%=order.customerName %></p>
-    <p><b>customer address:</b> <%=order.customerAddress %></p>
-    <p><b>customer phone:</b> <%=order.customerPhone %></p>
-    
-    <br />
-    
-    <!-- order info -->
-    <p><b>total:</b> <%=order.totalPrice %></p>
-    <p><b>restaurant:</b> <%=order.restaurant %></p>
-    <p><b>delivery:</b> <%=order.delivery %></p>
-    <p><b>pickup:</b> <%=order.pickUp %></p>
-    <p><b>comment:</b> <%=order.customerComment %></p>
-    <b>items</b>
-    <% for(var c = 0; c < order.products.items.length; c++) { %>
-        <p>&emsp;<%=order.products.items[c].name %> - <%=order.products.items[c].quantity %> - ($<%=order.products.items[c].quantity * order.products.items[c].price %>)</p>
+    <!-- anonmymous view -->
+    <% } else { %>
+        <%- include('../snippets/html_nav_menu_anon.ejs') %>
     <% } %>
+</nav>
+<body id="body-order-details">
+    
+    <div id="main-order-details">
+        <!-- meta -->
+        <p><b>id:</b> <%=order._id %></p>
+        <p><b>rating:</b> <%=order.rating %></p>
+        <p><b>status:</b> <%=order.status %></p>
+        
+        <br />
 
-    <br />
+        <!-- date info -->
+        <p><b>placed at:</b> <%=order.placedAt %></p>
+        <p><b>confirmed at:</b> <%=order.confirmedAt %></p>
+        <p><b>completed at:</b> <%=order.completedAt %></p>
+        
+        <br />
+        
+        <!-- customer info -->
+        <p><b>customer email:</b> <%=order.user %></p>
+        <p><b>customer name:</b> <%=order.customerName %></p>
+        <p><b>customer address:</b> <%=order.customerAddress %></p>
+        <p><b>customer phone:</b> <%=order.customerPhone %></p>
+        
+        <br />
+        
+        <!-- order info -->
+        <p><b>total:</b> <%=order.totalPrice %></p>
+        <p><b>estimated time for completion:</b> <%=order.estimatedCompletionTime %></p>
+        <p><b>restaurant:</b> <%=order.restaurant %></p>
+        <p><b>delivery:</b> <%=order.delivery %></p>
+        <p><b>comment:</b> <%=order.customerComment %></p>
+        <b>items</b>
+        <% for(var c = 0; c < order.products.items.length; c++) { %>
+            <p>&emsp;<%=order.products.items[c].name %> - <%=order.products.items[c].quantity %> - ($<%=order.products.items[c].quantity * order.products.items[c].price %>)</p>
+        <% } %>
+
+        <br />
+
+    </div>
 
 </body>
 </html>

@@ -333,3 +333,21 @@ function customerDeliverySelector()
     var text = document.querySelector('input[name="customerDelivery"]:checked').value;
     document.getElementById("customerDelivery").value = text;
 }
+
+function editProfileCredentials()
+{
+    var profileCredentials = document.getElementById("profileCredentials");
+    var editProfileCredentials = document.getElementById("editProfileCredentials");
+
+    if(profileCredentials.style.display == "block" || editProfileCredentials == "none")
+    {
+        profileCredentials.style.display = "none";  
+        editProfileCredentials.style.display = "block";  
+    }
+
+    else
+    {
+        profileCredentials.style.display = "block";
+        editProfileCredentials.style.display = "none";
+    }
+}

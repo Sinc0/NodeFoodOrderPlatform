@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,12 +28,15 @@
                 <br/>
 
                 <div id="order-item">
-                    <p><b>#<%= counter %></b></p>
-                    <p> <%= order.date %></p>
-                    <p><%= order._id %></p>
-                    <p><a href="/reciepts/<%= order._id %>">Order Reciept PDF</a></p>
-                    <p>Total Items: <%= order.products.length %></p>
-                    <p>Total Amount: <%= order.totalPrice %></p>
+                    <p><b>#<%=counter %></b></p>
+                    <p>placed at: <%=order.placedAt %></p>
+                    <p>restaurant: <%=order.restaurant %></p>
+                    <p>status: <%=order.status %></p>
+                    <p>etc: <%=order.estimatedCompletionTime %></p>
+                    <p>delivery: <%=order.delivery %></p>
+                    <p>total amount: <%=order.totalPrice %></p>
+                    <!-- <p><a href="/reciepts/<%= order._id %>">order reciept PDF</a></p> -->
+                    <p><a href='/order-details/<%=order._id %>'>details</a></p>
                 </div>
 
             <% } %>

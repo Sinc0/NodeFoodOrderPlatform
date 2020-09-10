@@ -15,7 +15,7 @@ router.get('/login', shopController.getLogin)
 
 
 //route handling user validation
-router.get('/restaurant-list', validation, shopController.getRestaurantList);
+router.get('/restaurants', validation, shopController.getRestaurantList);
 //router.get('/restaurants/:restaurantId', validation, shopController.getRestaurantDetail);
 router.get('/', validation, shopController.getIndex);
 //router.get('/cart/:restaurantId', validation, shopController.postCart);
@@ -28,13 +28,16 @@ router.get('/restaurant/:restaurantUrl', validation, shopController.getRestauran
 router.get('/profile', validation, shopController.getProfile); 
 router.get('/stripe', validation, shopController.getStripe);
 router.get('/order-details/:orderId', validation, shopController.getOrderDetails);
-router.post('/order-details/:orderId', shopController.postOrderDetails);
 router.all('/order-process/:orderId', validation, shopController.getOrderProcess);
-router.post('/webhook', shopController.postWebhook);
+
+router.post('/order-details/:orderId', validation, shopController.postOrderDetails);
 router.get('/orders-unconfirmed', shopController.getUnconfirmedOrders);
 router.get('/orders-confirmed', shopController.getConfirmedOrders);
 router.get('/orders-completed', shopController.getCompletedOrders);
 router.post('/order-update', shopController.postOrderUpdate);
+router.post('/webhook', shopController.postWebhook);
+
+router.post('/user-update-credentials', validation, shopController.postUserUpdateCredentials);
 
 
 //router.get('/cart/:restaurantId', validation, shopController.postCart);

@@ -13,6 +13,12 @@ body {
     /* background-color: yellow; */
 }
 
+#body-order-details
+{
+    width: 100%;
+    margin: auto;
+}
+
 #restaurant
 {
     display: inline-block;   
@@ -60,6 +66,17 @@ body {
 #main-orders
 {
     margin: auto;
+}
+
+#main-order-details
+{
+    width: 350px;
+    padding: 10px;
+}
+
+#main-profile
+{
+    padding: 10px;
 }
 
 #grid-restaurants
@@ -492,4 +509,9 @@ option
     height: 20px; 
     width: 50px; 
     vertical-align: top;
+}
+
+.profile-buttons
+{
+    width: 150px;
 }

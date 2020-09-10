@@ -153,6 +153,7 @@ exports.getIndex = (req, res, next) => {
 
     console.log('getIndex');
     let validation = res.locals.validation;
+    let email = res.locals.userEmail;
 
     //console.log(res.locals.text);
     //console.log(validation);
@@ -502,14 +503,14 @@ exports.getOrders = (req, res, next) => {
     if(validation.status == true)
     {
         Order.FindByUser(userEmail).then(orders => {
-                res.render('shop/orders', 
-                {
-                    admin: validation.isAdmin,
-                    loggedIn: true,
-                    orders: orders,
-                    path: '/orders',
-                    pageTitle: 'Your orders'
-                });
+            res.render('shop/orders', 
+            {
+                admin: validation.isAdmin,
+                loggedIn: true,
+                orders: orders,
+                path: '/orders',
+                pageTitle: 'Orders'
+            });
         })
 
     }
@@ -722,6 +723,7 @@ exports.getReciept = (req, res, next) => {
 exports.getCheckout = async (req, res, next) => {
     console.log('getCheckout');
     let validation = res.locals.validation;
+    let email = res.locals.userEmail;    
     let cartItems = req.body.cartAllItems;
     let customerComment = req.body.customerComment;
     let cartTotalPrice = req.body.cartTotalPrice;
@@ -730,6 +732,8 @@ exports.getCheckout = async (req, res, next) => {
     //console.log(req.body.cartAllItems);
     //console.log(req.body.cartTotalPrice);
     //console.log(req.body);
+
+    var user = await User.findByEmail(email);
 
     const intent = await stripe.paymentIntents.create({
         amount: 100, //cartTotalPrice 
@@ -745,6 +749,9 @@ exports.getCheckout = async (req, res, next) => {
         {
             path: '/checkout',
             pageTitle: 'Checkout',
+            customerName: user.email,
+            customerAddress: user.address,
+            customerPhone: user.phone,
             customerComment: customerComment,
             cartTotalPrice: cartTotalPrice,
             restaurant: restaurant,
@@ -819,6 +826,45 @@ exports.postLogout = (req, res, next) => {
         res.redirect('/');
     }
 
+}
+
+exports.getProfile = async (req, res, next) => {
+    console.log('getProfile');
+    
+    let validation = res.locals.validation;
+    let userEmail = res.locals.userEmail;
+    let loginCookie = req.get('Cookie');
+    let cookieId = parseLoginCookie(loginCookie);
+
+    var user = await User.findByCookieIdReturnUserObject(cookieId);
+
+    //logged in user
+    if(validation.status == true)
+    {
+        res.render('shop/profile', 
+        { 
+            admin: validation.isAdmin,
+            loggedIn: true,
+            pageTitle: 'Profile',
+            path: '/profile',
+            name: user.name,
+            email: user.email,
+            address: user.address,
+            phone: user.phone
+        });
+    }
+
+    //anonymous user
+    else
+    {
+        res.render('shop/index', 
+        { 
+            pageTitle: 'Home',
+            path: '/',
+            admin: false,
+            loggedIn: false,
+        });
+    }
 }
 
 
@@ -962,16 +1008,6 @@ exports.postLogin = (req, res, next) => {
 
 }
 
-exports.getProfile = (req, res, next) => {
-    console.log('\ngetProfile');
-
-    res.render('shop/profile', 
-    { 
-        pageTitle: 'Profile',
-        path: '/profile',
-    });
-}
-
 exports.getStripe = async (req, res, next) => {
     console.log('\ngetStripe');
 
@@ -993,6 +1029,8 @@ exports.getStripe = async (req, res, next) => {
 
 exports.getOrderDetails = async (req, res, next) => {
     console.log('\ngetOrderDetails');
+    let validation = res.locals.validation;
+    let userEmail = res.locals.userEmail;
 
     orderId = req.params.orderId;
 
@@ -1005,16 +1043,28 @@ exports.getOrderDetails = async (req, res, next) => {
         var orderDate = order.date;
         var orderItems = order.products.items;
         
-        res.render('shop/order-details', 
-        { 
-            order: order
-        });
+        if(validation.status == true)
+        {
+            res.render('shop/order-details', 
+            { 
+                admin: validation.isAdmin,
+                pageTitle: 'Order Details',
+                path: '/order-details',
+                loggedIn: true,
+                order: order,
+            });
+        }
+        else
+        {
+            res.redirect('/');
+        }
     }
 
     else
     {
         res.redirect('/');
     }
+
 
 }
 
@@ -1152,4 +1202,28 @@ exports.getCompletedOrders = async (req, res, next) => {
         orders: orders
     });
 
+}
+
+exports.postUserUpdateCredentials = async (req, res, next) => {
+    console.log('\npostUserUpdateCredentials Test');
+
+    let loginCookie = req.get('Cookie');
+    let cookieId = parseLoginCookie(loginCookie);
+    console.log(cookieId);
+    
+    var oldEmail = req.body.oldEmail;
+    var newEmail = req.body.newEmail;
+    var name = req.body.name;
+    var phone = req.body.phone;
+    var address = req.body.address;
+    
+    var updateUser = await User.updateCredentials(oldEmail, newEmail, name, address, phone);
+
+    //var deleteSession = await Session.deleteOne(cookieId);
+
+    //res.setHeader('Set-Cookie', 'loginCookie='); 
+
+    //res.redirect('/');
+
+    res.redirect('/profile');
 }

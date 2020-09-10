@@ -4,12 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%=pageTitle %></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/functionality.js"></script>
 </head>
+
 <body>
-    <h1>profile page</h1>
-    <p>email</p>
-    <p>name</p>
-    <p>number</p>
-    <p>address</p>
+    <!-- admin view -->
+    <% if(admin == true) { %>
+        <%- include('../snippets/html_nav_menu_admin.ejs') %>
+    
+    <!-- logged in user view -->
+    <% } else if(loggedIn == true) { %>
+        <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
+    
+    <!-- anonmymous view -->
+    <% } else { %>
+        <%- include('../snippets/html_nav_menu_anon.ejs') %>
+    <% } %>   
+    
+    <main id="main-profile">
+        <h2>Account Credentials</h2>
+
+        <br />
+
+        <p style="color: red;"><b>note: email and password change requires relog</b></p>
+        
+        <button class="profile-buttons">change email</button>
+
+        <br />
+
+        <button class="profile-buttons">change password</button>
+
+        <br />
+
+        <button class="profile-buttons" onclick="editProfileCredentials()">change credentials</button>
+        
+        <br />
+        <br />
+        
+        <div id="profileCredentials" style="display: block">
+            <p><b>email:</b> <%=email %></p>
+            <p><b>name:</b> <%=name %></p>
+            <p><b>phone:</b> <%=phone %></p>
+            <p><b>address:</b> <%=address %></p>
+            <p><b></b></p>
+            <p><b></b></p>
+            <p><b></b></p>
+        </div>
+        
+        <div id="editProfileCredentials" style="display: none">
+            <form action="/user-update-credentials" method="POST">
+                <input hidden value="<%=email %>" name="oldEmail"></input>
+                <input hidden value="<%=email %>" name="newEmail" placeholder="email"></input>
+                <b>name: </b><input value="<%=name %>" name="name" placeholder="name"></input>
+                <br/>
+                <b>phone: </b><input value="<%=phone %>" name="phone" placeholder="phone"></input>
+                <br/>
+                <b>adress: </b><input value="<%=address %>" name="address" placeholder="address"></input>
+                <br/>
+                <br/>
+                <button class="profile-buttons" type="submit" onclick="">confirm change</button>
+            </form>
+        </div>
+    </main>
 </body>
 </html>

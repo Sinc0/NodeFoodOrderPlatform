@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Restaurants</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-
-        <!-- admin view -->
-        <% if(admin == true) { %>
-            <%- include('../snippets/html_nav_menu_admin.ejs') %>
-        
-        <!-- logged in user view -->
-        <% } else if(loggedIn == true) { %>
-            <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
-        
-        <!-- anonmymous view -->
-        <% } else { %>
-            <%- include('../snippets/html_nav_menu_anon.ejs') %>
-        <% } %>
+    <!-- admin view -->
+    <% if(admin == true) { %>
+        <%- include('../snippets/html_nav_menu_admin.ejs') %>
+    
+    <!-- logged in user view -->
+    <% } else if(loggedIn == true) { %>
+        <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
+    
+    <!-- anonmymous view -->
+    <% } else { %>
+        <%- include('../snippets/html_nav_menu_anon.ejs') %>
+    <% } %>
 
     <main id="main-restaurants">
         <!-- <h1>My restaurants</h1>
