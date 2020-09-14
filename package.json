@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env MONGO_USER=Sinco MONGO_PASSWORD=TemporaryPassword123 MONGO_DEFAULT_DB=nodeRestaurant node server.js"
+    "start": ""
   },
   "author": "",
   "license": "ISC",

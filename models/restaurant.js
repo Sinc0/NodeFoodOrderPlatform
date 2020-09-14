@@ -31,12 +31,13 @@ const ObjectId = mongodb.ObjectId;
 
 class Restaurant 
 {
-    constructor(title, price, description, imageUrl) 
+    constructor(title, price, description, imageUrl, owner) 
     {
         this.title = title;
         this.price = price;
         this.description = description;
         this.imageUrl = imageUrl;
+        this.owner = owner;
     }
 
     save() 

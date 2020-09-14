@@ -47,6 +47,7 @@ class Order
                 customerComment: customerComment,
                 delivery: delivery,
                 pickUp: pickUp,
+                type: delivery,
                 products: productArray,
                 rating: null,
             })  

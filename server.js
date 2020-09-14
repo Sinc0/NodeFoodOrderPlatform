@@ -99,7 +99,7 @@ app.use(errorController.get404ErrorPage);
 //app.listen(3000); //achieves same as above     
 
 
-
+//db and websocket connection
 mongoConnect(() => {
     webSocket = new ws({port: 65535});
     

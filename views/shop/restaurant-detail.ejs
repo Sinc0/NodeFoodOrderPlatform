@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/restaurant.css">
     <script src="/js/functionality.js"></script>
+    <script src="/js/shortcuts.js"></script>
+    <script>
+        shortcut.add("escape", function() {document.getElementById("temp").click()});  
+    </script>
 </head>
 
 <body onload="loadSideCart()">
@@ -23,16 +27,41 @@
         <%- include('../snippets/html_nav_menu_anon.ejs') %>
     <% } %>
 
+    <modal>
+        <div hidden id="informAnonModal">
+            <button id="temp" onclick="InformAnonClose()" style="margin-left: 437.5px;">X</button>
+
+            <br />
+            <br />
+            
+            <p>You need to register or login to be able to order</p>
+            
+            <br />
+
+            <button><a href="/login">Login</a></button>        
+            <button><a href="/register">Register</a></button>
+            
+            <p></p>
+
+            <br />
+            <br />
+        </div>
+    </modal>
+
     <main id="main-menu" class="centered">
-        <div id="menu">            
+        <div id="menu">
             <div>
                 <h1><%=restaurant.title %></h1>
             </div>
             <!-- <h1><%= restaurant.title %></h1> -->
             <hr>
-            
-            <br />
-            
+
+            <% if(restaurant.open == false) { %>
+                <div id="restaurantDetailRestaurantIsClosed">
+                    <h1>Closed</h1>
+                </div>
+            <% } %>
+
             <div class="card__image">
                 <img src="/<%= restaurant.imageUrl %>">
             </div>
@@ -74,11 +103,32 @@
                             <p>$<%= restaurant.menu[c].price %></p>
                             <p>Ingredients: <%= restaurant.menu[c].description %></p>
                         </div>
+                        <% if(loggedIn == true) { %>
                         <div id="menu-item-add-to-cart-button">
                             <% let buttonNumber = c %>
                             <button onclick="updateCart('<%=buttonNumber %>', '<%=restaurant.menu[c].title %>', '<%=restaurant.menu[c].price %>')" class="cart-add-to-cart-button">+</button></a>
                             <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menu[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
                         </div>
+                        <% } %>
+
+                        <% if(loggedIn != true) { %>
+                            <% if(restaurant.open == true) { %>
+                                <div id="menu-item-add-to-cart-button">
+                                    <% let buttonNumber = c %>
+                                    <button onclick="InformAnonOpen()" class="cart-add-to-cart-button">+</button></a>
+                                    <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menu[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
+                                </div>
+                            <% } %>
+
+                            <% if(restaurant.open == false) { %>
+                                <div disabled id="menu-item-add-to-cart-button">
+                                    <% let buttonNumber = c %>
+                                    <button disabled onclick="InformAnonOpen()" class="cart-add-to-cart-button" style="opacity: .50; visibility: hidden;">+</button></a>
+                                    <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menu[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
+                                </div>
+                            <% } %>
+
+                        <% } %>
                     </div>
                     <% } else { %>
                     <% } %>
@@ -91,6 +141,7 @@
             <% } %>
         </div>
  
+        <% if(loggedIn == true) { %>
         <div id="side-cart">
             <form action="/checkout" method="POST">
                 <button id="order-button" type="submit">Checkout</button>
@@ -107,6 +158,7 @@
                 <input id="customerComment" name="customerComment" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>
             </form>
         </div>
+        <% } %>
     </main>
 </body>
 </html>

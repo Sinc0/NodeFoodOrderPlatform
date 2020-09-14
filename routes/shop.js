@@ -4,15 +4,17 @@ const express = require('express');
 const shopController = require('../controllers/shop');
 const router = express.Router();
 const validation = require('../validation/userValidation');
+const restaurantValidation = require('../validation/restaurantValidation');
 const stripe = require("stripe")("");
 
 //route handling no validation
-router.post('/register-post', shopController.postRegister)
-router.get('/register', shopController.getRegister)
-router.post('/login-post', shopController.postLogin)
-router.get('/login', shopController.getLogin)
-
-
+router.post('/register-post', shopController.postRegister);
+router.post('/register-restaurant-post', shopController.postRegisterRestaurant);
+router.get('/register', shopController.getRegister);
+router.post('/login-post', shopController.postLogin);
+router.get('/login', shopController.getLogin);
+router.get('/about', shopController.getAbout);
+router.get('/contact', shopController.getContact);
 
 //route handling user validation
 router.get('/restaurants', validation, shopController.getRestaurantList);
@@ -48,7 +50,16 @@ router.all('/checkout', validation, shopController.getCheckout);
 router.get('/logout', validation, shopController.getLogout);
 router.post('/logout-post', validation, shopController.postLogout);
 
-
+//restaurant
+router.get('/portal/:restaurant/home', restaurantValidation, shopController.getRestaurantIndex);
+router.get('/portal/restaurant/orders/accept', shopController.getRestaurantOrdersAccept);
+router.get('/portal/restaurant/orders/completed', shopController.getRestaurantOrdersCompleted);
+router.get('/portal/restaurant/orders/declined', shopController.getRestaurantOrdersDeclined);
+router.get('/portal/restaurant/orders/chef', shopController.getRestaurantOrdersChef);
+router.get('/portal/restaurant/menu/show', shopController.getRestaurantMenuShow);
+router.get('/portal/restaurant/menu/edit', shopController.getRestaurantMenuEdit);
+router.get('/portal/restaurant/stats', shopController.getRestaurantStats);
+router.get('/portal/restaurant/reviews', shopController.getRestaurantReviews);
 
 //exports
 module.exports = router;

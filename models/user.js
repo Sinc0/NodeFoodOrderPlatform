@@ -9,12 +9,12 @@ class User
     constructor(email, name, password, admin, cart, isLoggedIn, loginCookie, orders)
     {
         this.email = email;
-        this.name = name;
-        this.password = password;
-        this.admin = admin;
-        this.cart = cart;
-        this.isLoggedIn = isLoggedIn;
         this.loginCookie = loginCookie;
+        this.password = password;
+        this.isLoggedIn = isLoggedIn;
+        this.admin = admin;
+        this.name = name;
+        this.cart = cart;
         this.orders = orders;
     }
                
@@ -449,31 +449,86 @@ class User
         })
     }
 
-    static register(email, username, password)
+    static register(email, name, password)
     {
         const db = getDb();
 
         let statusText = "";
-        let cookieId = Math.random();
+        let successful = 1;
 
-        db.collection('users')
-        .find({username: username})
+        //check if email is taken
+        return db.collection('users')
+        .find({email: email})
         .next()
         .then(result => {
+            //if email is available
             if(result == null)
             {
-                username = username;
-                //console.log('username is available');
-                //console.log(username);
+                email = email;
+                return cb();
             }
+            //if email is taken
             else
             {
-                username = null;
-                //console.log('username is taken');
-            }             
+                email = null;
+                return cb();
+            }
         })
         .catch(err => console.log(err))
 
+        async function cb()
+        {
+            //if email is taken
+            if(email == null)
+            {
+                return statusText = 'email is taken';
+            }
+
+            //if email is available
+            else if(name != null && email != null)
+            {
+                    var registerUser = await db.collection('users').insertOne(
+                    {
+                        email: email,
+                        name: name,
+                        address: null,
+                        phone: null,
+                        cart: null,
+                        loginCookie: null,
+                        isLoggedIn: false,
+                        admin: false,
+                        restaurantName: null,
+                        companyIdNumber: null,
+                        password: password,
+                        createdAt: new Date()
+                    })
+
+                    
+                if(registerUser.insertedCount == successful)
+                {
+                    return statusText = 'registration successful';
+                }
+                
+                else
+                {
+                    return statusText = 'database error';
+                }
+            }
+        }
+        
+    }
+
+    static async registerRestaurant(email, address, phone, owner, restaurantName, companyIdNumber, password)
+    {
+        //get db
+        const db = getDb();
+
+        //generate cookie id
+        let statusText = "";
+        let cookieId = Math.random();
+        let successful = 1;
+
+        //check if email is taken
         return db.collection('users')
         .find({email: email})
         .next()
@@ -495,49 +550,64 @@ class User
         })
         .catch(err => console.log(err))
 
-        function cb()
+        async function cb()
         {
-            //if username is taken
-            if(username == null)
-            {
-                statusText = 'username is taken';
-                return statusText;
-            }
-
             //if email is taken
-            else if(email == null)
+            if(email == null)
             {
-                statusText = 'email is taken';
-                return statusText;
+                return statusText = 'email is taken';
+            }
+            
+            else if(email != null)
+            {
+                       
+                var registerUser = await db.collection('users').insertOne(
+                {
+                    email: email,
+                    name: owner,
+                    address: address,
+                    phone: phone,
+                    cart: null,
+                    loginCookie: null,
+                    isLoggedIn: false,
+                    admin: false,
+                    restaurantName: restaurantName,
+                    companyIdNumber: companyIdNumber,
+                    password: password,
+                    createdAt: new Date()
+                })
+                //console.log(registerUser.insertedCount);  
+                       
+                var registerRestaurant = await db.collection('restaurants').insertOne(
+                {
+                    email: email,
+                    owner: owner,
+                    address: address,
+                    phone: phone,
+                    companyIdNumber,
+                    url: null,
+                    title: restaurantName,
+                    hours: null,
+                    description: null,
+                    imageUrl: null,
+                    menuCategories: null,
+                    menu: null,
+                    createdAt: new Date()
+                })
+                //console.log(registerRestaurant.insertedCount);
+
+                if(registerUser.insertedCount == successful && registerRestaurant.insertedCount == successful)
+                {
+                    return statusText = 'registration successful';
+                }
+                
+                else
+                {
+                    return statusText = 'database error';
+                }
+
             }
 
-            //if username and email is available
-            else if(username != null && email != null)
-            {
-                    let user = new User(email, username, "12356", false, null, true, cookieId)
-
-                    return user.save().then(result => {
-                        if(result != "error")
-                        {
-                            console.log('register user: ' + email + ' successful');
-                            //console.log(user);
-                            statusText = 'registration successful';
-                            return statusText;
-                        }
-
-                        if(result == "error")
-                        {
-                            //console.log('database error');
-                            statusText = 'database error, try again in a few minutes';
-                            return statusText;
-                        }
-                    });
-            }
-
-            else
-            {
-                console.log('error line 217 in user.js');
-            }
         }
         
     }

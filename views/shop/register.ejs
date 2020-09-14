@@ -4,30 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/functionality.js"></script>
 </head>
+<%- include('../snippets/html_nav_menu_anon.ejs') %>
 <body>
-    <h3> Register Below </h3>
-    <p><%= statusText %></p>
+    <main id="main-register">
 
-    <form action="/register-post" method="POST">
+        <br />
+        
+        <h3> Select Register Type Below </h3>
+        
+        
+        <br/>
+        <p><%= statusText %></p>
 
-        <div>
-            <label> Username </label>
-            <input type="text" id="username" name="username" value="">
+        <button id="registerCustomerBtn" onclick="registerCustomer()" style="margin-bottom: 2.5px;">Customer</button>
+        <button id="registerRestaurantBtn" onclick="registerRestaurant()">Restaurant</button>
+
+        <div hidden id="registerCustomer">
+            <form action="/register-post" method="POST">
+                <div>
+                    <input type="email" maxlength="100" id="emailCustomer" name="emailCustomer" placeholder="Email" value="" required>
+                </div>
+                
+                <div>
+                    <input type="text" maxlength="100" id="nameCustomer" name="nameCustomer" placeholder="Name" value="">
+                </div>
+
+                <div>
+                    <input type="password" maxlength="100" id="passwordCustomer" name="passwordCustomer" placeholder="Password" value="" oninput="checkPassCustomer()" required>
+                </div>
+
+                <div>
+                    <input type="password" maxlength="100" id="confirmPasswordCustomer" name="confirmPasswordCustomer" placeholder="Confirm Password" value="" oninput="checkPassCustomer()" required>
+                </div>
+
+                <button class="btn" id="submitFormBtnRegisterCustomer" type="submit" style="margin-top: 23.5px">Register</button>
+            </form>
         </div>
 
-        <div>
-            <label> Email </label>
-            <input type="email" id="email" name="email" value="">
+        <div hidden id="registerRestaurant">
+            <form action="register-restaurant-post" method="POST">
+                <div>
+                    <input type="email" maxlength="100" id="emailRestaurant" name="emailRestaurant" placeholder="Email" value="" required>
+                </div>
+
+                <div>
+                    <input type="text" maxlength="100" id="addressRestaurant" name="addressRestaurant" placeholder="Address" value="">
+                </div>
+
+                <div>
+                    <input type="tel" maxlength="15" id="phoneRestaurant" name="phoneRestaurant" placeholder="Phone" value="">
+                </div>
+
+                <div>
+                    <input type="text" maxlength="100" id="ownerRestaurant" name="ownerRestaurant" placeholder="Owner Name" value="" required>
+                </div>
+
+                <div>
+                    <input type="text" maxlength="100" id="nameRestaurant" name="nameRestaurant" placeholder="Restaurant Name" value="" required>
+                </div>
+
+                <div>
+                    <input type="text" maxlength="15" id="companyIdNumberRestaurant" name="companyIdNumberRestaurant" placeholder="Company Id Number" value="">
+                </div>
+
+                <div>
+                    <input type="password" maxlength="100" id="passwordRestaurant" name="passwordRestaurant" placeholder="Password" value="" oninput="checkPassRestaurant()" required>
+                </div>
+
+                <div>
+                    <input type="password" maxlength="100" id="confirmPasswordRestaurant" name="confirmPasswordRestaurant" placeholder="Confirm Password" value="" oninput="checkPassRestaurant()" required>
+                </div>
+
+                <button id="submitFormBtnRegisterRestaurant" class="btn" type="submit" style="margin-top: 22.5px">Register</button>
+            </form>
         </div>
-
-        <div>
-            <label> Password </label>
-            <input type="password" id="password" name="password" value="">
-        </div>
-
-        <button class="btn" type="submit">Register</button>
-
-    </form>
+    </main>
 </body>
 </html>

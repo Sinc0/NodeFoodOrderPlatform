@@ -351,3 +351,95 @@ function editProfileCredentials()
         editProfileCredentials.style.display = "none";
     }
 }
+
+function registerCustomer()
+{
+    var customerForm = document.getElementById("registerCustomer");
+    var restaurantForm = document.getElementById("registerRestaurant");
+    var customerBtn = document.getElementById("registerCustomerBtn");
+    var restaurantBtn = document.getElementById("registerRestaurantBtn");
+
+    customerForm.style.display = "block";
+    restaurantForm.style.display = "none";
+    customerBtn.style.borderColor = "black";
+    restaurantBtn.style.borderColor = "gray";
+}
+
+function registerRestaurant()
+{
+    var customerForm = document.getElementById("registerCustomer");
+    var restaurantForm = document.getElementById("registerRestaurant");
+    var customerBtn = document.getElementById("registerCustomerBtn");
+    var restaurantBtn = document.getElementById("registerRestaurantBtn");
+    
+    customerForm.style.display = "none";
+    restaurantForm.style.display = "block";
+    customerBtn.style.borderColor = "gray";
+    restaurantBtn.style.borderColor = "black";
+}
+
+function checkPassRestaurant()
+{
+    var password = document.getElementById("passwordRestaurant");
+    var confirmPassword = document.getElementById("confirmPasswordRestaurant");
+    var submitFormButton = document.getElementById("submitFormBtnRegisterRestaurant");
+
+    if(confirmPassword.value == "")
+    {
+        
+    }   
+
+    else if(password.value != confirmPassword.value)
+    {
+        password.style.color = "red";
+        confirmPassword.style.color = "red"
+        submitFormButton.disabled = true;
+    }
+
+    else if(password.value == confirmPassword.value)
+    {
+        password.style.color = "lightgreen";
+        confirmPassword.style.color = "lightgreen";
+        submitFormButton.disabled = false;
+    }
+}
+
+function checkPassCustomer()
+{
+    var password = document.getElementById("passwordCustomer");
+    var confirmPassword = document.getElementById("confirmPasswordCustomer");
+    var submitFormButton = document.getElementById("submitFormBtnRegisterCustomer");
+    
+    if(confirmPassword.value == "")
+    {
+
+    }
+
+    else if(password.value != confirmPassword.value)
+    {
+        password.style.color = "red";
+        confirmPassword.style.color = "red";
+        submitFormButton.disabled = true;
+    }
+
+    else if(password.value == confirmPassword.value)
+    {
+        password.style.color = "lightgreen";
+        confirmPassword.style.color = "lightgreen";
+        submitFormButton.disabled = false;
+    }
+}
+
+function InformAnonOpen()
+{
+    var modalBox = document.getElementById("informAnonModal");
+
+    modalBox.style.display = "block";
+}
+
+function InformAnonClose()
+{
+    var modalBox = document.getElementById("informAnonModal");
+
+    modalBox.style.display = "none";
+}

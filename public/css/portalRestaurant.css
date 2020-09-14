@@ -1,0 +1,130 @@
+/*
+:root 
+{
+    --nav-width: 588px;
+}
+  
+
+#PortalNav
+{
+    /* border: 1px solid black; */ /*
+}
+
+.NavCategory
+{
+    margin: auto;
+    width: var(--nav-width);
+    border: 1px solid black;
+}
+
+.NavElement
+{
+    margin: 0px;
+    margin-left: -4px;
+    display: inline-block;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+p
+{
+    text-align: center;
+    padding: 10px;
+    min-width: 125px;
+}
+
+.FirstColumnDiv
+{
+    margin-left: 0px;
+}
+*/
+
+#NavBar
+{
+    margin: 0px;
+    padding: 0px;
+    background-color: greenyellow;
+}
+
+#NavBar p
+{
+    margin-top: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+body
+{
+    padding: 0px;
+    margin: 0px;
+}
+
+#PortalNav
+{
+    margin-top: 150px;
+    /* border: 1px solid black; */
+}
+
+.NavCategory
+{
+    margin: auto;
+    width: 350px;
+    border: 1px solid black;
+}
+
+.NavElement
+{
+    border: 1px solid black;
+}
+
+.NavElement:hover
+{
+    background-color: #fff;
+}
+
+.NavElement:active
+{
+    background-color: #fff;
+}
+
+p
+{
+    font-family: sans-serif;
+    text-align: center;
+    text-decoration: none;
+    padding: 5px;
+    min-width: 125px;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+a
+{
+    text-decoration: none;
+    color: black;
+}
+
+.Home
+{
+    background-color: lightgreen;
+}
+
+.Orders
+{
+    background-color: gray;
+}
+
+.Menu
+{
+    background-color: lightblue;
+}
+
+.Customer
+{
+    background-color: lightcoral;
+}
+
+

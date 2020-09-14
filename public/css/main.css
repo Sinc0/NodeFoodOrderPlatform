@@ -19,48 +19,69 @@ body {
     margin: auto;
 }
 
-#restaurant
+#body-restaurants
 {
-    display: inline-block;   
-    background-color: burlywood;
-    border: 1px solid black;
-    width: 200px;
-    padding: 0px;
-    /* padding-bottom: 5px; */
+    background-color: lightgray;
+}
+
+#restaurantMenuItem
+{
+    display: block;   
     margin: auto;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    margin-right: 7px;
-    margin-left: 7px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding: 0px;
+    background-color: black;
+    height: 200px;
+    width: 700px;
+    /* transition: all 1.5s ease-in-out; */
+    /* padding-bottom: 5px; */
 }
 
-#restaurant img
+#restaurantMenuItem:hover
 {
-    height: 100%;
-    width: 100%;
+    /* transform: translate(3em,0); */
+    /* transform: scale(1.05); */
 }
 
-#restaurant h1, h2, p, button
+#restaurantMenuItemText
 {
     margin: 0px;
-    margin-bottom: 5px;
+    margin-top: 3px;
+    margin-right: 2px;
+    margin-left: -4px;
+    padding: 0px;
+    width: 466px;
+    height: 194px;
+    text-align: left;
+    background-color: snow;
 }
 
-#restaurant button
+#restaurantMenuItemImg
 {
-    height: 50px;
-    width: 100%;
-    margin-bottom: 0px;
+    margin: 0px;
+    padding: 0px;
+    vertical-align: top;
+    height: 200px;
+    width: 230px;
+    background-color: black;
 }
 
-#restaurant:hover 
+#restaurantMenuItem img
 {
-    transform: scale(1.03);
+    margin: 0xp;
+    margin-top: 3px;
+    padding: 0px;
+    height: 194px;
+    width: 225px;
 }
 
-#main-restaurants
+#restaurantMenuItem h1, h3, p
 {
-    background-color: green;
+    margin: 0px;
+    margin-left: 7px;
+    margin-right: 7px;
+    padding: 0px;
 }
 
 #main-orders
@@ -79,9 +100,87 @@ body {
     padding: 10px;
 }
 
-#grid-restaurants
+#main-register
 {
     background-color: orange;
+    margin: auto;
+    margin-top: 50px;
+    width: 350px;
+    text-align: center;
+    border: 1px solid black;
+}
+
+#main-register button
+{
+    margin-bottom: 25px;
+    height: 30.5px;
+    width: 254px;
+    border: 1px solid gray;
+}
+
+#main-login
+{
+    background-color: orange;
+    margin: auto;
+    margin-top: 50px;
+    width: 350px;
+    text-align: center;
+    border: 1px solid black;
+}
+
+#main-login button
+{
+    margin-top: 23.5px;
+    margin-bottom: 25px;
+    height: 30.5px;
+    width: 254px;
+    border: 1px solid gray;
+}
+
+#main-login input
+{
+    height: 25px;
+    width: 250px;
+    margin-bottom: 2.5px;
+}
+
+#main-login input[placeholder]
+{
+    text-align: center;
+}
+
+#main-logout
+{
+    background-color: orange;
+    margin: auto;
+    margin-top: 50px;
+    width: 350px;
+    text-align: center;
+    border: 1px solid black;
+}
+
+#main-logout button
+{
+    height: 30.5px;
+    width: 200px;
+    border: 1px solid gray;
+}
+
+#main-about
+{
+    margin: auto;
+    margin-top: 50px;
+    width: 700px;
+}
+
+#main-contact
+{
+    margin: auto;
+    margin-top: 50px;
+    width: 250px;
+}
+#grid-restaurants
+{
     text-align: center;
 }
 
@@ -206,7 +305,7 @@ main {
 #menu-item:hover
 {
     /* background-image: url("https://i.imgur.com/PtkPoW4.jpg"); */  
-    background-color: gray;
+    /* background-color: gray; */
 }
 
 #side-cart
@@ -514,4 +613,150 @@ option
 .profile-buttons
 {
     width: 150px;
+}
+
+#registerCustomer input, #registerRestaurant input
+{
+    height: 25px;
+    width: 250px;
+    margin-bottom: 2.5px;
+    
+}
+
+#registerCustomer input[placeholder], #registerRestaurant input[placeholder]
+{
+    text-align: center;
+}
+
+#backArrow:hover
+{
+    color: purple;
+    cursor: pointer;
+}
+
+#navMenuBackArrow
+{
+    margin: 0px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 0px;
+    color: black;
+    font-size: x-large;
+    font-weight: bold;
+
+}
+
+#indexAnonMenu
+{
+    margin: auto;
+    margin-top: 250px;
+    width: 500px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+#indexAnonMenu a
+{
+    text-decoration: none;
+}
+
+#indexAnonMenu b p
+{
+    margin: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.indexAnonMenuItem
+{
+    background-color: purple;
+    border: 1px solid black;
+}
+
+.about-bold-text-title
+{
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+}
+
+#about-FAQ
+{
+    text-align: center;
+}
+
+#informAnonModal
+{
+    position: fixed;
+    margin: 0px;
+    padding-left: 10px;
+    padding-top: 0px;
+    padding-right: 10px;
+    padding-bottom: 0px;
+    width: 450px;
+    margin: auto;
+    background-color: olivedrab;
+    border: 1px solid black;
+    text-align: center;
+    z-index: 1;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -25%);
+}
+
+#informAnonModal button
+{
+    border-style: none;
+    border-radius: 0px;
+}
+
+#informAnonModal a
+{
+    text-decoration: none;
+    color: black;
+}
+
+#resturantsSearchBar
+{
+    width: 300px;
+    margin: 0px;
+    padding: 0px;
+    padding-top: 25px;
+    margin: auto;
+}
+
+#RestaurantClosed
+{
+    position: absolute;
+    z-index: 1;
+    margin: 0px;
+    margin-left: -350px;
+    padding: 0px;
+    height: 200px;
+    width: 700px;
+    text-align: center;
+    background-color: rgb(121, 55, 55, 75%);
+    visibility: hidden;
+}
+
+#RestaurantClosed p
+{
+    margin-top: 75px;
+    color: black;
+    font-size: xx-large;
+}
+
+#RestaurantClosed h3, b
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+#restaurantDetailRestaurantIsClosed h1
+{
+    margin: 0px;
+    margin-top: -10px;
+    margin-bottom: 25px;
+    padding: 0px;
+    background-color: red;
 }

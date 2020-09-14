@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurants</title>
     <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/functionality.js"></script>
 </head>
-<body>
+<body id="body-restaurants">
     <!-- admin view -->
     <% if(admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
@@ -20,44 +21,113 @@
         <%- include('../snippets/html_nav_menu_anon.ejs') %>
     <% } %>
 
+    <% var restaurantsOpen = [] %>
+    <% var restaurantsClosed = [] %>
+
+    <% for (let restaurant of restaurants) { %>
+        <% if(restaurant.open == true) { %>
+            <% restaurantsOpen.push(restaurant); %>
+        <% } %>
+    <% } %>
+
+    <% for (let restaurant of restaurants) { %>
+        <% if(restaurant.open == false) { %>
+            <% restaurantsClosed.push(restaurant); %>
+        <% } %>
+    <% } %>
+
     <main id="main-restaurants">
+        <div id="resturantsSearchBar">
+            <label><b>Search:</b></label>
+            <input></input>
+        </div>
+
         <!-- <h1>My restaurants</h1>
         <p> List of all the restaurants...</p> -->
-        <% if (restaurants.length > 0) { %>
-            <div id="grid-restaurants" class="grid">
-                <% for (let restaurant of restaurants) { %>
+        <div id="grid-restaurants" class="grid">
+            <% if (restaurantsOpen.length > 0) { %>
+                <% for (let restaurant of restaurantsOpen) { %>
+                <div id="restaurantMenuItem">
                     <a style="text-decoration: none; color: black" href="/restaurant/<%= restaurant.url %>">
-            <article id="restaurant" class="card restaurant-item">
-                <div class="card__image">
-                    <img src="<%= restaurant.imageUrl %>" alt="<%= restaurant.title %>">
-                </div>
                 
-                <div>
-                    <header class="card__header">
-                        <h1 class="restaurant">Restaurant</h1>
-                    </header>
-                </div>  
+                    <div id="restaurantMenuItemImg" style="display: inline-block;">
+                        <img src="<%= restaurant.imageUrl %>" alt="<%=restaurant.title %>">
+                    </div>
+                    
+                    <div id="restaurantMenuItemText" style="display: inline-block;">
+                        <h1 style="margin-top: 0px;"><%=restaurant.title %></h1>
+                        <% if(restaurant.open == true) { %>
+                            <h3 style="color: rgb(30, 209, 54)">Open</h3> <!-- open or closed -->
+                        <% } %>
 
-                <div class="card__content">
-                    <h3 class="restaurant">Open</h3>
-                    <h3 class="restaurant">Type</h3>
-                    <h3 class="restaurant">Location</h3>
-                    <h3 class="restaurant">Hours</h3>
+                        <% if(restaurant.open == false) { %>
+                            <h3 style="color: rgb(214, 14, 14)">Closed</h3> <!-- open or closed -->
+                        <% } %>
+
+                        <h3>3.5</h3> <!-- rating -->
+                        <h3>Pizza och Kebab</h3> <!-- type -->
+                        <h3>Stockholm</h3> <!-- location -->
+                        <p>askdslad alsdkla alksd klasdk alskd lasdk lalksd laskd laksdl kalsdk laskd laksdl kasdk askdlas aklsdskaldak alksdsalkd askdslad alsdkla alksd klasdk alskd lasdk lalksd laskdxxxxxxxxx</p> <!-- description -->
+                    </div>
+                    
+                    <!--
+                    <div class="card__actions">
+                        <a href="/restaurants/<%= restaurant._id %>" class="btn"><button>Details</button></a>
+                        <a href="/cart/<%= restaurant._id %>" class="btn"><button>Details</button></a>
+                    </div>
+                    -->
                 </div>
+                </a>
+                <% } %>
+            
+                <% } else { %>
+                    
+                <% } %>
+
+            <% if (restaurantsClosed.length > 0) { %>
+                <% for (let restaurant of restaurantsClosed) { %>
+                    <div id="RestaurantClosed" style="display: inline-block;">
+                        <p><b>Closed</b></p>
+                    </div>
+        
+                    <div id="restaurantMenuItem">
+                        <a style="text-decoration: none; color: black" href="/restaurant/<%= restaurant.url %>">
+                    
+                            <div id="restaurantMenuItemImg" style="display: inline-block;">
+                                <img src="<%= restaurant.imageUrl %>" alt="<%=restaurant.title %>">
+                            </div>
+                            
+                            <div id="restaurantMenuItemText" style="display: inline-block;">
+                                <h1 style="margin-top: 0px;"><%=restaurant.title %></h1>
+                                <% if(restaurant.open == true) { %>
+                                    <h3 style="color: rgb(30, 209, 54)">Open</h3> <!-- open or closed -->
+                                <% } %>
                 
-                <!--
-                <div class="card__actions">
-                    <a href="/restaurants/<%= restaurant._id %>" class="btn"><button>Details</button></a>
-                    <a href="/cart/<%= restaurant._id %>" class="btn"><button>Details</button></a>
-                </div>
-                -->
-            </article>
-        </a>
-       <% } %>
-    </div>
-    <% } else { %>
-        <h1> No restaurants found</h1>
-    <% } %>
+                                <% if(restaurant.open == false) { %>
+                                    <h3 style="color: rgb(214, 14, 14)">Closed</h3> <!-- open or closed -->
+                                <% } %>
+                
+                                <h3>3.5</h3> <!-- rating -->
+                                <h3>Pizza och Kebab</h3> <!-- type -->
+                                <h3>Stockholm</h3> <!-- location -->
+                                <p>askdslad alsdkla alksd klasdk alskd lasdk lalksd laskd laksdl kalsdk laskd laksdl kasdk askdlas aklsdskaldak alksdsalkd askdslad alsdkla alksd klasdk alskd lasdk lalksd laskdxxxxxxxxx</p> <!-- description -->
+                            </div>
+                            
+                            <!--
+                            <div class="card__actions">
+                                <a href="/restaurants/<%= restaurant._id %>" class="btn"><button>Details</button></a>
+                                <a href="/cart/<%= restaurant._id %>" class="btn"><button>Details</button></a>
+                            </div>
+                            -->
+                        </a>
+                    </div>
+                <% } %>
+            <% } else { %>
+                
+            <% } %>
+        </div>
+
     </main>
+    
 </body>
 </html>

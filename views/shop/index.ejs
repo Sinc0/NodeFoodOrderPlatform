@@ -10,23 +10,22 @@
     <!-- admin view -->
     <% if(admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
-        <main id="main-index">
-        <p> Home Page for admin </p>
-        </main>
     
     <!-- logged in user view -->
     <% } else if(loggedIn == true) { %>
         <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
-        <main id="main-index">
-        <p> Home Page for logged in </p>
-        </main>
+        <p>logged in user view</p>
     
     <!-- anonmymous view -->
     <% } else { %>
-        <%- include('../snippets/html_nav_menu_anon.ejs') %>
-        <main id="main-index">
-            <p> Home Page for anonymous </p>
-        </main>
+        <div id="indexAnonMenu">
+            <!-- <div class="indexAnonMenuItem"><a href="/"><b><p>Shop</p></b></a></div> -->
+            <div class="indexAnonMenuItem"><a href="/about"><b><p>About</p></b></a></div>
+            <div class="indexAnonMenuItem"></li><a href="/restaurants"><b><p>Restaurants</p></b></a></div>
+            <div class="indexAnonMenuItem"></li><a href="/register"><b><p>Register</p></b></a></div>
+            <div class="indexAnonMenuItem"><a href="/login"><b><p>Login</p></b></a></div>
+            <div class="indexAnonMenuItem"><a href="/contact"><b><p>Contact</p></b></a></div>
+        </div>
     <% } %>
 </body>
 </html>
