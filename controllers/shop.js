@@ -276,13 +276,13 @@ exports.getRestaurantList = (req, res, next) => {
     {
         validationStatus = validation.status;
     }
-   
+    
     let userEmail = res.locals.userEmail;
-    const restaurantUrl = req.params.restaurantUrl;
-    console.log(restaurantUrl);
     let addToCartSuccessful = 1;
     let addoCartFailed = 0;    
-
+    
+    //const restaurantUrl = req.params.restaurantUrl;
+    //console.log(restaurantUrl);
     //console.log(restaurantId);
     //console.log(userEmail);
     
@@ -1058,23 +1058,34 @@ exports.getLogin = (req, res, next) => {
     })
 }
 
-exports.postLogin = (req, res, next) => {
+exports.postLogin = async (req, res, next) => {
     console.log('\npostLogin >');
     const email = req.body.email;
     const password = req.body.password;
     
-    User.login(email, password).then(result=> {
+    User.login(email, password).then(result => {
         //console.log("result: " + result);
 
         if(result.statusText == 'login successful')
         {
             console.log('login user: ' + result.email + ' successful');
-            //console.log(result.statusText);
-            //console.log(result.cookieId);
 
-            res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';')
-            res.redirect('/');
-           
+            Restaurant.findByEmail(result.email).then(restaurantCheck => {
+                if(restaurantCheck != null)
+                {
+                    res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';')
+                    res.redirect('/portal');
+                }
+    
+                else
+                {
+                    //console.log(result.statusText);
+                    //console.log(result.cookieId);
+        
+                    res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';')
+                    res.redirect('/');
+                }
+            });          
         }
 
         else if(result == 'email is invalid')
@@ -1207,11 +1218,11 @@ exports.postOrderUpdate = async (req, res, next) => {
 
     orderId = req.body.orderId;
     status = req.body.status;
-    estimatedCompletionTime = req.body.estimatedTime + " min";
+    estimatedCompletionTime = req.body.estimatedTime;
 
     var order = await Order.updateOne(orderId, status, estimatedCompletionTime);
 
-    res.redirect('/orders-unconfirmed');
+    res.redirect('back');
 }
 
 exports.postOrderDetails = async (req, res, next) => {
@@ -1297,6 +1308,18 @@ exports.getConfirmedOrders = async (req, res, next) => {
 
 }
 
+exports.getDeclinedOrders = async (req, res, next) => {
+    console.log('\ngetConfirmedOrders');
+
+    var orders = await Order.fetchAllDeclined();
+    
+    res.render('shop/orders-declined', 
+    { 
+        orders: orders
+    });
+
+}
+
 exports.getCompletedOrders = async (req, res, next) => {
     console.log('\ngetCompletedOrders');
 
@@ -1353,90 +1376,232 @@ exports.getContact = (req, res, next) => {
 
 //portal restaurant
 exports.getRestaurantIndex = async (req, res, next) => {
-    console.log('\ngetRestaurantIndex Test');
+    console.log('\ngetPortalRestaurant Test');
     
-    console.log(res.locals.userEmail);
     var userEmail = res.locals.userEmail;
-    var user = await User.findByEmail(userEmail);
-    console.log(user);
-    //if user owns restaurant proceed
-
-    console.log(req.params.restaurant);
+    var restaurantUrl = res.locals.restaurantUrl;
+    console.log(userEmail);
+    console.log(restaurantUrl);
+    //var user = await User.findByEmail(userEmail);
+    //console.log(user);
     
-    res.render('shop/restaurant/index', 
+    res.render('portal/index', 
     { 
-        
+        restaurantUrl: restaurantUrl
     });
 }
 
 exports.getRestaurantOrdersAccept = async (req, res, next) => {
-    console.log('\ngetRestaurantOrdersAccept Test');
+    console.log('\ngetPortal-Orders-Accept Test');
+    var userEmail = res.locals.userEmail;
+    var restaurantUrl = res.locals.restaurantUrl;
 
-    res.render('shop/restaurant/orders-accept', 
+    var orders = await Order.fetchAllUnconfirmed(restaurantUrl);
+
+    res.render('portal/orders-accept', 
     { 
-        
+        orders: orders
     });
 }
 
 exports.getRestaurantOrdersCompleted = async (req, res, next) => {
-    console.log('\ngetRestaurantOrdersCompleted Test');
+    console.log('\ngetPortalOrdersCompleted Test');
+    var userEmail = res.locals.userEmail;
+    var restaurantUrl = res.locals.restaurantUrl;
 
-    res.render('shop/restaurant/orders-completed', 
-    { 
-        
+    var orders = await Order.fetchAllCompleted(restaurantUrl);
+
+    res.render('portal/orders-completed', 
+    {
+        orders: orders
     });
 }
 
 exports.getRestaurantOrdersDeclined = async (req, res, next) => {
-    console.log('\ngetRestaurantOrdersDeclined Test');
+    console.log('\ngetPortalOrdersDeclined Test');
+    var userEmail = res.locals.userEmail;
+    var restaurantUrl = res.locals.restaurantUrl;
 
-    res.render('shop/restaurant/orders-declined', 
-    { 
-        
+    var orders = await Order.fetchAllDeclined(restaurantUrl);
+
+    res.render('portal/orders-declined', 
+    {
+        orders: orders
     });
 }
 
 exports.getRestaurantOrdersChef = async (req, res, next) => {
-    console.log('\ngetRestaurantOrdersChef Test');
+    console.log('\ngetPortalOrdersChef Test');
+    var userEmail = res.locals.userEmail;
+    var restaurantUrl = res.locals.restaurantUrl;
 
-    res.render('shop/restaurant/orders-chef', 
+    var orders = await Order.fetchAllConfirmed(restaurantUrl);
+
+    res.render('portal/orders-chef', 
     { 
-        
+        orders: orders
     });
 }
 
 exports.getRestaurantMenuShow = async (req, res, next) => {
-    console.log('\ngetRestaurantMenuShow Test');
+    console.log('\ngetPortalMenuShow Test');
+    var userEmail = res.locals.userEmail;
+    var restaurantUrl = res.locals.restaurantUrl;
 
-    res.render('shop/restaurant/menu-show', 
-    { 
-        
-    });
+    var restaurant = await Restaurant.findByUrl(restaurantUrl);
+
+    if(restaurant != null)
+    {   
+        res.render('portal/menu-show', {
+            admin: false,
+            loggedIn: null,
+            IsOpen: restaurant.open,
+            restaurant: restaurant,
+            restaurantImage: "",
+            restaurantUrl: restaurantUrl,
+            path: '/restaurants'
+        });
+    }
+    else
+    {
+        res.redirect('/error');
+    }
+    
 }
 
 exports.getRestaurantMenuEdit = async (req, res, next) => {
-    console.log('\ngetRestaurantMenuEdit Test');
+    console.log('\ngetPortalMenuEdit Test');
+    var userEmail = res.locals.userEmail;
+    var restaurantUrl = res.locals.restaurantUrl;
 
-    res.render('shop/restaurant/menu-edit', 
+    var restaurant = await Restaurant.findByUrl(restaurantUrl);
+    //console.log(restaurant);
+
+    res.render('portal/menu-edit', 
     { 
-        
+        restaurant: restaurant
     });
 }
 
 exports.getRestaurantStats = async (req, res, next) => {
-    console.log('\ngetRestaurantStats Test');
+    console.log('\ngetPortalStats Test');
+    var userEmail = res.locals.userEmail;
+    var restaurantUrl = res.locals.restaurantUrl;
 
-    res.render('shop/restaurant/statistics', 
+    res.render('portal/statistics', 
     { 
         
     });
 }
 
 exports.getRestaurantReviews = async (req, res, next) => {
-    console.log('\ngetRestaurantReviews Test');
+    console.log('\ngetPortalReviews Test');
+    var userEmail = res.locals.userEmail;
+    var restaurantUrl = res.locals.restaurantUrl;
 
-    res.render('shop/restaurant/reviews', 
+    res.render('portal/reviews', 
     { 
         
     });
+}
+
+exports.getRestaurantSettings = async (req, res, next) => {
+    console.log('\ngetPortalSettings Test');
+    var userEmail = res.locals.userEmail;
+    var restaurantUrl = res.locals.restaurantUrl;
+    let loginCookie = req.get('Cookie');
+    let cookieId = parseLoginCookie(loginCookie);
+
+    var user = await User.findByCookieIdReturnUserObject(cookieId);
+
+    //logged in user
+    if(user != null)
+    {
+        res.render('portal/settings', 
+        { 
+            name: user.name,
+            email: user.email,
+            address: user.address,
+            phone: user.phone
+        });
+    }
+
+    else
+    {
+        res.redirect('/error');
+    }
+}
+
+exports.getRestaurantLogout = async (req, res, next) => {
+    console.log('\ngetPortalLogout Test');
+    var userEmail = res.locals.userEmail;
+    var restaurantUrl = res.locals.restaurantUrl;
+
+    console.log('postLogout >');
+    //res.setHeader('Set-Cookie', 'loginCookie=');  
+    let logoutSuccessful = 1;
+    let logoutFailed = 0;
+    let loginCookie = req.get('Cookie');
+    let cookieId = parseLoginCookie(loginCookie);
+    
+
+    User.logout(loginCookie).then(result => {
+        if(result == logoutSuccessful)
+        {
+            res.setHeader('Set-Cookie', 'loginCookie='); 
+            console.log('logout succesful')
+            res.redirect('/');
+        }
+                        
+        else
+        {
+            res.redirect('/portal');
+        }
+
+    })
+    
+
+}
+
+exports.postRestaurantTest = async (req, res, next) => {
+    console.log('getTest');
+    console.log(req.body);
+    console.log(res.locals.userEmail);
+
+    var owner = res.locals.userEmail;
+    var img = JSON.parse(req.body.inputAllImg);
+    var phone = JSON.parse(req.body.inputAllPhone);
+    var address = JSON.parse(req.body.inputAllAddress);
+    var description = JSON.parse(req.body.inputAllDescription);
+    var hours = JSON.parse(req.body.inputAllHours);
+    var categories = JSON.parse(req.body.inputAllCategories);
+    var items = JSON.parse(req.body.inputAllItems);
+    
+    var updateRestaurant = await Restaurant.updateMenu(
+        owner,
+        hours,
+        description,
+        img,
+        categories,
+        items,
+        phone,
+        address
+    );
+
+    res.redirect("/portal");
+
+    /*console.log("*** categories (" + categories.length + ") ***");
+    console.log(categories);
+    console.log("*** items (" + items.length + ") ***");
+    console.log(items);
+    console.log("*** img ***");
+    console.log(img);
+    console.log("*** hours ***");
+    console.log(hours);
+    console.log("*** description ***");
+    console.log(description);*/
+
+
+    //if successful redirect
+    //res.redirect("/portal/menu-edit");
 }

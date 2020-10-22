@@ -50,17 +50,45 @@ class Restaurant
             .catch(err => console.log(err));
     }
 
-    static update(productId, title, price, description, imageUrl) 
+    static update(restaurantId, url, title, open, status, hours, description, image, menuCategories, menuItems, rating, type, location) 
     {
         const db = getDb();   
 
-        return db.collection('products')
-            .updateOne({_id: ObjectId(productId)},{$set: 
+        return db.collection('restaurants')
+            .updateOne({_id: ObjectId(restaurantId)},{$set: 
                 {
+                    url: url, 
+                    image: image,
                     title: title,
-                    price: price,
+                    open: open,
+                    status: status,
+                    hours: hours,
                     description: description,
-                    imageUrl: imageUrl,
+                    menuCategories: menuCategories,
+                    menuItems: menuItems,
+                    rating: rating,
+                    type: type,
+                    location: location
+                }
+            }  )
+            .then(result => { return result /* console.log(result) */ })
+            .catch(err => console.log(err));
+    }
+
+    static updateMenu(owner, hours, description, image, menuCategories, menuItems, phone, address) 
+    {
+        const db = getDb();   
+
+        return db.collection('restaurants')
+            .updateOne({email: owner},{$set: 
+                {
+                    image: image,
+                    hours: hours,
+                    description: description,
+                    menuCategories: menuCategories,
+                    menuItems: menuItems,
+                    phone: phone,
+                    address: address
                 }
             }  )
             .then(result => { return result /* console.log(result) */ })
@@ -124,6 +152,32 @@ class Restaurant
         return db
             .collection('restaurants')
             .findOne({url: url})
+            .then(restaurant => {
+                if(restaurant != null)
+                {
+                    //console.log(restaurant);
+                    return restaurant;
+                }
+
+                else
+                {
+                    //console.log('no product found')
+                    return null;
+                }
+
+            })
+            .catch(err => console.log(err))
+    }
+
+    static findByEmail(email)
+    {
+        const db = getDb();
+
+       //TODO check if prodId characters are by the rules or else redirect
+        
+        return db
+            .collection('restaurants')
+            .findOne({email: email})
             .then(restaurant => {
                 if(restaurant != null)
                 {

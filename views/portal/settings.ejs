@@ -3,32 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%=pageTitle %></title>
+    <title>Settings</title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/portalRestaurant.css">
     <script src="/js/functionality.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDBORRveWwr4pmBRwYBHvrcySfqndTVOUg&callback=GoogleMapsAdressAutocomplete" async defer></script>
 </head>
-
+<a href="/portal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
 <body>
-    <!-- admin view -->
-    <% if(admin == true) { %>
-        <%- include('../snippets/html_nav_menu_admin.ejs') %>
-    
-    <!-- logged in user view -->
-    <% } else if(loggedIn == true) { %>
-        <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
-    
-    <!-- anonmymous view -->
-    <% } else { %>
-        <%- include('../snippets/html_nav_menu_anon.ejs') %>
-    <% } %>
-    
-    <main id="main-profile">
-        <h2>Account Credentials</h2>
+    <main id="main-profile" style="text-align: center">
+        <p style="color: red;"><b>Note: email and password change requires relog</b></p>
 
         <br />
-
-        <p style="color: red;"><b>Note: email and password change requires relog</b></p>
         
         <button class="profile-buttons">change email</button>
 
@@ -43,7 +29,7 @@
         <br />
         <br />
         
-        <div id="profileCredentials" style="display: block">
+        <div id="profileCredentials" style="display: block;">
             <p><b>email:</b> <%=email %></p>
             <p><b>name:</b> <%=name %></p>
             <p><b>phone:</b> <%=phone %></p>

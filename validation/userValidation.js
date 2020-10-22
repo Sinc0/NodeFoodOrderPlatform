@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Restaurant = require('../models/restaurant');
 
 //******* functions *******
 function parseLoginCookie(cookieId)
@@ -66,8 +67,22 @@ module.exports = (req, res, next) => {
             {
                 res.locals.validation = validation;
                 res.locals.userEmail = validation.userEmail;
-                //res.locals.text = 'logged in user';
-                next();
+                
+                Restaurant.findByEmail(res.locals.userEmail).then(restaurantCheck => {
+                    console.log(restaurantCheck);
+                    
+                    if(restaurantCheck != null)
+                    {
+                        res.redirect('/portal');
+                    }
+
+                    else
+                    {
+                        //res.locals.text = 'logged in user';
+                        next();
+                    }
+                })
+
             }
             
             else

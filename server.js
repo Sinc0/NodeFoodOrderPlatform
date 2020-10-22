@@ -136,6 +136,7 @@ mongoConnect(() => {
     //Order.findById('5ee755d867fa4b4d5dfd4734');
     //Order.updateOne('5f3673e095408d19ee244ea4', "15 min");
     //Order.findById("5f3d20a18b452d3ffee4353c", "orders");
+    //Order.fetchAllUnconfirmed("akosdmks").then(orders => {console.log(orders)});
     //Restaurant.findById('5ebeac773c4721f4f1ca4369');
     //Restaurant.delete('5ebeaa2052e60df379eb3d1d');
     //User.emptyCart('andersson@mail.com');

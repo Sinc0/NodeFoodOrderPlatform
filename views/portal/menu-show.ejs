@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Show Menu</title>
+        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="/css/restaurant.css">
+        <script src="/js/functionality.js"></script>
+        <script src="/js/shortcuts.js"></script>
+        <script>
+            shortcut.add("escape", function() {document.getElementById("temp").click()});  
+        </script>
+    </head>
+    <a href="/portal" style="text-decoration: none"><nav id="NavBar"><p><b>Home</b></p></nav></a>
+    <body>
+    
+        <modal>
+            <div hidden id="informAnonModal">
+                <button id="temp" onclick="InformAnonClose()" style="margin-left: 437.5px;">X</button>
+    
+                <br />
+                <br />
+                
+                <p>You need to register or login to be able to order</p>
+                
+                <br />
+    
+                <button><a href="/login">Login</a></button>        
+                <button><a href="/register">Register</a></button>
+                
+                <p></p>
+    
+                <br />
+                <br />
+            </div>
+        </modal>
+    
+        <main id="main-menu" class="centered">
+            <div id="menu">     
+                <% var date = new Date().getDay() %>
+                
+                <% if (date == 0) { %>
+                    <% date = 7; %>
+                <% } %>
+
+                <div>
+                    <!-- <h1><%= restaurant.title %></h1> -->
+                    <h1><%=restaurant.title %></h1>
+                </div>
+    
+                <hr>
+    
+                <% if(restaurant.open == false) { %>
+                    <div id="restaurantDetailRestaurantIsClosed">
+                        <h1>Closed</h1>
+                    </div>
+                <% } %>
+    
+                <div class="card__image">
+                    <!-- <img src="/<%=restaurant.image %>"> //hosted on server -->
+                    <img src="<%=restaurant.image %>"> <!-- //link to another site -->
+                </div>
+    
+                <br />
+                
+                <!-- hours -->
+                <div>
+                    <b>Hours</b>
+                    <!-- <p><%= restaurant._id %></p> -->
+                    <% for(let c = 0; c < restaurant.hours.length; c++) { %>
+                        <% if(date == c + 1) { %>
+                            <p style="color: green"><%=restaurant.hours[c].day %> <%=restaurant.hours[c].time %></p>
+                        <% } else { %>
+                        <p><%=restaurant.hours[c].day %> <%=restaurant.hours[c].time %></p>
+                        <% } %>
+                    <% } %>
+                    <!-- <h2><%= restaurant.price %></h2> -->
+                </div>
+
+                <br />
+    
+                <b>Phone</b>
+                <p><%=restaurant.phone %></p>
+
+                <br />
+
+                <!-- phone -->
+                <b>Address</b>
+                <p><%=restaurant.address %></p>
+                               
+                <br />
+                
+                <!-- description -->
+                <div>
+                <b>About</b>
+                <p style="margin: auto; max-width: 250px;"><%= restaurant.description %></p>
+                <!-- <p><%= restaurant.description %></p> -->
+                </div>
+                
+                <br />
+                
+                <hr>
+    
+                <div id="searchBox" style="text-align: center"  onkeyup="searchBoxRestaurantMenu('<%=restaurant.menuItems.length %>')">
+                    <input id="searchBoxInput" style="width: 250px;" placeholder="Search..."></input>
+                </div>
+                
+                <!-- <p><%=restaurant.menuItems.length %></p> -->
+    
+                
+                <% for(let c = 0; c < restaurant.menuCategories.length; c++) { %>
+                    <% let restaurantCategory = restaurant.menuCategories[c].categoryName %>
+                    <div id="menu-category-<%=restaurantCategory.charAt(0).toLowerCase() + restaurantCategory.slice(1) %>">
+                    
+                        <hr>
+    
+                        <h2><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></h2>
+                        
+                        <% for(let c = 0; c < restaurant.menuItems.length; c++) { %>
+                            
+                            <% if(restaurant.menuItems[c].category == restaurantCategory) { %>
+                                <div id="menu-item#<%=c + 1 %>" class="menu-item">
+                                    <!-- <p><%= restaurant.menuItems[c].restaurantId %></p> -->
+                                    <div class="menu-item-texts">
+                                        <p><b><%= restaurant.menuItems[c].title %></b></p>
+                                        <p>$<%= restaurant.menuItems[c].price %></p>
+                                        <p>Ingredients: <%= restaurant.menuItems[c].description %></p>
+                                    </div>
+    
+                                    <p hidden id="menu-item#<%=c + 1 %>-category"><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></p>
+    
+                                    <% if(loggedIn == true) { %>
+                                    <div class="menu-item-add-to-cart-button">
+                                        <% let buttonNumber = c %>
+                                        <button onclick="updateCart('<%=buttonNumber %>', '<%=restaurant.menu[c].title %>', '<%=restaurant.menu[c].price %>')" class="cart-add-to-cart-button">+</button></a>
+                                        <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menu[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
+                                    </div>
+                                    <% } %>
+    
+                                    <% if(loggedIn != true) { %>
+                                        <% if(restaurant.open == true) { %>
+                                            <div class="menu-item-add-to-cart-button">
+                                                <% let buttonNumber = c %>
+                                                <button disabled onclick="InformAnonOpen()" class="cart-add-to-cart-button">+</button></a>
+                                                <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menuItems[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
+                                            </div>
+                                    <% } %>
+    
+                                    <% if(restaurant.open == false) { %>
+                                        <div disabled class="menu-item-add-to-cart-button">
+                                            <% let buttonNumber = c %>
+                                            <button disabled onclick="InformAnonOpen()" class="cart-add-to-cart-button" style="opacity: .50; visibility: hidden;">+</button></a>
+                                            <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menuItems[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
+                                        </div>
+                                    <% } %>
+                                    
+                                <% } %>
+                                </div>
+    
+                                <% } else { %>
+                            
+                                <% } %>
+                        
+                        <% } %>
+                        
+                        <br />
+    
+                    </div>
+                <% } %>
+            </div>
+
+        </main>
+    </body>
+</html>

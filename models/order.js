@@ -20,14 +20,12 @@ class Order
         
         if(customerDelivery == "delivery")
         {
-            var delivery = true;
-            var pickUp = false;
+            var type = "delivery";
         }
 
-        if(customerDelivery = "pickUp")
+        if(customerDelivery == "pickUp")
         {
-            delivery = false;
-            pickUp = true;
+            var type = "pick up"
         }
    
         return db.collection('orders')
@@ -45,9 +43,7 @@ class Order
                 customerPhone: customerPhone,
                 customerAddress: customerAddress,
                 customerComment: customerComment,
-                delivery: delivery,
-                pickUp: pickUp,
-                type: delivery,
+                type: type,
                 products: productArray,
                 rating: null,
             })  
@@ -169,37 +165,49 @@ class Order
             .catch(err => console.log(err));
     }
 
-    static fetchAllUnconfirmed()
+    static fetchAllUnconfirmed(restaurantUrl)
     {
         const db = getDb();
 
         return db
             .collection("orders")
-            .find({status: "unconfirmed"})
+            .find({status: "unconfirmed", restaurant: restaurantUrl})
             .toArray()
             .then(orders => { /* { console.log(orders) */ return orders })
             .catch(err => console.log(err));
     }
 
-    static fetchAllConfirmed()
+    static fetchAllConfirmed(restaurantUrl)
     {
         const db = getDb();
 
         return db
             .collection("orders")
-            .find({status: "confirmed"})
+            .find({status: "confirmed", restaurant: restaurantUrl})
             .toArray()
             .then(orders => { /* { console.log(orders) */ return orders })
             .catch(err => console.log(err));
     }
 
-    static fetchAllCompleted()
+    static fetchAllDeclined(restaurantUrl)
     {
         const db = getDb();
 
         return db
             .collection("orders")
-            .find({status: "completed"})
+            .find({status: "declined", restaurant: restaurantUrl})
+            .toArray()
+            .then(orders => { /* { console.log(orders) */ return orders })
+            .catch(err => console.log(err));
+    }
+
+    static fetchAllCompleted(restaurantUrl)
+    {
+        const db = getDb();
+
+        return db
+            .collection("orders")
+            .find({status: "completed", restaurant: restaurantUrl})
             .toArray()
             .then(orders => { /* { console.log(orders) */ return orders })
             .catch(err => console.log(err));

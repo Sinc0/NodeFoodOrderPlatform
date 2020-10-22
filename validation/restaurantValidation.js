@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Restaurant = require('../models/restaurant');
 
 //******* functions *******
 function parseLoginCookie(cookieId)
@@ -36,41 +37,59 @@ function parseLoginCookie(cookieId)
     }
 }
 
-module.exports = (req, res, next) => {
+module.exports =  async (req, res, next) => {
 
     let loginCookie = req.get('Cookie');
     let cookieId = parseLoginCookie(loginCookie);
     
-    //first time user
+    //anon user
     if(cookieId == null)
     {
         console.log('\nanon user >');
 
         res.locals.validation = false;
-        next();
+        res.redirect('/');
+        //next();
     }
 
     else
     {
-        User.validateLogin(cookieId)
-        .then(validation => {
-            if(validation.status == true)
+        //check user validation
+        var userCheck = await User.validateLogin(cookieId);
+        //var admin = userCheck.admin;
+        var validation = userCheck.status;
+        var email = userCheck.userEmail;
+        //console.log(userCheck);
+
+        if(validation == true)
+        {
+            res.locals.validation = validation;
+            res.locals.userEmail = email;
+            //res.locals.text = 'logged in user';              
+            
+            //check if user have restaurant
+            var restaurantCheck = await Restaurant.findByEmail(email);
+            //console.log(restaurantCheck);
+
+            //if user have restaurant
+            if(restaurantCheck != null)
             {
-                res.locals.validation = validation;
-                res.locals.userEmail = validation.userEmail;
-                //res.locals.text = 'logged in user';
-                
+                res.locals.restaurantUrl = restaurantCheck.url;
                 next();
             }
-            
+
             else
             {
-                res.locals.validation = validation;
-                //res.locals.text = 'anon';
-                res.redirect('/test');
+                res.redirect('/');
             }
-        })
-        .catch(err => {console.log(err)})
+                            
+        }
+            
+        else
+        {
+            res.locals.validation = validation;
+            //res.locals.text = 'anon';
+            res.redirect('/');
+        }
     }
-    
 }

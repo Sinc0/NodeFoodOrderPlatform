@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Distance Matrix Service</title>
+  </head>
+  <script>
+    function initMap(origin, destination) 
+    {
+        var service = new google.maps.DistanceMatrixService;
+
+        //var origin = origin;
+        //var destination = destination;
+        var origin = 'Eskilstuna, Sweden';
+        var destination = 'Stockholm, Sweden';
+        
+        var map = new google.maps.Map(document.getElementById('map'), 
+        {
+            center: {lat: 55.53, lng: 9.4},
+            zoom: 10
+        });
+
+        service.getDistanceMatrix(
+        {
+            origins: [origin],
+            destinations: [destination],
+            travelMode: 'DRIVING',
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false
+        }, 
+        
+        function(response, status) {
+            if (status !== 'OK') 
+            {
+                alert('Error was: ' + status);
+            } 
+        
+            else 
+            {
+                console.log(response);
+                
+                var originList = response.originAddresses;
+                var destinationList = response.destinationAddresses;
+
+                for (var i = 0; i < originList.length; i++) 
+                {
+                    var results = response.rows[i].elements;
+                    console.log(results);
+                    console.log(results);
+                    console.log(results);
+
+                    var originAddress = originList[i];
+                    var destinationAddress = destinationList[i];
+                    var travelDistance = results[i].distance.text;
+                    var travelETA = results[i].duration.text;
+
+                    var outputDiv = document.getElementById('output');
+                    var outputDiv = document.getElementById('output');
+                    var outputDiv = document.getElementById('output');
+                    var outputDiv = document.getElementById('output');
+
+                    document.getElementById('originAddress').innerHTML = "start: " + originAddress;
+                    document.getElementById('destinationAddress').innerHTML = "end: " + destinationAddress;
+                    document.getElementById('travelDistance').innerHTML = "distance: " + travelDistance;
+                    document.getElementById('travelETA').innerHTML = "estimated time: " + travelETA;
+                }
+            }
+      });
+    }
+  </script>
+  <script defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBORRveWwr4pmBRwYBHvrcySfqndTVOUg">
+  </script>
+  <body>
+    <div id="right-panel">
+      <div id="inputs">
+            <button onclick="initMap()">Google Distance Matrix</button>
+      </div>
+
+      <div>
+        <strong>Results</strong>
+      </div>
+
+      <div id="output">
+          <p id="originAddress"></p>
+          <p id="destinationAddress"></p>
+          <p id="travelDistance"></p>
+          <p id="travelETA"></p>
+      </div>
+    </div>
+
+    <div id="map"></div>
+    
+  </body>
+</html>

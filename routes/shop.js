@@ -51,15 +51,20 @@ router.get('/logout', validation, shopController.getLogout);
 router.post('/logout-post', validation, shopController.postLogout);
 
 //restaurant
-router.get('/portal/:restaurant/home', restaurantValidation, shopController.getRestaurantIndex);
-router.get('/portal/restaurant/orders/accept', shopController.getRestaurantOrdersAccept);
-router.get('/portal/restaurant/orders/completed', shopController.getRestaurantOrdersCompleted);
-router.get('/portal/restaurant/orders/declined', shopController.getRestaurantOrdersDeclined);
-router.get('/portal/restaurant/orders/chef', shopController.getRestaurantOrdersChef);
-router.get('/portal/restaurant/menu/show', shopController.getRestaurantMenuShow);
-router.get('/portal/restaurant/menu/edit', shopController.getRestaurantMenuEdit);
-router.get('/portal/restaurant/stats', shopController.getRestaurantStats);
-router.get('/portal/restaurant/reviews', shopController.getRestaurantReviews);
+router.get('/portal', restaurantValidation, shopController.getRestaurantIndex);
+router.get('/portal/orders/accept', restaurantValidation, shopController.getRestaurantOrdersAccept);
+router.get('/portal/orders/completed', restaurantValidation, shopController.getRestaurantOrdersCompleted);
+router.get('/portal/orders/declined', restaurantValidation, shopController.getRestaurantOrdersDeclined);
+router.get('/portal/orders/chef', restaurantValidation, shopController.getRestaurantOrdersChef);
+router.get('/portal/menu/show', restaurantValidation, shopController.getRestaurantMenuShow);
+router.get('/portal/menu/edit', restaurantValidation, shopController.getRestaurantMenuEdit);
+router.get('/portal/stats', restaurantValidation, shopController.getRestaurantStats);
+router.get('/portal/reviews', restaurantValidation, shopController.getRestaurantReviews);
+
+router.get('/portal/settings', restaurantValidation, shopController.getRestaurantSettings);
+router.get('/portal/logout', restaurantValidation, shopController.getRestaurantLogout);
+
+router.post('/portal/test', restaurantValidation, shopController.postRestaurantTest);
 
 //exports
 module.exports = router;

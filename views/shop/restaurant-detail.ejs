@@ -9,7 +9,7 @@
     <script src="/js/functionality.js"></script>
     <script src="/js/shortcuts.js"></script>
     <script>
-        shortcut.add("escape", function() {document.getElementById("temp").click()});  
+        shortcut.add("escape", function() {document.getElementById("temp").click()});
     </script>
 </head>
 
@@ -50,10 +50,17 @@
 
     <main id="main-menu" class="centered">
         <div id="menu">
+            <% var date = new Date().getDay() %>
+                
+            <% if (date == 0) { %>
+                <% date = 7; %>
+            <% } %>
+
             <div>
+                <!-- <h1><%= restaurant.title %></h1> -->
                 <h1><%=restaurant.title %></h1>
             </div>
-            <!-- <h1><%= restaurant.title %></h1> -->
+
             <hr>
 
             <% if(restaurant.open == false) { %>
@@ -63,81 +70,112 @@
             <% } %>
 
             <div class="card__image">
-                <img src="/<%= restaurant.imageUrl %>">
+                <!-- <img src="/<%=restaurant.image %>"> //hosted on server -->
+                <img src="<%=restaurant.image %>"> <!-- //link to another site -->
+            </div>
+
+            <br />
+            
+            <!-- hours -->
+            <div>
+                <b>Hours</b>
+                <!-- <p><%= restaurant._id %></p> -->
+                <% for(let c = 0; c < restaurant.hours.length; c++) { %>
+                    <% if(date == c + 1) { %>
+                        <p style="color: green"><%=restaurant.hours[c].day %> <%=restaurant.hours[c].time %></p>
+                    <% } else { %>
+                    <p><%=restaurant.hours[c].day %> <%=restaurant.hours[c].time %></p>
+                    <% } %>
+                <% } %>
+                <!-- <h2><%= restaurant.price %></h2> -->
             </div>
 
             <br />
 
-            <div>
-            <!-- <p><%= restaurant._id %></p> -->
-            <% for(let c = 0; c < restaurant.hours.length; c++) { %>
-                <p><%= restaurant.hours[c] %></p>
-            <% } %>
-            <!-- <h2><%= restaurant.price %></h2> -->
-            </div>
-            
+            <b>Phone</b>
+            <p><%=restaurant.phone %></p>
+
+            <br />
+
+            <!-- phone -->
+            <b>Address</b>
+            <p><%=restaurant.address %></p>
+                            
             <br />
             
+            <!-- description -->
             <div>
-            <p><%= restaurant.description %></p>
+            <b>About</b>
+            <p style="margin: auto; max-width: 250px;"><%= restaurant.description %></p>
             <!-- <p><%= restaurant.description %></p> -->
             </div>
             
             <br />
             
             <hr>
+
+            <div id="searchBox" style="text-align: center"  onkeyup="searchBoxRestaurantMenu('<%=restaurant.menuItems.length %>')">
+                <input id="searchBoxInput" style="width: 250px;" placeholder="Search..."></input>
+            </div>   
+            
             <% for(let c = 0; c < restaurant.menuCategories.length; c++) { %>
-                <% let restaurantCategory = restaurant.menuCategories[c] %>
-                <div>
-                <h2 id="menu-restaurant-title"><%= restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></h2>
-                </div>
+                <% let restaurantCategory = restaurant.menuCategories[c].categoryName %>
+                <div id="menu-category-<%=restaurantCategory.charAt(0).toLowerCase() + restaurantCategory.slice(1) %>">
                 
-                <div>
-                <% for(let c = 0; c < restaurant.menu.length; c++) { %>
-                
-                    <% if(restaurant.menu[c].category == restaurantCategory) { %>
-                    <div id="menu-item">
-                        <!-- <p><%= restaurant.menu[c].restaurantId %></p> -->
-                        <div id="menu-item-texts">
-                            <p><b><%= restaurant.menu[c].title %></b></p>
-                            <p>$<%= restaurant.menu[c].price %></p>
-                            <p>Ingredients: <%= restaurant.menu[c].description %></p>
-                        </div>
-                        <% if(loggedIn == true) { %>
-                        <div id="menu-item-add-to-cart-button">
-                            <% let buttonNumber = c %>
-                            <button onclick="updateCart('<%=buttonNumber %>', '<%=restaurant.menu[c].title %>', '<%=restaurant.menu[c].price %>')" class="cart-add-to-cart-button">+</button></a>
-                            <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menu[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
-                        </div>
-                        <% } %>
+                    <hr>
 
-                        <% if(loggedIn != true) { %>
-                            <% if(restaurant.open == true) { %>
-                                <div id="menu-item-add-to-cart-button">
+                    <h2><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></h2>
+                    
+                    <% for(let c = 0; c < restaurant.menuItems.length; c++) { %>
+                        
+                        <% if(restaurant.menuItems[c].category == restaurantCategory) { %>
+                            <div id="menu-item#<%=c + 1 %>" class="menu-item">
+                                <!-- <p><%= restaurant.menuItems[c].restaurantId %></p> -->
+                                <div class="menu-item-texts">
+                                    <p><b><%= restaurant.menuItems[c].title %></b></p>
+                                    <p>$<%= restaurant.menuItems[c].price %></p>
+                                    <p>Ingredients: <%= restaurant.menuItems[c].description %></p>
+                                </div>
+
+                                <p hidden id="menu-item#<%=c + 1 %>-category"><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></p>
+
+                                <% if(loggedIn == true) { %>
+                                <div class="menu-item-add-to-cart-button">
                                     <% let buttonNumber = c %>
-                                    <button onclick="InformAnonOpen()" class="cart-add-to-cart-button">+</button></a>
+                                    <button onclick="updateCart('<%=buttonNumber %>', '<%=restaurant.menuItems[c].title %>', '<%=restaurant.menuItems[c].price %>')" class="cart-add-to-cart-button">+</button></a>
                                     <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menu[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
                                 </div>
-                            <% } %>
+                                <% } %>
 
-                            <% if(restaurant.open == false) { %>
-                                <div disabled id="menu-item-add-to-cart-button">
-                                    <% let buttonNumber = c %>
-                                    <button disabled onclick="InformAnonOpen()" class="cart-add-to-cart-button" style="opacity: .50; visibility: hidden;">+</button></a>
-                                    <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menu[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
-                                </div>
-                            <% } %>
+                                <% if(loggedIn != true) { %>
+                                    <% if(restaurant.open == true) { %>
+                                        <div class="menu-item-add-to-cart-button">
+                                            <% let buttonNumber = c %>
+                                            <button onclick="InformAnonOpen()" class="cart-add-to-cart-button">+</button></a>
+                                            <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menuItems[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
+                                        </div>
+                                <% } %>
 
-                        <% } %>
-                    </div>
-                    <% } else { %>
+                                <% if(restaurant.open == false) { %>
+                                    <div disabled class="menu-item-add-to-cart-button">
+                                        <% let buttonNumber = c %>
+                                        <button disabled onclick="InformAnonOpen()" class="cart-add-to-cart-button" style="opacity: .50; visibility: hidden;">+</button></a>
+                                        <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menu[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
+                                    </div>
+                                <% } %>
+                                
+                            <% } %>
+                            </div>
+
+                            <% } else { %>
+                        
+                            <% } %>
+                    
                     <% } %>
-                
-                <% } %>
+                    
+                    <br />
+
                 </div>
-                <br />
-                
-                <hr>
             <% } %>
         </div>
  
@@ -148,14 +186,13 @@
                 
                 <div id="cart-items"></div> 
                 
-                <div class="">
-                    <h2 id="total-price"></h2>
-                </div>
-                
+                <input id="customerComment" name="customerComment" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>
+                               
+                <h2 id="total-price"></h2>
+                                
                 <input hidden id="cartAllItems" name="cartAllItems"></input>
                 <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
                 <input hidden name="restaurant" value='<%=restaurantUrl %>'></input>
-                <input id="customerComment" name="customerComment" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>
             </form>
         </div>
         <% } %>

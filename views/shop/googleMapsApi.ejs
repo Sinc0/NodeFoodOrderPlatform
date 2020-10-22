@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        
+    <script>
+        function initMapX(origin, destination) 
+        {
+            var service = new google.maps.DistanceMatrixService;
+    
+            //var origin = origin;
+            //var destination = destination;
+            var origin = 'Eskilstuna, Sweden';
+            var destination = 'Stockholm, Sweden';
+            
+            var map = new google.maps.Map(document.getElementById('map'), 
+            {
+                center: {lat: 55.53, lng: 9.4},
+                zoom: 10
+            });
+    
+            service.getDistanceMatrix(
+            {
+                origins: [origin],
+                destinations: [destination],
+                travelMode: 'DRIVING',
+                unitSystem: google.maps.UnitSystem.METRIC,
+                avoidHighways: false,
+                avoidTolls: false
+            }, 
+            
+            function(response, status) {
+                if (status !== 'OK') 
+                {
+                    alert('Error was: ' + status);
+                } 
+            
+                else 
+                {
+                    console.log(response);
+                    
+                    var originList = response.originAddresses;
+                    var destinationList = response.destinationAddresses;
+    
+                    for (var i = 0; i < originList.length; i++) 
+                    {
+                        var results = response.rows[i].elements;
+                        console.log(results);
+                        console.log(results);
+                        console.log(results);
+    
+                        var originAddress = originList[i];
+                        var destinationAddress = destinationList[i];
+                        var travelDistance = results[i].distance.text;
+                        var travelETA = results[i].duration.text;
+    
+                        var outputDiv = document.getElementById('output');
+                        var outputDiv = document.getElementById('output');
+                        var outputDiv = document.getElementById('output');
+                        var outputDiv = document.getElementById('output');
+    
+                        document.getElementById('originAddress').innerHTML = "start: " + originAddress;
+                        document.getElementById('destinationAddress').innerHTML = "end: " + destinationAddress;
+                        document.getElementById('travelDistance').innerHTML = "distance: " + travelDistance;
+                        document.getElementById('travelETA').innerHTML = "estimated time: " + travelETA;
+                    }
+                }
+          });
+        }
+    </script>
+    
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: -33.8688, lng: 151.2195},
+              zoom: 13
+            });
+            
+            var input = document.getElementById('searchInput');
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo('bounds', map);
+        
+            var infowindow = new google.maps.InfoWindow();
+            var marker = new google.maps.Marker({
+                map: map,
+                anchorPoint: new google.maps.Point(0, -29)
+            });
+        
+            autocomplete.addListener('place_changed', function() {
+                infowindow.close();
+                marker.setVisible(false);
+                var place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    window.alert("Autocomplete's returned place contains no geometry");
+                    return;
+                }
+          
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);
+                }
+                marker.setIcon(({
+                    url: place.icon,
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(35, 35)
+                }));
+                marker.setPosition(place.geometry.location);
+                marker.setVisible(true);
+            
+                var address = '';
+                if (place.address_components) {
+                    address = [
+                      (place.address_components[0] && place.address_components[0].short_name || ''),
+                      (place.address_components[1] && place.address_components[1].short_name || ''),
+                      (place.address_components[2] && place.address_components[2].short_name || '')
+                    ].join(' ');
+                }
+            
+                infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+                infowindow.open(map, marker);
+              
+                // Location details
+                for (var i = 0; i < place.address_components.length; i++) {
+                    if(place.address_components[i].types[0] == 'postal_code'){
+                        document.getElementById('postal_code').innerHTML = place.address_components[i].long_name;
+                    }
+                    if(place.address_components[i].types[0] == 'country'){
+                        document.getElementById('country').innerHTML = place.address_components[i].long_name;
+                    }
+                }
+                document.getElementById('location').innerHTML = place.formatted_address;
+                document.getElementById('lat').innerHTML = place.geometry.location.lat();
+                document.getElementById('lon').innerHTML = place.geometry.location.lng();
+            });
+        }
+    </script>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDBORRveWwr4pmBRwYBHvrcySfqndTVOUg&callback=initMap" async defer></script>
+</head>
+<body>
+        <!-- Distance Matrix -->
+    <div id="inputs">
+        <button onclick="initMapX()">Google Distance Matrix</button>
+    </div>
+
+    <div id="output">
+        <p id="originAddress"></p>
+        <p id="destinationAddress"></p>
+        <p id="travelDistance"></p>
+        <p id="travelETA"></p>
+    </div>
+
+    <br />
+
+    <!-- Search input -->
+    <input id="searchInput" class="controls" type="text" placeholder="Enter a location" style="width: 350px;">
+
+    <!-- Google map -->
+    <div hidden id="map"></div>
+
+    <!-- Display geolocation data -->
+    <ul class="geo-data">
+        <li>Full Address: <span id="location"></span></li>
+        <li>Postal Code: <span id="postal_code"></span></li>
+        <li>Country: <span id="country"></span></li>
+        <li>Latitude: <span id="lat"></span></li>
+        <li>Longitude: <span id="lon"></span></li>
+    </ul>
+</body>
+</html>

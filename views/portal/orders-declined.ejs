@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Declined Orders</title>
+        <link rel="stylesheet" href="/css/portalRestaurant.css">
+        <link rel="stylesheet" href="/css/main.css">
+        <script src="/js/functionality.js"></script>
+        <script>
+
+            function saveScrollPosition()
+            {
+                var y = window.scrollY;
+                localStorage.setItem("scrollPositionY", y);
+            }
+
+            function loadSavedScrollPosition()
+            {
+                var positionY = localStorage.getItem("scrollPositionY");
+                window.scrollTo(0, positionY)
+            }
+
+            function refreshPage()
+            {
+                location.reload()
+            }
+            
+            setInterval(refreshPage, 60000);
+            
+        </script>
+    </head>
+    <a href="/portal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
+    <body onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
+        <header id="confirmOrderHeader">
+            <br />
+            <h2 id="confirmOrderTitle">total declined orders: <%=orders.length %></h2>
+            <!-- <p id="confirmOrderPendingOrderInfo">total pending orders: <%=orders.length %></p> -->
+        </header>
+        <br />
+        <% for(var c = orders.length - 1; c >= 0; c--) { %>
+        <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
+
+            <br />
+            
+            <p>id: <%=orders[c]._id %></p>
+            <p>date: <%=orders[c].date %></p>
+            <p>estimated time: <%=orders[c].estimatedTime %></p>
+            
+            
+            <br />
+
+            <p>name: <%=orders[c].customerName %></p>
+            <p>address: <%=orders[c].customerAddress %></p>
+            <p>phone: <%=orders[c].customerPhone %></p>
+            <p>total price: <%=orders[c].totalPrice %></p>
+            <p>comment: <%=orders[c].customerComment %></p>
+            <p>type: <%=orders[c].type %></p>
+            
+            <br />
+            <p>food items:</p>
+            <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
+                <p><%= orders[c].products.items[x].name %> (<%= orders[c].products.items[x].quantity %>)</p>
+            <% } %>
+
+            <br />
+
+        </div>
+        
+        <br />
+        <% } %>
+    </body>
+</html>

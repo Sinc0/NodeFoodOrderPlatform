@@ -35,8 +35,8 @@
             //socket.close();
 
             console.log(buttonValue);
-            document.getElementById("customerOrder#" + buttonValue).remove();
-            
+            document.getElementById("inputOrderStatus#" + buttonValue).value = "declined";
+            document.getElementById("updateOrderWithTime#" + buttonValue).submit();
         }
 
         function orderTime(orderNumber, time)
@@ -114,9 +114,9 @@
         <form id="updateOrderWithTime#<%=c %>" action="/order-update" method="POST">
             <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
             <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="60"></input>
-            <input hidden id="inputOrderStatus#<%=c %>" name="status" value="confirmed"></input>
+            <input  id="inputOrderStatus#<%=c %>" name="status" value="confirmed"></input>
             <button id="acceptCustomerOrder#<%=c %>" class="acceptCustomerOrder" type="button" value="60" onclick="orderAccepted('<%=c %>', '<%= orders[c]._id %>', value)">&#10003; accept</button> <!-- onclick = ws data to client, update db, ws data to restaurant -->
-            <button id="declineCustomerOrder#<%=c %>" class="declineCustomerOrder" type="button" onclick="orderDeclined('<%=c %>', '<%= orders[c]._id %>')" type="submit">X decline</button>
+            <button id="declineCustomerOrder#<%=c %>" class="declineCustomerOrder" type="button" onclick="orderDeclined('<%=c %>', '<%= orders[c]._id %>')">X decline</button>
         </form>
         
         <b style="font-weight: normal;">set time:</b>

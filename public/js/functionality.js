@@ -170,7 +170,12 @@ function loadSideCart()
     
     if(cartItems == null || cartItems.items.length == 0)
     {
-        document.getElementById("side-cart").style.visibility = "hidden";
+        var d = document.getElementById("side-cart");
+
+        if(d != undefined ||d != null)
+        {
+            d.style.visibility = "hidden";
+        }
     }
 
     else
@@ -332,6 +337,8 @@ function customerDeliverySelector()
 {
     var text = document.querySelector('input[name="customerDelivery"]:checked').value;
     document.getElementById("customerDelivery").value = text;
+    var paymentSelector = document.getElementById('paymentSelect');
+    paymentSelector.disabled = "";
 }
 
 function editProfileCredentials()
@@ -442,4 +449,204 @@ function InformAnonClose()
     var modalBox = document.getElementById("informAnonModal");
 
     modalBox.style.display = "none";
+}
+
+async function httpTest()
+{
+    //fetch('http://example.com/movies.json')
+    //.then(response => response.json())
+    //.then(data => console.log(data));
+
+    //https://jsonplaceholder.typicode.com/posts
+    //https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=Storgatan+20+Stockholm&destinations=Guldbjergvej+32B+5400+Bogense+Denmark&mode=driving&depature_time=now&key=AIzaSyDBORRveWwr4pmBRwYBHvrcySfqndTVOUg
+    
+    const Http = new XMLHttpRequest();
+    const url='https://www.reddit.com/r/funny/comments/itt9r2/catch_me_if_you_can.json';
+    Http.open("GET", url);
+    //Http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    //Http.setRequestHeader("Access-Control-Allow-Origin", "*");
+    //Http.setRequestHeader("Access-Control-Allow-Headers", "*");
+    Http.send();
+
+    Http.onreadystatechange = function(){
+        if(this.readyState == 4)
+        {
+            var data = Http.responseText;
+            var json = JSON.parse(data);
+    
+            console.log(data);
+            //console.log(json);
+        }
+    }
+}
+
+function GoogleMapsAdressAutocomplete() 
+{
+    var map = new google.maps.Map(document.getElementById('map'), {
+        //center: {lat: -33.8688, lng: 151.2195},
+        //zoom: 13
+    });
+    
+    var input = document.getElementById('searchInput');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    var infowindow = new google.maps.InfoWindow();
+
+    autocomplete.addListener('place_changed', function() 
+    {
+        infowindow.close();
+        var place = autocomplete.getPlace();
+        
+        if (!place.geometry) 
+        {
+            return window.alert("Ingen adress hittades");
+        }
+    
+        var address = '';
+        
+        if (place.address_components) 
+        {
+            address = [
+                (place.address_components[0] && place.address_components[0].short_name || ''),
+                (place.address_components[1] && place.address_components[1].short_name || ''),
+                (place.address_components[2] && place.address_components[2].short_name || '')
+            ].join(' ');
+        }
+    
+        infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+            
+        //location details
+        for (var i = 0; i < place.address_components.length; i++) 
+        {
+            if(place.address_components[i].types[0] == 'country')
+            {
+                if(place.address_components[i].long_name == "Sweden")
+                {
+                    //document.getElementById('country').innerHTML = place.address_components[i].long_name;
+                    //document.getElementById('location').innerHTML = place.formatted_address;
+                    var userAddress = document.getElementById('userAddress')
+                    var customerAdress = document.getElementById('customerAddress')
+
+                    if(userAddress != null)
+                    {
+                        userAddress.value = place.formatted_address;
+                    }
+
+                    if(customerAdress != null)
+                    {
+                        customerAdress.value = place.formatted_address;
+                    }
+
+                    /*if(place.address_components[6] != undefined)
+                    {
+                        document.getElementById('postal_code').innerHTML = place.address_components[6].long_name;
+                        //console.log(place.address_components[6].long_name);
+                    }*/
+
+                }
+
+                if(place.address_components[i].long_name != "Sweden")
+                {
+                    alert("Location restricted to Sweden only");
+                }
+                
+                //document.getElementById('country').innerHTML = place.address_components[i].long_name;
+            }
+        }
+    
+    });
+}
+
+function searchBoxRestaurants(totalMenuItems)
+{
+    var searchBoxInput = document.getElementById("searchBoxInput").value
+    var searchString = String(searchBoxInput).toLowerCase();
+
+    for(var c = 1; c <= totalMenuItems; c++)
+    {
+        var menuItem = document.getElementById("restaurantMenuItem#" + c)
+        var menuItemSearchText = document.getElementById("restaurantMenuItemSearchText#" + c)
+
+        if(menuItemSearchText.innerHTML.toLowerCase().includes(searchString))
+        {
+            menuItem.style.opacity = "100%";
+            menuItem.style.display = "block";
+        }
+
+        else
+        {
+            menuItem.style.opacity = ".25";
+        }
+
+    }
+
+}
+
+function searchBoxRestaurantMenu(totalMenuItems)
+{
+    var searchBoxInput = document.getElementById("searchBoxInput").value
+    var searchString = String(searchBoxInput).toLowerCase();
+    var menuItemCategories = [];
+    //console.log(searchString);
+
+    for(var c = 1; c <= totalMenuItems; c++)
+    {
+        var menuItem = document.getElementById("menu-item#" + c)
+        var menuItemCategory = document.getElementById("menu-item#" + c + "-category")
+        //console.log(menuItem);
+        //console.log(menuItem.parentNode);
+        //console.log(menuItemCategory);
+        
+        if(menuItem.innerHTML.toLowerCase().includes(searchString))
+        {
+            menuItemCategories.push(menuItemCategory.innerHTML.toLowerCase());
+            menuItem.style.opacity = "100%";
+            menuItem.style.display = "block";
+            menuItem.parentNode.style.display = "block";
+        }
+
+        else
+        {
+            menuItem.style.opacity = "25%";
+            menuItem.style.display = "none";
+            menuItem.parentNode.style.display = "none";
+        }
+
+    }
+
+    //console.log(menuItemCategories.length);
+    for(var c = 0; c < menuItemCategories.length; c++)
+    {
+        //console.log(menuItemCategories[c]);
+        var menuCategory = menuItemCategories[c];
+        //console.log(menuCategory);
+        var category = document.getElementById("menu-category-" + menuCategory)
+        category.style.display = "block";      
+    }
+
+}
+
+function searchBoxOrders(totalOrders)
+{
+    var searchBoxInput = document.getElementById("searchBoxInput").value
+    var searchString = String(searchBoxInput).toLowerCase();
+
+    for(var c = 1; c <= totalOrders; c++)
+    {
+        var orderItem = document.getElementById("order-item#" + c)
+        //var menuItemSearchText = document.getElementById("restaurantMenuItemSearchText#" + c)
+
+        if(orderItem.innerHTML.toLowerCase().includes(searchString))
+        {
+            //orderItem.style.opacity = "100%";
+            orderItem.style.display = "block";
+        }
+
+        else
+        {
+            //orderItem.style.opacity = ".25";
+            orderItem.style.display = "none";
+        }
+
+    }
+
 }

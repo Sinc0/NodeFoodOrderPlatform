@@ -27,6 +27,7 @@
         <p><b>id:</b> <%=order._id %></p>
         <p><b>rating:</b> <%=order.rating %></p>
         <p><b>status:</b> <%=order.status %></p>
+        <p><b>type:</b> <%=order.type %></p>
         
         <br />
 
@@ -51,7 +52,7 @@
         <p><b>restaurant:</b> <%=order.restaurant %></p>
         <p><b>delivery:</b> <%=order.delivery %></p>
         <p><b>comment:</b> <%=order.customerComment %></p>
-        <b>items</b>
+        <p><b>items</b></p>
         <% for(var c = 0; c < order.products.items.length; c++) { %>
             <p>&emsp;<%=order.products.items[c].name %> - <%=order.products.items[c].quantity %> - ($<%=order.products.items[c].quantity * order.products.items[c].price %>)</p>
         <% } %>

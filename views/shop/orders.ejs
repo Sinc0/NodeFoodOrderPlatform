@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
+    <script src="js/functionality.js"></script>
 </head>
 <body>
     <!-- admin view -->
@@ -20,6 +21,12 @@
         <%- include('../snippets/html_nav_menu_anon.ejs') %>
     <% } %>
 
+    <br />
+
+    <div id="searchBox" style="text-align: center"  onkeyup="searchBoxOrders('<%=orders.length %>')">
+        <input id="searchBoxInput" style="width: 250px;" placeholder="Search..."></input>
+    </div>
+
     <main id="main-orders">
         <% if (orders != null) { %>
         <div id="grid-orders">
@@ -27,14 +34,14 @@
             <% for (let order of orders.reverse()) { counter-- %>
                 <br/>
 
-                <div id="order-item">
+                <div id="order-item#<%=counter %>" class="order-item">
                     <p><b>#<%=counter %></b></p>
-                    <p>placed at: <%=order.placedAt %></p>
-                    <p>restaurant: <%=order.restaurant %></p>
-                    <p>status: <%=order.status %></p>
-                    <p>etc: <%=order.estimatedCompletionTime %></p>
-                    <p>delivery: <%=order.delivery %></p>
-                    <p>total amount: <%=order.totalPrice %></p>
+                    <p><b>placed at:</b> <%=order.placedAt %></p>
+                    <p><b>restaurant:</b> <%=order.restaurant %></p>
+                    <p><b>status:</b> <%=order.status %></p>
+                    <p><b>estimated time:</b> <%=order.estimatedCompletionTime %></p>
+                    <p><b>type:</b> <%=order.type %></p>
+                    <p><b>total amount:</b> <%=order.totalPrice %></p>
                     <!-- <p><a href="/reciepts/<%= order._id %>">order reciept PDF</a></p> -->
                     <p><a href='/order-details/<%=order._id %>'>details</a></p>
                 </div>
