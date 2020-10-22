@@ -105,9 +105,6 @@
             <p>total price: <%=orders[c].totalPrice %></p>
             <p>comment: <%=orders[c].customerComment %></p>
             <p>type: <%=orders[c].type %></p>
-            
-            <br />
-
             <p>food items:</p>
             <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
                 <p><%= orders[c].products.items[x].name %> (<%= orders[c].products.items[x].quantity %>)</p>

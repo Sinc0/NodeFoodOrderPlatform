@@ -458,7 +458,6 @@ async function httpTest()
     //.then(data => console.log(data));
 
     //https://jsonplaceholder.typicode.com/posts
-    //https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=Storgatan+20+Stockholm&destinations=Guldbjergvej+32B+5400+Bogense+Denmark&mode=driving&depature_time=now&key=AIzaSyDBORRveWwr4pmBRwYBHvrcySfqndTVOUg
     
     const Http = new XMLHttpRequest();
     const url='https://www.reddit.com/r/funny/comments/itt9r2/catch_me_if_you_can.json';
@@ -498,7 +497,7 @@ function GoogleMapsAdressAutocomplete()
         
         if (!place.geometry) 
         {
-            return window.alert("Ingen adress hittades");
+            return window.alert("Address not found");
         }
     
         var address = '';

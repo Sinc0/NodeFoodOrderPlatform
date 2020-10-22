@@ -91,12 +91,16 @@ body {
 
 #main-order-details
 {
+    margin: auto;
+    margin-top: 45px;
     width: 350px;
     padding: 10px;
+    background-color: lightgray;
 }
 
 #main-profile
 {
+    text-align: center;
     padding: 10px;
 }
 
@@ -407,8 +411,19 @@ main {
 {
     font-size: large;
     text-align: center;
-    width: 348px;
+    min-width: 348px;
+    max-width: 348px;
+    min-height: 50px;
+    max-height: 150px;
     margin-left: -1px;
+}
+
+#customerCommentCheckout
+{
+    min-width: 300px;
+    max-width: 300px;
+    min-height: 50px;
+    max-height: 150px;
 }
 
 #menu-restaurant-title
@@ -507,7 +522,8 @@ main {
 {
     padding: 5px 5px 4px 5px;
     margin: 0px;
-    border: 1px solid black;
+    /* border: 1px solid black */
+    background-color: lightgray;
 }
 
 .order-item p
@@ -574,10 +590,10 @@ option
 
 .customerOrder
 {
+    margin: auto;
     background-color: darkgray;
     border: 1px solid black;
     width: 500px;
-    margin: auto;
 }
 
 #order-process-content

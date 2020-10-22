@@ -85,7 +85,7 @@
                 var itemCounterParagraph = document.getElementById("itemCounterParagraph");
                 var categoryCounterParagraph = document.getElementById("categoryCounterParagraph" + itemCategory);
                 itemCounterParagraph.innerHTML = "Items " + "(" + (itemsElementCounter.length + 1) + ")";
-                categoryCounterParagraph.innerHTML = " " + itemCategory + "(" + (categoryElementCounter.length + 1) + ")";
+                categoryCounterParagraph.innerHTML = "<b>" + itemCategory + " (" + (categoryElementCounter.length + 1) + ")</b>";
 
                 var inputPosition = document.createElement("input");
                 var inputId = document.createElement("input");
@@ -171,6 +171,7 @@
             function addCategory()
             {
                 var promptAnswer = prompt("type desired name for category");
+
                 if(promptAnswer == null || promptAnswer == "" || promptAnswer == " ")
                 {
                     //do nothing
@@ -284,8 +285,8 @@
                     var categoryHeaderLabel4 = document.createElement("label");
                     categoryHeaderBold.innerHTML = (getTotalNumberOfCategories + 1) + " ";
                     categoryHeaderLabel1.innerHTML = "[Collapse] ";
-                    categoryHeaderLabel2.innerHTML = " Category ";
-                    categoryHeaderLabel3.innerHTML = " " + promptAnswer + "(0)";
+                    //categoryHeaderLabel2.innerHTML = " Category ";
+                    categoryHeaderLabel3.innerHTML = "<b>" + promptAnswer + " (0)</b>";
                     categoryHeaderLabel3.id = "categoryCounterParagraph" + promptAnswerFirstLetterUpperCase;
                     categoryHeaderLabel4.innerHTML = " [Add Item]";
                     categoryHeaderLabel4.onclick = function() {addItem(promptAnswerFirstLetterUpperCase)};
@@ -294,6 +295,7 @@
                     //categoryHeaderInput1.value = promptAnswer;
                     categoryHeaderInput1.id = "categoryInput#" + (getTotalNumberOfCategories + 1) + "-disabled";
                     categoryHeaderInput1.disabled = true;
+                    categoryHeaderInput1.hidden = true;
 
                     var categoryHeaderDiv = document.createElement("div");
                     categoryHeaderDiv.style = "background-color: green;";
@@ -312,7 +314,7 @@
                     //appends
                     //categoryHeaderDiv.appendChild(categoryHeaderBold);
                     categoryHeaderDiv.appendChild(categoryHeaderLabel1);
-                    categoryHeaderDiv.appendChild(categoryHeaderLabel2);
+                    //categoryHeaderDiv.appendChild(categoryHeaderLabel2);
                     categoryHeaderDiv.appendChild(categoryHeaderInput1);
                     categoryHeaderDiv.appendChild(categoryHeaderLabel3);
                     categoryHeaderDiv.appendChild(categoryHeaderLabel4);
@@ -352,17 +354,18 @@
                 //console.log(c);
                 var category = document.getElementById("categoryCounterParagraph" + c.charAt(0).toUpperCase() + c.slice(1));
                 var count = document.getElementsByClassName(String(c).toLowerCase()).length;
+                var categoryFirstLetterUpperCase = c.charAt(0).toUpperCase() + c.slice(1);
                 //console.log(count);
 
                 if(count != null && count != 0)
                 {
-                    category.innerHTML = "<b>" + c + " (" + count + ")" + "</b>";
+                    category.innerHTML = "<b>" + categoryFirstLetterUpperCase + " (" + count + ")" + "</b>";
                     return count;
                 }
                 
                 else
                 {
-                    category.innerHTML = " " + c + "(" + 0 + ")";
+                    category.innerHTML = "<b>" + categoryFirstLetterUpperCase + " (" + 0 + ")" + "</b>";
                     return 0;
                 }
 
@@ -969,7 +972,11 @@
                     
                     var d = document.getElementById("category" + categoryNameWithFirstLetterUpperCase);
                     //console.log(d);
-                    d.remove();
+                    if(d != null)
+                    {
+                        d.remove();
+                    }
+
 
                     var h = document.getElementById("menuEditRestaurantItems");
                     h.appendChild(d);

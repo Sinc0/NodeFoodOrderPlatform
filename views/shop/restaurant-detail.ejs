@@ -132,9 +132,9 @@
                             <div id="menu-item#<%=c + 1 %>" class="menu-item">
                                 <!-- <p><%= restaurant.menuItems[c].restaurantId %></p> -->
                                 <div class="menu-item-texts">
-                                    <p><b><%= restaurant.menuItems[c].title %></b></p>
-                                    <p>$<%= restaurant.menuItems[c].price %></p>
-                                    <p>Ingredients: <%= restaurant.menuItems[c].description %></p>
+                                    <p><b><%=restaurant.menuItems[c].title %></b></p>
+                                    <p>$<%=restaurant.menuItems[c].price %></p>
+                                    <p>Ingredients: <%=restaurant.menuItems[c].description %></p>
                                 </div>
 
                                 <p hidden id="menu-item#<%=c + 1 %>-category"><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></p>
@@ -143,7 +143,7 @@
                                 <div class="menu-item-add-to-cart-button">
                                     <% let buttonNumber = c %>
                                     <button onclick="updateCart('<%=buttonNumber %>', '<%=restaurant.menuItems[c].title %>', '<%=restaurant.menuItems[c].price %>')" class="cart-add-to-cart-button">+</button></a>
-                                    <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menu[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
+                                    <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menuItems[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
                                 </div>
                                 <% } %>
 
@@ -186,7 +186,7 @@
                 
                 <div id="cart-items"></div> 
                 
-                <input id="customerComment" name="customerComment" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>
+                <textarea id="customerComment" name="customerComment" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></textarea>
                                
                 <h2 id="total-price"></h2>
                                 
