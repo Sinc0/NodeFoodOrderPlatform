@@ -1563,7 +1563,7 @@ exports.getRestaurantLogout = async (req, res, next) => {
 
 }
 
-exports.postRestaurantTest = async (req, res, next) => {
+exports.postRestaurantUpdateMenu = async (req, res, next) => {
     console.log('getTest');
     console.log(req.body);
     console.log(res.locals.userEmail);
@@ -1604,4 +1604,16 @@ exports.postRestaurantTest = async (req, res, next) => {
 
     //if successful redirect
     //res.redirect("/portal/menu-edit");
+}
+
+//tests
+exports.getGoogleMapsApiTest = async (req, res, next) => {
+    console.log('getTest');
+    console.log(req.body);
+    console.log(res.locals.userEmail);
+
+    res.render('shop/googleMapsApi.ejs', 
+    { 
+
+    });
 }
