@@ -341,7 +341,7 @@ function customerDeliverySelector()
     paymentSelector.disabled = "";
 }
 
-function editProfileCredentials()
+/* function editProfileCredentials()
 {
     var profileCredentials = document.getElementById("profileCredentials");
     var editProfileCredentials = document.getElementById("editProfileCredentials");
@@ -357,7 +357,7 @@ function editProfileCredentials()
         profileCredentials.style.display = "block";
         editProfileCredentials.style.display = "none";
     }
-}
+} */
 
 function registerCustomer()
 {

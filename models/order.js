@@ -93,6 +93,18 @@ class Order
             .catch(err => console.log(err))
     }
 
+    static async updateWithReview(orderId, reviewObject)
+    {
+        const db = getDb();
+   
+        var updateWithReview = await db.collection('orders').updateOne({_id: ObjectId(orderId)},
+        {$set: 
+            {
+                review: reviewObject,
+            }
+        })
+    }
+
     static updateOne(orderId, status, estimatedCompletionTime)
     {
         const db = getDb();
@@ -160,6 +172,18 @@ class Order
         return db
             .collection("orders")
             .find()
+            .toArray()
+            .then(orders => { /* { console.log(orders) */ return orders })
+            .catch(err => console.log(err));
+    }
+
+    static fetchAllByRestaurantUrl(restaurantUrl)
+    {
+        const db = getDb();
+
+        return db
+            .collection("orders")
+            .find({restaurant: restaurantUrl})
             .toArray()
             .then(orders => { /* { console.log(orders) */ return orders })
             .catch(err => console.log(err));

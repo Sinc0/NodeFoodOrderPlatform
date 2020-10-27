@@ -59,7 +59,7 @@
     
                 <div class="card__image">
                     <!-- <img src="/<%=restaurant.image %>"> //hosted on server -->
-                    <img src="<%=restaurant.image %>"> <!-- //link to another site -->
+                    <img src="<%=restaurant.imageUrl %>"> <!-- //link to another site -->
                 </div>
     
                 <br />
@@ -89,6 +89,11 @@
                 <b>Address</b>
                 <p><%=restaurant.address %></p>
                                
+                <br />
+
+                <!-- type -->
+                <p><b>Type</b><br /><%=restaurant.type %></p>
+
                 <br />
                 
                 <!-- description -->
@@ -130,37 +135,15 @@
     
                                     <p hidden id="menu-item#<%=c + 1 %>-category"><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></p>
     
-                                    <% if(loggedIn == true) { %>
                                     <div class="menu-item-add-to-cart-button">
                                         <% let buttonNumber = c %>
-                                        <button onclick="updateCart('<%=buttonNumber %>', '<%=restaurant.menu[c].title %>', '<%=restaurant.menu[c].price %>')" class="cart-add-to-cart-button">+</button></a>
-                                        <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menu[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
+                                        <button disabled onclick="updateCart('<%=buttonNumber %>', '<%=restaurant.menuItems[c].title %>', '<%=restaurant.menuItems[c].price %>')" class="cart-add-to-cart-button">+</button></a>
+                                        <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menuItems[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
                                     </div>
-                                    <% } %>
-    
-                                    <% if(loggedIn != true) { %>
-                                        <% if(restaurant.open == true) { %>
-                                            <div class="menu-item-add-to-cart-button">
-                                                <% let buttonNumber = c %>
-                                                <button disabled onclick="InformAnonOpen()" class="cart-add-to-cart-button">+</button></a>
-                                                <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menuItems[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
-                                            </div>
-                                    <% } %>
-    
-                                    <% if(restaurant.open == false) { %>
-                                        <div disabled class="menu-item-add-to-cart-button">
-                                            <% let buttonNumber = c %>
-                                            <button disabled onclick="InformAnonOpen()" class="cart-add-to-cart-button" style="opacity: .50; visibility: hidden;">+</button></a>
-                                            <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menuItems[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
-                                        </div>
-                                    <% } %>
-                                    
-                                <% } %>
                                 </div>
+                            <% } %>
     
-                                <% } else { %>
                             
-                                <% } %>
                         
                         <% } %>
                         

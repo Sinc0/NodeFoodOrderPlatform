@@ -92,7 +92,7 @@ class User
 
                 if(result == null)
                 {
-                    console.log('login cookie not found');
+                    //console.log('login cookie not found');
                     return false;
                 }
 
@@ -576,7 +576,33 @@ class User
                     password: password,
                     createdAt: new Date()
                 })
-                //console.log(registerUser.insertedCount);  
+                //console.log(registerUser.insertedCount);
+
+                //set up temporary restaurant values
+                var hours = [];
+                hours.push({day: "Monday", time: "Example: 11-23 11-Late or Closed"})
+                hours.push({day: "Tuesday", time: "Example: 11-23 11-Late or Closed"})
+                hours.push({day: "Wednesday", time: "Example: 11-23 11-Late or Closed"})
+                hours.push({day: "Thursday", time: "Example: 11-23 11-Late or Closed"})
+                hours.push({day: "Friday", time: "Example: 11-23 11-Late or Closed"})
+                hours.push({day: "Saturday", time: "Example: 11-23 11-Late or Closed"})
+                hours.push({day: "Sunday", time: "Example: 11-23 11-Late or Closed"})
+
+                var description = "description of " + restaurantName;
+                var imageUrl = "exampleImage.jpg";
+                
+                var menuCategories = [];
+                menuCategories.push({position: 1, categoryName: "exampleCategory"});
+
+                var type = "Example: Pasta, Pizza, Sallad";
+
+                var menuItems = [];
+                menuItems.push({position: 1, id: "exampleCategory1", category: "exampleCategory", title: "example item", price: "10", description: "description of example item"});
+
+                var url = restaurantName;
+                url = url.toString().toLowerCase();
+                url = url.toString().split(" ");
+                url = url.toString().replace(/,/g, "-");
                        
                 var registerRestaurant = await db.collection('restaurants').insertOne(
                 {
@@ -585,13 +611,20 @@ class User
                     address: address,
                     phone: phone,
                     companyIdNumber,
-                    url: null,
+                    url: url,
                     title: restaurantName,
-                    hours: null,
-                    description: null,
-                    imageUrl: null,
-                    menuCategories: null,
-                    menu: null,
+                    open: false,
+                    status: null,
+                    menuOnline: false,
+                    menuListed: false,
+                    hours: hours,
+                    description: description,
+                    imageUrl: imageUrl,
+                    menuCategories: menuCategories,
+                    menuItems: menuItems,
+                    rating: null,
+                    type: type,
+                    location: null,
                     createdAt: new Date()
                 })
                 //console.log(registerRestaurant.insertedCount);

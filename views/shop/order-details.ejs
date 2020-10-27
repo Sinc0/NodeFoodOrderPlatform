@@ -56,6 +56,10 @@
         <% for(var c = 0; c < order.products.items.length; c++) { %>
             <p>&emsp;<%=order.products.items[c].name %> - <%=order.products.items[c].quantity %> - ($<%=order.products.items[c].quantity * order.products.items[c].price %>)</p>
         <% } %>
+        <p><b>review:</b></p>
+        <p>name: <%=order.review.name %></p>
+        <p>rating: <%=order.review.rating %></p>
+        <p>comment: <%=order.review.comment %></p>
 
         <br />
 

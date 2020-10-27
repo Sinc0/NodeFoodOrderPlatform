@@ -6,6 +6,34 @@
     <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
     <script src="js/functionality.js"></script>
+    <script>
+        function reviewOrder(totalOrders, orderNumber, orderId)
+        {
+            var orderItem = document.getElementById("order-item#" + orderNumber);
+            var orderReview = document.getElementById("order-review#" + orderNumber);
+            
+            /*
+            for(var counter = 1; counter <= totalOrders; counter++)
+            {
+                var d = document.getElementById("order-item#" + counter);
+                d.style.opacity = ".25";
+            }
+
+            orderItem.style.opacity = "100%";
+            orderReview.style.opacity = "100%";
+            */
+            
+            if(orderReview.style.display == "none")
+            {
+                orderReview.style.display = "block";
+            }
+
+            else if(orderReview.style.display == "block")
+            {
+                orderReview.style.display = "none";
+            }
+        }
+    </script>
 </head>
 <body>
     <!-- admin view -->
@@ -30,20 +58,92 @@
     <main id="main-orders">
         <% if (orders != null) { %>
         <div id="grid-orders">
+
+            <br />
+
+            <p>unconfirmed = waiting for restaurant to respond</p>
+            <p>confirmed = restaurant have accepted order</p>
+            <p>declined = restaurant have rejected order</p>
+            <p>completed = order is ready for pick up or delivery</p>
+
             <% let counter = orders.length + 1; %>
             <% for (let order of orders.reverse()) { counter-- %>
-                <br/>
+                
+                <br />
 
                 <div id="order-item#<%=counter %>" class="order-item">
                     <p><b>#<%=counter %></b></p>
+                    <p style="text-align: center;"><b><%=order.restaurant %></b></p>
+
+                    <br/>
+                    
                     <p><b>placed at:</b> <%=order.placedAt %></p>
-                    <p><b>restaurant:</b> <%=order.restaurant %></p>
                     <p><b>status:</b> <%=order.status %></p>
-                    <p><b>estimated time:</b> <%=order.estimatedCompletionTime %></p>
                     <p><b>type:</b> <%=order.type %></p>
+
+                    <br />
+
+                    <p><b>estimated time:</b> <%=order.estimatedCompletionTime %></p>
                     <p><b>total amount:</b> <%=order.totalPrice %></p>
+                    <p><b>items:</b> <% for(var c = 0; c < order.products.items.length; c++) { %>
+                        <p>&emsp;<%=order.products.items[c].name %> - <%=order.products.items[c].quantity %> - ($<%=order.products.items[c].quantity * order.products.items[c].price %>)</p>
+                    <% } %></p>
+                    <% if(order.rating != null) { %>
+                        <p><b>rating:</b> <%=order.rating %></p>
+                    <% } %>
+                    <% if(order.comment != null) { %>
+                        <p><b>comment:</b> <%=order.comment %></p>
+                    <% } %>
+
+                    <br />
+
+                    <% if(order.review != null) { %>
+                        <p><b>review: </b><br />
+                            &emsp;name: <%=order.review.name %><br />
+                            &emsp;rating: <%=order.review.rating %><br/>
+                            &emsp;comment: <%=order.review.comment %></p>
+                    <% } %>
                     <!-- <p><a href="/reciepts/<%= order._id %>">order reciept PDF</a></p> -->
-                    <p><a href='/order-details/<%=order._id %>'>details</a></p>
+                    <br />
+                    <div style="text-align: center;">
+                        <p><a href='/order-details/<%=order._id %>'>show details</a></p>
+                        <% if(order.status == "completed" && order.review == null) { %>
+                            <p value="<%=order._id%>" onclick="reviewOrder('<%=orders.length%>', '<%=counter %>', this.value)">submit review</p>
+                        <% } %>
+                        <% if(order.status == "completed" && order.review != null) { %>
+                            <p value="<%=order._id%>" onclick="reviewOrder('<%=orders.length%>', '<%=counter %>', this.value)">edit review</p>
+                        <% } %>
+                    </div>
+                </div>
+
+                <% var customerNameSplit = order.customerName.split("@"); %>
+                <% var customerName = customerNameSplit[0]; %>
+                <% var orderItems = [] %>
+                <% for(var c = 0; c < order.products.items.length; c++) { %>
+                    <% orderItems.push(order.products.items[c].name) %>
+                <% } %>
+            
+                <div id="order-review#<%=counter %>" style="position: relative; display: none; z-index: 1; background-color: orange; padding: 10px;">
+                    <form action="/review-post" method="POST">
+                        <input hidden name="orderId" value="<%=order._id %>"></input>
+                        <input hidden name="restaurant" value="<%=order.restaurant %>"></input>
+                        <input hidden name="items" value="<%=orderItems.toString() %>"></input><br />
+                        <% if(order.review == null) { %>
+                            <b>name: </b><input required name="customerName" maxlength="50" value="<%=customerName %>"></input><br />
+                            <b>rating: </b><input required name="rating" type="number" min="1" max="5" placeholder="1-5" value=""></input><br />
+                            <b>comment</b><br />
+                            <textarea name="comment" maxlength="250" style ="min-width: 100%; max-width: 100%;"></textarea><br />
+                        <% } else if(order.review != null) { %>
+                            <b>name: </b><input required name="customerName" maxlength="50" value="<%=order.review.name %>"></input><br />
+                            <b>rating: </b><input required name="rating" type="number" min="1" max="5" placeholder="1-5" value="<%=order.review.rating %>"></input><br />
+                            <b>comment</b><br />
+                            <textarea name="comment" maxlength="250" style ="min-width: 100%; max-width: 100%;"><%=order.review.comment %></textarea><br />
+                        <% } %>
+                        <div style="text-align: center;">
+                            <button type="submit">Submit</button>
+                            <b onclick="reviewOrder('<%=orders.length%>', '<%=counter %>', this.value)">Cancel</b>
+                        </div>
+                    </form>
                 </div>
 
             <% } %>
@@ -52,6 +152,6 @@
             <h1> No orders found</h1>
         <% } %>
     </main>
-
+    
 </body>
 </html>

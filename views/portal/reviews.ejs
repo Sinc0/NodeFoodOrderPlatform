@@ -7,7 +7,17 @@
     <link rel="stylesheet" href="/css/portalRestaurant.css">
 </head>
 <a href="/portal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
-<body>
-    <p>reviews</p>
+<body id="">
+    <h2 style="text-align: center;">Reviews (<%=reviews.length %>)</h2>
+    <% for(var counter = 0; counter < reviews.length; counter++) { %>
+        <div id="customer-review#" + counter style="background-color: orange; width: 450px; margin: auto; margin-bottom: 25px; padding: 5px;">
+            <p style="text-align: left; margin: 0px; padding: 0px;"><b>#<%=counter + 1 %></b></p>
+            <p style="text-align: left; margin: 0px; padding: 0px;"><b>date:</b><%=reviews[counter].reviewObject.date %></p>
+            <p style="text-align: left; margin: 0px; padding: 0px;"><b>name:</b><%=reviews[counter].reviewObject.name %></p>
+            <p style="text-align: left; margin: 0px; padding: 0px;"><b>rating:</b><%=reviews[counter].reviewObject.rating %></p>
+            <p style="text-align: left; margin: 0px; padding: 0px;"><b>items:</b><%=reviews[counter].reviewObject.items %></p>
+            <p style="text-align: left; margin: 0px; padding: 0px;"><b>comment</b><br /><%=reviews[counter].reviewObject.comment %></p>
+        </div>
+    <% } %> 
 </body>
 </html>

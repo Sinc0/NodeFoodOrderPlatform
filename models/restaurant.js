@@ -75,20 +75,50 @@ class Restaurant
             .catch(err => console.log(err));
     }
 
-    static updateMenu(owner, hours, description, image, menuCategories, menuItems, phone, address) 
+    static updateMenu(owner, hours, description, imageUrl, menuCategories, menuItems, phone, address, types) 
     {
         const db = getDb();   
 
         return db.collection('restaurants')
             .updateOne({email: owner},{$set: 
                 {
-                    image: image,
+                    imageUrl: imageUrl,
                     hours: hours,
                     description: description,
                     menuCategories: menuCategories,
                     menuItems: menuItems,
                     phone: phone,
-                    address: address
+                    address: address,
+                    type: types
+                }
+            }  )
+            .then(result => { return result /* console.log(result) */ })
+            .catch(err => console.log(err));
+    }
+
+    static menuListed(owner, value) 
+    {
+        const db = getDb();   
+
+        return db.collection('restaurants')
+            .updateOne({email: owner},{$set: 
+                {
+                    menuListed: value
+                }
+            }  )
+            .then(result => { return result /* console.log(result) */ })
+            .catch(err => console.log(err));
+    }
+
+    static menuOnline(owner, value) 
+    {
+        const db = getDb();   
+
+        return db.collection('restaurants')
+            .updateOne({email: owner},{$set: 
+                {
+                    open: value,
+                    menuOnline: value
                 }
             }  )
             .then(result => { return result /* console.log(result) */ })

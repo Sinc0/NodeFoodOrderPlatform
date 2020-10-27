@@ -65,8 +65,12 @@ router.get('/portal/settings', restaurantValidation, shopController.getRestauran
 router.get('/portal/logout', restaurantValidation, shopController.getRestaurantLogout);
 
 router.post('/portal/updateMenu', restaurantValidation, shopController.postRestaurantUpdateMenu);
+router.post('/portal/menuListed', restaurantValidation, shopController.postRestaurantMenuListed);
+router.post('/portal/menuOnline', restaurantValidation, shopController.postRestaurantMenuOnline);
+
 
 //tests
+router.post('/review-post', validation, shopController.postRestaurantReview);
 router.get('/googleMapsApiTest', validation, shopController.getGoogleMapsApiTest);
 
 //exports

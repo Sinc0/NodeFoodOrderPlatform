@@ -82,7 +82,8 @@ class Session
                 }
                 else
                 {
-                    console.log('error line 86 session.js');
+                    //console.log('error line 86 session.js');
+                    console.log("anon user >")
                 }
             })
             .catch(err => console.log(err))

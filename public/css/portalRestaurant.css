@@ -142,7 +142,7 @@ a
     margin: 0px;
 }
 
-#menuEditRestaurantImageUrl, #menuEditRestaurantDescription, #menuEditRestaurantHours, #menuEditRestaurantCategory, #menuEditRestaurantPhone, #menuEditRestaurantAdress
+#menuEditRestaurantImageUrl, #menuEditRestaurantDescription, #menuEditRestaurantHours, #menuEditRestaurantCategory, #menuEditRestaurantPhone, #menuEditRestaurantAdress, #menuEditRestaurantType
 {
     margin-bottom: 10px;
 }

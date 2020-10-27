@@ -7,42 +7,95 @@
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/portalRestaurant.css">
     <script src="/js/functionality.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDBORRveWwr4pmBRwYBHvrcySfqndTVOUg&callback=GoogleMapsAdressAutocomplete" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=GoogleMapsAdressAutocomplete" async defer></script>
+    <script>
+        function editProfileCredentials()
+        {
+            var profileCredentials = document.getElementById("profileCredentials");
+            var editProfileCredentials = document.getElementById("editProfileCredentials");
+
+            if(profileCredentials.style.display == "block" || editProfileCredentials == "none")
+            {
+                profileCredentials.style.display = "none";  
+                editProfileCredentials.style.display = "block";  
+            }
+
+            else
+            {
+                profileCredentials.style.display = "block";
+                editProfileCredentials.style.display = "none";
+            }
+        }
+    </script>
 </head>
 <a href="/portal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
 <body>
     <main id="main-profile" style="text-align: center">
-        <p style="color: red;"><b>Note: email and password change requires relog</b></p>
 
         <br />
+
+        <p><b>Status</b></p>
+        <% if(restaurant.menuOnline == false) { %>
+            <p style="margin: auto; background-color: red; width: 400px;"><b>restaurant</b> closed</p>
+        <% } %>
+            
+        <% if(restaurant.menuOnline == true) { %>
+            <p style="margin: auto; background-color: green; width: 400px;"><b>restaurant</b> open</p>
+        <% } %>
+
+        <% if(restaurant.menuListed == false) { %>
+            <p style="margin: auto; background-color: red; width: 400px;"><b>restaurant</b> inactive</p>
+        <% } %>
         
-        <button class="profile-buttons">change email</button>
+        <% if(restaurant.menuListed == true) { %>
+            <p style="margin: auto; background-color: green; width: 400px;"><b>restaurant</b> active</p>
+        <% } %>
 
         <br />
 
-        <button class="profile-buttons">change password</button>
-
-        <br />
-
-        <button class="profile-buttons" onclick="editProfileCredentials()">change credentials</button>
+        <!-- <p style="color: red;"><b>Note: email and password change requires relog</b></p><br /> -->
+        <p><b>Options</b></p>
+        <button disabled class="profile-buttons" style="width: 400px;">change email</button><br />
+        <button disabled class="profile-buttons" style="width: 400px;">change password</button><br />
+        <button class="profile-buttons" style="width: 400px;" onclick="editProfileCredentials()">change credentials</button><br />
         
-        <br />
-        <br />
+        <form action="/portal/menuOnline" method="POST">
+            <% if(restaurant.menuOnline == false) { %>
+                <input hidden name="menuOnline" value="true"></input>
+                <button class="profile-buttons" style="width: 400px;">open restaurant</button><br />
+            <% } %>
+                
+            <% if(restaurant.menuOnline == true) { %>
+                <input hidden name="menuOnline" value="false"></input>
+                <button class="profile-buttons" style="width: 400px;">close restaurant</button><br />
+            <% } %>
+        </form>
         
+        <form action="/portal/menuListed" method="POST">
+            <% if(restaurant.menuListed == false) { %>
+                <input hidden name="menuListed" value=true></input>
+                <button class="profile-buttons" style="width: 400px;">activate restaurant</button><br />
+            <% } %>
+            
+            <% if(restaurant.menuListed == true) { %>
+                <input hidden name="menuListed" value=false></input>
+                <button class="profile-buttons" style="width: 400px;">deactivate restaurant</button><br />
+            <% } %>
+        </form>
+
+        <br />
+
         <div id="profileCredentials" style="display: block;">
-            <p><b>email:</b> <%=email %></p>
-            <p><b>name:</b> <%=name %></p>
-            <p><b>phone:</b> <%=phone %></p>
-            <p><b>address:</b> <%=address %></p>
-            <p><b></b></p>
-            <p><b></b></p>
-            <p><b></b></p>
+            <p><b>Credentials</b></p>
+            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>email:</b> <%=email %></p>
+            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>name:</b> <%=name %></p>
+            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>phone:</b> <%=phone %></p>
+            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>address:</b> <%=address %></p>
         </div>
-    
-        <br />
         
         <div id="editProfileCredentials" style="display: none">
             <form action="/user-update-credentials" method="POST" onkeydown="return event.key != 'Enter';">
+                <p><b>Credentials</b></p>
                 <input hidden value="<%=email %>" name="oldEmail"></input>
                 <input hidden value="<%=email %>" name="newEmail" placeholder="email"></input>
                 <b>name: </b><input value="<%=name %>" name="name" placeholder="name"></input>

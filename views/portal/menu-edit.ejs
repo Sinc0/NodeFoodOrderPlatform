@@ -123,9 +123,9 @@
                 inputPosition.value = (itemsInCategoryCount + 1);
                 inputId.value = String(itemCategory).toLowerCase() + (itemsInCategoryCount + 1);
                 inputCategory.value = String(itemCategory).toLowerCase();
-                inputTitle.value = "";
-                inputPrice.value = "";
-                inputDescription.value = "";
+                inputTitle.value = String(itemCategory).toLowerCase() + " item";
+                inputPrice.value = 10;
+                inputDescription.value = "description of " + String(itemCategory).toLowerCase();
                         
                 //className
                 inputPosition.className = "itemInput";
@@ -439,7 +439,7 @@
                     var a = [];
                     var i = JSON.parse(getLocalStorageCategories);
                     var itemToLookFor = id.toLowerCase();
-                    //console.log("CategoryToLookFor: " + itemToLookFor);
+                    console.log("CategoryToLookFor: " + itemToLookFor);
                     
                     for(var c = 0; c < i.length; c++)
                     {
@@ -454,7 +454,7 @@
                         for(var c = 0; c < i.length; c++)
                         {            
                             //remove item from localstorage        
-                            if(a[c].category.includes(itemToLookFor))
+                            if(a[c].categoryName.includes(itemToLookFor))
                             {
                                 console.log("category " + c + " contains id");
                                 a.splice(c, 1);
@@ -469,6 +469,7 @@
                     //remove items with the category
                     var getLocalStorageItems = localStorage.getItem("items");
                     var a = [];
+                    var b = [];
                     var i = JSON.parse(getLocalStorageItems);
                     var itemToLookFor = id.toLowerCase();
                     //console.log("itemCategoryToLookFor: " + itemToLookFor);
@@ -478,28 +479,36 @@
                         a.push(i[c]);
                     }
 
+                    console.log(a);
+
                     if(getLocalStorageItems.includes(itemToLookFor))
                     {
                         //console.log("localStorage contains id");
 
                         //check what item
-                        while(getLocalStorageItems.includes(itemToLookFor))
-                        {
-                            for(var c = 0; c < i.length; c++)
+                    
+                            for(var counter = 0; counter <= a.length - 1; counter++)
                             {            
+                                //console.log(a[counter]);
                                 //remove item from localstorage
-                                if(a[c].category.includes(itemToLookFor))
+   
+                                if(a[counter].category == itemToLookFor)
                                 {
-                                    console.log("item " + c + " contains id");
-                                    a.splice(c, 1);
-                                    localStorage.setItem("items", JSON.stringify(a));
-                                    break;
+                                    //console.log("item " + counter + " contains id");
+                                    //a.splice(counter, 1);
+                                    //console.log(a);
                                 }
-    
+
+                                else
+                                {
+                                    b.push(a[counter]);
+                                }
+                                
                             }
-                        }
-                        
+
                     }  
+                    
+                    localStorage.setItem("items", JSON.stringify(b));
                 }
 
                 else
@@ -585,6 +594,15 @@
                 arrayHours.push({day: "Sunday", time: sunday.value});
 
                 localStorage.setItem("hours", JSON.stringify(arrayHours));
+                
+                setFormWithCorrectData();
+            }
+
+            function setTypesToLocalStorage()
+            {
+                var d = document.getElementById("inputType");
+
+                localStorage.setItem("types", JSON.stringify(d.value));
                 
                 setFormWithCorrectData();
             }
@@ -766,6 +784,7 @@
                 var address = localStorage.getItem("address");
                 var description = localStorage.getItem("description");
                 var hours = localStorage.getItem("hours");
+                var types = localStorage.getItem("types");
                 var categories = localStorage.getItem("categories");
                 var items = localStorage.getItem("items");
 
@@ -775,6 +794,7 @@
                 var inputFormAddress = document.getElementById("inputAllAddress");
                 var inputFormDescription = document.getElementById("inputAllDescription");
                 var inputFormHours = document.getElementById("inputAllHours");
+                var inputFormTypes = document.getElementById("inputAllTypes");
                 var inputFormCategories = document.getElementById("inputAllCategories");
                 var inputFormItems = document.getElementById("inputAllItems");
                 //console.log(categories);
@@ -807,6 +827,11 @@
                     document.getElementById("inputAllHours").value = hours;
                 }
 
+                if(inputFormTypes != null)
+                {
+                    document.getElementById("inputAllTypes").value = types;
+                }
+                
                 if(inputFormCategories != null)
                 {
                     document.getElementById("inputAllCategories").value = categories;
@@ -1017,7 +1042,7 @@
         <!-- Phone -->
         <div id="menuEditRestaurantPhone" onclick="collapseMenuEditCategory(this.id)">
             <p class="menuEditCategoryParagraph"><b>Phone</b></p>
-            <input id="inputPhone" maxlength="30" value="<%=restaurant.phone %>" onkeyup="setPhoneToLocalStorage()" style="width: 201px;"></input>
+            <input id="inputPhone" maxlength="30" value="<%=restaurant.phone %>" onkeyup="setPhoneToLocalStorage()" style="width: 400px;"></input>
             <script>setPhoneToLocalStorage()</script>
         </div>
         
@@ -1034,11 +1059,18 @@
             <input id="inputImg" value="<%=restaurant.imageUrl %>" onkeyup="setImgToLocalStorage()" style="width: 400px"></input>
             <script>setImgToLocalStorage()</script>
         </div>
+
+        <!-- type -->
+        <div id="menuEditRestaurantType" onclick="collapseMenuEditCategory(this.id)">
+            <p class="menuEditCategoryParagraph"><b>Type</b></p>
+            <input id="inputType" value="<%=restaurant.type %>" onkeyup="setTypesToLocalStorage()" style="width: 400px;"></input>
+            <script>setTypesToLocalStorage()</script>
+        </div>
         
         <!-- description -->
         <div id="menuEditRestaurantDescription" onclick="collapseMenuEditCategory(this.id)">
             <p class="menuEditCategoryParagraph"><b>Description</b></p>
-            <textarea id="inputDescription" maxlength="250" onkeyup="setDescriptionToLocalStorage()" style="height: 75px; width: 400px;"><%=restaurant.description %> xxxxxxxxxxxxxxx xxxxxxxxxxx xxxxxxxxxxxxxx xxxxxxxxxxxx xxxxxxxxxxx xxxxxxxxxxx xxxxxxxxxxx xxxxx xxxx xxx</textarea>
+            <textarea id="inputDescription" maxlength="250" onkeyup="setDescriptionToLocalStorage()" style="height: 75px; width: 400px;"><%=restaurant.description %></textarea>
             <script>setDescriptionToLocalStorage()</script>
         </div>
         
@@ -1046,13 +1078,13 @@
         <div id="menuEditRestaurantHours" onclick="collapseMenuEditCategory(this.id)">
             <p class="menuEditCategoryParagraph"><b>Hours (<%=restaurant.hours.length %>)</b></p>
             <% for(var c = 0; c < restaurant.hours.length; c++) { %>
-                <% if(c == 0) { %> <b style="margin-left: 21px;">Monday</b> <input id="inputHoursMonday"  value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 125px; margin-right: 21px;"></input><br /> <% } %>
-                <% if(c == 1) { %> <b style="margin-left: 22px;">Tuesday</b> <input id="inputHoursTuesday" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 125px; margin-right: 25px;"></input><br /> <% } %>
-                <% if(c == 2) { %> <b style="margin-left: 0px;">Wednesday</b> <input id="inputHoursWednesday" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 125px; margin-right: 27px;"></input><br /> <% } %>
-                <% if(c == 3) { %> <b style="margin-left: 11px;">Thursday</b> <input id="inputHoursThursday" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 125px; margin-right: 23px;"></input><br /> <% } %>
-                <% if(c == 4) { %> <b style="margin-left: 32px;">Friday</b> <input id="inputHoursFriday" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 125px; margin-right: 20px;"></input><br /> <% } %>
-                <% if(c == 5) { %> <b style="margin-left: 15px;">Saturday</b> <input id="inputHoursSaturday" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 125px; margin-right: 23px;"></input><br /> <% } %>
-                <% if(c == 6) { %> <b style="margin-left: 26.5px;">Sunday</b> <input id="inputHoursSunday" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 125px; margin-right: 23px;"></input><br /> <% } %>
+                <% if(c == 0) { %><div style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 20px;">Monday: </b> <input id="inputHoursMonday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 21px;"></input><br /></div> <% } %>
+                <% if(c == 1) { %><div style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 21px;">Tuesday: </b> <input id="inputHoursTuesday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 25px;"></input><br /></div> <% } %>
+                <% if(c == 2) { %><div style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: -2px;">Wednesday: </b> <input id="inputHoursWednesday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 27px;"></input><br /></div> <% } %>
+                <% if(c == 3) { %><div style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 10px;">Thursday: </b> <input id="inputHoursThursday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 23px;"></input><br /></div> <% } %>
+                <% if(c == 4) { %><div style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 31px;">Friday: </b> <input id="inputHoursFriday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 20px;"></input><br /></div> <% } %>
+                <% if(c == 5) { %><div style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 13px;">Saturday: </b> <input id="inputHoursSaturday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 23px;"></input><br /></div> <% } %>
+                <% if(c == 6) { %><div style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 23.5px;">Sunday: </b> <input id="inputHoursSunday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 23px;"></input><br /></div> <% } %>
                 
             <% } %>
             <script>setHoursToLocalStorage()</script>
@@ -1060,10 +1092,10 @@
         
         <!-- categories -->
         <b><p id="menuEditCategories" class="menuEditCategoryParagraph">Categories (<%=restaurant.menuCategories.length %>)</p></b>
-        <label onclick="addCategory()">[Add Category]</label>
+        <label onclick="addCategory()"><button style="width: 400px;">Add Category</button></label>
         <div id="menuEditRestaurantCategory" onclick="collapseMenuEditCategory(this.id)">
             <% for(var c = 0; c < restaurant.menuCategories.length; c++) { %>
-                <div id="category#<%=c + 1 %>">
+                <div id="category#<%=c + 1 %>" style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;">
                     <% if(c != restaurant.menuCategories.length - 1 && c != 0) { %>
                         <label id="categoryInput#<%=c + 1%>-delete" style="margin-left: 20px;" onclick="deleteCategory('<%=c + 1 %>', '<%=restaurant.menuCategories[c].categoryName %>')"> X </label>
                     <% } else if(c == restaurant.menuCategories.length - 1) { %>
@@ -1093,7 +1125,7 @@
         <!-- items -->
         <div id="menuEditRestaurantItems" onclick="collapseMenuEditCategory(this.id)">
             <!-- form start -->
-            <form id="laskdssassdad">
+            <form>
                 <% var itemsCount = restaurant.menuItems.length %>
                 <% var categoryCount = restaurant.menuCategories[c] %>
                     <p class="menuEditCategoryParagraph" style="margin-bottom: -3px; padding-bottom: 0px;"><b id="itemCounterParagraph"> Items (<%=itemsCount %>)</b></p>
@@ -1168,6 +1200,7 @@
             <input id="inputAllAddress" name="inputAllAddress" value="address"></input><br />
             <input id="inputAllDescription" name="inputAllDescription" value="description"></input><br />
             <input id="inputAllHours" name="inputAllHours" value="hours"></input><br />
+            <input id="inputAllTypes" name="inputAllTypes" value="types"></input><br />
             <input id="inputAllCategories" name="inputAllCategories" value=""></input><br />   
             <input id="inputAllItems" name="inputAllItems" value=""></input><br />
             <button>Button</button>   

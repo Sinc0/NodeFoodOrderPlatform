@@ -6,6 +6,23 @@
     <title>Restaurants</title>
     <link rel="stylesheet" href="/css/main.css">
     <script src="/js/functionality.js"></script>
+    <script>
+        function displayRestaurantReviews()
+        {
+            var d = document.getElementById("restaurantsRestaurantReview");
+
+            if(d.style.display == "none")
+            {
+                d.style.display = "block";
+            }
+
+            else if(d.style.display == "block")
+            {
+                d.style.display = "none";
+            }
+
+        }
+    </script>
 </head>
 <body id="body-restaurants">
     <!-- admin view -->
@@ -24,13 +41,13 @@
     <% var restaurantsClosed = [] %>
 
     <% for (let restaurant of restaurants) { %>
-        <% if(restaurant.open == true) { %>
+        <% if(restaurant.menuListed == true && restaurant.open == true) { %>
             <% restaurantsOpen.push(restaurant); %>
         <% } %>
     <% } %>
 
     <% for (let restaurant of restaurants) { %>
-        <% if(restaurant.open == false) { %>
+        <% if(restaurant.menuListed == true && restaurant.open == false) { %>
             <% restaurantsClosed.push(restaurant); %>
         <% } %>
     <% } %>
@@ -51,44 +68,88 @@
             <% counter++ %>
             <div id="restaurantMenuItem#<%=counter %>" class="restaurantMenuItem">
                 
-                <a style="text-decoration: none; color: black" href="/restaurant/<%= restaurant.url %>">
-            
-                <div class="restaurantMenuItemImg" style="display: inline-block;">
-                    <img src="<%= restaurant.imageUrl %>" alt="<%=restaurant.title %>">
-                </div>
+                    <a style="text-decoration: none; color: black" href="/restaurant/<%= restaurant.url %>">
+                        <div class="restaurantMenuItemImg" style="display: inline-block;">
+                            <img src="<%= restaurant.imageUrl %>" alt="<%=restaurant.title %>">
+                        </div>                  
+                    </a>
+
+                    <div class="restaurantMenuItemText" style="display: inline-block;">
+                        <h1 style="margin-top: 0px;"><%=restaurant.title %></h1>
+                        <% if(restaurant.open == true) { %>
+                            <h3 style="color: rgb(30, 209, 54)">Open</h3> <!-- open or closed -->
+                        <% } %>
+
+                        <% if(restaurant.open == false) { %>
+                            <h3 style="color: rgb(214, 14, 14)">Closed</h3> <!-- open or closed -->
+                        <% } %>
+
+                        <h3><%=restaurant.rating %></h3> <!-- rating -->
+                        <h3><%=restaurant.type %></h3> <!-- type -->
+                        <h3><%=restaurant.location %></h3> <!-- location -->
+                        <!-- <p><%=restaurant.description %></p> --> <!-- description -->
+                        <h3 onclick="displayRestaurantReviews()">Reviews</h3>
+                    </div>
+
+                    <div id="restaurantsRestaurantReview" style="display: none;">
+                        <% if(restaurant.reviews == null) { %>
+                        
+                        <p><b>Total Comments (0)</b></p>
+
+                        <div class="restaurantReview" style="padding-top: 5px;">
+                            <p></p>
+                            <p></p>
+                            <p></p>
+                            <p></p>
+                            <p></p>
+                        </div>
+                        
+                        <div class="restaurantReview" style="padding-top: 5px;">
+                            <p>Date: </p>
+                            <p>Name: Joe</p>
+                            <p>Rating: 4</p>
+                            <p>Ordered: Shrimp Pizza, Vegetarian Sallad, Garlic Bread</p>
+                            <p>Comment: Kasldka alskdl kasd lkasldk laskd laksdl kasldk alskd laksdl kaldskadl</p>
+                        </div>
+                        
+                        <div class="restaurantReview">
+                            <p>Date: </p>
+                            <p>Rating: </p>
+                            <p>Name: </p>
+                            <p>Ordered: </p>
+                            <p>Comment: </p>
+                        </div>
+                        
+                        <div class="restaurantReview">
+                            <p>Date: </p>
+                            <p>Rating: </p>
+                            <p>Name: </p>
+                            <p>Ordered: </p>
+                            <p>Comment: </p>
+                        </div>
+                        <% } else { %>
+                            <div class="restaurantReview" style="text-align: center;"> 
+                                <p>No reviews exist</p>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <p hidden id="restaurantMenuItemSearchText#<%=counter %>">
+                        <%=restaurant.title %>
+                        <%=restaurant.status %>
+                        <%=restaurant.rating %>
+                        <%=restaurant.type %>
+                        <%=restaurant.location %>
+                        <%=restaurant.description %>
+                    </p>
+                    
+                    <!--
+                    <div class="card__actions">
+                        <a href="/restaurants/<%= restaurant._id %>" class="btn"><button>Details</button></a>
+                        <a href="/cart/<%= restaurant._id %>" class="btn"><button>Details</button></a>
+                    </div>
+                    -->
                 
-                <div class="restaurantMenuItemText" style="display: inline-block;">
-                    <h1 style="margin-top: 0px;"><%=restaurant.title %></h1>
-                    <% if(restaurant.open == true) { %>
-                        <h3 style="color: rgb(30, 209, 54)">Open</h3> <!-- open or closed -->
-                    <% } %>
-
-                    <% if(restaurant.open == false) { %>
-                        <h3 style="color: rgb(214, 14, 14)">Closed</h3> <!-- open or closed -->
-                    <% } %>
-
-                    <h3><%=restaurant.rating %></h3> <!-- rating -->
-                    <h3><%=restaurant.type %></h3> <!-- type -->
-                    <h3><%=restaurant.location %></h3> <!-- location -->
-                    <p><%=restaurant.description %></p> <!-- description -->
-                </div>
-
-                <p hidden id="restaurantMenuItemSearchText#<%=counter %>">
-                    <%=restaurant.title %>
-                    <%=restaurant.status %>
-                    <%=restaurant.rating %>
-                    <%=restaurant.type %>
-                    <%=restaurant.location %>
-                    <%=restaurant.description %>
-                </p>
-                
-                <!--
-                <div class="card__actions">
-                    <a href="/restaurants/<%= restaurant._id %>" class="btn"><button>Details</button></a>
-                    <a href="/cart/<%= restaurant._id %>" class="btn"><button>Details</button></a>
-                </div>
-                -->
-                </a>
             </div>
             <% } %>
         

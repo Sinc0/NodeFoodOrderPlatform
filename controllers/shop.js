@@ -3,6 +3,7 @@ const Cart = require('../models/cart');
 const User = require('../models/user');
 const Session = require('../models/session');
 const Order = require('../models/order');
+const Review = require('../models/review');
 const fs = require('fs');
 const path = require('path');
 const pdfDocument = require('pdfkit');
@@ -97,11 +98,14 @@ exports.getRestaurants = (req, res, next) => {
 }
 
 exports.getRestaurantDetail = async (req, res, next) => {
-    console.log('getRestaurantDetail');
+    console.log('getRestaurantDetail >');
     const restaurantUrl = req.params.restaurantUrl;
+    console.log(restaurantUrl);
+    console.log("");
+
     //console.log('ProdId: ' + String(req.params.restaurantId));
     let validation = res.locals.validation;
-    let validationStatus = null;
+    //let validationStatus = null;
     
     if(validation == undefined)
     {
@@ -114,59 +118,51 @@ exports.getRestaurantDetail = async (req, res, next) => {
     }
 
     var restaurant = await Restaurant.findByUrl(restaurantUrl);
-    var checkIfOpen = restaurant.open;
-    console.log(checkIfOpen);
+    //console.log(restaurant);
 
     //logged in user
     if(validationStatus == true)
     {
-        Restaurant
-        .findByUrl(restaurantUrl)
-        .then(restaurant => {
-            if(restaurant != null)
-            {   
-                res.render('shop/restaurant-detail', {
-                    admin: validation.isAdmin,
-                    loggedIn: true,
-                    IsOpen: checkIfOpen,
-                    restaurant: restaurant,
-                    restaurantImage: "",
-                    restaurantUrl: restaurantUrl,
-                    path: '/restaurants'
-                });
-            }
-            else
-            {
-                res.redirect('/');
-            }
-        })
-        .catch(err => console.log(err));
+        if(restaurant != null)
+        {   
+            res.render('shop/restaurant-detail', {
+                admin: validation.isAdmin,
+                loggedIn: true,
+                IsOpen: restaurant.open,
+                restaurant: restaurant,
+                restaurantImage: "",
+                restaurantUrl: restaurantUrl,
+                path: '/restaurants'
+            });
+        }
+        else
+        {
+            res.redirect('/');
+        }
+
     }
 
     //anonymous user
     else
     {
-        Restaurant
-        .findByUrl(restaurantUrl)
-        .then(restaurant => {
-            if(restaurant != null)
-            {   
-                res.render('shop/restaurant-detail', {
-                    admin: false,
-                    loggedIn: false,
-                    IsOpen: checkIfOpen,
-                    restaurant: restaurant,
-                    restaurantImage: "",
-                    restaurantUrl: restaurantUrl,
-                    path: '/restaurants'
-                });
-            }
-            else
-            {
-                res.redirect('/');
-            }
-        })
-        .catch(err => console.log(err));
+
+        if(restaurant != null)
+        {   
+            res.render('shop/restaurant-detail', {
+                admin: false,
+                loggedIn: false,
+                IsOpen: restaurant.open,
+                restaurant: restaurant,
+                restaurantImage: "",
+                restaurantUrl: restaurantUrl,
+                path: '/restaurants'
+            });
+        }
+        else
+        {
+            res.redirect('/');
+        }
+
     }
 
 }
@@ -187,7 +183,7 @@ exports.getIndex = (req, res, next) => {
         .catch(err => console.log(err));
     */
 
-    console.log('getIndex');
+    console.log('getIndex\n');
     let validation = res.locals.validation;
     let email = res.locals.userEmail;
 
@@ -263,7 +259,7 @@ exports.getCart = (req, res, next) => {
 }
 
 exports.getRestaurantList = (req, res, next) => {
-    console.log('getRestaurantList');
+    console.log('getRestaurantList\n');
     let validation = res.locals.validation;
     let validationStatus = null;
     
@@ -617,7 +613,7 @@ exports.postOrder = async (req, res, next) => {
         {
             console.log('create order: successful');
             //res.redirect('/orders');
-            res.redirect("/order-details/" + orderId);
+            res.redirect("/order-process/" + orderId);
             
             /*
             let order;
@@ -1384,9 +1380,12 @@ exports.getRestaurantIndex = async (req, res, next) => {
     console.log(restaurantUrl);
     //var user = await User.findByEmail(userEmail);
     //console.log(user);
+
+    var restaurant = await Restaurant.findByUrl(restaurantUrl);
     
     res.render('portal/index', 
     { 
+        restaurant: restaurant,
         restaurantUrl: restaurantUrl
     });
 }
@@ -1488,9 +1487,11 @@ exports.getRestaurantStats = async (req, res, next) => {
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
 
+    var orders = await Order.fetchAllByRestaurantUrl(restaurantUrl);
+
     res.render('portal/statistics', 
-    { 
-        
+    {
+        orders: orders
     });
 }
 
@@ -1499,9 +1500,11 @@ exports.getRestaurantReviews = async (req, res, next) => {
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
 
+    var reviews = await Review.fetchAllByRestaurantUrl(restaurantUrl);
+
     res.render('portal/reviews', 
     { 
-        
+        reviews: reviews
     });
 }
 
@@ -1512,13 +1515,17 @@ exports.getRestaurantSettings = async (req, res, next) => {
     let loginCookie = req.get('Cookie');
     let cookieId = parseLoginCookie(loginCookie);
 
+    var restaurant = await Restaurant.findByUrl(restaurantUrl);
     var user = await User.findByCookieIdReturnUserObject(cookieId);
 
     //logged in user
     if(user != null)
     {
         res.render('portal/settings', 
-        { 
+        {
+            user: user,
+            restaurant: restaurant,
+
             name: user.name,
             email: user.email,
             address: user.address,
@@ -1564,7 +1571,7 @@ exports.getRestaurantLogout = async (req, res, next) => {
 }
 
 exports.postRestaurantUpdateMenu = async (req, res, next) => {
-    console.log('getTest');
+    console.log('getTest postRestaurantUpdateMenu');
     console.log(req.body);
     console.log(res.locals.userEmail);
 
@@ -1574,6 +1581,7 @@ exports.postRestaurantUpdateMenu = async (req, res, next) => {
     var address = JSON.parse(req.body.inputAllAddress);
     var description = JSON.parse(req.body.inputAllDescription);
     var hours = JSON.parse(req.body.inputAllHours);
+    var types = JSON.parse(req.body.inputAllTypes);
     var categories = JSON.parse(req.body.inputAllCategories);
     var items = JSON.parse(req.body.inputAllItems);
     
@@ -1585,10 +1593,11 @@ exports.postRestaurantUpdateMenu = async (req, res, next) => {
         categories,
         items,
         phone,
-        address
+        address,
+        types
     );
 
-    res.redirect("/portal");
+    res.redirect("/portal/menu/show");
 
     /*console.log("*** categories (" + categories.length + ") ***");
     console.log(categories);
@@ -1606,7 +1615,87 @@ exports.postRestaurantUpdateMenu = async (req, res, next) => {
     //res.redirect("/portal/menu-edit");
 }
 
+exports.postRestaurantMenuListed = async (req, res, next) => {
+    console.log('getTest postRestaurantMenuListed');
+    console.log(req.body);
+    console.log(res.locals.userEmail);
+
+    var owner = res.locals.userEmail;
+    var value = req.body.menuListed;
+    
+    if(value == "true")
+    {
+        value = true;
+    }
+
+    else if(value == "false")
+    {
+        value = false;
+    }
+
+    var updateRestaurant = await Restaurant.menuListed(owner, value);
+
+    res.redirect('/portal/settings');
+}
+
+exports.postRestaurantMenuOnline = async (req, res, next) => {
+    console.log('getTest postRestaurantMenuOnline');
+    console.log(req.body);
+    console.log(res.locals.userEmail);
+
+    var owner = res.locals.userEmail;
+    value = req.body.menuOnline;
+        
+    if(value == "true")
+    {
+        value = true;
+    }
+
+    else if(value == "false")
+    {
+        value = false;
+    }
+
+    var updateRestaurant = await Restaurant.menuOnline(owner, value);
+
+    res.redirect('/portal/settings');
+}
+
 //tests
+exports.postRestaurantReview = async (req, res, next) => {
+    console.log('getTest postRestaurantReview');
+    console.log(req.body);
+    console.log(res.locals.userEmail);
+
+    var orderId = req.body.orderId;
+    var restaurant = req.body.restaurant;
+    var user = res.locals.userEmail;
+    var date = new Date();
+    var name = req.body.customerName;
+    var rating = req.body.rating;
+    var items = req.body.items;
+    var comment = req.body.comment;
+    reviewObject = {date: date, name: name, rating: rating, items: items, comment: comment};
+
+    var checkIfOrderReviewExist = await Review.findByOrderId(orderId);
+    console.log(checkIfOrderReviewExist);
+
+    if(checkIfOrderReviewExist == null)
+    {
+        var review = await Review.create(user, restaurant, reviewObject, orderId);
+        var update = await Order.updateWithReview(orderId, reviewObject);
+    }
+
+    else if(checkIfOrderReviewExist != null)
+    {
+        var review = await Review.update(user, restaurant, reviewObject, orderId);
+        var update = await Order.updateWithReview(orderId, reviewObject);
+    }
+
+    res.redirect("/orders");
+    
+}
+
 exports.getGoogleMapsApiTest = async (req, res, next) => {
     console.log('getTest');
     console.log(req.body);
