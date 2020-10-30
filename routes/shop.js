@@ -72,6 +72,10 @@ router.post('/portal/menuOnline', restaurantValidation, shopController.postResta
 //tests
 router.post('/review-post', validation, shopController.postRestaurantReview);
 router.get('/googleMapsApiTest', validation, shopController.getGoogleMapsApiTest);
+//router.get('/test', shopController.getTest);
+router.post('/paypalCreateOrder', validation, shopController.getPayPalCreateOrder);
+router.get('/paypalSuccess', validation, shopController.getPayPalSuccess);
+router.get('/paypalCancel', validation, shopController.getPayPalCancel);
 
 //exports
 module.exports = router;

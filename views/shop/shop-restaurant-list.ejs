@@ -7,20 +7,50 @@
     <link rel="stylesheet" href="/css/main.css">
     <script src="/js/functionality.js"></script>
     <script>
-        function displayRestaurantReviews()
+        function displayRestaurantReviews(menuItemNumber)
         {
-            var d = document.getElementById("restaurantsRestaurantReview");
+            var d = document.getElementById("restaurantsRestaurantReview#" + menuItemNumber);
+            var a = document.getElementById("restaurantMenuItem#" + menuItemNumber);
+            console.log(menuItemNumber);
 
+            
             if(d.style.display == "none")
             {
+                d.style = "height: 350px; padding-top: 5px; padding-bottom: 5px; overflow-y: scroll; background-color: orange;"
                 d.style.display = "block";
+                a.style.marginBottom = "387px"
             }
 
             else if(d.style.display == "block")
             {
                 d.style.display = "none";
+                a.style.marginBottom = "0px"
             }
 
+        }
+
+        function setRestaurantNumberOfReviews(restaurantNumber, value)
+        {
+            console.log(restaurantNumber);
+            console.log(value);
+
+            var d = document.getElementById("restaurantReviewHeader#" + restaurantNumber);
+
+            d.innerHTML = "Reviews (" + value + ")";
+        }
+
+        function setRestaurantRating(restaurantNumber, rating)
+        {
+            //console.log(rating);
+            
+            var checkIfNaN = isNaN(parseFloat(rating));
+            var d = document.getElementById("restaurantRating#" + restaurantNumber);
+
+            if(checkIfNaN == false)
+            {
+                d.innerHTML = rating + " of 5";
+                d.hidden = false;
+            }
         }
     </script>
 </head>
@@ -61,6 +91,8 @@
         <input id="searchBoxInput" style="width: 250px;" placeholder="Search..."></input>
     </div>
 
+    <!-- open restaurants -->
+
     <div id="grid-restaurants" class="grid">
         <% counter = 0 %>
         <% if (restaurantsOpen.length > 0) { %>
@@ -84,52 +116,55 @@
                             <h3 style="color: rgb(214, 14, 14)">Closed</h3> <!-- open or closed -->
                         <% } %>
 
-                        <h3><%=restaurant.rating %></h3> <!-- rating -->
+                        <h3 hidden id="restaurantRating#<%=counter %>"><%=restaurant.rating %></h3> <!-- rating -->
                         <h3><%=restaurant.type %></h3> <!-- type -->
                         <h3><%=restaurant.location %></h3> <!-- location -->
                         <!-- <p><%=restaurant.description %></p> --> <!-- description -->
-                        <h3 onclick="displayRestaurantReviews()">Reviews</h3>
+                        <h3 id="restaurantReviewHeader#<%=counter %>" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
                     </div>
 
-                    <div id="restaurantsRestaurantReview" style="display: none;">
-                        <% if(restaurant.reviews == null) { %>
+                    <div id="restaurantsRestaurantReview#<%=counter %>" style="display: none;">
                         
-                        <p><b>Total Comments (0)</b></p>
+                        <% var sortArray = [] %>
+                        <% var restaurantRating = null %>
+                        
+                        <% for(var i = 0; i < reviews.length; i++) { %>
+                            <% if(reviews[i].restaurant == restaurant.url) { %>
+                                <% sortArray.push(reviews[i]); %>
+                                <% restaurantRating += parseInt(reviews[i].reviewObject.rating) %>
+                            <% } %>
+                        <% } %>
 
-                        <div class="restaurantReview" style="padding-top: 5px;">
-                            <p></p>
-                            <p></p>
-                            <p></p>
-                            <p></p>
-                            <p></p>
-                        </div>
+                        <% var rating = restaurantRating / parseInt(sortArray.length); %>                 
+
+                        <script>
+                            setRestaurantRating('<%=counter %>', '<%=rating %>');
+                            setRestaurantNumberOfReviews('<%=counter %>', '<%=parseInt(sortArray.length) %>');
+                        </script>
+                                
+                        <% if(sortArray.length != 0) { %>
+                            <p><b>Total Comments (<%=sortArray.length %>)</b></p>
+                            
+                            <% for(var i = 0; i < sortArray.length; i++) { %>
+                                <div class="restaurantReview" style="padding-top: 5px;">
+                                    <!-- <p>Date: <%=sortArray[i].reviewObject.date %></p> -->
+                                    <% var dateFormatted = sortArray[i].reviewObject.date %>
+                                    <% var dateFormatted = dateFormatted.toString().split(" ") %>
+                                    <% var dateFormatted = dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] + " - " + dateFormatted[4]%>
+                                    <p style="text-align: center;"><b>Rating:</b> <%=sortArray[i].reviewObject.rating %></p><br />
+                                    <div style="margin: auto; width: 55%">
+                                        <p>Date: <%=dateFormatted %></p>
+                                        <p>Name: <%=sortArray[i].reviewObject.name %></p>
+                                        <p>Ordered: <%=sortArray[i].reviewObject.items %></p><br />
+                                    </div>
+                                    <p style="text-align: center;"><b>Comment:</b></p>
+                                    <p style="text-align: center;"><%=sortArray[i].reviewObject.comment %></p>
+                                </div>                                
+                            <% } %> 
                         
-                        <div class="restaurantReview" style="padding-top: 5px;">
-                            <p>Date: </p>
-                            <p>Name: Joe</p>
-                            <p>Rating: 4</p>
-                            <p>Ordered: Shrimp Pizza, Vegetarian Sallad, Garlic Bread</p>
-                            <p>Comment: Kasldka alskdl kasd lkasldk laskd laksdl kasldk alskd laksdl kaldskadl</p>
-                        </div>
-                        
-                        <div class="restaurantReview">
-                            <p>Date: </p>
-                            <p>Rating: </p>
-                            <p>Name: </p>
-                            <p>Ordered: </p>
-                            <p>Comment: </p>
-                        </div>
-                        
-                        <div class="restaurantReview">
-                            <p>Date: </p>
-                            <p>Rating: </p>
-                            <p>Name: </p>
-                            <p>Ordered: </p>
-                            <p>Comment: </p>
-                        </div>
                         <% } else { %>
                             <div class="restaurantReview" style="text-align: center;"> 
-                                <p>No reviews exist</p>
+                                <h3>No reviews exist</h3>
                             </div>
                         <% } %>
                     </div>
@@ -148,8 +183,7 @@
                         <a href="/restaurants/<%= restaurant._id %>" class="btn"><button>Details</button></a>
                         <a href="/cart/<%= restaurant._id %>" class="btn"><button>Details</button></a>
                     </div>
-                    -->
-                
+                    -->  
             </div>
             <% } %>
         
@@ -157,19 +191,24 @@
                 
             <% } %>
 
+            <!-- closed restaurants -->
+
             <% if (restaurantsClosed.length > 0) { %>
-                <% counter++ %>
                 <% for (let restaurant of restaurantsClosed) { %>
+
+                    <% counter++ %>
+                    
                     <div id="RestaurantClosed" style="display: inline-block;">
                         <p><b>Closed</b></p>
                     </div>
         
                     <div id="restaurantMenuItem#<%=counter %>" class="restaurantMenuItem">
-                        <a style="text-decoration: none; color: black" href="/restaurant/<%= restaurant.url %>">
-                    
-                            <div class="restaurantMenuItemImg" style="display: inline-block;">
-                                <img src="<%= restaurant.imageUrl %>" alt="<%=restaurant.title %>">
-                            </div>
+                            <a style="text-decoration: none; color: black" href="/restaurant/<%= restaurant.url %>">
+                        
+                                <div class="restaurantMenuItemImg" style="display: inline-block;">
+                                    <img src="<%= restaurant.imageUrl %>" alt="<%=restaurant.title %>">
+                                </div>
+                            </a>
                             
                             <div class="restaurantMenuItemText" style="display: inline-block;">
                                 <h1 style="margin-top: 0px;"><%=restaurant.title %></h1>
@@ -181,10 +220,54 @@
                                     <h3 style="color: rgb(214, 14, 14)">Closed</h3> <!-- open or closed -->
                                 <% } %>
                 
-                                <h3><%=restaurant.rating %></h3> <!-- rating -->
+                                <h3 hidden id="restaurantRating#<%=counter %>"><%=restaurant.rating %></h3> <!-- rating -->
                                 <h3><%=restaurant.type %></h3> <!-- type -->
                                 <h3><%=restaurant.location %></h3> <!-- location -->
-                                <p><%=restaurant.description %></p> <!-- description -->
+                                <!-- <p><%=restaurant.description %></p> --> <!-- description -->
+                                <h3 id="restaurantReviewHeader#<%=counter %>" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
+                            </div>
+
+                            <div id="restaurantsRestaurantReview#<%=counter %>" style="display: none;">
+                                <% var sortArray = [] %>
+                                <% var restaurantRating = 0 %>
+                                
+                                <% for(var i = 0; i < reviews.length; i++) { %>
+                                    <% if(reviews[i].restaurant == restaurant.url) { %>
+                                        <% sortArray.push(reviews[i]); %>
+                                        <% restaurantRating += parseInt(reviews[i].reviewObject.rating) %>
+                                    <% } %>
+                                <% } %>
+        
+                                <% var rating = restaurantRating / parseInt(sortArray.length); %>                 
+        
+                                <script>
+                                    setRestaurantRating('<%=counter %>', '<%=rating %>');
+                                    setRestaurantNumberOfReviews('<%=counter %>', '<%=parseInt(sortArray.length) %>');
+                                </script>
+
+                                <% if(sortArray.length != 0) { %>
+                                    <p><b>Total Comments (<%=sortArray.length %>)</b></p>
+                                    
+                                    <% for(var i = 0; i < sortArray.length; i++) { %>
+                                        <div class="restaurantReview" style="padding-top: 5px;">
+                                            <!-- <p>Date: <%=sortArray[i].reviewObject.date %></p> -->
+                                            <% var dateFormatted = sortArray[i].reviewObject.date %>
+                                            <% var dateFormatted = dateFormatted.toString().split(" ") %>
+                                            <% var dateFormatted =  dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] + " - " + dateFormatted[4]%>
+                                            <p style="text-align: center;"><b>Rating:</b> <%=sortArray[i].reviewObject.rating %></p><br />
+                                            <div style="margin: auto; width: 55%">
+                                                <p>Date: <%=dateFormatted %></p>
+                                                <p>Name: <%=sortArray[i].reviewObject.name %></p>
+                                                <p>Ordered: <%=sortArray[i].reviewObject.items %></p><br />
+                                            </div>
+                                            <p style="text-align: center;"><b>Comment:</b></p>
+                                            <p style="text-align: center;"><%=sortArray[i].reviewObject.comment %></p>
+                                        </div>                                
+                                    <% } %> 
+                                
+                                <% } else { %>
+                                    <h3>No reviews exist</h3>
+                                <% } %>
                             </div>
                            
                             <p hidden id="restaurantMenuItemSearchText#<%=counter %>">
@@ -201,7 +284,6 @@
                                 <a href="/cart/<%= restaurant._id %>" class="btn"><button>Details</button></a>
                             </div>
                             -->
-                        </a>
                     </div>
                 <% } %>
             <% } else { %>

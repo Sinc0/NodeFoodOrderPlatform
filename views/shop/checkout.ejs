@@ -8,30 +8,74 @@
     <link rel="stylesheet" href="/css/restaurant.css">
     <link rel="stylesheet" href="/css/stripeForm.css" />
     <script src="/js/functionality.js"></script>
+    <!--
     <script src="https://js.stripe.com/v3/"></script>
     <script src="/js/stripe.js" defer></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=GoogleMapsAdressAutocomplete" async defer></script>
+    -->
+    <script>
+        function removeBody()
+        {
+            var img = document.getElementById("loadSpinnerGif");
+            var a = document.getElementById("payment-option-stripe");
+            var b = document.getElementById("checkoutCartItems");
+            var c = document.getElementById("orderFormDiv");
+            var d = document.getElementById("new-list-of-payment-options");
+            var e = document.getElementById("navBarGoBack");
+
+            a.hidden = true;
+            b.hidden = true;
+            c.hidden = true;
+            d.hidden = true;
+            e.hidden = true;
+
+            img.hidden = false;
+        }
+
+        function displayStripeBox()
+        {
+            var a = document.getElementById("payment-option-stripe");
+            var b = document.getElementById("checkoutCartItems");
+            var c = document.getElementById("orderFormDiv");
+            var d = document.getElementById("new-list-of-payment-options");
+            var e = document.getElementById("navBarGoBack");
+
+            a.hidden = false;
+            a.style = "margin-top: 35%;";
+
+            b.hidden = true;
+            c.hidden = true;
+            d.hidden = true;
+            e.hidden = true;
+        }
+    </script>
 </head>
 <body id="body-checkout" onload="cartAllItems()">
-    
-    <div id="checkoutCartItems">
-        <button onclick="goBack()">Go Back</button>
+    <div hidden id="loadSpinnerGif" style="margin: auto; width: 500px;">
+        <img src="https://retchhh.files.wordpress.com/2015/03/loading2.gif" style="margin-top: 35%; height: 350px; width: 350px;"></img>
+    </div>
+
+    <div id="navBarGoBack">
+        <button onclick="goBack()" style="border-radius: 0%;">Go Back</button>
+    </div>
+
+    <div id="checkoutCartItems" style="width: 400px; border-top: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;">
         <h2>Confirm Order</h2>
         <h3>Total</h3>
         <p>$<%=cartTotalPrice %></p>
         <h3>Items</h3>
     </div>
 
-    <div style="width: 300px; margin: auto;">
+    <div id="orderFormDiv" style="width: 400px; margin: auto; border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;">
         <form id="post-order-form" action="/order-post" method="POST" style="background-color: green; border-radius: 0%">
             <input hidden id="cartAllItems" name="cartAllItems"></input>
             <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
             <input hidden id="choosenRestaurant" name="restaurant" value="<%=restaurant %>"></input>
             <input hidden id="customerDelivery"></input>
             <input hidden id="customerAddress" name="customerAddress" value='' placeholder="address"></input>
-            <input id="customerName" name="customerName" value='<%=customerName %>' placeholder="name"></input>
-            <input id="searchInput" value="<%=customerAddress %>">
-            <input id="customerPhone" name="customerPhone" value='<%=customerPhone %>' type="tel" placeholder="phone"></input>
+            <input id="customerName" name="customerName" value='<%=customerName %>' placeholder="name" style="border-radius: 0%;"></input>
+            <input id="searchInput" value="<%=customerAddress %>" style="border-radius: 0%;">
+            <input id="customerPhone" name="customerPhone" value='<%=customerPhone %>' type="tel" placeholder="phone" style="border-radius: 0%;"></input>
             <textarea id="customerCommentCheckout" name="customerComment" placeholder="comment to restaurant"><%=customerComment %></textarea>
             
             <div style="width: 150px; margin: auto; padding-top: 3px; padding-bottom: 7px;">
@@ -42,7 +86,27 @@
         </form>
     </div>
 
-    <div id="list-of-payment-options">
+    <div hidden id="new-list-of-payment-options" style="margin: auto; background-color: orange; width: 400px; text-align: center">
+        <div style="border: 1px solid black; border-top: 0px solid black; border-bottom: 1px solid black;">
+            <p style="padding-top: 10px; padding-bottom: 10px;"><b>Select Payment Option</b></p>
+        </div>
+
+        <!-- payment method 1 -->
+        <div style="border: 1px solid black; border-bottom: 0px; border-top: 0px;" onclick="displayStripeBox()">
+            <button style="padding-top: 10px; padding-bottom: 10px; border-radius: .0;">Card</button>
+        </div>
+
+        <!--payment method 2 -->
+        <div style="border: 1px solid black;">
+            <form action="/paypalCreateOrder" method="POST">
+                <!-- <p style="padding-top: 10px; padding-bottom: 10px;">Paypal</p> -->
+                <input hidden name="amount"></input>
+                <button onclick="removeBody()" style="border-radius: .0;">Paypal</button>
+            </form>
+        </div>
+    </div>
+
+    <div hidden id="list-of-payment-options">
         <select id="paymentSelect" disabled onchange="selectPaymentOption(this.value)">
             <option value="0" disabled selected hidden>Select Payment Option</option>
             <option value="1">#1</option>
@@ -53,7 +117,7 @@
 
     <div id="selected-payment-option">   
         <!-- payment option #1 -->
-        <div id="payment-option-stripe">
+        <div hidden id="payment-option-stripe">
             <form id="payment-form">
                 <div id="card-element">
                 <!-- Elements will create input elements here -->
@@ -64,7 +128,7 @@
             
                 <!-- <button id="card-button" data-secret="<%= client_secret %>">Pay</button> -->
 
-                <button id="submit" data-secret="<%= client_secret %>">
+                <button id="submit" data-secret="<%=client_secret %>">
                     <div class="spinner hidden" id="spinner"></div>
                     <span id="button-text">Pay</span>
                 </button>

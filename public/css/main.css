@@ -421,8 +421,8 @@ main {
 
 #customerCommentCheckout
 {
-    min-width: 300px;
-    max-width: 300px;
+    min-width: 400px;
+    max-width: 400px;
     min-height: 50px;
     max-height: 150px;
 }
@@ -438,7 +438,6 @@ main {
     position: relative;
     text-align: center;
     margin: auto;
-    margin-top: 100px;
     padding: 0px;
     background-color: green;
     width: 300px;
@@ -541,11 +540,6 @@ main {
     width: 500px;
     margin: auto;
     margin-top: 10px;
-}
-
-#payment-option-stripe
-{
-    display: none;
 }
 
 #list-of-payment-options
@@ -794,15 +788,6 @@ option
     padding-bottom: 10px;
     text-align: center;
     color: black;
-}
-
-#restaurantsRestaurantReview
-{
-    height: 250px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    overflow-y: scroll;
-    background-color: orange;
 }
 
 .restaurantReview

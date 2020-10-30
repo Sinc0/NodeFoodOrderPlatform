@@ -5,12 +5,12 @@ function goBack()
 
 function clearCart()
 {
-    localStorage.removeItem("restaurantName");
+    localStorage.removeItem("cartItems");
 }
 
 function cartAllItems()
 {
-    var cartItems = localStorage.getItem("restaurantName");
+    var cartItems = localStorage.getItem("cartItems");
     cartItems = JSON.parse(cartItems);
     var p = "";
     //console.log(cartItems);
@@ -47,12 +47,12 @@ function cartAllItems()
 
 function fillCartFormData()
 {
-    var cartItems = localStorage.getItem("restaurantName");
+    var cartItems = localStorage.getItem("cartItems");
     //cartItems = JSON.parse(cartItems);
     //console.log(cartItems);
     document.getElementById("cartAllItems").value = cartItems;
 
-    var cartItems = localStorage.getItem("restaurantName");
+    var cartItems = localStorage.getItem("cartItems");
     cartItems = JSON.parse(cartItems);
     var cartItem = cartItems.items;
     var totalPrice = null;
@@ -68,7 +68,7 @@ function fillCartFormData()
 
 function cartTotalPrice()
 {
-    var cartItems = localStorage.getItem("restaurantName");
+    var cartItems = localStorage.getItem("cartItems");
     cartItems = JSON.parse(cartItems);
     var cartItem = cartItems.items;
     var totalPrice = null;
@@ -88,7 +88,7 @@ function cartItemPlus(item)
 
     //console.log("inside cart item plus");
 
-    cart = JSON.parse(localStorage.getItem("restaurantName"));
+    cart = JSON.parse(localStorage.getItem("cartItems"));
         
         //populate itemsArray with items from cart
         for(let c = 0; c < cart.items.length; c++)
@@ -112,7 +112,7 @@ function cartItemPlus(item)
 
         if(duplicateCheck)
         {
-            localStorage.setItem("restaurantName", JSON.stringify({items: itemsArray}));
+            localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
             //console.log(itemsArray);
         }
 
@@ -125,7 +125,7 @@ function cartItemMinus(item)
 
     let itemsArray = [];
 
-    cart = JSON.parse(localStorage.getItem("restaurantName"));
+    cart = JSON.parse(localStorage.getItem("cartItems"));
         
         //populate itemsArray with items from cart
         for(let c = 0; c < cart.items.length; c++)
@@ -156,7 +156,7 @@ function cartItemMinus(item)
 
         if(duplicateCheck)
         {
-            localStorage.setItem("restaurantName", JSON.stringify({items: itemsArray}));
+            localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
             //console.log(itemsArray);
         }
 
@@ -165,7 +165,7 @@ function cartItemMinus(item)
 
 function loadSideCart()
 {
-    var cartItems = localStorage.getItem("restaurantName");
+    var cartItems = localStorage.getItem("cartItems");
     cartItems = JSON.parse(cartItems);
     
     if(cartItems == null || cartItems.items.length == 0)
@@ -180,7 +180,7 @@ function loadSideCart()
 
     else
     {
-        var cartItems = localStorage.getItem("restaurantName");
+        var cartItems = localStorage.getItem("cartItems");
         cartItems = JSON.parse(cartItems);
         var cartItem = cartItems.items;
         
@@ -231,18 +231,18 @@ function updateCart(buttonNumber, itemName, itemPrice)
     let itemsArray = [];
     let duplicateCheck = false;
 
-    let cart = localStorage.getItem("restaurantName");
+    let cart = localStorage.getItem("cartItems");
     //console.log(cart);
             
     if(cart == null)
     {
         itemsArray.push({id: buttonNumber, name: itemName, price: itemPrice, quantity: 1});
-        localStorage.setItem("restaurantName", JSON.stringify({items: itemsArray}));
+        localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
     }
 
     else
     {
-        cart = JSON.parse(localStorage.getItem("restaurantName"));
+        cart = JSON.parse(localStorage.getItem("cartItems"));
         
         //populate itemsArray with items from cart
         for(let c = 0; c < cart.items.length; c++)
@@ -267,14 +267,14 @@ function updateCart(buttonNumber, itemName, itemPrice)
         //itemsArray.filter(item => item.id === buttonNumber).length > 0
         if(duplicateCheck)
         {
-            localStorage.setItem("restaurantName", JSON.stringify({items: itemsArray}));
+            localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
             //console.log(itemsArray);
         }
 
         else
         {
             itemsArray.push({id: buttonNumber, name: itemName, price: itemPrice, quantity: 1});
-            localStorage.setItem("restaurantName", JSON.stringify({items: itemsArray}));
+            localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
         }
         
     }
@@ -337,8 +337,10 @@ function customerDeliverySelector()
 {
     var text = document.querySelector('input[name="customerDelivery"]:checked').value;
     document.getElementById("customerDelivery").value = text;
-    var paymentSelector = document.getElementById('paymentSelect');
-    paymentSelector.disabled = "";
+    //var paymentSelector = document.getElementById('paymentSelect');
+    //paymentSelector.disabled = "";
+    var paymentSelector = document.getElementById('new-list-of-payment-options');
+    paymentSelector.hidden = false;
 }
 
 /* function editProfileCredentials()

@@ -9,6 +9,7 @@ const path = require('path');
 const pdfDocument = require('pdfkit');
 const mongodb = require('mongodb');
 const stripe = require('stripe')('sk_test_51HEENaLFUjzCbJftCmqLgpLjLGgjY1OOI81cAAzEBmozVIetOISREohGCuuJq55KX3FGhFHvx9FENcU2zRdrIGmn00wIaynLwu');
+const paypal = require('@paypal/checkout-server-sdk');
 
 
 //******* variables *******
@@ -258,7 +259,7 @@ exports.getCart = (req, res, next) => {
 
 }
 
-exports.getRestaurantList = (req, res, next) => {
+exports.getRestaurantList = async (req, res, next) => {
     console.log('getRestaurantList\n');
     let validation = res.locals.validation;
     let validationStatus = null;
@@ -281,37 +282,34 @@ exports.getRestaurantList = (req, res, next) => {
     //console.log(restaurantUrl);
     //console.log(restaurantId);
     //console.log(userEmail);
+
+    var restaurants = await Restaurant.fetchAll();
+    var reviews = await Review.fetchAll();
     
     //logged in user
     if(validationStatus == true)
     {
-        Restaurant.fetchAll()
-        .then(restaurants => 
-        {
-            res.render('shop/shop-restaurant-list', {
-                admin: validation.isAdmin,
-                loggedIn: true,
-                restaurantImage: "",
-                restaurants: restaurants,
-                path: '/restaurants'
-            });
-        }).catch(err => {console.log(err)});
+        res.render('shop/shop-restaurant-list', {
+            admin: validation.isAdmin,
+            loggedIn: true,
+            restaurantImage: "",
+            restaurants: restaurants,
+            reviews: reviews,
+            path: '/restaurants'
+        });
     }
 
     //anon user
     else
     {
-        Restaurant.fetchAll()
-        .then(restaurants => 
-        {
-            res.render('shop/shop-restaurant-list', {
-                admin: false,
-                loggedIn: false,
-                restaurantImage: "",
-                restaurants: restaurants,
-                path: '/restaurants'
-            });
-        }).catch(err => {console.log(err)});
+        res.render('shop/shop-restaurant-list', {
+            admin: false,
+            loggedIn: false,
+            restaurantImage: "",
+            restaurants: restaurants,
+            reviews: reviews,
+            path: '/restaurants'
+        });
     }       
     
 }
@@ -1662,6 +1660,15 @@ exports.postRestaurantMenuOnline = async (req, res, next) => {
 }
 
 //tests
+exports.getTest = async (req, res, next) => {
+    console.log('getTest');
+
+    res.render('shop/test.ejs', 
+    { 
+
+    });
+}
+
 exports.postRestaurantReview = async (req, res, next) => {
     console.log('getTest postRestaurantReview');
     console.log(req.body);
@@ -1705,4 +1712,122 @@ exports.getGoogleMapsApiTest = async (req, res, next) => {
     { 
 
     });
+}
+
+exports.getPayPalCreateOrder = async (req, res, next) => {
+    console.log("getPayPalCreateOrder");
+    console.log(req.body);
+
+    var amount = "temp";
+
+    //Creating an environment
+    let clientId = "AVm4xAcY_8YjJjr-nN4_YYUrEx5N8K_-gvJP0jtZbFc_aqApF6pmZGs4i4xzbUNp77tsC3NT5zHmtBiP";
+    let clientSecret = "EKV9wYIfLMjnapE4Erg-9Z7AUE-yWmcj2TzcWmbthC8U8_BlyihIFKnMwAX-Ouu46R9nUwYjS2jHw0oz";
+
+    //This sample uses SandboxEnvironment. In production, use LiveEnvironment
+    let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret);
+    let client = new paypal.core.PayPalHttpClient(environment);
+
+    //Construct a request object and set desired parameters
+    //Here, OrdersCreateRequest() creates a POST request to /v2/checkout/orders
+    let request = new paypal.orders.OrdersCreateRequest();
+    request.requestBody(
+        {
+            "intent": "CAPTURE",
+            "application_context": {
+                "return_url": "http://localhost:3000/paypalSuccess",
+                "cancel_url": "http://localhost:3000/paypalCancel"
+            },
+            "purchase_units": [
+                {
+                    "amount": {
+                        "currency_code": "USD",
+                        "value": "1.00"
+                    }
+                }
+            ]
+        }
+    );
+
+    //Call API with your client and get a response for your call
+    let createOrder = async function()
+    {
+        let response = await client.execute(request);
+        console.log(`Response: ${JSON.stringify(response)}`);
+        
+        //If call returns body in response, you can get the deserialized version from the result attribute of the response.
+        console.log(`Order: ${JSON.stringify(response.result)}`);
+        var orderId = response.result.id;
+        var status = response.result.status;
+        var httpAdress = response.result.links[1].href;
+        console.log(response.result.id);
+        console.log(response.result.status);
+        console.log(response.result.links[1].href);
+
+        if(status === "CREATED")
+        {
+            res.redirect(httpAdress);
+        }
+
+        else
+        {
+            res.redirect('/temp');
+        }
+    }
+
+    //Start
+    createOrder();
+}
+
+exports.getPayPalSuccess = async (req, res, next) => {
+    console.log("getPayPalSuccess");
+    console.log(req.query);
+
+    const payerID = req.query.PayerID;
+    console.log(payerID);
+    const token = req.query.token;
+    console.log(token);
+    var approvedOrderId = token;
+
+    //Creating an environment
+    let clientId = "AVm4xAcY_8YjJjr-nN4_YYUrEx5N8K_-gvJP0jtZbFc_aqApF6pmZGs4i4xzbUNp77tsC3NT5zHmtBiP";
+    let clientSecret = "EKV9wYIfLMjnapE4Erg-9Z7AUE-yWmcj2TzcWmbthC8U8_BlyihIFKnMwAX-Ouu46R9nUwYjS2jHw0oz";
+
+    //This sample uses SandboxEnvironment. In production, use LiveEnvironment
+    let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret);
+    let client = new paypal.core.PayPalHttpClient(environment);
+
+    let processOrder = async function(orderId) 
+    {
+        request = new paypal.orders.OrdersCaptureRequest(orderId);
+        request.requestBody({});
+
+        // Call API with your client and get a response for your call
+        let response = await client.execute(request);
+        console.log(`Response: ${JSON.stringify(response)}`);
+
+        // If call returns body in response, you can get the deserialized version from the result attribute of the response.
+        console.log(`Capture: ${JSON.stringify(response.result)}`);
+        
+        // If payment successful
+        if(response.result.status === "COMPLETED")
+        {
+            res.redirect('/temp');
+        }
+
+        // If payment error
+        else
+        {
+            res.redirect('/temp');
+        }
+    }
+
+    let process = processOrder(token);
+
+}
+
+exports.getPayPalCancel = async (req, res, next) => {
+    console.log("getPayPalCancel");
+
+    res.redirect('/temp');
 }

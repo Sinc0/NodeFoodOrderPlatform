@@ -101,15 +101,17 @@
                         <p><b>review: </b><br />
                             &emsp;name: <%=order.review.name %><br />
                             &emsp;rating: <%=order.review.rating %><br/>
-                            &emsp;comment: <%=order.review.comment %></p>
+                            &emsp;comment:<%=order.review.comment %></p>
                     <% } %>
                     <!-- <p><a href="/reciepts/<%= order._id %>">order reciept PDF</a></p> -->
                     <br />
                     <div style="text-align: center;">
                         <p><a href='/order-details/<%=order._id %>'>show details</a></p>
+
                         <% if(order.status == "completed" && order.review == null) { %>
                             <p value="<%=order._id%>" onclick="reviewOrder('<%=orders.length%>', '<%=counter %>', this.value)">submit review</p>
                         <% } %>
+
                         <% if(order.status == "completed" && order.review != null) { %>
                             <p value="<%=order._id%>" onclick="reviewOrder('<%=orders.length%>', '<%=counter %>', this.value)">edit review</p>
                         <% } %>
