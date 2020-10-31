@@ -421,8 +421,8 @@ main {
 
 #customerCommentCheckout
 {
-    min-width: 400px;
-    max-width: 400px;
+    min-width: 398px;
+    max-width: 398px;
     min-height: 50px;
     max-height: 150px;
 }

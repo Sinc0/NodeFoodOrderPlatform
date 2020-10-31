@@ -1,30 +1,37 @@
 <header class="main-header">
     <nav class="main-header__nav">
-        <ul class="main-header__item-list">
+        <ul class="main-header__item-list_left">
             
             <li class="main-header__item">
-                <a class="<%= path === '/' ? 'active' : '' %>" href="/">Shop</a>
+                <a class="<%= path === '/' ? 'active' : '' %>" href="/">Home</a>
             </li>
 
             <li class="main-header__item">
-                <a class="<%= path === '/restaurant-list' ? 'active' : '' %>" href="/restaurants">Restaurants</a>
+                <a class="<%= path === '/admin/orders' ? 'active' : '' %>" href="/admin/orders">Orders</a>
             </li>
 
             <li class="main-header__item">
-                <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">Orders</a>
+                <a class="<%= path === '/admin/restaurant-list' ? 'active' : '' %>" href="/admin/restaurants">Restaurants</a>
             </li>
 
             <li class="main-header__item">
-                <a class="<%= path === '/admin/order-list' ? 'active' : '' %>" href="/admin/order-list">Order List</a>
+                <a class="<%= path === '/admin/users' ? 'active' : '' %>" href="/admin/users">Users</a>
             </li>
 
             <li class="main-header__item">
-                <a class="<%= path === '/admin/add-restaurant/' ? 'active' : '' %>" href="/admin/add-restaurant">Add Restaurant</a>
-                </li>
+                <a class="<%= path === '/admin/reviews' ? 'active' : '' %>" href="/admin/reviews">Reviews</a>
+            </li>
 
             <li class="main-header__item">
-                <a class="<%= path === '/admin/restaurant-list/' ? 'active' : '' %>" href="/admin/restaurant-list">Admin Restaurants</a>
+                <a class="<%= path === '/admin/stats' ? 'active' : '' %>" href="/admin/stats">Stats</a>
             </li>
+        </ul>
+
+        <ul class="main-header__item-list_right">
+            
+            <!-- <li class="main-header__item">
+                <a class="" href="/profile">Account</a>
+            </li> -->
 
             <li class="main-header__item">
                 <a class="<%= path === '/logout/' ? 'active' : '' %>" href="/logout">Logout</a>

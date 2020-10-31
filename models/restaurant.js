@@ -75,6 +75,45 @@ class Restaurant
             .catch(err => console.log(err));
     }
 
+    
+    static updateAdmin(restaurantId, title, email, owner, address)
+    {       
+        const db = getDb();
+
+        let updateSuccessful = 1;
+        let updateFailed = 0;
+        
+        var dateObject = new Date().toString();
+        var sub1 = dateObject.substring(16, 24);
+        var sub2 = dateObject.substring(0, 15);
+        var dateFormatted = sub1 + " - " + sub2;
+
+        return db.collection("restaurants")
+            .updateOne({_id: ObjectId(restaurantId)},         
+                {$set: 
+                {
+                    title: title,
+                    email: email,
+                    owner: owner,
+                    address: address,
+                    updatedAt: dateFormatted
+                }
+            } )
+            .then(result => {
+                if(result.modifiedCount == updateSuccessful)
+                {
+                    //console.log('update ' + email + ' document successful');
+                    return updateSuccessful;
+                } 
+                else
+                {
+                    //console.log('update ' + email + ' document failed');
+                    return updateFailed;
+                }
+            })
+            .catch(err => console.log(err));
+    }
+
     static updateMenu(owner, hours, description, imageUrl, menuCategories, menuItems, phone, address, types) 
     {
         const db = getDb();   

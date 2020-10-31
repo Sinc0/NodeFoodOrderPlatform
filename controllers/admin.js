@@ -4,6 +4,7 @@ const mongodb = require('mongodb');
 const fs = require('fs');
 const Order = require('../models/order');
 const path = require('path');
+const Review = require('../models/review');
 
 const ObjectId = mongodb.ObjectId;
 
@@ -52,7 +53,8 @@ function parseLoginCookie(cookieId)
     }
 }
 
-exports.addRestaurant = (req, res, next) => {
+//old
+/* exports.addRestaurant = (req, res, next) => {
     //console.log('In the middleware');
     //res.sendFile(path.join(__dirname, '../', 'views', 'add-product.html'));
 
@@ -77,9 +79,9 @@ exports.addRestaurant = (req, res, next) => {
         res.redirect('/');
     }
 
-}
+} */
 
-exports.postRestaurant =  (req, res, next) => {
+/* exports.postRestaurant =  (req, res, next) => {
 
     console.log('postAddAdminRestaurant >');
     let validation = res.locals.validation;
@@ -130,11 +132,11 @@ exports.postRestaurant =  (req, res, next) => {
                 })
                 .catch(err => console.log(err));
 
-            /*
-            console.log('add product: file type not supported');
-            console.log('add product: failed')
-            res.redirect('/admin/add-product');
-            */
+            
+            //console.log('add product: file type not supported');
+            //console.log('add product: failed')
+            //res.redirect('/admin/add-product');
+            
         }
 
         else
@@ -161,40 +163,9 @@ exports.postRestaurant =  (req, res, next) => {
         res.redirect('/');
     }
 
-}
+} */
 
-exports.getRestaurants = (req, res, next) => {
-    
-    console.log('getAdminRestaurantList');
-    let validation = res.locals.validation;
-
-    //user is admin
-    if(validation.status == true && validation.isAdmin == true)
-    {
-        Restaurant.fetchAll()
-        .then(restaurants => {
-            res.render('admin/restaurant-list', { 
-                admin: validation.isAdmin,
-                loggedIn: true,
-                restaurants: restaurants,
-                path: '/restaurants',
-                pageTitle: 'Admin Restaurants'
-            });
-        })
-        .catch(err => console.log(err));
-        //console.log('In the middleware');
-        //console.log('shop.js', products);
-        //res.sendFile(path.join(__dirname, '../', 'views', 'shop.html'));
-    }
-
-    else
-    {
-        res.redirect('/');
-    }
-
-}
-
-exports.getEditRestaurant = (req, res, next) => {
+/* exports.getEditRestaurant = (req, res, next) => {
 
     console.log('getAdminEditRestaurant');
     const restaurantId = req.params.restaurantId;
@@ -221,21 +192,21 @@ exports.getEditRestaurant = (req, res, next) => {
         res.redirect('/');
     }
 
-    /*
-    const prodId = req.params.productId;
-    Product
-    .findById(prodId)
-    .then(product => {
-        res.render('shop/product-detail', {
-            product: product,
-            path: '/products'
-        });
-    })
-    .catch(err => console.log(err));
-    */
-}
+    
+    //const prodId = req.params.productId;
+    //Product
+    //.findById(prodId)
+    //.then(product => {
+        //res.render('shop/product-detail', {
+            //product: product,
+            //path: '/products'
+        //});
+    //})
+    //.catch(err => console.log(err));
+    
+} */
 
-exports.postEditRestaurant = (req, res, next) => {
+/* exports.postEditRestaurant = (req, res, next) => {
 
     console.log('postEditAdminRestaurant >');
     let validation = res.locals.validation;
@@ -342,9 +313,9 @@ exports.postEditRestaurant = (req, res, next) => {
         res.redirect('/');
     }
 
-}
+} */
 
-exports.postDeleteRestaurant = (req, res, next) => {
+/* exports.postDeleteRestaurant = (req, res, next) => {
     
     console.log('postDeleteAdminRestaurant >');
     const restaurantId = req.params.restaurantId;
@@ -435,9 +406,9 @@ exports.postDeleteRestaurant = (req, res, next) => {
         res.redirect('/');
     }
 
-}
+} */
 
-exports.postDeleteOrder = (req, res, next) => {
+/* exports.postDeleteOrder = (req, res, next) => {
 
     console.log('postDeleteOrder >');
     const orderId = req.params.orderId;
@@ -479,9 +450,9 @@ exports.postDeleteOrder = (req, res, next) => {
     {
         res.redirect('/');
     }
-}
+} */
 
-exports.getOrderList = (req, res, next) => {
+/* exports.getOrderList = (req, res, next) => {
     console.log('getOrderList');
     let validation = res.locals.validation;
     
@@ -499,6 +470,271 @@ exports.getOrderList = (req, res, next) => {
             });
         })
         .catch(err => console.log(err));
+    }
+
+    //anon user 
+    else
+    {
+        res.redirect('/');
+    }
+} */
+
+//new  
+exports.getOrders = (req, res, next) => {
+    console.log('getOrders');
+    let validation = res.locals.validation;
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        Order.fetchAll()
+        .then(orders => {
+            res.render('admin/orders', { 
+                admin: validation.isAdmin,
+                loggedIn: true,
+                orders: orders,
+                path: '/orders',
+                pageTitle: 'Order List'
+            });
+        })
+        .catch(err => console.log(err));
+    }
+
+    //anon user 
+    else
+    {
+        res.redirect('/');
+    }
+}
+
+exports.getRestaurants = (req, res, next) => {
+    
+    console.log('getAdminRestaurantList');
+    let validation = res.locals.validation;
+
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        Restaurant.fetchAll()
+        .then(restaurants => {
+            res.render('admin/restaurants', { 
+                admin: validation.isAdmin,
+                loggedIn: true,
+                restaurants: restaurants,
+                path: '/restaurants',
+                pageTitle: 'Admin Restaurants'
+            });
+        })
+        .catch(err => console.log(err));
+        //console.log('In the middleware');
+        //console.log('shop.js', products);
+        //res.sendFile(path.join(__dirname, '../', 'views', 'shop.html'));
+    }
+
+    else
+    {
+        res.redirect('/');
+    }
+
+}
+
+exports.getUsers = (req, res, next) => {
+    
+    console.log('getAdminUsers');
+    let validation = res.locals.validation;
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        User.fetchAll()
+        .then(users => {
+            res.render('admin/users', { 
+                admin: validation.isAdmin,
+                loggedIn: true,
+                users: users,
+                path: '/users',
+                pageTitle: 'Admin Users'
+            });
+        })
+        .catch(err => console.log(err));
+        //console.log('In the middleware');
+        //console.log('shop.js', products);
+        //res.sendFile(path.join(__dirname, '../', 'views', 'shop.html'));
+    }
+    
+    else
+    {
+        res.redirect('/');
+    }
+    
+}
+
+exports.getReviews = (req, res, next) => {
+    
+    console.log('getAdminReviews');
+    let validation = res.locals.validation;
+
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        Review.fetchAll()
+        .then(reviews => {
+            res.render('admin/reviews', { 
+                admin: validation.isAdmin,
+                loggedIn: true,
+                reviews: reviews,
+                path: '/reviews',
+                pageTitle: 'Admin Reviews'
+            });
+        })
+        .catch(err => console.log(err));
+        //console.log('In the middleware');
+        //console.log('shop.js', products);
+        //res.sendFile(path.join(__dirname, '../', 'views', 'shop.html'));
+    }
+
+    else
+    {
+        res.redirect('/');
+    }
+
+}
+
+exports.getStats = async (req, res, next) => {
+    
+    console.log('getAdminReviews');
+    let validation = res.locals.validation;
+    var userEmail = res.locals.userEmail;
+    var restaurantUrl = res.locals.restaurantUrl;
+
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        var orders = await Order.fetchAll();
+        var restaurants = await Restaurant.fetchAll();
+        var users = await User.fetchAll();
+        var reviews = await Review.fetchAll();
+
+        res.render('admin/stats', { 
+            admin: validation.isAdmin,
+            loggedIn: true,
+            orders: orders,
+            restaurants: restaurants,
+            users: users,
+            reviews: reviews,
+            path: '/stats',
+            pageTitle: 'Admin Stats'
+        });
+
+        //console.log('In the middleware');
+        //console.log('shop.js', products);
+        //res.sendFile(path.join(__dirname, '../', 'views', 'shop.html'));
+    }
+
+    else
+    {
+        res.redirect('/');
+    }
+
+}
+
+//editOrders
+exports.postEditOrders = async (req, res, next) => {
+    console.log('postEditOrders');
+    let validation = res.locals.validation;
+
+    var orderId = req.body.id;
+    var date = req.body.date;
+    var user = req.body.user;
+    var status = req.body.status;
+    var restaurant = req.body.restaurant;
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        var updateOrder = await Order.updateAdmin(orderId, date, user, status, restaurant);
+
+        res.redirect('/admin/orders');
+    }
+
+    //anon user 
+    else
+    {
+        res.redirect('/');
+    }
+}
+//editRestaurants
+exports.postEditRestaurants = async (req, res, next) => {
+    console.log('postEditRestaurants');
+    let validation = res.locals.validation;
+
+    console.log(req.body);
+
+    var restaurantId = req.body.id;
+    var title = req.body.title;
+    var email = req.body.email;
+    var owner = req.body.owner;
+    var address = req.body.address;
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        var updateRestaurants = await Restaurant.updateAdmin(restaurantId, title, email, owner, address);
+
+        res.redirect('/admin/restaurants');
+    }
+
+    //anon user 
+    else
+    {
+        res.redirect('/');
+    }
+}
+//editUsers
+exports.postEditUsers = async (req, res, next) => {
+    console.log('postEditUsers');
+    let validation = res.locals.validation;
+
+    var userId = req.body.id;
+    var name = req.body.name;
+    var address = req.body.address;
+    var phone = req.body.phone;
+    var isLoggedIn = req.body.isLoggedIn;
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        var updateOrder = await User.updateAdmin(userId, name, address, phone, isLoggedIn);
+
+        res.redirect('/admin/users');
+    }
+
+    //anon user 
+    else
+    {
+        res.redirect('/');
+    }
+}
+//editReviews
+exports.postEditReviews = async (req, res, next) => {
+    console.log('postEditReviews');
+    let validation = res.locals.validation;
+
+    var reviewId = req.body.id;
+    var date = req.body.date;
+    var restaurant = req.body.restaurant;
+    var rating = req.body.rating;
+    var user = req.body.user;
+    var items = req.body.items;
+    var comment = req.body.comment;
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        var updateOrder = await Review.updateAdmin(reviewId, date, restaurant, rating, user, items, comment);
+
+        res.redirect('/admin/reviews');
     }
 
     //anon user 

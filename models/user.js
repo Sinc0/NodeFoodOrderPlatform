@@ -189,6 +189,44 @@ class User
             })
             .catch(err => console.log(err));
     }
+        
+    static updateAdmin(userId, name, address, phone, isLoggedIn)
+    {       
+        const db = getDb();
+
+        let updateSuccessful = 1;
+        let updateFailed = 0;
+        
+        var dateObject = new Date().toString();
+        var sub1 = dateObject.substring(16, 24);
+        var sub2 = dateObject.substring(0, 15);
+        var dateFormatted = sub1 + " - " + sub2;
+
+        return db.collection("users")
+            .updateOne({_id: ObjectId(userId)},         
+                {$set: 
+                {
+                    name: name,
+                    address: address,
+                    phone: phone,
+                    isLoggedIn: isLoggedIn,
+                    updatedAt: dateFormatted
+                }
+            } )
+            .then(result => {
+                if(result.modifiedCount == updateSuccessful)
+                {
+                    //console.log('update ' + email + ' document successful');
+                    return updateSuccessful;
+                } 
+                else
+                {
+                    //console.log('update ' + email + ' document failed');
+                    return updateFailed;
+                }
+            })
+            .catch(err => console.log(err));
+    }
 
     static updateCredentials(oldEmail, newEmail, name, address, phone)
     {

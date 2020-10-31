@@ -10,11 +10,12 @@
     <!-- admin view -->
     <% if(admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
+        <p>admin view</p>
     
     <!-- logged in user view -->
     <% } else if(loggedIn == true) { %>
         <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
-        <p>logged in user view</p>
+        <p>user view</p>
     
     <!-- anonmymous view -->
     <% } else { %>

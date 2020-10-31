@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+    <title>Admin Orders</title>
+    <script>
+        function displayEditOrder(number)
+        {
+            console.log(number);
+
+            var d = document.getElementById("order#" + number);
+            var edit = document.getElementById("edit-order#" + number);
+          
+            d.hidden = true;
+            edit.hidden = false;
+
+        }
+
+        function undisplayEditOrder(number)
+        {
+            console.log(number);
+
+            var d = document.getElementById("order#" + number);
+            var edit = document.getElementById("edit-order#" + number);
+          
+            d.hidden = false;
+            edit.hidden = true;
+
+        }
+    </script>
+</head>
+<body>
+    <%- include('../snippets/html_nav_menu_admin.ejs') %>
+
+    <h3 style="margin-top: 10px; margin-bottom: 5px; text-align: center;">Total Orders: <%=orders.length %></h3>
+
+    <% for(var i = 0; i < orders.length; i++) { %>
+        <div unhidden id="order#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; background-color: orange; padding: 10px; width: 400px;"> 
+            <button style="display: block;" onclick="displayEditOrder('<%=i + 1%>')">Edit</button><br />
+
+            <p><%=orders[i]._id %></p>
+            <p><%=orders[i].date %></p>
+            <p><%=orders[i].user %></p>
+            <p><%=orders[i].status %></p>
+            <p><%=orders[i].restaurant %></p><br />
+        </div>
+
+        <div hidden id="edit-order#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; background-color: orange; padding: 10px; width: 400px;">
+            <button style="display: block;" onclick="undisplayEditOrder('<%=i + 1%>')">Cancel</button><br />
+
+            <form action="/admin/edit-orders" method="POST">
+                <input name="id" value="<%=orders[i]._id %>" style="width: 100%"></input><br />
+                <input name="date" value="<%=orders[i].date %>" style="width: 100%"></input><br />
+                <input name="user" value="<%=orders[i].user %>" style="width: 100%"></input><br />
+                <input name="status" value="<%=orders[i].status %>" style="width: 100%"></input><br />
+                <input name="restaurant" value="<%=orders[i].restaurant %>" style="width: 100%"></input><br />
+                <button style="display: block; margin: auto; margin-top: 10px; width: 50%;">Submit</button>
+            </form>
+        </div>
+    <% } %>
+</body>
+</html>

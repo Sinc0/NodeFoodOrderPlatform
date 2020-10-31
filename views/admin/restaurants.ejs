@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+    <title>Admin Orders</title>
+    <script>
+        function displayEditRestaurant(number)
+        {
+            console.log(number);
+
+            var d = document.getElementById("restaurant#" + number);
+            var edit = document.getElementById("edit-restaurant#" + number);
+          
+            d.hidden = true;
+            edit.hidden = false;
+
+        }
+
+        function undisplayEditRestaurant(number)
+        {
+            console.log(number);
+
+            var d = document.getElementById("restaurant#" + number);
+            var edit = document.getElementById("edit-restaurant#" + number);
+          
+            d.hidden = false;
+            edit.hidden = true;
+
+        }
+    </script>
+</head>
+<body>
+    <%- include('../snippets/html_nav_menu_admin.ejs') %>
+
+    <h3 style="margin-top: 10px; margin-bottom: 5px; text-align: center;">Total Restaurants: <%=restaurants.length %></h3>
+
+    <% for(var i = 0; i < restaurants.length; i++) { %>
+        <div unhidden id="restaurant#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; background-color: orange; padding: 10px; width: 400px;">
+            <button style="display: block;" onclick="displayEditRestaurant('<%=i + 1%>')">Edit</button><br />
+            <p><%=restaurants[i]._id %></p>
+            <p><%=restaurants[i].title %></p>
+            <p><%=restaurants[i].owner %></p>
+            <p><%=restaurants[i].email %></p>
+            <p><%=restaurants[i].address %></p>
+        </div>
+
+        <div hidden id="edit-restaurant#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; background-color: orange; padding: 10px; width: 400px;">
+            <button style="display: block;" onclick="undisplayEditRestaurant('<%=i + 1%>')">Cancel</button><br />
+
+            <form action="/admin/edit-restaurants" method="POST">
+                <input name="id" value="<%=restaurants[i]._id %>" style="width: 100%"></input><br />
+                <input name="title" value="<%=restaurants[i].title %>" style="width: 100%"></input><br />
+                <input name="email" value="<%=restaurants[i].email %>" style="width: 100%"></input><br />
+                <input name="owner" value="<%=restaurants[i].owner %>" style="width: 100%"></input><br />
+                <input name="address" value="<%=restaurants[i].address %>" style="width: 100%"></input><br />
+                <button style="display: block; margin: auto; margin-top: 10px; width: 50%;">Submit</button>
+            </form>
+        </div>
+    <% } %>
+</body>
+</html>

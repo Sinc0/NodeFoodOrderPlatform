@@ -18,14 +18,7 @@
         <% for (let order of orders) { %>
             <article class="card restaurant-item">
                 <p><%= order._id %> | <%= order.user %> | <%= order.totalPrice %> <button><a href="/admin/delete-order/<%= order._id %> ">X</a></button></p>
-                <!--
-                <% for (elementCounter = 0; elementCounter < order.restaurants.length; elementCounter++) { %>
-                    <p><%= order.restaurants[elementCounter].title %></p>
-                    <p><%= order.restaurants[elementCounter].quantity %></p>
-                    <p><%= order.restaurants[elementCounter].price %></p>
-                    <p><%= order.restaurants[elementCounter].description %></p>
-                <% } %>
-                -->
+
             </article>
         <% } %>
     </div>

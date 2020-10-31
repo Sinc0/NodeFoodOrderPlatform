@@ -27,6 +27,10 @@
         <%- include('../snippets/html_nav_menu_anon.ejs') %>
     <% } %>
 
+    <script>
+        clearCart();
+    </script>
+
     <modal>
         <div hidden id="informAnonModal">
             <button id="temp" onclick="InformAnonClose()" style="margin-left: 437.5px;">X</button>
@@ -173,7 +177,7 @@
             <% } %>
         </div>
  
-        <% if(loggedIn == true) { %>
+        <% if(loggedIn == true && restaurant.open == true) { %>
         <div id="side-cart">
             <form action="/checkout" method="POST">
                 <button id="order-button" type="submit">Checkout</button>

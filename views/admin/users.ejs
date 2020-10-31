@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+    <title>Admin Users</title>
+    <script>
+        function displayEditUser(number)
+        {
+            console.log(number);
+
+            var d = document.getElementById("user#" + number);
+            var edit = document.getElementById("edit-user#" + number);
+          
+            d.hidden = true;
+            edit.hidden = false;
+
+        }
+
+        function undisplayEditUser(number)
+        {
+            console.log(number);
+
+            var d = document.getElementById("user#" + number);
+            var edit = document.getElementById("edit-user#" + number);
+          
+            d.hidden = false;
+            edit.hidden = true;
+
+        }
+    </script>
+</head>
+<body>
+    <%- include('../snippets/html_nav_menu_admin.ejs') %>
+
+    <h3 style="margin-top: 10px; margin-bottom: 5px; text-align: center;">Total Users: <%=users.length %></h3>
+
+    <% for(var i = 0; i < users.length; i++) { %>
+        <div id="user#<%=i + 1 %>" style="margin: auto; margin-bottom: 10px; background-color: orange; padding: 10px; width: 400px;">
+            <button style="display: block;" onclick="displayEditUser('<%=i + 1%>')">Edit</button><br />
+
+            <p><%=users[i]._id %></p>
+            <p><%=users[i].name %></p>
+            <p><%=users[i].address %></p>
+            <p><%=users[i].phone %></p>
+            <p><%=users[i].isLoggedIn %></p>
+        </div>
+
+        <div hidden id="edit-user#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; background-color: orange; padding: 10px; width: 400px;">
+            <button style="display: block;" onclick="undisplayEditUser('<%=i + 1%>')">Cancel</button><br />
+
+            <form action="/admin/edit-users" method="POST">
+                <input name="id" value="<%=users[i]._id %>" style="width: 100%"></input><br />
+                <input name="name" value="<%=users[i].name %>" style="width: 100%"></input><br />
+                <input name="address" value="<%=users[i].address %>" style="width: 100%"></input><br />
+                <input name="phone" value="<%=users[i].phone %>" style="width: 100%"></input><br />
+                <input name="isLoggedIn" value="<%=users[i].isLoggedIn %>" style="width: 100%"></input><br />
+                <button style="display: block; margin: auto; margin-top: 10px; width: 50%;">Submit</button>
+            </form>
+        </div>
+    <% } %>
+</body>
+</html>

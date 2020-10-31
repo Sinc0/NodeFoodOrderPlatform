@@ -36,11 +36,11 @@
 
         <p><b>Status</b></p>
         <% if(restaurant.menuOnline == false) { %>
-            <p style="margin: auto; background-color: red; width: 400px;"><b>restaurant</b> closed</p>
+            <p style="margin: auto; background-color: red; border-bottom: 1px solid black; width: 400px;"><b>restaurant</b> closed</p>
         <% } %>
             
         <% if(restaurant.menuOnline == true) { %>
-            <p style="margin: auto; background-color: green; width: 400px;"><b>restaurant</b> open</p>
+            <p style="margin: auto; background-color: green; border-bottom: 1px solid black; width: 400px;"><b>restaurant</b> open</p>
         <% } %>
 
         <% if(restaurant.menuListed == false) { %>
