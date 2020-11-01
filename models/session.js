@@ -25,6 +25,7 @@ class Session
 
         return db.collection('sessions')
         .insertOne({
+            createdAt: new Date(),
             email: email,
             loginCookie: loginCookie,
         })

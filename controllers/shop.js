@@ -843,12 +843,13 @@ exports.getLogout = (req, res, next) => {
 
 exports.postLogout = (req, res, next) => {  
     console.log('postLogout >');
-    res.setHeader('Set-Cookie', 'loginCookie=');  
     let logoutSuccessful = 1;
     let logoutFailed = 0;
     let loginCookie = req.get('Cookie');
     let cookieId = parseLoginCookie(loginCookie);
     let validation = res.locals.validation;
+
+    res.setHeader('Set-Cookie', 'loginCookie="";expires=Thu, 01 Jan 1970 00:00:01 GMT;');
     
     //logged in user
     if(validation.status == true)
@@ -1067,16 +1068,19 @@ exports.postLogin = async (req, res, next) => {
             Restaurant.findByEmail(result.email).then(restaurantCheck => {
                 if(restaurantCheck != null)
                 {
-                    res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';')
+                    var cookie = req.get('Cookie');
+                    
+                    res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';path=/');
+                    //res.setHeader('Set-Cookie', 'loginCookie=' + uuidv4() + ';path=/')
                     res.redirect('/portal');
                 }
     
-                else
+                else if(restaurantCheck == null)
                 {
                     //console.log(result.statusText);
                     //console.log(result.cookieId);
         
-                    res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';')
+                    res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';path=/')
                     res.redirect('/');
                 }
             });          
@@ -1543,7 +1547,7 @@ exports.getRestaurantLogout = async (req, res, next) => {
     var restaurantUrl = res.locals.restaurantUrl;
 
     console.log('postLogout >');
-    //res.setHeader('Set-Cookie', 'loginCookie=');  
+ 
     let logoutSuccessful = 1;
     let logoutFailed = 0;
     let loginCookie = req.get('Cookie');
@@ -1553,8 +1557,9 @@ exports.getRestaurantLogout = async (req, res, next) => {
     User.logout(loginCookie).then(result => {
         if(result == logoutSuccessful)
         {
-            res.setHeader('Set-Cookie', 'loginCookie='); 
+            //res.setHeader('Set-Cookie', 'loginCookie='); 
             console.log('logout succesful')
+            res.setHeader('Set-Cookie', 'loginCookie="";expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/');
             res.redirect('/');
         }
                         

@@ -206,6 +206,7 @@ class User
             .updateOne({_id: ObjectId(userId)},         
                 {$set: 
                 {
+                    userId: userId,
                     name: name,
                     address: address,
                     phone: phone,
