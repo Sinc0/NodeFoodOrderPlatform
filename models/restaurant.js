@@ -164,6 +164,20 @@ class Restaurant
             .catch(err => console.log(err));
     }
 
+    static welcomeMessage(owner, value) 
+    {
+        const db = getDb();   
+
+        return db.collection('restaurants')
+            .updateOne({email: owner},{$set: 
+                {
+                    welcomeMessage: value
+                }
+            }  )
+            .then(result => { return result /* console.log(result) */ })
+            .catch(err => console.log(err));
+    }
+
     static delete(productId)
     {
         const db = getDb();

@@ -67,6 +67,7 @@ router.get('/portal/logout', restaurantValidation, shopController.getRestaurantL
 router.post('/portal/updateMenu', restaurantValidation, shopController.postRestaurantUpdateMenu);
 router.post('/portal/menuListed', restaurantValidation, shopController.postRestaurantMenuListed);
 router.post('/portal/menuOnline', restaurantValidation, shopController.postRestaurantMenuOnline);
+router.post('/portal/welcomeMessage', restaurantValidation, shopController.postRestaurantWelcomeMessage);
 
 
 //tests

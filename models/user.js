@@ -539,7 +539,7 @@ class User
                         restaurantName: null,
                         companyIdNumber: null,
                         password: password,
-                        createdAt: new Date()
+                        createdAt: new Date(),
                     })
 
                     
@@ -619,24 +619,26 @@ class User
 
                 //set up temporary restaurant values
                 var hours = [];
-                hours.push({day: "Monday", time: "Example: 11-23 11-Late or Closed"})
-                hours.push({day: "Tuesday", time: "Example: 11-23 11-Late or Closed"})
-                hours.push({day: "Wednesday", time: "Example: 11-23 11-Late or Closed"})
-                hours.push({day: "Thursday", time: "Example: 11-23 11-Late or Closed"})
-                hours.push({day: "Friday", time: "Example: 11-23 11-Late or Closed"})
-                hours.push({day: "Saturday", time: "Example: 11-23 11-Late or Closed"})
-                hours.push({day: "Sunday", time: "Example: 11-23 11-Late or Closed"})
+                hours.push({day: "Monday", time: "11-23"})
+                hours.push({day: "Tuesday", time: "11-Late"})
+                hours.push({day: "Wednesday", time: "Closed"})
+                hours.push({day: "Thursday", time: "Closed"})
+                hours.push({day: "Friday", time: "Closed"})
+                hours.push({day: "Saturday", time: "Closed"})
+                hours.push({day: "Sunday", time: "Closed"})
 
                 var description = "description of " + restaurantName;
                 var imageUrl = "exampleImage.jpg";
                 
                 var menuCategories = [];
-                menuCategories.push({position: 1, categoryName: "exampleCategory"});
+                //menuCategories.push({position: 1, categoryName: "dummycategory"});
 
-                var type = "Example: Pasta, Pizza, Sallad";
+                var type = "Pasta, Pizza, Sallad";
 
                 var menuItems = [];
-                menuItems.push({position: 1, id: "exampleCategory1", category: "exampleCategory", title: "example item", price: "10", description: "description of example item"});
+                //menuItems.push({position: 1, id: "dummycategory1", category: "dummycategory", title: "example item 1", price: "10", description: "description of example item 1"});
+                //menuItems.push({position: 2, id: "dummycategory2", category: "dummycategory", title: "example item 2", price: "10", description: "description of example item 2"});
+                //menuItems.push({position: 3, id: "dummycategory3", category: "dummycategory", title: "example item 3", price: "10", description: "description of example item 3"});
 
                 var url = restaurantName;
                 url = url.toString().toLowerCase();
@@ -664,7 +666,8 @@ class User
                     rating: null,
                     type: type,
                     location: null,
-                    createdAt: new Date()
+                    createdAt: new Date(),
+                    welcomeMessage: true
                 })
                 //console.log(registerRestaurant.insertedCount);
 

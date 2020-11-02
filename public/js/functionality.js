@@ -3,6 +3,7 @@ function goBack()
    window.history.back();
 }
 
+//cart
 function clearCart()
 {
     localStorage.removeItem("cartItems");
@@ -283,6 +284,7 @@ function updateCart(buttonNumber, itemName, itemPrice)
 
 }
 
+//checkout
 function selectPaymentOption(value)
 {
     console.log(value);
@@ -298,6 +300,7 @@ function selectPaymentOption(value)
     }
 }
 
+//order
 function postOrder()
 {
     var form = document.getElementById("post-order-form");
@@ -650,4 +653,17 @@ function searchBoxOrders(totalOrders)
 
     }
 
+}
+
+function setRestaurantLocalStorage(restaurant)
+{
+    let r = localStorage.getItem("restaurant");
+    
+    //clears cart if select new restaurant
+    if(r != restaurant)
+    {
+        clearCart();
+    }
+
+    localStorage.setItem("restaurant", restaurant);
 }

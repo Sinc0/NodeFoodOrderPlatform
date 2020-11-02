@@ -1664,6 +1664,39 @@ exports.postRestaurantMenuOnline = async (req, res, next) => {
     res.redirect('/portal/settings');
 }
 
+exports.postRestaurantWelcomeMessage = async (req, res, next) => {
+    console.log('getTest postRestaurantWelcomeMessage');
+    console.log(req.body);
+    console.log(res.locals.userEmail);
+
+    var owner = res.locals.userEmail;
+    var value = req.body.welcomeMessage;
+    var page = req.body.page;
+        
+    if(value == "true")
+    {
+        value = true;
+    }
+
+    else if(value == "false")
+    {
+        value = false;
+    }
+
+    var updateRestaurant = await Restaurant.welcomeMessage(owner, value);
+
+    if(page == 'home')
+    {
+        res.redirect('/portal');
+    }
+
+    else
+    {
+        res.redirect('/portal/settings');
+    }
+
+}
+
 //tests
 exports.getTest = async (req, res, next) => {
     console.log('getTest');

@@ -27,9 +27,7 @@
         <%- include('../snippets/html_nav_menu_anon.ejs') %>
     <% } %>
 
-    <script>
-        clearCart();
-    </script>
+    <script> setRestaurantLocalStorage('<%=restaurant.title %>'); </script>
 
     <modal>
         <div hidden id="informAnonModal">
@@ -123,9 +121,19 @@
             
             <hr>
 
-            <div id="searchBox" style="text-align: center"  onkeyup="searchBoxRestaurantMenu('<%=restaurant.menuItems.length %>')">
-                <input id="searchBoxInput" style="width: 250px;" placeholder="Search..."></input>
-            </div>   
+            <% var restaurantMenuItemsLength = null %>
+
+            <% if(restaurant.menuItems == null) { %>
+                <% restaurantMenuItemsLength = 0; %>
+            <% } else { %>
+                <% restaurantMenuItemsLength = restaurant.menuItems.length %>
+            <% } %>
+
+            <% if(restaurantMenuItemsLength != 0) { %>
+                <div id="searchBox" style="text-align: center"  onkeyup="searchBoxRestaurantMenu('<%=restaurantMenuItemsLength %>')">
+                    <input id="searchBoxInput" style="width: 250px;" placeholder="Search..."></input>
+                </div>
+            <% } %>    
             
             <% for(let c = 0; c < restaurant.menuCategories.length; c++) { %>
                 <% let restaurantCategory = restaurant.menuCategories[c].categoryName %>
@@ -135,7 +143,7 @@
 
                     <h2><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></h2>
                     
-                    <% for(let c = 0; c < restaurant.menuItems.length; c++) { %>
+                    <% for(let c = 0; c < restaurantMenuItemsLength; c++) { %>
                         
                         <% if(restaurant.menuItems[c].category == restaurantCategory) { %>
                             <div id="menu-item#<%=c + 1 %>" class="menu-item">

@@ -123,9 +123,19 @@
                 inputPosition.value = (itemsInCategoryCount + 1);
                 inputId.value = String(itemCategory).toLowerCase() + (itemsInCategoryCount + 1);
                 inputCategory.value = String(itemCategory).toLowerCase();
-                inputTitle.value = String(itemCategory).toLowerCase() + " item";
+                inputTitle.value = String(itemCategory).toLowerCase() + " item " + (itemsInCategoryCount + 1);;
                 inputPrice.value = 10;
-                inputDescription.value = "description of " + String(itemCategory).toLowerCase();
+                var sliceThis = itemCategory.toString();
+                var slicedCategory = sliceThis.slice(0, (sliceThis.length - 1));
+                if(sliceThis[(sliceThis.length - 1)] == "s")
+                {
+                    inputDescription.value = "description of " + slicedCategory.toLowerCase() + " " + (itemsInCategoryCount + 1);;
+                }
+
+                else
+                {
+                    inputDescription.value = "description of " + itemCategory.toLowerCase() + " " + (itemsInCategoryCount + 1);;
+                }
                         
                 //className
                 inputPosition.className = "itemInput";
@@ -185,7 +195,7 @@
                     var menuItemsDiv = document.getElementById("menuEditRestaurantItems");
                     var formTest = document.getElementById("laskdssassdad");
                     var getTotalNumberOfCategories = countCategoriesInCategories();
-                    var promptAnswerUnformatted = promptAnswer;
+                    var promptAnswerUnformatted = promptAnswer.toLowerCase();
                     
                     //make sure white spaced is handled
                     var promptAnswerWhiteSpaceHandled = "";
@@ -210,7 +220,7 @@
                     console.log(promptAnswerWhiteSpaceHandled);
                     promptAnswer = promptAnswerWhiteSpaceHandled;
 
-                    var promptAnswerFormatted = promptAnswer;
+                    var promptAnswerFormatted = promptAnswer.toLowerCase();
                     var promptAnswerFirstLetterUpperCase = promptAnswer.charAt(0).toUpperCase() + promptAnswer.slice(1);
 
                     //categoryInput                
@@ -516,8 +526,14 @@
                     //do nothing
                 }
                 
-                //console.log(id);
-
+                //update category count
+                var c = countCategoriesInCategories();
+                document.getElementById("menuEditCategories").innerHTML = "Categories (" + c + ")";
+                
+                //update item count
+                var i = document.getElementsByClassName("item");
+                document.getElementById("itemCounterParagraph").innerHTML = "Items (" + c + ")"
+                
                 //update categories input form
                 setFormWithCorrectData();
             }
@@ -1122,13 +1138,23 @@
             <% } %>
             </div>
     
+            <% var restaurantMenuItemsLength = null %>
+            
+            <% if(restaurant.menuItems == null) { %>
+                <% restaurantMenuItemsLength = 0; %>
+            <% } else { %>
+                <% restaurantMenuItemsLength = restaurant.menuItems.length %>
+            <% } %>
+            
         <!-- items -->
         <div id="menuEditRestaurantItems" onclick="collapseMenuEditCategory(this.id)">
             <!-- form start -->
-            <form>
-                <% var itemsCount = restaurant.menuItems.length %>
+            <form id="laskdssassdad">
+    
+                <% var itemsCount = restaurantMenuItemsLength %>
                 <% var categoryCount = restaurant.menuCategories[c] %>
                     <p class="menuEditCategoryParagraph" style="margin-bottom: -3px; padding-bottom: 0px;"><b id="itemCounterParagraph"> Items (<%=itemsCount %>)</b></p>
+                    
                     <% for(var c = 0; c < restaurant.menuCategories.length; c++) { %>
                         <% var category = restaurant.menuCategories[c].categoryName %>
                         <% var categoryFirstLetterUpperCase = category.charAt(0).toUpperCase() + category.slice(1); %>
@@ -1146,14 +1172,14 @@
                             </div>
                             
                             <div id="category<%=categoryFirstLetterUpperCase %>Body" style="display: none">
-                                <% for(var x = 0; x < restaurant.menuItems.length; x++) { %>
+                                <% for(var x = 0; x < restaurantMenuItemsLength; x++) { %>
                                 
                                 <% if(restaurant.menuCategories[c].categoryName == restaurant.menuItems[x].category)  { %>
                                     <div id="item-<%=restaurant.menuCategories[c].categoryName %>#<%=restaurant.menuItems[x].position %>" class="item <%=restaurant.menuCategories[c].categoryName %>">
 
                                         <br />
 
-                                        <% var item = "item-" + restaurant.menuCategories[c].categoryName + "#" + restaurant.menuItems[x].position %>
+                                        <% var item = "item-" + restaurant.menuItems[x].category + "#" + restaurant.menuItems[x].position %>
                                         <% var itemId = restaurant.menuItems[x].category %>
                                         <% var itemCategory = restaurant.menuItems[x].category %>
                                         <% var itemInputPosition = "item-" + restaurant.menuCategories[c].categoryName + "#" + restaurant.menuItems[x].position + "-input-position" %>
@@ -1186,13 +1212,15 @@
                                 
                         </div>
                     <% } %>
-           
-            </form>
-            <!-- form end -->
-
-        </div>
-
-        <hr>
+                    
+                </form>
+                <!-- form end -->
+                
+            </div>
+            
+            <% if(restaurantMenuItemsLength != 0) { %>
+                <hr>
+            <% } %>
 
         <form hidden id="formMenuEditData" action="/portal/updateMenu" method="POST">
             <input id="inputAllImg" name="inputAllImg" value="img"></input><br />
