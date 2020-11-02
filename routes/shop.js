@@ -69,6 +69,8 @@ router.post('/portal/menuListed', restaurantValidation, shopController.postResta
 router.post('/portal/menuOnline', restaurantValidation, shopController.postRestaurantMenuOnline);
 router.post('/portal/welcomeMessage', restaurantValidation, shopController.postRestaurantWelcomeMessage);
 
+//router.post('/portal/updateCredentials', restaurantValidation, );
+
 
 //tests
 router.post('/review-post', validation, shopController.postRestaurantReview);

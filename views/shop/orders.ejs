@@ -73,7 +73,7 @@
 
                 <div id="order-item#<%=counter %>" class="order-item">
                     <p><b>#<%=counter %></b></p>
-                    <p style="text-align: center;"><b><%=order.restaurant %></b></p>
+                    <p style="text-align: center; background-color: orange;"><b><%=order.restaurant %></b></p>
 
                     <br/>
                     
@@ -106,7 +106,7 @@
                     <!-- <p><a href="/reciepts/<%= order._id %>">order reciept PDF</a></p> -->
                     <br />
                     <div style="text-align: center;">
-                        <p><a href='/order-details/<%=order._id %>'>show details</a></p>
+                        <p style="background-color: orange;"><a href='/order-details/<%=order._id %>'>show details</a></p>
 
                         <% if(order.status == "completed" && order.review == null) { %>
                             <p value="<%=order._id%>" onclick="reviewOrder('<%=orders.length%>', '<%=counter %>', this.value)">submit review</p>

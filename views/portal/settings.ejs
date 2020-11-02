@@ -53,11 +53,22 @@
 
         <br />
 
+        <div id="profileCredentials" style="display: block;">
+            <p><b>Credentials</b></p>
+            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>email:</b> <%=email %></p>
+            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>name:</b> <%=name %></p>
+            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>phone:</b> <%=phone %></p>
+            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>address:</b> <%=address %></p>
+            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>city:</b> <%=restaurant.city %></p>
+        </div>
+
+        <br />
+
         <!-- <p style="color: red;"><b>Note: email and password change requires relog</b></p><br /> -->
         <p><b>Options</b></p>
         <button disabled class="profile-buttons" style="width: 400px;">change email</button><br />
         <button disabled class="profile-buttons" style="width: 400px;">change password</button><br />
-        <button class="profile-buttons" style="width: 400px;" onclick="editProfileCredentials()">change credentials</button><br />
+        <button disabled class="profile-buttons" style="width: 400px;" onclick="editProfileCredentials()">change credentials</button><br />
         
         <form action="/portal/menuOnline" method="POST">
             <% if(restaurant.menuOnline == false) { %>
@@ -96,17 +107,9 @@
         </form>
 
         <br />
-
-        <div id="profileCredentials" style="display: block;">
-            <p><b>Credentials</b></p>
-            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>email:</b> <%=email %></p>
-            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>name:</b> <%=name %></p>
-            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>phone:</b> <%=phone %></p>
-            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>address:</b> <%=address %></p>
-        </div>
         
         <div id="editProfileCredentials" style="display: none">
-            <form action="/user-update-credentials" method="POST" onkeydown="return event.key != 'Enter';">
+            <form action="" method="POST" onkeydown="return event.key != 'Enter';">
                 <p><b>Credentials</b></p>
                 <input hidden value="<%=email %>" name="oldEmail"></input>
                 <input hidden value="<%=email %>" name="newEmail" placeholder="email"></input>
@@ -118,6 +121,8 @@
                 <b>adress: </b><input id="searchInput" value="<%=address %>" style="width: 350px;">
                 <input hidden id="userAddress" value="<%=address %>" name="address" placeholder="address"></input>
                 <br/>
+                <b>city: </b><input id="" value="<%=restaurant.city %>" style="width: 350px;">
+                <input hidden id="userCity" value="<%=restaurant.city %>" name="city" placeholder="city"></input>
                 <br/>
                 <button class="profile-buttons" type="submit" onclick="">confirm</button>
             </form>

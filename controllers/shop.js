@@ -991,11 +991,12 @@ exports.postRegisterRestaurant = async (req, res, next) => {
     var address = req.body.addressRestaurant;
     var phone = req.body.phoneRestaurant;
     var owner = req.body.ownerRestaurant;
+    var city = req.body.city;
     var restaurantName = req.body.nameRestaurant;
     var companyIdNumber = req.body.companyIdNumberRestaurant;
     var password = req.body.passwordRestaurant;
     
-    var registerRestaurant = await User.registerRestaurant(email, address, phone, owner, restaurantName, companyIdNumber, password);
+    var registerRestaurant = await User.registerRestaurant(email, address, phone, owner, restaurantName, companyIdNumber, password, city);
     var result = registerRestaurant;
     //console.log(registerRestaurant);
 

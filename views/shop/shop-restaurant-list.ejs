@@ -109,16 +109,16 @@
                     <div class="restaurantMenuItemText" style="display: inline-block;">
                         <h1 style="margin-top: 0px;"><%=restaurant.title %></h1>
                         <% if(restaurant.open == true) { %>
-                            <h3 style="color: rgb(30, 209, 54)">Open</h3> <!-- open or closed -->
+                            <h3 style="color: rgb(30, 209, 54)">OPEN</h3> <!-- open or closed -->
                         <% } %>
 
                         <% if(restaurant.open == false) { %>
-                            <h3 style="color: rgb(214, 14, 14)">Closed</h3> <!-- open or closed -->
+                            <h3 style="color: rgb(214, 14, 14)">CLOSED</h3> <!-- open or closed -->
                         <% } %>
 
+                        <h3><%=restaurant.city %></h3> <!-- location -->
                         <h3 hidden id="restaurantRating#<%=counter %>"><%=restaurant.rating %></h3> <!-- rating -->
                         <h3><%=restaurant.type %></h3> <!-- type -->
-                        <h3><%=restaurant.location %></h3> <!-- location -->
                         <!-- <p><%=restaurant.description %></p> --> <!-- description -->
                         <h3 id="restaurantReviewHeader#<%=counter %>" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
                     </div>

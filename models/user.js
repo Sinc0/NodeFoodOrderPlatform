@@ -557,7 +557,7 @@ class User
         
     }
 
-    static async registerRestaurant(email, address, phone, owner, restaurantName, companyIdNumber, password)
+    static async registerRestaurant(email, address, phone, owner, restaurantName, companyIdNumber, password, city)
     {
         //get db
         const db = getDb();
@@ -665,7 +665,7 @@ class User
                     menuItems: menuItems,
                     rating: null,
                     type: type,
-                    location: null,
+                    city: city,
                     createdAt: new Date(),
                     welcomeMessage: true
                 })
