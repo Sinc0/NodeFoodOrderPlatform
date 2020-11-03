@@ -6,7 +6,7 @@
     <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
-<body>
+<body style="background-image: url('/pics/pizza-slice.png');">
     <!-- admin view -->
     <% if(admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
@@ -15,17 +15,25 @@
     <!-- logged in user view -->
     <% } else if(loggedIn == true) { %>
         <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
-        <p>user view</p>
+        <div style="text-align: center;">
+            <!-- <p>user view</p> -->
+            <h1 style="color: black;">News</h1>
+            <h1 style="color: black;">Info</h1>
+            <h1 style="color: black;">Help</h1>
+        </div>
     
     <!-- anonmymous view -->
     <% } else { %>
         <div id="indexAnonMenu">
             <!-- <div class="indexAnonMenuItem"><a href="/"><b><p>Shop</p></b></a></div> -->
-            <div class="indexAnonMenuItem"><a href="/about"><b><p>About</p></b></a></div>
-            <div class="indexAnonMenuItem"></li><a href="/restaurants"><b><p>Restaurants</p></b></a></div>
-            <div class="indexAnonMenuItem"></li><a href="/register"><b><p>Register</p></b></a></div>
-            <div class="indexAnonMenuItem"><a href="/login"><b><p>Login</p></b></a></div>
-            <div class="indexAnonMenuItem"><a href="/contact"><b><p>Contact</p></b></a></div>
+            <div class="indexAnonMenuItem" style="display: inline-block; border-right: 2.5px solid #171616; margin-right: -2.5px;"><a href="/login"><b>Login</p></b></a></div>
+            <div class="indexAnonMenuItem" style="display: inline-block; margin-left: -2.5px;"></li><a href="/restaurants"><b><p>Restaurants</p></b></a></div>
+        </div>
+        
+        <div id="indexAnonFooter" style="position: absolute; right: 0; bottom: 0;">
+            <div class="indexAnonMenuItem" style="display: inline-block; border-right: 2.5px solid #171616; margin-right: -5px;"></li><a href="/register"><b><p>Register</p></b></a></div>
+            <div class="indexAnonMenuItem" style="display: inline-block; border-right: 2.5px solid #171616; margin-right: -5px;"><a href="/about"><b><p>About</p></b></a></div>
+            <div class="indexAnonMenuItem" style="display: inline-block;"><a href="/contact"><b><p>Contact</p></b></a></div>
         </div>
     <% } %>
 </body>

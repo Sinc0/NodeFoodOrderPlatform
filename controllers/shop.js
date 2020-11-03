@@ -828,6 +828,8 @@ exports.getLogout = (req, res, next) => {
             if(validation.status == true)
             {
                 res.render('shop/logout', {
+                    admin: validation.isAdmin,
+                    loggedIn: true,
                     pageTitle: 'Logout',
                     path: '/logout',
                     statusText: ''

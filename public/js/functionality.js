@@ -346,7 +346,7 @@ function customerDeliverySelector()
     paymentSelector.hidden = false;
 }
 
-/* function editProfileCredentials()
+function editProfileCredentials()
 {
     var profileCredentials = document.getElementById("profileCredentials");
     var editProfileCredentials = document.getElementById("editProfileCredentials");
@@ -362,7 +362,7 @@ function customerDeliverySelector()
         profileCredentials.style.display = "block";
         editProfileCredentials.style.display = "none";
     }
-} */
+}
 
 function registerCustomer()
 {

@@ -1,6 +1,6 @@
 body {
     overflow-y: scroll;
-    font-family: sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     padding: 0px;
     margin: 0px;
 }
@@ -82,7 +82,7 @@ body {
     margin-left: 7px;
     margin-right: 7px;
     padding: 0px;
-    user-select: none;
+    /* user-select: none; */
 }
 
 #main-orders
@@ -206,20 +206,16 @@ main {
 }
 
 .main-header {
-    width: 100%;
-    height: 100%;
-    background-color: #dbc441;
-    padding: 0px;
     margin: 0px;
+    padding: 0px;
+    background-color: #dbc441;
 }
 
 .main-header__nav {
-    background-color: gray;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    padding: 0px;
     margin: 0px;
+    padding: 0px;
+    background-color: #3c41d6;
+    display: flex;
     /* align-items: center; */
 }
 
@@ -237,25 +233,27 @@ main {
     list-style: none;
     margin: 0px;    
     padding: 0px;
-    padding-left: 10px;
+    padding-left: 0px;
     display: flex;
 }
 
 .main-header__item {
-    background-color: purple;
-    margin: 0px 10px 0px 0px;
-    padding: 10px;
+    /* background-color: purple; */
+    margin: 0px 0px 0px 0px;
+    padding: 11px;
 }
 
 .main-header__item a {
     text-decoration: none;
+    font-weight: bold;
     color: black;
 }
 
-.main-header__item a:hover,
-.main-header__item a:active,
-.main-header__item a.active {
-    color: #3e00a1;
+.main-header__item:hover,
+.main-header__item:active
+{
+    background-color: #3e00a1;
+    color: white;
 }
 
 .centered {
@@ -271,23 +269,30 @@ main {
 #menu
 {
     display: inline-block;
-    background-color: orange;
+    background-color: #dab573;
     height: 100%;
     width: 730px;
     padding: 0px;
-    padding-bottom: 70px;
+    /* padding-bottom: 70px; */
     margin: 0px;
+    color: #f7f9f9;
 }
+
+/* #menu h1, h2, h3, p, b
+{
+   font-family: ;
+} */
 
 .menu-item
 {
     /* display: inline-block; */  
-    background-color: thistle;
-    border: 0.1px solid black;
     width: 520px;
-    padding: 10px 0px 10px 0px;
+    padding: 10px 0px 0px 0px;
     margin: auto;
     margin-top: 15px;
+    border: 0px solid black;
+    color: black;
+    background-color: #f7f9f9;
 }
 
 .menu-item p
@@ -298,11 +303,16 @@ main {
 
 .menu-item-texts
 {
-    display: inline-block; width: 84%;
+    padding-bottom: 10px;
+    display: inline-block; 
+    width: 84%;
 }
 
 .menu-item-add-to-cart-button
 {
+    margin: 0px;
+    margin-top: -9px;
+    padding: 0px;
     display: inline-block; 
     vertical-align: top; width: 15%;
 }
@@ -329,8 +339,8 @@ main {
 .cart-item
 {
     background-color: royalblue;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
 .cart-item div
@@ -388,6 +398,11 @@ main {
     margin: 15px;
 }
 
+#buttonAddToCart
+{
+    border: 1px solid black;
+}
+
 #order-button
 {
     border-style: none;
@@ -412,11 +427,12 @@ main {
 {
     font-size: large;
     text-align: center;
-    min-width: 348px;
-    max-width: 348px;
+    min-width: 346px;
+    max-width: 346px;
     min-height: 50px;
     max-height: 150px;
-    margin-left: -1px;
+    margin-left: 0px;
+    border: 0px;
 }
 
 #customerCommentCheckout
@@ -520,10 +536,12 @@ main {
 
 .order-item
 {
-    padding: 5px 5px 4px 5px;
     margin: 0px;
+    padding: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
     /* border: 1px solid black */
-    background-color: lightgray;
+    background-color: #f7f9f9;
 }
 
 .order-item p
@@ -642,7 +660,7 @@ option
 
 #backArrow:hover
 {
-    color: purple;
+    color:  #3e00a1;
     cursor: pointer;
 }
 
@@ -660,29 +678,33 @@ option
 
 #indexAnonMenu
 {
-    margin: auto;
-    margin-top: 250px;
-    width: 500px;
-    border: 1px solid black;
+    margin: 0;
+    width: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     text-align: center;
-}
-
-#indexAnonMenu a
-{
-    text-decoration: none;
-}
-
-#indexAnonMenu b p
-{
-    margin: 0px;
-    padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 .indexAnonMenuItem
 {
-    background-color: purple;
-    border: 1px solid black;
+    margin: 0px;
+    padding: 11px;
+    background-color: royalblue;
+    /* border: 1px solid black; */
+}
+
+.indexAnonMenuItem a
+{
+    text-decoration: none;
+    color: black;
+}
+
+.indexAnonMenuItem:hover
+{
+    background-color:  #3e00a1;
 }
 
 .about-bold-text-title
@@ -804,4 +826,48 @@ option
 
 input[type=number]::-webkit-inner-spin-button {
     opacity: 1
+}
+
+textarea
+{
+    border: none;
+    outline: none;
+}
+
+hr
+{
+    height: 2px;
+    background-color: black;
+    border: none;
+}
+
+#searchBox
+{
+    margin: 0px;
+    margin-top: -8px;
+    margin-bottom: -8px;
+    padding: 0px;
+    /* background-color: royalblue; */
+}
+
+#searchBoxInput
+{
+    height: 48px;
+    width: 400px;
+    font-size: 20px;
+    border: none;
+    text-align: center;
+    font-weight: bold;
+    outline: none;
+    background-color: #f7f9f9;
+}
+
+#searchBoxInput::placeholder 
+{
+    color: black;
+}
+
+#customerComment::placeholder 
+{
+    color: black;
 }

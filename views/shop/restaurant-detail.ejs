@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-color: rosybrown">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,25 +51,26 @@
     </modal>
 
     <main id="main-menu" class="centered">
-        <div id="menu">
+        <div id="menu" style="background-image: url('/pics/moroccan-flower-dark.png');">
+            <div id="testBackground" style="background-color: #0000009c">
             <% var date = new Date().getDay() %>
                 
             <% if (date == 0) { %>
                 <% date = 7; %>
             <% } %>
 
-            <div>
+            <div style="background-color: #f7f9f9;">
                 <!-- <h1><%= restaurant.title %></h1> -->
-                <h1><%=restaurant.title %></h1>
+                <h1 style="margin: 0px; padding: 0px; padding-top: 6px; padding-bottom: 7px; border-bottom: 0px solid black; color: black;"><%=restaurant.title %></h1>
             </div>
-
-            <hr>
 
             <% if(restaurant.open == false) { %>
                 <div id="restaurantDetailRestaurantIsClosed">
                     <h1>Closed</h1>
                 </div>
             <% } %>
+
+            <br>
 
             <div class="card__image">
                 <!-- <img src="/<%=restaurant.image %>"> //hosted on server -->
@@ -84,7 +85,7 @@
                 <!-- <p><%= restaurant._id %></p> -->
                 <% for(let c = 0; c < restaurant.hours.length; c++) { %>
                     <% if(date == c + 1) { %>
-                        <p style="color: green"><%=restaurant.hours[c].day %> <%=restaurant.hours[c].time %></p>
+                        <p style="color: green;"><%=restaurant.hours[c].day %> <%=restaurant.hours[c].time %></p>
                     <% } else { %>
                     <p><%=restaurant.hours[c].day %> <%=restaurant.hours[c].time %></p>
                     <% } %>
@@ -94,33 +95,33 @@
 
             <br />
 
+            <!-- phone -->
             <b>Phone</b>
             <p><%=restaurant.phone %></p>
 
             <br />
 
-            <!-- phone -->
+            <!-- address -->
             <b>Address</b>
             <p><%=restaurant.address %></p>
                             
             <br />
 
             <!-- type -->
-            <p><b>Type</b><br /><%=restaurant.type %></p>
+            <b>Type</b>
+            <p><%=restaurant.type %></p>
 
             <br />
             
             <!-- description -->
             <div>
             <b>About</b>
-            <p style="margin: auto; max-width: 250px;"><%= restaurant.description %></p>
+            <p style="margin: auto; margin-bottom: 7px; max-width: 250px;"><%= restaurant.description %></p>
             <!-- <p><%= restaurant.description %></p> -->
             </div>
             
             <br />
             
-            <hr>
-
             <% var restaurantMenuItemsLength = null %>
 
             <% if(restaurant.menuItems == null) { %>
@@ -129,17 +130,25 @@
                 <% restaurantMenuItemsLength = restaurant.menuItems.length %>
             <% } %>
 
+            <!-- search -->
             <% if(restaurantMenuItemsLength != 0) { %>
-                <div id="searchBox" style="text-align: center"  onkeyup="searchBoxRestaurantMenu('<%=restaurantMenuItemsLength %>')">
-                    <input id="searchBoxInput" style="width: 250px;" placeholder="Search..."></input>
+                <div id="searchBox" onkeyup="searchBoxRestaurantMenu('<%=restaurantMenuItemsLength %>')">
+                    <input id="searchBoxInput" placeholder="Search..." style="border-top: 0px solid black; border-bottom: 0px solid black; width: 100%; background-color: #f7f9f9;"></input>
                 </div>
-            <% } %>    
+            <% } %>
             
             <% for(let c = 0; c < restaurant.menuCategories.length; c++) { %>
                 <% let restaurantCategory = restaurant.menuCategories[c].categoryName %>
                 <div id="menu-category-<%=restaurantCategory.charAt(0).toLowerCase() + restaurantCategory.slice(1) %>">
+
+                    <% if(c == 0) { %>
+                        <br />
+                    <% } %>
                 
-                    <hr>
+                    <% if(c != 0) { %>
+                        <hr>
+                    <% } %>
+
 
                     <h2><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></h2>
                     
@@ -159,7 +168,7 @@
                                 <% if(loggedIn == true && restaurant.open == true) { %>
                                     <div class="menu-item-add-to-cart-button">
                                         <% let buttonNumber = c %>
-                                        <button onclick="updateCart('<%=buttonNumber %>', '<%=restaurant.menuItems[c].title %>', '<%=restaurant.menuItems[c].price %>')" class="cart-add-to-cart-button">+</button></a>
+                                        <button id="buttonAddToCart" onclick="updateCart('<%=buttonNumber %>', '<%=restaurant.menuItems[c].title %>', '<%=restaurant.menuItems[c].price %>')" class="cart-add-to-cart-button">+</button></a>
                                         <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menuItems[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
                                     </div>
                                 <% } else if(loggedIn != true && restaurant.open == true) { %>
@@ -180,21 +189,23 @@
                     <% } %>
                     
                     <br />
+                    <br />
 
                 </div>
             <% } %>
         </div>
+        </div>
  
         <% if(loggedIn == true && restaurant.open == true) { %>
-        <div id="side-cart">
-            <form action="/checkout" method="POST">
+        <div id="side-cart" style="margin-left: 5px;">
+            <form action="/checkout" method="POST" style="background-color: black;">
                 <button id="order-button" type="submit">Checkout</button>
                 
                 <div id="cart-items"></div> 
                 
                 <textarea id="customerComment" name="customerComment" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></textarea>
                                
-                <h2 id="total-price"></h2>
+                <h2 id="total-price" style="margin-top: -2px;"></h2>
                                 
                 <input hidden id="cartAllItems" name="cartAllItems"></input>
                 <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>

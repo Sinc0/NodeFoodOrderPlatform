@@ -35,7 +35,7 @@
         }
     </script>
 </head>
-<body>
+<body style="background-color: lightgray">
     <!-- admin view -->
     <% if(admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
@@ -51,20 +51,18 @@
 
     <br />
 
-    <div id="searchBox" style="text-align: center"  onkeyup="searchBoxOrders('<%=orders.length %>')">
-        <input id="searchBoxInput" style="width: 250px;" placeholder="Search..."></input>
+    <div id="searchBox" style="text-align: center;"  onkeyup="searchBoxOrders('<%=orders.length %>')">
+        <input id="searchBoxInput" style="height: 40px; width: 386px;" placeholder="Search..."></input>
     </div>
 
     <main id="main-orders">
         <% if (orders != null) { %>
         <div id="grid-orders">
 
-            <br />
-
-            <p>unconfirmed = waiting for restaurant to respond</p>
-            <p>confirmed = restaurant have accepted order</p>
-            <p>declined = restaurant have rejected order</p>
-            <p>completed = order is ready for pick up or delivery</p>
+            <!-- <p>unconfirmed = waiting for restaurant to respond</p> -->
+            <!-- <p>confirmed = restaurant have accepted order</p> -->
+            <!-- <p>declined = restaurant have rejected order</p> -->
+            <!-- <p>completed = order is ready for pick up or delivery</p> -->
 
             <% let counter = orders.length + 1; %>
             <% for (let order of orders.reverse()) { counter-- %>
@@ -72,8 +70,8 @@
                 <br />
 
                 <div id="order-item#<%=counter %>" class="order-item">
-                    <p><b>#<%=counter %></b></p>
-                    <p style="text-align: center; background-color: orange;"><b><%=order.restaurant %></b></p>
+                    <h3 style="margin: 0px; margin-left: -10px; margin-right: -10px; padding-top: 5px; padding-bottom: 5px; text-align: center; background-color: royalblue;"><%=order.restaurant %></h3>
+                    <!-- <p style="padding-top: 5px;"><b>#<%=counter %></b></p> -->
 
                     <br/>
                     
@@ -105,15 +103,16 @@
                     <% } %>
                     <!-- <p><a href="/reciepts/<%= order._id %>">order reciept PDF</a></p> -->
                     <br />
+
                     <div style="text-align: center;">
-                        <p style="background-color: orange;"><a href='/order-details/<%=order._id %>'>show details</a></p>
+                        <p style="margin: 0px; margin-left: -10px; margin-right: -10px; border-bottom: 1px solid black;  background-color: royalblue;"><a href='/order-details/<%=order._id %>' style="text-decoration: none;"><b>show details</b></a></p>
 
                         <% if(order.status == "completed" && order.review == null) { %>
-                            <p value="<%=order._id%>" onclick="reviewOrder('<%=orders.length%>', '<%=counter %>', this.value)">submit review</p>
+                            <p style="margin: 0px; margin-left: -10px; margin-right: -10px; background-color: royalblue;" value="<%=order._id%>" onclick="reviewOrder('<%=orders.length%>', '<%=counter %>', this.value)"><b>review</b></p>
                         <% } %>
 
                         <% if(order.status == "completed" && order.review != null) { %>
-                            <p value="<%=order._id%>" onclick="reviewOrder('<%=orders.length%>', '<%=counter %>', this.value)">edit review</p>
+                            <p style="margin: 0px; margin-left: -10px; margin-right: -10px; background-color: royalblue;"  value="<%=order._id%>" onclick="reviewOrder('<%=orders.length%>', '<%=counter %>', this.value)"><b>edit review</b></p>
                         <% } %>
                     </div>
                 </div>

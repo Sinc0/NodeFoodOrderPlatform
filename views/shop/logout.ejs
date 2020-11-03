@@ -7,7 +7,15 @@
     <title><%= pageTitle %></title>
 </head>
 <body>
-    <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
+    <!-- admin view -->
+    <% if(admin == true) { %>
+        <%- include('../snippets/html_nav_menu_admin.ejs') %>
+    
+    <!-- logged in user view -->
+    <% } else if(loggedIn == true) { %>
+        <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
+    <% } %>
+    
     <main id="main-logout">
         <p><%= statusText %></p>
         <p style="margin-top: 25px;">Are you sure you wanna logout?</p>
