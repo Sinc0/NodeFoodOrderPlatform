@@ -7,7 +7,7 @@ const ObjectId = mongodb.ObjectId;
 
 class Order 
 {
-    static async createOrder(userEmail, productArray, totalPrice, customerComment, restaurant, customerName, customerPhone, customerAddress, customerDelivery)
+    static async createOrder(userEmail, productArray, totalPrice, customerComment, restaurant, customerName, customerPhone, customerAddress, customerDelivery, restaurantTitle)
     {
         const db = getDb();
 
@@ -37,7 +37,8 @@ class Order
                 completedAt: null,
                 estimatedCompletionTime: null,
                 status: "unconfirmed",
-                restaurant: restaurant,
+                restaurant: restaurantTitle,
+                restaurantUrl: restaurant,
                 totalPrice: "$" + totalPrice,
                 customerName: customerName,
                 customerPhone: customerPhone,

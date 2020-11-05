@@ -603,8 +603,9 @@ exports.postOrder = async (req, res, next) => {
     //logged in user
     if(validation.status == true)
     {
-        var createOrder = await Order.createOrder(userEmail, orderProducts, totalPrice, customerComment, restaurant, customerName, customerPhone, customerAddress, customerDelivery);
-        
+        var r = await Restaurant.findByUrl(restaurant);
+        var restaurantTitle  = r.title;
+        var createOrder = await Order.createOrder(userEmail, orderProducts, totalPrice, customerComment, restaurant, customerName, customerPhone, customerAddress, customerDelivery, restaurantTitle);
         var orderId = createOrder.ops[0]._id;
 
         if(createOrder.insertedCount != null)

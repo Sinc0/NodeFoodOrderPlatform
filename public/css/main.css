@@ -54,7 +54,7 @@ body {
     width: 466px;
     height: 194px;
     text-align: left;
-    background-color: snow;
+    background-color: #f7f9f9;
 }
 
 .restaurantMenuItemImg
@@ -88,15 +88,17 @@ body {
 #main-orders
 {
     margin: auto;
+    margin-bottom: 25px;
 }
 
 #main-order-details
 {
     margin: auto;
-    margin-top: 45px;
+    margin-top: 25px;
     width: 350px;
-    padding: 10px;
-    background-color: lightgray;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #f7f9f9;
 }
 
 #main-profile
@@ -193,6 +195,7 @@ body {
 {
     width: 386px;
     margin: auto;
+    margin-top: 0px;
 }
 
 img
@@ -262,7 +265,9 @@ main {
 
 #main-menu
 {
-    background-color: rosybrown;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background-color: lightgray;
     width: 100%;
 }
 
@@ -678,7 +683,8 @@ option
 
 #indexAnonMenu
 {
-    margin: 0;
+    margin: 0px;
+    margin-left: -30px;
     width: 300px;
     position: absolute;
     top: 50%;
@@ -819,7 +825,7 @@ option
     margin-bottom: 5px;
     padding-top: 4.5px;
     padding-bottom: 4.5px;
-    background-color: lightblue;
+    background-color: #f7f9f9;
     text-align: left;
     width: 65%;
 }
@@ -832,6 +838,7 @@ textarea
 {
     border: none;
     outline: none;
+    background-color: #f7f9f9;
 }
 
 hr
@@ -870,4 +877,30 @@ hr
 #customerComment::placeholder 
 {
     color: black;
+}
+
+#orders-show-detail
+{
+    background-color: royalblue
+}
+
+#orders-show-detail a
+{
+    color: black;
+    text-decoration: none;
+}
+
+.orders-show-review
+{
+    background-color: royalblue;
+}
+
+.orders-show-review p:hover
+{
+    background-color: #3e00a1;
+}
+
+#orders-show-detail p:hover
+{
+    background-color: #3e00a1;
 }

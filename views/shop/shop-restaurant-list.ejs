@@ -16,7 +16,7 @@
             
             if(d.style.display == "none")
             {
-                d.style = "height: 350px; padding-top: 5px; padding-bottom: 5px; overflow-y: scroll; background-color: orange;"
+                d.style = "height: 350px; padding-top: 5px; padding-bottom: 5px; overflow-y: scroll; background-color: #3c41d6;"
                 d.style.display = "block";
                 a.style.marginBottom = "387px"
             }
@@ -92,7 +92,6 @@
     </div>
 
     <!-- open restaurants -->
-
     <div id="grid-restaurants" class="grid">
         <% counter = 0 %>
         <% if (restaurantsOpen.length > 0) { %>
@@ -143,22 +142,23 @@
                         </script>
                                 
                         <% if(sortArray.length != 0) { %>
-                            <p><b>Total Comments (<%=sortArray.length %>)</b></p>
+                            <!-- <p><b>Total Comments (<%=sortArray.length %>)</b></p> -->
                             
                             <% for(var i = 0; i < sortArray.length; i++) { %>
-                                <div class="restaurantReview" style="padding-top: 5px;">
+                                <div class="restaurantReview" style="margin-top: 25px; padding-top: 0px; background-color: #f7f9f9;">
                                     <!-- <p>Date: <%=sortArray[i].reviewObject.date %></p> -->
                                     <% var dateFormatted = sortArray[i].reviewObject.date %>
                                     <% var dateFormatted = dateFormatted.toString().split(" ") %>
-                                    <% var dateFormatted = dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] + " - " + dateFormatted[4]%>
-                                    <p style="text-align: center;"><b>Rating:</b> <%=sortArray[i].reviewObject.rating %></p><br />
-                                    <div style="margin: auto; width: 55%">
-                                        <p>Date: <%=dateFormatted %></p>
-                                        <p>Name: <%=sortArray[i].reviewObject.name %></p>
-                                        <p>Ordered: <%=sortArray[i].reviewObject.items %></p><br />
+                                    <!-- % var dateFormatted = dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] + " - " + dateFormatted[4]%> -->
+                                    <% var dateFormatted = dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] %>
+                                    <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom:5px; text-align: center; background-color: lightgray;"><b>Rating:</b> <%=sortArray[i].reviewObject.rating %></p><br />
+                                    <div style="margin: auto; width: 55%;">
+                                        <p style="text-align: center;"><%=dateFormatted %></p>
+                                        <p style="text-align: center;"><%=sortArray[i].reviewObject.name %></p>
+                                        <p style="text-align: center;"><%=sortArray[i].reviewObject.items %></p><br />
                                     </div>
                                     <p style="text-align: center;"><b>Comment:</b></p>
-                                    <p style="text-align: center;"><%=sortArray[i].reviewObject.comment %></p>
+                                    <p style="text-align: center; margin-bottom: 15px;"><%=sortArray[i].reviewObject.comment %></p>
                                 </div>                                
                             <% } %> 
                         
@@ -192,7 +192,6 @@
             <% } %>
 
             <!-- closed restaurants -->
-
             <% if (restaurantsClosed.length > 0) { %>
                 <% for (let restaurant of restaurantsClosed) { %>
 
@@ -246,22 +245,22 @@
                                 </script>
 
                                 <% if(sortArray.length != 0) { %>
-                                    <p><b>Total Comments (<%=sortArray.length %>)</b></p>
-                                    
+                                    <!-- <p><b>Total Comments (<%=sortArray.length %>)</b></p> -->
+
                                     <% for(var i = 0; i < sortArray.length; i++) { %>
-                                        <div class="restaurantReview" style="padding-top: 5px;">
+                                        <div class="restaurantReview" style="margin-top: 25px; padding-top: 0px;">
                                             <!-- <p>Date: <%=sortArray[i].reviewObject.date %></p> -->
                                             <% var dateFormatted = sortArray[i].reviewObject.date %>
                                             <% var dateFormatted = dateFormatted.toString().split(" ") %>
                                             <% var dateFormatted =  dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] + " - " + dateFormatted[4]%>
-                                            <p style="text-align: center;"><b>Rating:</b> <%=sortArray[i].reviewObject.rating %></p><br />
+                                            <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom:5px; text-align: center; background-color: lightgray;"><b>Rating:</b> <%=sortArray[i].reviewObject.rating %></p><br />
                                             <div style="margin: auto; width: 55%">
-                                                <p>Date: <%=dateFormatted %></p>
-                                                <p>Name: <%=sortArray[i].reviewObject.name %></p>
-                                                <p>Ordered: <%=sortArray[i].reviewObject.items %></p><br />
+                                                <p style="text-align: center;"><%=dateFormatted %></p>
+                                                <p style="text-align: center;"><%=sortArray[i].reviewObject.name %></p>
+                                                <p style="text-align: center;"><%=sortArray[i].reviewObject.items %></p><br />
                                             </div>
                                             <p style="text-align: center;"><b>Comment:</b></p>
-                                            <p style="text-align: center;"><%=sortArray[i].reviewObject.comment %></p>
+                                            <p style="text-align: center; margin-bottom: 15px;"><%=sortArray[i].reviewObject.comment %></p>
                                         </div>                                
                                     <% } %> 
                                 

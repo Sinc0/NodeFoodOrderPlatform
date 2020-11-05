@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
+    <script>
+        function setBackground()
+        {
+            var d = document.getElementById("bodyIndex");
+            d.style = "background-color: lightgray";
+        }
+    </script>
 </head>
-<body style="background-image: url('/pics/pizza-slice.png');">
+<body id="bodyIndex" style="background-image: url('/pics/pizza-slice.png');">
     <!-- admin view -->
     <% if(admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
@@ -15,11 +22,61 @@
     <!-- logged in user view -->
     <% } else if(loggedIn == true) { %>
         <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
+        <script> setBackground(); </script>
+        
         <div style="text-align: center;">
             <!-- <p>user view</p> -->
-            <h1 style="color: black;">News</h1>
-            <h1 style="color: black;">Info</h1>
-            <h1 style="color: black;">Help</h1>
+
+            <!-- news -->
+            <div style="margin: auto; width: 400px;">
+                <h2 style="color: black; margin-bottom: 0px;"><b>News</b></h2>
+                <div style="background-color: #f7f9f9; padding: 5px;">
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                </div>
+            </div>
+
+            <!-- info -->
+            <div style="margin: auto; width: 400px;">
+                <h2 style="color: black; margin-bottom: 0px;">Info</h2>
+                <div style="background-color: #f7f9f9; padding: 5px;">
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                </div>
+            </div>
+
+            <!-- help -->
+            <div style="margin: auto; width: 400px;">
+                <h2 style="color: black; margin-bottom: 0px;">Help</h2>
+                <div style="background-color: #f7f9f9; padding: 5px;">
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                    <p>aks ldaks dadlkads</p>
+                </div>
+            </div>
         </div>
     
     <!-- anonmymous view -->

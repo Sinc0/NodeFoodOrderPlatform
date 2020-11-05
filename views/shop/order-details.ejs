@@ -20,16 +20,19 @@
         <%- include('../snippets/html_nav_menu_anon.ejs') %>
     <% } %>
 </nav>
-<body id="body-order-details">
-    
+<body id="body-order-details" style="background-color: lightgray;">
     <div id="main-order-details">
+        <!-- title -->
+        <h3 style="text-align: center; margin-left: -10px; margin-right: -10px; padding-top: 5px; padding-bottom: 5px; background-color: royalblue;"><%=order.restaurant %></h3>
+
+        <br />
+
         <!-- meta -->
         <p><b>id:</b> <%=order._id %></p>
-        <p><b>rating:</b> <%=order.rating %></p>
+        <!-- <p><b>rating:</b> <%=order.rating %></p> -->
         <p><b>status:</b> <%=order.status %></p>
         <p><b>type:</b> <%=order.type %></p>
         
-        <br />
 
         <!-- date info -->
         <p><b>placed at:</b> <%=order.placedAt %></p>
@@ -39,23 +42,24 @@
         <br />
         
         <!-- customer info -->
-        <p><b>customer email:</b> <%=order.user %></p>
-        <p><b>customer name:</b> <%=order.customerName %></p>
-        <p><b>customer address:</b> <%=order.customerAddress %></p>
-        <p><b>customer phone:</b> <%=order.customerPhone %></p>
+        <p><b>email:</b> <%=order.user %></p>
+        <p><b>name:</b> <%=order.customerName %></p>
+        <p><b>address:</b> <%=order.customerAddress %></p>
+        <p><b>phone:</b> <%=order.customerPhone %></p>
         
         <br />
         
         <!-- order info -->
         <p><b>total:</b> <%=order.totalPrice %></p>
-        <p><b>estimated time for completion:</b> <%=order.estimatedCompletionTime %></p>
-        <p><b>restaurant:</b> <%=order.restaurant %></p>
-        <p><b>delivery:</b> <%=order.delivery %></p>
+        <p><b>type:</b> <%=order.type %></p>
+        <p><b>estimated completion time:</b> <%=order.estimatedCompletionTime %> mins</p>
         <p><b>comment:</b> <%=order.customerComment %></p>
         <p><b>items</b></p>
         <% for(var c = 0; c < order.products.items.length; c++) { %>
             <p>&emsp;<%=order.products.items[c].name %> - <%=order.products.items[c].quantity %> - ($<%=order.products.items[c].quantity * order.products.items[c].price %>)</p>
         <% } %>
+        <br />
+
         <% if(order.review != null) { %>
         <p><b>review:</b></p>
         <p>name: <%=order.review.name %></p>
@@ -63,8 +67,6 @@
         <p>comment: <%=order.review.comment %></p>
         <% } %>
         <br />
-
     </div>
-
 </body>
 </html>
