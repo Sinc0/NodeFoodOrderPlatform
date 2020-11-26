@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
 </head>
 <nav>
     <!-- admin view -->
@@ -21,18 +22,16 @@
     <% } %>
 </nav>
 <body id="body-order-details" style="background-color: lightgray;">
-    <div id="main-order-details">
+    <div id="main-order-details" style="border: 1px solid black;">
         <!-- title -->
-        <h3 style="text-align: center; margin-left: -10px; margin-right: -10px; padding-top: 5px; padding-bottom: 5px; background-color: royalblue;"><%=order.restaurant %></h3>
+        <h3 style="text-align: center; margin-left: -10px; margin-right: -10px; padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid black;"><%=order.restaurant %></h3>
 
         <br />
 
         <!-- meta -->
         <p><b>id:</b> <%=order._id %></p>
         <!-- <p><b>rating:</b> <%=order.rating %></p> -->
-        <p><b>status:</b> <%=order.status %></p>
-        <p><b>type:</b> <%=order.type %></p>
-        
+        <p><b>status:</b> <%=order.status %></p>    
 
         <!-- date info -->
         <p><b>placed at:</b> <%=order.placedAt %></p>
@@ -50,14 +49,19 @@
         <br />
         
         <!-- order info -->
-        <p><b>total:</b> <%=order.totalPrice %></p>
         <p><b>type:</b> <%=order.type %></p>
-        <p><b>estimated completion time:</b> <%=order.estimatedCompletionTime %> mins</p>
-        <p><b>comment:</b> <%=order.customerComment %></p>
-        <p><b>items</b></p>
-        <% for(var c = 0; c < order.products.items.length; c++) { %>
-            <p>&emsp;<%=order.products.items[c].name %> - <%=order.products.items[c].quantity %> - ($<%=order.products.items[c].quantity * order.products.items[c].price %>)</p>
+        <% if(order.status == "confirmed") { %>
+            <p><b>estimated time:</b> <%=order.estimatedCompletionTime %> min</p>
         <% } %>
+        <% if(order.comment != null) { %>
+            <p><b>comment:</b> <%=order.customerComment %></p>
+        <% } %>
+        <p><b>items:</b></p>
+        <% for(var c = 0; c < order.products.items.length; c++) { %>
+            <p>(<%=order.products.items[c].quantity %>) <%=order.products.items[c].name %> - $<%=order.products.items[c].quantity * order.products.items[c].price %></p>
+            <% } %>
+        <br />
+        <p><b>total:</b> <%=order.totalPrice %></p>
         <br />
 
         <% if(order.review != null) { %>

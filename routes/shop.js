@@ -40,6 +40,8 @@ router.post('/order-update', shopController.postOrderUpdate);
 router.post('/webhook', shopController.postWebhook);
 
 router.post('/user-update-credentials', validation, shopController.postUserUpdateCredentials);
+//router.post('/user-update-email', validation, shopController.postUserUpdateEmail);
+router.post('/user-update-password', validation, shopController.postUserUpdatePassword);
 
 
 //router.get('/cart/:restaurantId', validation, shopController.postCart);

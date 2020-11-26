@@ -6,14 +6,14 @@
     <title></title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/restaurant.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script src="/js/functionality.js"></script>
     <script src="/js/shortcuts.js"></script>
     <script>
-        shortcut.add("escape", function() {document.getElementById("temp").click()});
+        shortcut.add("escape", function() {document.getElementById("modalButton").click()});
     </script>
 </head>
-
-<body onload="loadSideCart()">
+<nav>
     <!-- admin view -->
     <% if(admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
@@ -25,23 +25,25 @@
     <!-- anonmymous view -->
     <% } else { %>
         <%- include('../snippets/html_nav_menu_anon.ejs') %>
-    <% } %>
-
+    <% } %> 
+</nav>
+<body onload="loadSideCart()">
+    
     <script> setRestaurantLocalStorage('<%=restaurant.title %>'); </script>
 
     <modal>
         <div hidden id="informAnonModal">
-            <button id="temp" onclick="InformAnonClose()" style="margin-left: 437.5px;">X</button>
+            <button id="modalButton" onclick="InformAnonClose()" style="margin-top: -1px; margin-left: 386px;">X</button>
 
             <br />
             <br />
             
-            <p>You need to register or login to be able to order</p>
+            <p><b>You need to register or login to order</b></p>
             
             <br />
 
-            <button><a href="/login">Login</a></button>        
-            <button><a href="/register">Register</a></button>
+            <button style="height: 30px; width: 100px; opacity: 100%;"><a href="/login"><b>Login</b></a></button>     
+            <button style="margin-left: -6px; height: 30px; width: 100px; opacity: 100%;"><a href="/register"><b>Register</b></a></button>
             
             <p></p>
 
@@ -58,19 +60,19 @@
             <% if (date == 0) { %>
                 <% date = 7; %>
             <% } %>
-
+            
             <div style="background-color: #f7f9f9;">
                 <!-- <h1><%= restaurant.title %></h1> -->
-                <h1 style="margin: 0px; padding: 0px; padding-top: 6px; padding-bottom: 7px; border-bottom: 0px solid black; color: black;"><%=restaurant.title %></h1>
+                <h1 style="margin: 0px; padding: 0px; padding-top: 6px; padding-bottom: 7px; height: 37px; border-bottom: 0px solid black; color: black;"><%=restaurant.title %></h1>
             </div>
+            
+                        <% if(restaurant.open == false) { %>
+                            <div id="restaurantDetailRestaurantIsClosed">
+                                <h1>Closed</h1>
+                            </div>
+                        <% } %>
 
-            <% if(restaurant.open == false) { %>
-                <div id="restaurantDetailRestaurantIsClosed">
-                    <h1>Closed</h1>
-                </div>
-            <% } %>
-
-            <br>
+            <br />
 
             <div class="card__image">
                 <!-- <img src="/<%=restaurant.image %>"> //hosted on server -->
@@ -133,7 +135,7 @@
             <!-- search -->
             <% if(restaurantMenuItemsLength != 0) { %>
                 <div id="searchBox" onkeyup="searchBoxRestaurantMenu('<%=restaurantMenuItemsLength %>')">
-                    <input id="searchBoxInput" placeholder="Search..." style="border-top: 0px solid black; border-bottom: 0px solid black; width: 100%; background-color: #f7f9f9;"></input>
+                    <input id="searchBoxInput" placeholder="Search..." style="margin: 0px; padding: 0px; height: 50px; width: 730px; border-top: 0px solid black; border-bottom: 0px solid black; background-color: #f7f9f9;"></input>
                 </div>
             <% } %>
             
@@ -159,8 +161,8 @@
                                 <!-- <p><%= restaurant.menuItems[c].restaurantId %></p> -->
                                 <div class="menu-item-texts">
                                     <p><b><%=restaurant.menuItems[c].title %></b></p>
+                                    <p><%=restaurant.menuItems[c].description %></p>
                                     <p>$<%=restaurant.menuItems[c].price %></p>
-                                    <p>Ingredients: <%=restaurant.menuItems[c].description %></p>
                                 </div>
 
                                 <p hidden id="menu-item#<%=c + 1 %>-category"><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></p>
@@ -174,13 +176,13 @@
                                 <% } else if(loggedIn != true && restaurant.open == true) { %>
                                     <div class="menu-item-add-to-cart-button">
                                         <% let buttonNumber = c %>
-                                        <button onclick="InformAnonOpen()" class="cart-add-to-cart-button">+</button></a>
+                                        <button onclick="InformAnonOpen()" class="cart-add-to-cart-button" style="border: 1px solid black;">+</button></a>
                                         <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menuItems[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
                                     </div>
                                 <% } else if(restaurant.open != true) { %>
                                     <div class="menu-item-add-to-cart-button">
                                         <% let buttonNumber = c %>
-                                        <button onclick="" class="cart-add-to-cart-button" style="visibility: hidden;">+</button></a>
+                                        <button onclick="" class="cart-add-to-cart-button" style="border: 1px solid black;">+</button></a>
                                         <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menuItems[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
                                     </div>
                                 <% } %>                          
@@ -197,15 +199,15 @@
         </div>
  
         <% if(loggedIn == true && restaurant.open == true) { %>
-        <div id="side-cart" style="margin-left: 5px;">
+        <div id="side-cart" style="margin-left: 3.5px;">
             <form action="/checkout" method="POST" style="background-color: black;">
-                <button id="order-button" type="submit">Checkout</button>
+                <button id="order-button" type="submit"><b>Checkout</b></button>
                 
                 <div id="cart-items"></div> 
                 
                 <textarea id="customerComment" name="customerComment" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></textarea>
                                
-                <h2 id="total-price" style="margin-top: -2px;"></h2>
+                <h3 id="total-price" style="margin-top: -2px;" style="background-color: #f7f9f9;"></h3>
                                 
                 <input hidden id="cartAllItems" name="cartAllItems"></input>
                 <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>

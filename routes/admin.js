@@ -20,16 +20,31 @@ router.get('/delete-order/:orderId', validation, adminController.postDeleteOrder
 router.get('/order-list', validation, adminController.getOrderList);
 */
 
+//get
+router.get('/admin/home', validation, adminController.getHome);
 router.get('/admin/orders', validation, adminController.getOrders);
 router.get('/admin/restaurants', validation, adminController.getRestaurants);
 router.get('/admin/users', validation, adminController.getUsers);
 router.get('/admin/reviews', validation, adminController.getReviews);
 router.get('/admin/stats', validation, adminController.getStats);
-router.post('/admin/edit-orders', validation, adminController.postEditOrders);
-router.post('/admin/edit-restaurants', validation, adminController.postEditRestaurants);
-router.post('/admin/edit-users', validation, adminController.postEditUsers);
-router.post('/admin/edit-reviews', validation, adminController.postEditReviews);
+
+//edit
+router.post('/admin/edit-order', validation, adminController.postEditOrder);
+router.post('/admin/edit-restaurant', validation, adminController.postEditRestaurant);
+router.post('/admin/edit-user', validation, adminController.postEditUser);
+router.post('/admin/edit-review', validation, adminController.postEditReview);
+router.post('/admin/edit-newsPost', validation, adminController.postEditNewsPost);
+
+//delete
+router.post('/admin/delete-order', validation, adminController.postDeleteOrder);
+router.post('/admin/delete-restaurant', validation, adminController.postDeleteRestaurant);
+router.post('/admin/delete-user', validation, adminController.postDeleteUser);
+router.post('/admin/delete-review', validation, adminController.postDeleteReview);
+router.post('/admin/delete-newsPost', validation, adminController.postDeleteNewsPost);
 //router.get('/admin/index', validation, adminController.getIndex);
+
+//other
+router.post('/admin/post-newsPost', validation, adminController.postNewsPost);
 
 //route handling end
 

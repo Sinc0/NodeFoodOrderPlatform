@@ -2,27 +2,27 @@
     <nav class="main-header__nav">
         <ul class="main-header__item-list_left">
             
-            <li class="main-header__item">
-                <a class="<%= path === '/' ? 'active' : '' %>" href="/">Home</a>
+            <li id="navButtonAdminHome" class="main-header__item">
+                <a class="<%= path === '/' ? 'active' : '' %>" href="/admin/home">Home</a>
             </li>
 
-            <li class="main-header__item">
+            <li id="navButtonAdminOrders" class="main-header__item" style="border-left: 1px solid black;">
                 <a class="<%= path === '/admin/orders' ? 'active' : '' %>" href="/admin/orders">Orders</a>
             </li>
 
-            <li class="main-header__item">
+            <li id="navButtonAdminRestaurants" class="main-header__item" style="border-left: 1px solid black;">
                 <a class="<%= path === '/admin/restaurant-list' ? 'active' : '' %>" href="/admin/restaurants">Restaurants</a>
             </li>
 
-            <li class="main-header__item">
+            <li id="navButtonAdminUsers" class="main-header__item" style="border-left: 1px solid black;">
                 <a class="<%= path === '/admin/users' ? 'active' : '' %>" href="/admin/users">Users</a>
             </li>
 
-            <li class="main-header__item">
+            <li id="navButtonAdminReviews" class="main-header__item" style="border-left: 1px solid black;">
                 <a class="<%= path === '/admin/reviews' ? 'active' : '' %>" href="/admin/reviews">Reviews</a>
             </li>
 
-            <li class="main-header__item">
+            <li id="navButtonAdminStats" class="main-header__item" style="border-left: 1px solid black; border-right: 1px solid black;">
                 <a class="<%= path === '/admin/stats' ? 'active' : '' %>" href="/admin/stats">Stats</a>
             </li>
         </ul>
@@ -33,7 +33,7 @@
                 <a class="" href="/profile">Account</a>
             </li> -->
 
-            <li class="main-header__item">
+            <li id="navButtonAdminLogout" class="main-header__item" style="border-left: 1px solid black;">
                 <a class="<%= path === '/logout/' ? 'active' : '' %>" href="/logout">Logout</a>
             </li>
 

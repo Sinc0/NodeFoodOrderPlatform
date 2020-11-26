@@ -5,19 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script>
+        function goBack()
+        {
+            window.history.back();
+        }
+
         function setBackground()
         {
             var d = document.getElementById("bodyIndex");
             d.style = "background-color: lightgray";
         }
+
+        function copyToClipboard(element)
+        {
+            var d = document.getElementById(element);
+    
+            if(d.id == "help-phone")
+            {
+                navigator.clipboard.writeText("000 111 22 456");
+            }
+
+            else if(d.id == "help-email")
+            {
+                navigator.clipboard.writeText("contact@madeup.com");
+            }
+        }
     </script>
 </head>
-<body id="bodyIndex" style="background-image: url('/pics/pizza-slice.png');">
+<body id="bodyIndex" style="background-image: url(/pics/pizza-slice.png);">
     <!-- admin view -->
     <% if(admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
-        <p>admin view</p>
+        <!-- <p>admin view</p> -->
+        <script> setBackground(); </script>
+
+        <h2 style="text-align: center;">Admin Portal</h2>
     
     <!-- logged in user view -->
     <% } else if(loggedIn == true) { %>
@@ -25,65 +49,46 @@
         <script> setBackground(); </script>
         
         <div style="text-align: center;">
-            <!-- <p>user view</p> -->
+            <!-- help -->
+            <div style="margin: auto; margin-top: 50px; margin-bottom: 50px; width: 400px;">
+                <!-- <h2 style="color: black; margin-bottom: 0px;">Help</h2> -->
+
+                <div style="margin-top: 0px;">
+                    <a href="/about" style="text-decoration: none;"><p class="help-links" style="margin: 0px; padding: 0px; padding-top: 6px; padding-bottom: 6px; border-bottom: 1px solid black;"><b>FAQ</b></p></a>
+                    <a href="#copyPhoneNumber" style="text-decoration: none;"><p id="helpPhone" class="help-links" style="margin: 0px; padding: 0px; padding-top: 5.5px; padding-bottom: 5.5px; border-bottom: 1px solid black" onclick="copyToClipboard(this.id)"><b>Phone:</b> 000 111 22 456</p></a>
+                    <a href="#copyEmail" style="text-decoration: none;"><p id="help-email" class="help-links" style="margin: 0px; padding: 0px; padding-top: 5.5px; padding-bottom: 5.5px;" onclick="copyToClipboard(this.id)"><b>Email:</b> contact@madeup.com</p></a>
+                </div>
+            </div>
 
             <!-- news -->
-            <div style="margin: auto; width: 400px;">
-                <h2 style="color: black; margin-bottom: 0px;"><b>News</b></h2>
-                <div style="background-color: #f7f9f9; padding: 5px;">
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                </div>
-            </div>
+            <% if(adminPosts.length != 0 || adminPosts.length) { %>
+                <div style="margin: auto;">
+                    <h3 style="color: black; margin-bottom: 0px;"><b>Latest News</b></h2>
+                    <% for(var i = adminPosts.length - 1; i >= (adminPosts.length - 1); i--) { %>
+                        <div id="adminPost#<%=i + 1%>" class="admin-card" style="margin-top: 5px; margin-bottom: 50px; padding: 0px; padding-bottom: 25px; width: 800px; border: 0;">
+                            <p style="margin-bottom: 25px; margin-left: 0px; margin-top: -1px; margin-right: 0px; padding-top: 6px; padding-bottom: 6px; text-align: center; background-color: #3c41d6"><b>News #<%=adminPosts[i].postId %></b> <%=adminPosts[i].date.substring(0, 24) %></p>
+                            <h3 style="margin-bottom: 5px;"><%=adminPosts[i].title %></h3>
+                            <p><%=adminPosts[i].text %></p>
+                        </div>
+                    <% } %>
 
-            <!-- info -->
-            <div style="margin: auto; width: 400px;">
-                <h2 style="color: black; margin-bottom: 0px;">Info</h2>
-                <div style="background-color: #f7f9f9; padding: 5px;">
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
+                    <h3 style="color: black; margin-bottom: 0px;"><b>Previous News</b></h2>
+                    <% for(var i = adminPosts.length - 2; i >= 0; i--) { %>
+                        <div id="adminPost#<%=i + 1%>" class="admin-card" style="margin-top: 5px; padding: 0px; padding-bottom: 25px; width: 800px; border: 0;">
+                            <p style="margin-bottom: 25px; margin-left: 0px; margin-top: -1px; margin-right: 0px; padding-top: 6px; padding-bottom: 6px; text-align: center; background-color: #3c41d6"><b>News #<%=adminPosts[i].postId %></b> <%=adminPosts[i].date.substring(0, 24) %></p>
+                            <h3 style="margin-bottom: 5px;"><b><%=adminPosts[i].title %></b></h3>
+                            <p><%=adminPosts[i].text %></p>
+                        </div>
+                    <% } %>
                 </div>
-            </div>
-
-            <!-- help -->
-            <div style="margin: auto; width: 400px;">
-                <h2 style="color: black; margin-bottom: 0px;">Help</h2>
-                <div style="background-color: #f7f9f9; padding: 5px;">
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                    <p>aks ldaks dadlkads</p>
-                </div>
-            </div>
+            <% } %>
         </div>
     
     <!-- anonmymous view -->
     <% } else { %>
         <div id="indexAnonMenu">
             <!-- <div class="indexAnonMenuItem"><a href="/"><b><p>Shop</p></b></a></div> -->
-            <div class="indexAnonMenuItem" style="display: inline-block; border-right: 2.5px solid #171616; margin-right: -2.5px;"><a href="/login"><b>Login</p></b></a></div>
+            <div class="indexAnonMenuItem" style="display: inline-block; border-right: 2.5px solid #171616; margin-right: -2.5px;"><a href="/login"><b><p>Login</p></b></a></div>
             <div class="indexAnonMenuItem" style="display: inline-block; margin-left: -2.5px;"></li><a href="/restaurants"><b><p>Restaurants</p></b></a></div>
         </div>
         

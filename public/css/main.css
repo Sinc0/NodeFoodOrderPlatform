@@ -1,5 +1,5 @@
 body {
-    overflow-y: scroll;
+    overflow: auto;
     font-family: Arial, Helvetica, sans-serif;
     padding: 0px;
     margin: 0px;
@@ -109,10 +109,10 @@ body {
 
 #main-register
 {
-    background-color: orange;
+    background-color: #f7f9f9;
     margin: auto;
     margin-top: 50px;
-    width: 350px;
+    width: 400px;
     text-align: center;
     border: 1px solid black;
 }
@@ -120,17 +120,17 @@ body {
 #main-register button
 {
     margin-bottom: 25px;
-    height: 30.5px;
-    width: 254px;
+    height: 30px;
+    width: 125px;
     border: 1px solid gray;
 }
 
 #main-login
 {
-    background-color: orange;
+    background-color: #f7f9f9;
     margin: auto;
     margin-top: 50px;
-    width: 350px;
+    width: 400px;
     text-align: center;
     border: 1px solid black;
 }
@@ -139,8 +139,8 @@ body {
 {
     margin-top: 23.5px;
     margin-bottom: 25px;
-    height: 30.5px;
-    width: 254px;
+    height: 30px;
+    width: 125px;
     border: 1px solid gray;
 }
 
@@ -148,7 +148,7 @@ body {
 {
     height: 25px;
     width: 250px;
-    margin-bottom: 2.5px;
+    margin-bottom: -1px;
 }
 
 #main-login input[placeholder]
@@ -158,32 +158,34 @@ body {
 
 #main-logout
 {
-    background-color: orange;
+    background-color: #f7f9f9;
     margin: auto;
     margin-top: 50px;
-    width: 350px;
+    width: 400px;
     text-align: center;
     border: 1px solid black;
 }
 
 #main-logout button
 {
-    height: 30.5px;
-    width: 200px;
-    border: 1px solid gray;
+    display: inline-block;
+    height: 30px;
+    width: 75px;
+    border-style: none;
+    border: 1px solid black;
 }
 
 #main-about
 {
     margin: auto;
-    margin-top: 50px;
+    margin-top: 25px;
     width: 700px;
 }
 
 #main-contact
 {
     margin: auto;
-    margin-top: 50px;
+    margin-top: 25px;
     width: 250px;
 }
 #grid-restaurants
@@ -222,6 +224,13 @@ main {
     /* align-items: center; */
 }
 
+.main-header__item
+{
+    padding: 0px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+}
+
 .main-header__item-list_right {
     /* background-color: orange; */
     list-style: none;
@@ -240,9 +249,9 @@ main {
     display: flex;
 }
 
-.main-header__item {
+.main-header__item a{
     /* background-color: purple; */
-    margin: 0px 0px 0px 0px;
+    margin: 0px;
     padding: 11px;
 }
 
@@ -252,8 +261,7 @@ main {
     color: black;
 }
 
-.main-header__item:hover,
-.main-header__item:active
+.main-header__item:hover, .main-header__item:active
 {
     background-color: #3e00a1;
     color: white;
@@ -338,14 +346,13 @@ main {
     width: 350px;
     padding: 0px;
     margin: 0px;
-    margin-left: 5px;
+    margin-left: 0px;
 }
 
 .cart-item
 {
-    background-color: royalblue;
-    margin-top: 2px;
     margin-bottom: 2px;
+    background-color: #3c41d6;
 }
 
 .cart-item div
@@ -359,22 +366,16 @@ main {
 .cart-item button
 {
     display: inline-block;
-    background-color: royalblue;
+    background-color: #3c41d6;
     border-style: none;
     border-radius: 0px; 
     outline: none;
     font-size: large;
     color: black; 
-    height: 52.5px;
+    height: 50px;
     width: 52.5px;
     padding: 0px;
     margin: 0px;
-}
-
-.cart-item button:hover
-{
-    background-color: #3e00a1;
-    color: white;
 }
 
 /*
@@ -410,40 +411,43 @@ main {
 
 #order-button
 {
-    border-style: none;
-    border-radius: 0px;
+    margin: 0px;
+    margin-bottom: 2px;
+    padding: 0px;
     height: 50px;
     width: 100%;
-    padding: 0px;
-    margin: 0px;
+    border-style: none;
+    border-radius: 0px;
 }
 
 #total-price
 {
-    background-color: white;
+    background-color: #f7f9f9;
     height: 100%;
+    width: 100%;
+    margin-left: 0px;
     padding: 0px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-top: 5px;
+    padding-top: 14.5px;
+    padding-bottom: 14.5px;
+    font-size: 18px;
 }
 
 #customerComment
 {
-    font-size: large;
+    font-size: medium;
     text-align: center;
     min-width: 346px;
     max-width: 346px;
-    min-height: 50px;
-    max-height: 150px;
+    min-height: 100px;
+    max-height: 250px;
     margin-left: 0px;
     border: 0px;
 }
 
 #customerCommentCheckout
 {
-    min-width: 398px;
-    max-width: 398px;
+    min-width: 400px;
+    max-width: 400px;
     min-height: 50px;
     max-height: 150px;
 }
@@ -460,7 +464,7 @@ main {
     text-align: center;
     margin: auto;
     padding: 0px;
-    background-color: green;
+    background-color: #3c41d6;
     width: 300px;
 }
 
@@ -524,7 +528,6 @@ main {
 #checkoutTotalPrice
 {
     position: relative;
-    background-color: green;
     margin: auto;
     text-align: center;
     width: 300px;
@@ -542,9 +545,12 @@ main {
 .order-item
 {
     margin: 0px;
+    margin-top: 6px;
+    margin-left: -7px;
     padding: 0px;
     padding-left: 10px;
     padding-right: 10px;
+    width: 378px;
     /* border: 1px solid black */
     background-color: #f7f9f9;
 }
@@ -562,7 +568,6 @@ main {
     height: 170px;
     width: 500px;
     margin: auto;
-    margin-top: 10px;
 }
 
 #list-of-payment-options
@@ -587,9 +592,22 @@ option
 
 .acceptCustomerOrder, .declineCustomerOrder
 {
-    width: 140px;
+    margin: 0px;
+    height: 30px;
+    width: 100%;
+    font-weight: bold;
+    border: none;
 }
 
+.acceptCustomerOrder
+{
+   background-color: green;
+}
+
+.declineCustomerOrder
+{ 
+    background-color: red;
+}
 
 #confirmOrderTitle
 {
@@ -609,9 +627,10 @@ option
 .customerOrder
 {
     margin: auto;
-    background-color: darkgray;
+    background-color: #f7f9f9;
     border: 1px solid black;
-    width: 500px;
+    width: 400px;
+    margin-bottom: 25px;
 }
 
 #order-process-content
@@ -647,14 +666,30 @@ option
 
 .profile-buttons
 {
+    height: 30px;
     width: 150px;
+    border-style: none;
+    background-color: #f7f9f9;
+    border: 1px solid black;
+}
+
+.profile-buttons:active
+{
+    outline: none;
+    border-color: green;
+    border-style: none;
+}
+
+.profile-buttons:focus
+{
+    outline: none;
 }
 
 #registerCustomer input, #registerRestaurant input
 {
     height: 25px;
     width: 250px;
-    margin-bottom: 2.5px;
+    margin-bottom: -1px;
     
 }
 
@@ -697,9 +732,18 @@ option
 .indexAnonMenuItem
 {
     margin: 0px;
-    padding: 11px;
-    background-color: royalblue;
+    background-color: #3c41d6;
     /* border: 1px solid black; */
+}
+
+.indexAnonMenuItem p
+{
+    padding-bottom: 11px;
+    padding-left: 4px;
+    padding-top: 11px;
+    padding-right: 4px;
+    text-decoration: none;
+    color: black;
 }
 
 .indexAnonMenuItem a
@@ -711,6 +755,7 @@ option
 .indexAnonMenuItem:hover
 {
     background-color:  #3e00a1;
+    color: white;
 }
 
 .about-bold-text-title
@@ -733,10 +778,10 @@ option
     padding-top: 0px;
     padding-right: 10px;
     padding-bottom: 0px;
-    width: 450px;
+    width: 400px;
     margin: auto;
-    background-color: olivedrab;
-    border: 1px solid black;
+    background-color: #3c41d6;
+    border: 2px solid black;
     text-align: center;
     user-select: none;
     z-index: 1;
@@ -747,8 +792,17 @@ option
 
 #informAnonModal button
 {
-    border-style: none;
+    display: inline-block; 
+    margin-bottom: 2.5px;
+    border: 1px solid black;
     border-radius: 0px;
+    background-color: #f0f0f0;
+    opacity: 100%;
+}
+
+#informAnonModal button:hover
+{
+    background-color: #3e00a1;
 }
 
 #informAnonModal a
@@ -796,8 +850,6 @@ option
 #restaurantDetailRestaurantIsClosed h1
 {
     margin: 0px;
-    margin-top: -10px;
-    margin-bottom: 25px;
     padding: 0px;
     background-color: red;
 }
@@ -806,7 +858,6 @@ option
 {
     margin: 0px;
     padding: 0px;
-    background-color: greenyellow;
 }
 
 #NavBar p
@@ -817,6 +868,14 @@ option
     text-align: center;
     color: black;
 }
+
+/* .restaurantReviewModal
+{
+    position: absolute;
+    top: 150px;
+    width: 700px;
+    background-color: orange;
+} */
 
 .restaurantReview
 {
@@ -860,7 +919,6 @@ hr
 #searchBoxInput
 {
     height: 48px;
-    width: 400px;
     font-size: 20px;
     border: none;
     text-align: center;
@@ -881,7 +939,7 @@ hr
 
 #orders-show-detail
 {
-    background-color: royalblue
+    
 }
 
 #orders-show-detail a
@@ -892,15 +950,164 @@ hr
 
 .orders-show-review
 {
-    background-color: royalblue;
+    
 }
 
 .orders-show-review p:hover
 {
     background-color: #3e00a1;
+    color: white;
 }
 
 #orders-show-detail p:hover
 {
     background-color: #3e00a1;
+    color: white;
 }
+
+input::placeholder
+{
+    color: black;
+}
+
+input:focus
+{
+    outline: none;
+}
+
+.input-admin
+{
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 16px;
+    width: 372px;
+    background-color: #EFEFEF;
+}
+
+input
+{
+    border: 1px solid lightgray;
+    border-radius: 0%;
+    background-color: #EFEFEF;
+}
+
+.help-links
+{
+    background-color: #3c41d6;
+    color: black;
+}
+
+.help-links:hover
+{
+    background-color: #3e00a1;
+}
+
+.help-links:active
+{
+    background-color: #3e00a1;
+}
+
+button
+{
+    color: black;
+}
+
+button:hover
+{
+    background-color: #3e00a1;
+    color: white;
+}
+
+button:active
+{
+    background-color: #3e00a1;
+    color: white;
+}
+
+button:focus
+{
+    outline: none;
+}
+
+.admin-edit, .admin-delete
+{
+    margin: auto; 
+    margin-bottom: 25px;  
+    border: 1px solid black; 
+    background-color: #f7f9f9;
+    width: 398px;
+}
+
+.admin-card
+{
+    margin: auto; 
+    width: 378px;
+    margin-bottom: 25px; 
+    padding: 10px; 
+    border: 1px solid black; 
+    background-color: #f7f9f9;
+}
+
+.admin-card-button
+{
+    display: inline-block; 
+    height: 21px; 
+    width: 75px; 
+    border: 0.1px solid lightgray;
+    border-radius: 1%;
+}
+
+textarea
+{
+    background-color: #EFEFEF;
+}
+
+textarea::placeholder
+{
+    color: black;
+}
+
+/* Width */
+::-webkit-scrollbar 
+{
+    width: 7px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track 
+{
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb 
+{
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover 
+{
+    background: #555;
+}
+
+/* Hide */
+/* ::-webkit-scrollbar {
+    display: none;
+} */
+
+/* #bodyIndex 
+{
+    background: url(/pics/pizza-slice.png) repeat;
+    animation: clouds 100000s linear infinite;
+}
+
+@keyframes clouds 
+{
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 10000000px 0;
+    }
+} */

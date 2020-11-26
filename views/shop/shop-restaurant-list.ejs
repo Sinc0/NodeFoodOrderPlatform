@@ -6,6 +6,7 @@
     <title>Restaurants</title>
     <link rel="stylesheet" href="/css/main.css">
     <script src="/js/functionality.js"></script>
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script>
         function displayRestaurantReviews(menuItemNumber)
         {
@@ -16,7 +17,7 @@
             
             if(d.style.display == "none")
             {
-                d.style = "height: 350px; padding-top: 5px; padding-bottom: 5px; overflow-y: scroll; background-color: #3c41d6;"
+                d.style = "height: 350px; padding-top: 5px; overflow-y: auto; border-bottom: 3px solid black; border-left: 3px solid black; border-right: 3px solid black; background-color: #3c41d6;"
                 d.style.display = "block";
                 a.style.marginBottom = "387px"
             }
@@ -36,7 +37,15 @@
 
             var d = document.getElementById("restaurantReviewHeader#" + restaurantNumber);
 
-            d.innerHTML = "Reviews (" + value + ")";
+            if(value == 0)
+            {
+                d.innerHTML = "";
+            }
+            
+            else
+            {
+                d.innerHTML = "Reviews (" + value + ")";
+            }
         }
 
         function setRestaurantRating(restaurantNumber, rating)
@@ -48,9 +57,38 @@
 
             if(checkIfNaN == false)
             {
+                rating = Number(rating).toFixed(1);
                 d.innerHTML = rating + " of 5";
                 d.hidden = false;
             }
+        }
+
+        function searchBoxRestaurants(totalMenuItems)
+        {
+            var searchBoxInput = document.getElementById("searchBoxInput").value
+            var searchString = String(searchBoxInput).toLowerCase();
+            var countItems = 0;
+
+            for(var c = 1; c <= totalMenuItems; c++)
+            {
+                var menuItem = document.getElementById("restaurantMenuItem#" + c)
+                var menuItemSearchText = document.getElementById("restaurantMenuItemSearchText#" + c)
+
+                if(menuItemSearchText.innerHTML.toLowerCase().includes(searchString))
+                {
+                    //menuItem.style.opacity = "100%";
+                    menuItem.style.display = "block";
+                    countItems++;
+                }
+
+                else
+                {
+                    //menuItem.style.opacity = ".25";
+                    menuItem.style.display = "none";
+                }
+
+            }
+
         }
     </script>
 </head>
@@ -87,8 +125,8 @@
 
     <br />
     
-    <div id="searchBox" style="margin: 0px; padding: 0px; text-align: center;" onkeyup="searchBoxRestaurants('<%=restaurants.length %>')">
-        <input id="searchBoxInput" style="height: 38px; width: 700px;" placeholder="Search..."></input>
+    <div id="searchBox" style="margin: 0px; padding: 0px; text-align: center;" onkeyup="searchBoxRestaurants('<%=restaurants.length - 1 %>')">
+        <input id="searchBoxInput" style="height: 38px; width: 696px;" placeholder="Search..."></input>
     </div>
 
     <!-- open restaurants -->
@@ -107,22 +145,23 @@
 
                     <div class="restaurantMenuItemText" style="display: inline-block;">
                         <h1 style="margin-top: 0px;"><%=restaurant.title %></h1>
-                        <% if(restaurant.open == true) { %>
-                            <h3 style="color: rgb(30, 209, 54)">OPEN</h3> <!-- open or closed -->
+                    
+                        <!-- <% if(restaurant.open == true) { %>
+                            <h3 style="color: rgb(30, 209, 54)">Open</h3> open or closed
                         <% } %>
 
                         <% if(restaurant.open == false) { %>
-                            <h3 style="color: rgb(214, 14, 14)">CLOSED</h3> <!-- open or closed -->
-                        <% } %>
+                            <h3 style="color: rgb(214, 14, 14)">Open</h3> open or closed
+                        <% } %> -->
 
                         <h3><%=restaurant.city %></h3> <!-- location -->
-                        <h3 hidden id="restaurantRating#<%=counter %>"><%=restaurant.rating %></h3> <!-- rating -->
+                        <h3 hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
                         <h3><%=restaurant.type %></h3> <!-- type -->
                         <!-- <p><%=restaurant.description %></p> --> <!-- description -->
                         <h3 id="restaurantReviewHeader#<%=counter %>" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
                     </div>
 
-                    <div id="restaurantsRestaurantReview#<%=counter %>" style="display: none;">
+                    <div class="restaurantReviewModal" id="restaurantsRestaurantReview#<%=counter %>" style="display: none;">
                         
                         <% var sortArray = [] %>
                         <% var restaurantRating = null %>
@@ -145,19 +184,19 @@
                             <!-- <p><b>Total Comments (<%=sortArray.length %>)</b></p> -->
                             
                             <% for(var i = 0; i < sortArray.length; i++) { %>
-                                <div class="restaurantReview" style="margin-top: 25px; padding-top: 0px; background-color: #f7f9f9;">
+                                <div class="restaurantReview" style="margin-top: 20px; margin-bottom: 25px; padding-top: 0px; background-color: #f7f9f9;">
                                     <!-- <p>Date: <%=sortArray[i].reviewObject.date %></p> -->
                                     <% var dateFormatted = sortArray[i].reviewObject.date %>
                                     <% var dateFormatted = dateFormatted.toString().split(" ") %>
                                     <!-- % var dateFormatted = dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] + " - " + dateFormatted[4]%> -->
                                     <% var dateFormatted = dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] %>
-                                    <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom:5px; text-align: center; background-color: lightgray;"><b>Rating:</b> <%=sortArray[i].reviewObject.rating %></p><br />
+                                    <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; text-align: center; background-color: lightgray;"><b>Rating</b> <%=sortArray[i].reviewObject.rating %></p><br />
                                     <div style="margin: auto; width: 55%;">
-                                        <p style="text-align: center;"><%=dateFormatted %></p>
                                         <p style="text-align: center;"><%=sortArray[i].reviewObject.name %></p>
+                                        <p style="text-align: center;"><%=dateFormatted %></p>
                                         <p style="text-align: center;"><%=sortArray[i].reviewObject.items %></p><br />
                                     </div>
-                                    <p style="text-align: center;"><b>Comment:</b></p>
+                                    <p style="text-align: center;"><b>Comment</b></p>
                                     <p style="text-align: center; margin-bottom: 15px;"><%=sortArray[i].reviewObject.comment %></p>
                                 </div>                                
                             <% } %> 
@@ -201,7 +240,7 @@
                         <p><b>Closed</b></p>
                     </div>
         
-                    <div id="restaurantMenuItem#<%=counter %>" class="restaurantMenuItem">
+                    <div id="restaurantMenuItem#<%=counter %>" class="restaurantMenuItem" style="opacity: 25%;">
                             <a style="text-decoration: none; color: black" href="/restaurant/<%= restaurant.url %>">
                         
                                 <div class="restaurantMenuItemImg" style="display: inline-block;">
@@ -210,16 +249,17 @@
                             </a>
                             
                             <div class="restaurantMenuItemText" style="display: inline-block;">
-                                <h1 style="margin-top: 0px;"><%=restaurant.title %></h1>
                                 <% if(restaurant.open == true) { %>
-                                    <h3 style="color: rgb(30, 209, 54)">OPEN</h3> <!-- open or closed -->
+                                    <h3 style="color: rgb(30, 209, 54)">Closed</h3> <!-- open or closed -->
                                 <% } %>
                 
                                 <% if(restaurant.open == false) { %>
-                                    <h3 style="color: rgb(214, 14, 14)">CLOSED</h3> <!-- open or closed -->
+                                    <h3 style="margin-top: 5px; margin-bottom: -2px; color: rgb(214, 14, 14)">Closed</h3> <!-- open or closed -->
                                 <% } %>
+
+                                <h1 style="margin-top: 0px;"><%=restaurant.title %></h1>
                 
-                                <h3 hidden id="restaurantRating#<%=counter %>"><%=restaurant.rating %></h3> <!-- rating -->
+                                <h3 hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
                                 <h3><%=restaurant.type %></h3> <!-- type -->
                                 <h3><%=restaurant.location %></h3> <!-- location -->
                                 <!-- <p><%=restaurant.description %></p> --> <!-- description -->
@@ -255,8 +295,8 @@
                                             <% var dateFormatted =  dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] + " - " + dateFormatted[4]%>
                                             <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom:5px; text-align: center; background-color: lightgray;"><b>Rating:</b> <%=sortArray[i].reviewObject.rating %></p><br />
                                             <div style="margin: auto; width: 55%">
-                                                <p style="text-align: center;"><%=dateFormatted %></p>
                                                 <p style="text-align: center;"><%=sortArray[i].reviewObject.name %></p>
+                                                <p style="text-align: center;"><%=dateFormatted %></p>
                                                 <p style="text-align: center;"><%=sortArray[i].reviewObject.items %></p><br />
                                             </div>
                                             <p style="text-align: center;"><b>Comment:</b></p>
@@ -271,6 +311,7 @@
                            
                             <p hidden id="restaurantMenuItemSearchText#<%=counter %>">
                                 <%=restaurant.status %>
+                                <%=restaurant.title %>
                                 <%=restaurant.rating %>
                                 <%=restaurant.type %>
                                 <%=restaurant.location %>

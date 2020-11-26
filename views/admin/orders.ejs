@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/main.css">
     <title>Admin Orders</title>
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script>
         function displayEditOrder(number)
         {
@@ -29,36 +30,154 @@
             edit.hidden = true;
 
         }
+
+        function displayDeleteOrder(number)
+        {
+            console.log(number);
+
+            var d = document.getElementById("order#" + number);
+            var edit = document.getElementById("delete-order#" + number);
+          
+            d.hidden = true;
+            edit.hidden = false;
+
+        }
+
+        function undisplayDeleteOrder(number)
+        {
+            console.log(number);
+
+            var d = document.getElementById("order#" + number);
+            var edit = document.getElementById("delete-order#" + number);
+          
+            d.hidden = false;
+            edit.hidden = true;
+
+        }
+
+        function search(totalOrders)
+        {
+            var searchBoxInput = document.getElementById("searchBoxInput").value
+            var totalOrdersText = document.getElementById("totalOrdersText");
+            var searchString = String(searchBoxInput).toLowerCase();
+            var ordersArray = [];
+            var searchFoundCount = 0;
+
+            if(searchBoxInput != "")
+            {
+                for(var c = 1; c <= totalOrders; c++)
+                {
+                    var order = document.getElementById("order#" + c)
+                    //console.log(menuItem);
+                    //console.log(menuItem.parentNode);
+                    //console.log(menuItemCategory);
+    
+                    if(order.innerHTML.toLowerCase().includes(searchString))
+                    {
+                        ordersArray.push(order);
+                        searchFoundCount++;
+                        order.hidden = false;
+                        order.style.opacity = "100%";
+                    }
+                    
+                    else
+                    {
+                        order.hidden = true;
+                    }        
+                    
+                    if(searchFoundCount == 1)
+                    {
+                        totalOrdersText.innerHTML = "Found: " + searchFoundCount + " Order";
+                    }
+
+                    else
+                    {
+                        totalOrdersText.innerHTML = "Found: " + searchFoundCount + " Orders";
+                    }
+                }
+            }
+
+            else
+            {
+                for(var c = 1; c <= totalOrders; c++)
+                {
+                    var order = document.getElementById("order#" + c)
+                    
+                    ordersArray.push(order);
+                    order.hidden = false;
+                    order.style.opacity = "100%";
+                }
+
+                totalOrdersText.innerHTML = "Total Orders: " + totalOrders;
+            }
+        }
+
+        function saveScrollPosition()
+        {
+            var y = window.scrollY;
+            localStorage.setItem("scrollPositionY", y);
+        }
+
+        function loadSavedScrollPosition()
+        {
+            var positionY = localStorage.getItem("scrollPositionY");
+            window.scrollTo(0, positionY)
+        }
     </script>
 </head>
-<body>
+<body style="background-color: lightgray;" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
     <%- include('../snippets/html_nav_menu_admin.ejs') %>
-
-    <h3 style="margin-top: 10px; margin-bottom: 5px; text-align: center;">Total Orders: <%=orders.length %></h3>
+    
+    <script>
+        var navButtonAdminHome = document.getElementById("navButtonAdminOrders");
+        navButtonAdminHome.style.backgroundColor = "lightgray";
+    </script>
+    
+    <div id="searchBox" style="margin: 0px; margin-top: 25px; padding: 0px; text-align: center;">
+        <input id="searchBoxInput" style="margin-bottom: 25px; height: 38px; width: 396px;" placeholder="Search..." onkeyup="search('<%=orders.length %>')"></input>
+    </div>
+    
+    <h3 id="totalOrdersText" style="margin-top: 25px; margin-bottom: 15px; text-align: center;">Total Orders: <%=orders.length %></h3>
 
     <% for(var i = 0; i < orders.length; i++) { %>
-        <div unhidden id="order#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; background-color: orange; padding: 10px; width: 400px;"> 
-            <button style="display: block;" onclick="displayEditOrder('<%=i + 1%>')">Edit</button><br />
-
-            <p><%=orders[i]._id %></p>
-            <p><%=orders[i].date %></p>
-            <p><%=orders[i].user %></p>
-            <p><%=orders[i].status %></p>
-            <p><%=orders[i].restaurant %></p><br />
+    <div id="orders">
+        <div id="order#<%=i + 1%>" class="admin-card">      
+            <p style="margin-bottom: 4px; margin-left: 2px; margin-top: 9px;"><%=orders[i]._id %></p>
+            <p style="margin-bottom: 4px; margin-left: 2px;"><%=orders[i].restaurant %></p> 
+            <p style="margin-bottom: 4px; margin-left: 2px;"><%=orders[i].date %></p>
+            <p style="margin-bottom: 4px; margin-left: 2px;"><%=orders[i].user %></p>
+            <p style="margin-bottom: -2px; margin-left: 2px;"><%=orders[i].status %></p>
+            
+            <div style="text-align: right;">
+                <button class="admin-card-button" onclick="displayEditOrder('<%=i + 1%>')" style="margin-top: 10px; margin-right: -5.5px;"><b>Edit</b></button>
+                <button class="admin-card-button" onclick="displayDeleteOrder('<%=i + 1%>')" style="background-color: red;"><b>Delete</b></button><br />
+            </div>
         </div>
 
-        <div hidden id="edit-order#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; background-color: orange; padding: 10px; width: 400px;">
-            <button style="display: block;" onclick="undisplayEditOrder('<%=i + 1%>')">Cancel</button><br />
+        <!-- edit -->
+        <div class="admin-edit" hidden id="edit-order#<%=i + 1%>">
+            <button class="admin-card-button" style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px; margin-right: 303px;" onclick="undisplayEditOrder('<%=i + 1%>')"><b>Cancel</b></button><br />
 
-            <form action="/admin/edit-orders" method="POST">
-                <input name="id" value="<%=orders[i]._id %>" style="width: 100%"></input><br />
-                <input name="date" value="<%=orders[i].date %>" style="width: 100%"></input><br />
-                <input name="user" value="<%=orders[i].user %>" style="width: 100%"></input><br />
-                <input name="status" value="<%=orders[i].status %>" style="width: 100%"></input><br />
-                <input name="restaurant" value="<%=orders[i].restaurant %>" style="width: 100%"></input><br />
-                <button style="display: block; margin: auto; margin-top: 10px; width: 50%;">Submit</button>
+            <form action="/admin/edit-order" method="POST">
+                <input class="input-admin" name="id" value="<%=orders[i]._id %>"></input><br />
+                <input class="input-admin"name="restaurant" value="<%=orders[i].restaurantUrl %>"></input><br />
+                <input class="input-admin" name="date" value="<%=orders[i].date %>"></input><br />
+                <input class="input-admin" name="user" value="<%=orders[i].user %>"></input><br />
+                <input class="input-admin" name="status" value="<%=orders[i].status %>"></input><br />
+                <button class="admin-card-button" style="display: block; margin: auto; margin-top: 11px; margin-bottom: 11px; width: 200px;"><b>Confirm Edit</b></button>
+            </form>
+        </div>
+
+        <!-- delete -->
+        <div class="admin-delete" hidden id="delete-order#<%=i + 1%>">
+            <button class="admin-card-button" style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px;" onclick="undisplayDeleteOrder('<%=i + 1%>')"><b>Cancel</b></button><br />
+
+            <form action="/admin/delete-order" method="POST">
+                <input hidden name="orderId" value="<%=orders[i]._id %>"></input>
+                <button class="admin-card-button" style="display: block; margin: auto; margin-top: 124px; margin-bottom: 11px; width: 200px; background-color: red;"><b>Confirm Delete</b></button>
             </form>
         </div>
     <% } %>
+    </div>
 </body>
 </html>

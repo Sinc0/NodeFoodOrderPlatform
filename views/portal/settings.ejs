@@ -6,6 +6,7 @@
     <title>Settings</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/portalRestaurant.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script src="/js/functionality.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=GoogleMapsAdressAutocomplete" async defer></script>
     <script>
@@ -29,7 +30,7 @@
     </script>
 </head>
 <a href="/portal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
-<body>
+<body style="background-color: lightgray;">
     <main id="main-profile" style="text-align: center">
 
         <br />
@@ -59,13 +60,26 @@
             <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>name:</b> <%=name %></p>
             <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>phone:</b> <%=phone %></p>
             <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>address:</b> <%=address %></p>
-            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>city:</b> <%=restaurant.city %></p>
+            <p style="text-align: left; margin: auto; background-color: orange; width: 400px;"><b>city:</b> <%=restaurant.city %></p>
         </div>
 
         <br />
 
         <!-- <p style="color: red;"><b>Note: email and password change requires relog</b></p><br /> -->
         <p><b>Options</b></p>
+        
+        <form action="/portal/welcomeMessage" method="POST">
+            <% if(restaurant.welcomeMessage == false) { %>
+                <input hidden name="welcomeMessage" value=true></input>
+                <button class="profile-buttons" style="width: 400px;">show welcome message</button><br />
+            <% } %>
+            
+            <% if(restaurant.welcomeMessage == true) { %>
+                <input hidden name="welcomeMessage" value=false></input>
+                <button class="profile-buttons" style="width: 400px;">dont show welcome message</button><br />
+            <% } %>
+        </form>
+        
         <button disabled class="profile-buttons" style="width: 400px;">change email</button><br />
         <button disabled class="profile-buttons" style="width: 400px;">change password</button><br />
         <button disabled class="profile-buttons" style="width: 400px;" onclick="editProfileCredentials()">change credentials</button><br />
@@ -91,18 +105,6 @@
             <% if(restaurant.menuListed == true) { %>
                 <input hidden name="menuListed" value=false></input>
                 <button class="profile-buttons" style="width: 400px;">deactivate restaurant</button><br />
-            <% } %>
-        </form>
-
-        <form action="/portal/welcomeMessage" method="POST">
-            <% if(restaurant.welcomeMessage == false) { %>
-                <input hidden name="welcomeMessage" value=true></input>
-                <button class="profile-buttons" style="width: 400px;">show welcome message</button><br />
-            <% } %>
-            
-            <% if(restaurant.welcomeMessage == true) { %>
-                <input hidden name="welcomeMessage" value=false></input>
-                <button class="profile-buttons" style="width: 400px;">dont show welcome message</button><br />
             <% } %>
         </form>
 

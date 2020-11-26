@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chef Orders</title>
-    <link rel="stylesheet" href="/css/portalRestaurant.css">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/portalRestaurant.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script src="/js/functionality.js"></script>
     <script>
 
@@ -41,49 +42,42 @@
     </script>
 </head>
 <a href="/portal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
-<body onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
+<body onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()" style="background-color: lightgray;">
     <header id="confirmOrderHeader">
-        <br />
-        <h2 id="confirmOrderTitle">total confirmed orders: <%=orders.length %></h2>
+        <h2 id="confirmOrderTitle" style="margin: 0px; margin-top: 25px; margin-bottom: 25px; padding: 0px;">total confirmed orders: <%=orders.length %></h2>
         <!-- <p id="confirmOrderPendingOrderInfo">total pending orders: <%=orders.length %></p> -->
     </header>
-    <br />
+
     <% for(var c = orders.length - 1; c >= 0; c--) { %>
     <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
+        <p style="text-align: left; margin-top: 5px;">id: <%=orders[c]._id %></p>
+        <p style="text-align: left;">ordered: <%=orders[c].placedAt %></p>
+        <p style="text-align: left;">accepted: <%=orders[c].confirmedAt %></p>
+        <p style="text-align: left;">estimated time: <%=orders[c].estimatedCompletionTime %> min</p>
+        <p style="text-align: left;">address: <%=orders[c].customerAddress %></p>
+        <p style="text-align: left;">phone: <%=orders[c].customerPhone %></p>
+        <p style="text-align: left;">total price: <%=orders[c].totalPrice %></p>
         
-        <br />
-            
-        <p>id: <%=orders[c]._id %></p>
-        <p>date: <%=orders[c].date %></p>
-        <p>estimated time: <%=orders[c].estimatedCompletionTime %> min</p>
-
-        <br />
-
-        <p>name: <%=orders[c].customerName %></p>
-        <p>address: <%=orders[c].customerAddress %></p>
-        <p>phone: <%=orders[c].customerPhone %></p>
-        <p>total price: <%=orders[c].totalPrice %></p>
-        <p>comment: <%=orders[c].customerComment %></p>
-        <p>type: <%=orders[c].type %></p>
+        <p style="text-align: center; margin-top: 25px;"><%=orders[c].customerName %></p>
+        <p><%=orders[c].type %></p>
         
-        <br />
-        
-        <p>food items:</p>
         <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
-            <p><%= orders[c].products.items[x].name %> (<%= orders[c].products.items[x].quantity %>)</p>
+            <p style="font-weight: bold;"><%= orders[c].products.items[x].name %> (<%= orders[c].products.items[x].quantity %>)</p>
         <% } %>
 
-        <br />
-        
-        <form id="updateOrderCompletionTime#<%=c %>" action="/order-update" method="POST">
-            <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
-            <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="<%=orders[c].estimatedCompletionTime %>"></input>
-            <input hidden id="inputOrderStatus#<%=c %>" name="status" value="completed"></input>
-            <button id="completeCustomerOrder#<%=c %>" class="completeCustomerOrder" type="button" onclick="orderCompleted('<%=c %>', '<%= orders[c]._id %>')">&#10003; mark as completed</button> <!-- onclick = ws data to client, update db, ws data to restaurant -->
-        </form>
+        <p><%=orders[c].customerComment %></p>
 
+        <br />
+
+        <div style="text-align: center;">
+            <form id="updateOrderCompletionTime#<%=c %>" action="/order-update" method="POST">
+                <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
+                <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="<%=orders[c].estimatedCompletionTime %>"></input>
+                <input hidden id="inputOrderStatus#<%=c %>" name="status" value="completed"></input>
+                <button id="completeCustomerOrder#<%=c %>" class="completeCustomerOrder" type="button" onclick="orderCompleted('<%=c %>', '<%= orders[c]._id %>')" style="height: 30px; width: 100%; border: none; border-top: 1px solid black; background-color: green; font-weight: bold;">&#10003; mark as completed</button> <!-- onclick = ws data to client, update db, ws data to restaurant -->
+            </form>
+        </div>
     </div>
-    
-    <br />
+
     <% } %>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Test</title>
         
     <script>
         function initMapX(origin, destination) 
@@ -12,7 +12,7 @@
     
             //var origin = origin;
             //var destination = destination;
-            var origin = 'Eskilstuna, Sweden';
+            var origin = 'Karlstad, Sweden';
             var destination = 'Stockholm, Sweden';
             
             var map = new google.maps.Map(document.getElementById('map'), 
@@ -70,7 +70,7 @@
           });
         }
     </script>
-    
+ 
     <script>
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
@@ -147,7 +147,10 @@
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=initMap" async defer></script>
 </head>
 <body>
-        <!-- Distance Matrix -->
+    <!-- Distance Matrix -->
+    <input value=""></input><br />
+    <input value=""></input><br />
+
     <div id="inputs">
         <button onclick="initMapX()">Google Distance Matrix</button>
     </div>
@@ -165,7 +168,7 @@
     <input id="searchInput" class="controls" type="text" placeholder="Enter a location" style="width: 350px;">
 
     <!-- Google map -->
-    <div hidden id="map"></div>
+    <div id="map" style="height: 500px; width: 500px;"></div>
 
     <!-- Display geolocation data -->
     <ul class="geo-data">

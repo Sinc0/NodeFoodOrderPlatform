@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Edit Menu</title>
         <link rel="stylesheet" href="/css/portalRestaurant.css">
+        <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
         <script>
             function collapseMenuEditCategory(id)
             {
@@ -72,11 +73,15 @@
                 //expand category if collapsed
                 var expand = document.getElementById("category" + itemCategory + "Body");
                 expand.style.display = "block";
+                expand.style.paddingTop = "25px";
+                expand.style.paddingBottom = "50px";
+                expand.style.backgroundColor = "royalblue";
 
                 var div = document.createElement("div");
-                div.style="background-color: green; margin-top: 10px; margin-bottom: 10px;"
                 div.id = itemName;
                 div.className = "item " + String(itemCategory).toLowerCase();
+                div.style.backgroundColor = "royalblue";
+                div.style.paddingTop = "20px";
 
                 var itemsElementCounter = document.getElementsByClassName("item");
                 var categoryElementCounter = document.getElementsByClassName(String(itemCategory).toLowerCase());
@@ -93,38 +98,54 @@
                 var inputTitle = document.createElement("input");
                 var inputPrice = document.createElement("input");
                 var inputDescription = document.createElement("input");
-                var labelRemove = document.createElement("label");
-
-                //ids
-                inputPosition.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-position";
-                inputId.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-id";
-                inputCategory.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-category";
-                inputTitle.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-title";
-                inputPrice.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-price";
-                inputDescription.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-description";    
+                var buttonRemove = document.createElement("button");
                 
-                //names
+                //position
+                inputPosition.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-position";
                 inputPosition.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-position";
-                inputId.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-id";
-                inputCategory.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-category";
-                inputTitle.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-title";
-                inputPrice.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-price";
-                inputDescription.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-description";    
-
-                //placeholders
                 inputPosition.placeholder = "position";
+                inputPosition.value = (itemsInCategoryCount + 1);
+                inputPosition.className = "itemInput";
+                inputPosition.onkeyup = function() {setItemLocalStorage("item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1))};
+                
+                //id
+                inputId.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-id";
+                inputId.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-id";
                 inputId.placeholder = "id";
+                inputId.value = String(itemCategory).toLowerCase() + (itemsInCategoryCount + 1);
+                inputId.className = "itemInput";
+
+                //category
+                inputCategory.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-category";
+                inputCategory.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-category";
                 inputCategory.placeholder = "category";
+                inputCategory.value = String(itemCategory).toLowerCase();
+                inputCategory.className = "itemInput";
+
+                //title
+                inputTitle.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-title";
+                inputTitle.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-title";
                 inputTitle.placeholder = "title";
+                inputTitle.value = String(itemCategory).toLowerCase() + " item " + (itemsInCategoryCount + 1);;
+                inputTitle.className = "itemInput";
+                inputTitle.onkeyup = function() {setItemLocalStorage("item-" + itemCategory + "#" + (itemsInCategoryCount + 1))};
+                
+                //price
+                inputPrice.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-price";
+                inputPrice.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-price";
                 inputPrice.placeholder = "price";
+                inputPrice.value = 10;
+                inputPrice.className = "itemInput";
+                inputPrice.onkeyup = function() {setItemLocalStorage("item-" +  itemCategory + "#" + (itemsInCategoryCount + 1))};
+                
+                //description
+                inputDescription.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-description";    
+                inputDescription.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-description";    
                 inputDescription.placeholder = "description";
+                inputDescription.className = "itemInput";
+                inputDescription.onkeyup = function() {setItemLocalStorage("item-" + itemCategory + "#" + (itemsInCategoryCount + 1))};
                 
                 //values
-                inputPosition.value = (itemsInCategoryCount + 1);
-                inputId.value = String(itemCategory).toLowerCase() + (itemsInCategoryCount + 1);
-                inputCategory.value = String(itemCategory).toLowerCase();
-                inputTitle.value = String(itemCategory).toLowerCase() + " item " + (itemsInCategoryCount + 1);;
-                inputPrice.value = 10;
                 var sliceThis = itemCategory.toString();
                 var slicedCategory = sliceThis.slice(0, (sliceThis.length - 1));
                 if(sliceThis[(sliceThis.length - 1)] == "s")
@@ -137,29 +158,18 @@
                     inputDescription.value = "description of " + itemCategory.toLowerCase() + " " + (itemsInCategoryCount + 1);;
                 }
                         
-                //className
-                inputPosition.className = "itemInput";
-                inputId.className = "itemInput";
-                inputCategory.className = "itemInput";
-                inputTitle.className = "itemInput";
-                inputPrice.className = "itemInput";
-                inputDescription.className = "itemInput";
-
-                //onkeyup
-                inputPosition.onkeyup = function() {setItemLocalStorage("item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1))};
-                //inputId.onkeyup = ""; disabled
-                //inputCategory.onkeyup = ""; disabled
-                inputTitle.onkeyup = function() {setItemLocalStorage("item-" + itemCategory + "#" + (itemsInCategoryCount + 1))};
-                inputPrice.onkeyup = function() {setItemLocalStorage("item-" +  itemCategory + "#" + (itemsInCategoryCount + 1))};
-                inputDescription.onkeyup = function() {setItemLocalStorage("item-" + itemCategory + "#" + (itemsInCategoryCount + 1))};
-                
                 //disabled
                 inputId.disabled = true;
                 inputCategory.disabled = true;
+
+                //hidden
+                inputId.style.display = "none";
+                inputCategory.style.display = "none";
                                 
                 //remove item on click text
-                labelRemove.innerHTML = " X ";
-                labelRemove.onclick = function() {deleteItem(itemName, itemCategory, (itemsInCategoryCount + 1))};
+                buttonRemove.innerHTML = "Remove";
+                buttonRemove.onclick = function() {deleteItem(itemName, itemCategory, (itemsInCategoryCount + 1))};
+                buttonRemove.style.width = "400px";
 
                 //appends
                 document.getElementById("category" + itemCategory + "Body").appendChild(div)
@@ -169,7 +179,7 @@
                 div.appendChild(inputTitle);
                 div.appendChild(inputPrice);
                 div.appendChild(inputDescription);
-                div.appendChild(labelRemove);
+                div.appendChild(buttonRemove);
 
                 //set item to local storage
                 setItemLocalStorage("item-" + itemCategory.toLowerCase() + "#" + (itemsInCategoryCount + 1));
@@ -183,6 +193,11 @@
                 var promptAnswer = prompt("type desired name for category");
 
                 if(promptAnswer == null || promptAnswer == "" || promptAnswer == " ")
+                {
+                    //do nothing
+                }
+
+                if(promptAnswer.includes(" "))
                 {
                     //do nothing
                 }
@@ -225,8 +240,7 @@
 
                     //categoryInput                
                     var div = document.createElement("div");
-                    div.style.backgroundColor = "green";
-                    div.id="category#" + (getTotalNumberOfCategories + 1);  
+                    div.id="category#" + (getTotalNumberOfCategories + 1);
 
                     var input = document.createElement("input");
                     input.id = "categoryInput#" + (getTotalNumberOfCategories + 1);
@@ -420,6 +434,11 @@
                 else if(div.style.display = "none")
                 {
                     div.style.display = "block";
+                    div.style.margin = "auto";
+                    div.style.paddingTop = "30px";
+                    div.style.paddingBottom = "50px";
+                    div.style.backgroundColor = "royalblue";
+                    div.style.width = "695px";
                 }
        
                 //console.log(id);
@@ -437,9 +456,9 @@
                 //var div = document.getElementById("categoryDiv" + id);
                 //console.log(div);
                 
-                var p = prompt("This will delete the category " + id + " and all it's items, type DELETE " + String(id).toUpperCase() + " if you wanna proceed");
+                var p = prompt("This will delete the category " + id + " and all it's items, type Remove " + String(id).toUpperCase() + " if you wanna proceed");
                 
-                if(p == "DELETE " + String(id).toUpperCase())
+                if(p == "Remove " + String(id).toUpperCase())
                 {
                     document.getElementById("category#" + number).remove();
                     document.getElementById(formattedString).remove();
@@ -919,10 +938,15 @@
                     //create elements
                     var div = document.createElement("div");    
                     div.id = "category#" + p;
+                    div.style.backgroundColor = "royalblue";
+                    div.style.paddingTop = "10px";
+                    div.style.paddingBottom = "10px";
+                    div.style.border = "1px solid black";
                     
                     var label = document.createElement("label");
                     label.id = "categoryInput#" + p + "-delete";
-                    label.innerHTML = " X ";
+                    label.style.marginLeft = "7px";
+                    label.innerHTML = "<button>Remove</button>";
 
                     var input1 = document.createElement("input");
                     input1.id = "categoryInput#" + p;
@@ -941,15 +965,15 @@
                     
                     var bold1 = document.createElement("b");
                     bold1.innerHTML = p;
-                    bold1.style = "margin-left: 4px;";
+                    bold1.style = "margin-left: 9px; margin-right: 9px;";
                     
                     var bold2 = document.createElement("b");
                     bold2.id = "categoryInput#" + p + "-position";
                     bold2.name = categoryName;
                     bold2.value = p;
                     bold2.className = "categoryArrows categoryDown"
-                    bold2.innerHTML = "▼";
-                    bold2.style = "margin-left: 4px;";
+                    bold2.innerHTML = "<button> Move Down </button>";
+                    bold2.style = "margin-left: 11px;";
                     bold2.onclick = function() {changePositionCategories(this.value, (this.value + 1), this.name)};
 
                     var bold3 = document.createElement("b");
@@ -957,17 +981,17 @@
                     bold3.name = categoryName;
                     bold3.value = p;
                     bold3.className = "categoryArrows categoryUp"
-                    bold3.innerHTML = "▲";
-                    bold3.style = "margin-left: 4px;";
+                    bold3.innerHTML = "<button> Move Up </button>";
+                    bold3.style = "margin-left: 108px;";
                     bold3.onclick = function() {changePositionCategories(this.value, (this.value - 1), this.name)};
 
                     var br = document.createElement("br");
                     
                     //apppends
                     div.appendChild(label);
+                    div.appendChild(bold1);
                     div.appendChild(input1);
                     //div.appendChild(input2);
-                    div.appendChild(bold1);
 
                     if(p == 1)
                     {
@@ -976,17 +1000,17 @@
                     }
                     else if(p == categoriesLength)
                     {
-                        label.style = "margin-left: 20px;";
-                        bold1.style = "margin-left: 4px; margin-right: 20px;";
+                        //label.style = "margin-left: 20px;";
+                        //bold1.style = "margin-left: 4px; margin-right: 20px;";
                         div.appendChild(bold3);
                     }
                     else
                     {
-                        label.style = "margin-left: 20px;";
+                        //label.style = "margin-left: 20px;";
                         bold2.className = "categoryArrows";
-                        bold2.style = "margin-left: 4px;";
+                        bold2.style = "margin-left: 11px;";
                         bold3.className = "categoryArrows";
-                        bold3.style = "margin-left: 4px;";
+                        bold3.style = "margin-left: 11px;";
 
                         div.appendChild(bold2);
                         div.appendChild(bold3);
@@ -994,13 +1018,15 @@
 
                     div.appendChild(br);
                     categoriesDiv.appendChild(div);
+                    categoriesDiv.style.display = "block";
+                    categoriesDiv.style.margin = "auto";
 
                     //bugfix
                     var d = document.getElementById("categoryInput#" + p + "-position");
                     d.value = p;
                     //using d.name is a work around to set categoryName
                     d.name = categoryName;
-                    d.onchange = function() {changePositionCategories(newPos, this.value, this.name)};                    
+                    d.onchange = function() {changePositionCategories(newPos, this.value, this.name)};                  
 
                     var d = document.getElementById("categoryInput#" + p + "-delete");
                     d.value = p;
@@ -1049,24 +1075,51 @@
 
             }
 
+            function saveScrollPosition()
+            {
+                var y = window.scrollY;
+                localStorage.setItem("scrollPositionY", y);
+            }
+
+            function loadSavedScrollPosition()
+            {
+                var positionY = localStorage.getItem("scrollPositionY");
+                window.scrollTo(0, positionY)
+            }
         </script>
     </head>
     <script>clearLocalStorage()</script>
     <a href="/portal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
-    <body style="text-align: center;">
+    <body style="margin-bottom: 50px; text-align: center; background-color: lightgray;" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
         
-        <!-- Phone -->
-        <div id="menuEditRestaurantPhone" onclick="collapseMenuEditCategory(this.id)">
-            <p class="menuEditCategoryParagraph"><b>Phone</b></p>
-            <input id="inputPhone" maxlength="30" value="<%=restaurant.phone %>" onkeyup="setPhoneToLocalStorage()" style="width: 400px;"></input>
-            <script>setPhoneToLocalStorage()</script>
+        <!-- hours -->
+        <div id="menuEditRestaurantHours" onclick="collapseMenuEditCategory(this.id)">
+            <p class="menuEditCategoryParagraph"><b>Hours</b></p>
+            <% for(var c = 0; c < restaurant.hours.length; c++) { %>
+                <% if(c == 0) { %><div style="margin: auto; background-color: royalblue; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 20px;">Monday: </b> <input id="inputHoursMonday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 21px;"></input><br /></div> <% } %>
+                <% if(c == 1) { %><div style="margin: auto; background-color: royalblue; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 21px;">Tuesday: </b> <input id="inputHoursTuesday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 25px;"></input><br /></div> <% } %>
+                <% if(c == 2) { %><div style="margin: auto; background-color: royalblue; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: -2px;">Wednesday: </b> <input id="inputHoursWednesday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 27px;"></input><br /></div> <% } %>
+                <% if(c == 3) { %><div style="margin: auto; background-color: royalblue; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 10px;">Thursday: </b> <input id="inputHoursThursday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 23px;"></input><br /></div> <% } %>
+                <% if(c == 4) { %><div style="margin: auto; background-color: royalblue; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 31px;">Friday: </b> <input id="inputHoursFriday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 20px;"></input><br /></div> <% } %>
+                <% if(c == 5) { %><div style="margin: auto; background-color: royalblue; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 13px;">Saturday: </b> <input id="inputHoursSaturday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 23px;"></input><br /></div> <% } %>
+                <% if(c == 6) { %><div style="margin: auto; background-color: royalblue; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 23.5px;">Sunday: </b> <input id="inputHoursSunday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 23px;"></input><br /></div> <% } %>
+                
+            <% } %>
+            <script>setHoursToLocalStorage()</script>
         </div>
         
-        <!-- Adress -->
-        <div id="menuEditRestaurantAdress" onclick="collapseMenuEditCategory(this.id)">
-            <p class="menuEditCategoryParagraph"><b>Address</b></p>
-            <input id="inputAddress" maxlength="50" value="<%=restaurant.address %>" onkeyup="setAddressToLocalStorage()" style="width: 400px;"></input>
-            <script>setAddressToLocalStorage()</script>
+        <!-- Description -->
+        <div id="menuEditRestaurantDescription" onclick="collapseMenuEditCategory(this.id)">
+            <p class="menuEditCategoryParagraph"><b>Description</b></p>
+            <textarea id="inputDescription" onkeyup="setDescriptionToLocalStorage()" style="height: 75px; width: 400px;" maxlength="250"><%=restaurant.description %></textarea>
+            <script>setDescriptionToLocalStorage()</script>
+        </div>
+
+        <!-- Type -->
+        <div id="menuEditRestaurantType" onclick="collapseMenuEditCategory(this.id)">
+            <p class="menuEditCategoryParagraph"><b>Type</b></p>
+            <input id="inputType" value="<%=restaurant.type %>" onkeyup="setTypesToLocalStorage()" style="width: 400px;" maxlength="250"></input>
+            <script>setTypesToLocalStorage()</script>
         </div>
         
         <!-- Image -->
@@ -1075,60 +1128,44 @@
             <input id="inputImg" value="<%=restaurant.imageUrl %>" onkeyup="setImgToLocalStorage()" style="width: 400px"></input>
             <script>setImgToLocalStorage()</script>
         </div>
-
-        <!-- type -->
-        <div id="menuEditRestaurantType" onclick="collapseMenuEditCategory(this.id)">
-            <p class="menuEditCategoryParagraph"><b>Type</b></p>
-            <input id="inputType" value="<%=restaurant.type %>" onkeyup="setTypesToLocalStorage()" style="width: 400px;"></input>
-            <script>setTypesToLocalStorage()</script>
+        
+        <!-- Phone -->
+        <div id="menuEditRestaurantPhone" onclick="collapseMenuEditCategory(this.id)">
+            <p class="menuEditCategoryParagraph"><b>Phone</b></p>
+            <input id="inputPhone" value="<%=restaurant.phone %>" onkeyup="setPhoneToLocalStorage()" style="width: 400px;" maxlength="30"></input>
+            <script>setPhoneToLocalStorage()</script>
         </div>
         
-        <!-- description -->
-        <div id="menuEditRestaurantDescription" onclick="collapseMenuEditCategory(this.id)">
-            <p class="menuEditCategoryParagraph"><b>Description</b></p>
-            <textarea id="inputDescription" maxlength="250" onkeyup="setDescriptionToLocalStorage()" style="height: 75px; width: 400px;"><%=restaurant.description %></textarea>
-            <script>setDescriptionToLocalStorage()</script>
+        <!-- Adress -->
+        <div id="menuEditRestaurantAdress" onclick="collapseMenuEditCategory(this.id)">
+            <p class="menuEditCategoryParagraph"><b>Address</b></p>
+            <input id="inputAddress" value="<%=restaurant.address %>" onkeyup="setAddressToLocalStorage()" style="width: 400px;" maxlength="50"></input>
+            <script>setAddressToLocalStorage()</script>
         </div>
         
-        <!-- hours -->
-        <div id="menuEditRestaurantHours" onclick="collapseMenuEditCategory(this.id)">
-            <p class="menuEditCategoryParagraph"><b>Hours (<%=restaurant.hours.length %>)</b></p>
-            <% for(var c = 0; c < restaurant.hours.length; c++) { %>
-                <% if(c == 0) { %><div style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 20px;">Monday: </b> <input id="inputHoursMonday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 21px;"></input><br /></div> <% } %>
-                <% if(c == 1) { %><div style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 21px;">Tuesday: </b> <input id="inputHoursTuesday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 25px;"></input><br /></div> <% } %>
-                <% if(c == 2) { %><div style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: -2px;">Wednesday: </b> <input id="inputHoursWednesday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 27px;"></input><br /></div> <% } %>
-                <% if(c == 3) { %><div style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 10px;">Thursday: </b> <input id="inputHoursThursday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 23px;"></input><br /></div> <% } %>
-                <% if(c == 4) { %><div style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 31px;">Friday: </b> <input id="inputHoursFriday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 20px;"></input><br /></div> <% } %>
-                <% if(c == 5) { %><div style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 13px;">Saturday: </b> <input id="inputHoursSaturday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 23px;"></input><br /></div> <% } %>
-                <% if(c == 6) { %><div style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 23.5px;">Sunday: </b> <input id="inputHoursSunday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 23px;"></input><br /></div> <% } %>
-                
-            <% } %>
-            <script>setHoursToLocalStorage()</script>
-        </div>
-        
-        <!-- categories -->
-        <b><p id="menuEditCategories" class="menuEditCategoryParagraph">Categories (<%=restaurant.menuCategories.length %>)</p></b>
-        <label onclick="addCategory()"><button style="width: 400px;">Add Category</button></label>
-        <div id="menuEditRestaurantCategory" onclick="collapseMenuEditCategory(this.id)">
+        <!-- Categories -->
+        <b><p id="menuEditCategories" class="menuEditCategoryParagraph" style="margin-top: 50px;">Categories (<%=restaurant.menuCategories.length %>)</p></b>
+        <label onclick="addCategory()"><button style="height: 30px; width: 690px; border-radius: 0%;">Add Category</button></label>
+        <div id="menuEditRestaurantCategory" onclick="collapseMenuEditCategory(this.id)" style="margin: auto; width: 690px; text-align: left;">
             <% for(var c = 0; c < restaurant.menuCategories.length; c++) { %>
-                <div id="category#<%=c + 1 %>" style="margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;">
+                <div id="category#<%=c + 1 %>" style="margin: auto; padding-top: 10px; padding-bottom: 10px; border: 1px solid black;  background-color: royalblue;">
                     <% if(c != restaurant.menuCategories.length - 1 && c != 0) { %>
-                        <label id="categoryInput#<%=c + 1%>-delete" style="margin-left: 20px;" onclick="deleteCategory('<%=c + 1 %>', '<%=restaurant.menuCategories[c].categoryName %>')"> X </label>
+                        <button id="categoryInput#<%=c + 1%>-delete" style="margin-left: 7px;" onclick="deleteCategory('<%=c + 1 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Remove</button>
                     <% } else if(c == restaurant.menuCategories.length - 1) { %>
-                        <label id="categoryInput#<%=c + 1%>-delete" style="margin-left: 20px;" onclick="deleteCategory('<%=c + 1 %>', '<%=restaurant.menuCategories[c].categoryName %>')"> X </label>
+                        <button id="categoryInput#<%=c + 1%>-delete" style="margin-left: 7px;" onclick="deleteCategory('<%=c + 1 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Remove</button>
                     <% } else { %>
-                        <label id="categoryInput#<%=c + 1%>-delete" style="margin-left: 0px;" onclick="deleteCategory('<%=c + 1 %>', '<%=restaurant.menuCategories[c].categoryName %>')"> X </label>
+                        <button id="categoryInput#<%=c + 1%>-delete" style="margin-left: 7px;" onclick="deleteCategory('<%=c + 1 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Remove</button>
                     <% } %>
+                    <b style="padding-left: 5px; padding-right: 5px;"><%=c + 1 %></b>
                     <input disabled id="categoryInput#<%=c + 1 %>" class="categoryInput" value="<%=restaurant.menuCategories[c].categoryName %>"></input>
                     <!-- <input id="categoryInput#<%=c + 1 %>-position" type="number" value="<%=restaurant.menuCategories[c].position %>" min="1" max='<%=restaurant.menuCategories.length %>' style="width: 15px;" onchange="changePositionCategories('<%=c + 1 %>', this.value, '<%=restaurant.menuCategories[c].categoryName %>')"></input> -->
-                    <b><%=c + 1 %></b>
                     <% if(c == 0) { %>
-                        <b id="categoryInput#<%=c + 1 %>-position" class="categoryArrowDown categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 2 %>', '<%=restaurant.menuCategories[c].categoryName %>')">▼</b>
+                        <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrowDown categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 2 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Move Down</button>
                     <% } else if(c == restaurant.menuCategories.length - 1) { %>
-                        <b id="categoryInput#<%=c + 1 %>-position" class="categoryArrowUp categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 0 %>', '<%=restaurant.menuCategories[c].categoryName %>')">▲</b>
+                        <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrowUp categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 0 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Move Up</button>
                     <% } else { %>
-                        <b id="categoryInput#<%=c + 1 %>-position" class="categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 2 %>', '<%=restaurant.menuCategories[c].categoryName %>')">▼</b>
-                        <b id="categoryInput#<%=c + 1 %>-position" class="categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 0 %>', '<%=restaurant.menuCategories[c].categoryName %>')">▲</b>
+                        <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 2 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Move Down</button>
+                        <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 0 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Move Up</button>
                     <% } %>
                     <br />
 
@@ -1146,24 +1183,22 @@
                 <% restaurantMenuItemsLength = restaurant.menuItems.length %>
             <% } %>
             
-        <!-- items -->
-        <div id="menuEditRestaurantItems" onclick="collapseMenuEditCategory(this.id)">
+        <!-- Items -->
+        <div id="menuEditRestaurantItems" onclick="collapseMenuEditCategory(this.id)" style="margin-top: 50px;">
             <!-- form start -->
             <form id="laskdssassdad">
     
                 <% var itemsCount = restaurantMenuItemsLength %>
                 <% var categoryCount = restaurant.menuCategories[c] %>
-                    <p class="menuEditCategoryParagraph" style="margin-bottom: -3px; padding-bottom: 0px;"><b id="itemCounterParagraph"> Items (<%=itemsCount %>)</b></p>
+                    <p class="menuEditCategoryParagraph" style="margin-bottom: 5px; padding-bottom: 0px;"><b id="itemCounterParagraph"> Items (<%=itemsCount %>)</b></p>
                     
                     <% for(var c = 0; c < restaurant.menuCategories.length; c++) { %>
                         <% var category = restaurant.menuCategories[c].categoryName %>
                         <% var categoryFirstLetterUpperCase = category.charAt(0).toUpperCase() + category.slice(1); %>
                         
-                        <div id="category<%=categoryFirstLetterUpperCase %>">
+                        <div id="category<%=categoryFirstLetterUpperCase %>" style="margin: auto; margin-bottom: 25px; width: 695px; border: 2px solid;">
                             
-                            <hr>
-                            
-                            <div id="category<%=categoryFirstLetterUpperCase %>Header">
+                            <div id="category<%=categoryFirstLetterUpperCase %>Header" style="margin: auto; padding-top: 5px; padding-bottom: 5px; background-color: royalblue; width: 695px;">
                                 <!-- <b id="category<%=categoryFirstLetterUpperCase %>InputPosition"><%=c + 1 %></b> -->
                                 <label onclick="collapseDiv('category<%=categoryFirstLetterUpperCase %>Body')"> [Collapse]</label>
                                 <input hidden id="categoryInput#<%=c + 1 %>-disabled" disabled value="<%=restaurant.menuCategories[c].categoryName %>"></input>
@@ -1171,7 +1206,7 @@
                                 <label onclick="addItem('<%=categoryFirstLetterUpperCase %>')"> [Add Item] </label>
                             </div>
                             
-                            <div id="category<%=categoryFirstLetterUpperCase %>Body" style="display: none">
+                            <div id="category<%=categoryFirstLetterUpperCase %>Body" style="display: none;">
                                 <% for(var x = 0; x < restaurantMenuItemsLength; x++) { %>
                                 
                                 <% if(restaurant.menuCategories[c].categoryName == restaurant.menuItems[x].category)  { %>
@@ -1189,13 +1224,15 @@
                                         <% var itemInputPrice = "item-" + restaurant.menuCategories[c].categoryName + "#" + restaurant.menuItems[x].position + "-input-price" %>
                                         <% var itemInputDescription = "item-" + restaurant.menuCategories[c].categoryName + "#" + restaurant.menuItems[x].position + "-input-description" %>
                                         
-                                        <input id="<%=itemInputPosition %>" name="" onkeyup="setItemLocalStorage('<%=item %>')" placeholder="position" class="itemInput">
-                                        <input id="<%=itemInputId %>" name="" disabled value="<%=itemId %>" placeholder="id" class="itemInput">
-                                        <input id="<%=itemInputCategory %>" name="" disabled value="<%=itemCategory %>" class="itemInput">
-                                        <input id="<%=itemInputTitle %>" name="" onkeyup="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].title %>" class="itemInput">
-                                        <input id="<%=itemInputPrice %>" name="" onkeyup="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].price %>" class="itemInput">
-                                        <input id="<%=itemInputDescription %>" name="" onkeyup="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].description %>" class="itemInput">
-                                        <label onclick="deleteItem('<%=item  %>', '<%=restaurant.menuCategories[c].categoryName %>', '<%=restaurant.menuItems[x].position %>')" class="itemInput"> X </label>
+                                        <input id="<%=itemInputId %>" name="" disabled value="<%=itemId %>" placeholder="id" class="itemInput" style="display: none;"></input>
+                                        <input id="<%=itemInputCategory %>" name="" disabled value="<%=itemCategory %>" class="itemInput" style="display: none;"></input>
+                                        <input id="<%=itemInputPosition %>" name="" disabled onkeyup="setItemLocalStorage('<%=item %>')" placeholder="position" class="itemInput" style="display: none;"></input>
+                                        
+                                        <input id="<%=itemInputTitle %>" name="" onkeyup="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].title %>" class="itemInput" maxlength="50"></input>
+                                        <input id="<%=itemInputPrice %>" name=""  onchange="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].price %>" class="itemInput" maxlength="10"></input>
+                                        <input id="<%=itemInputDescription %>" name="" onkeyup="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].description %>" class="itemInput" maxlength="255"></input>
+
+                                        <button onclick="deleteItem('<%=item  %>', '<%=restaurant.menuCategories[c].categoryName %>', '<%=restaurant.menuItems[x].position %>')" class="itemInput" style="width: 400px;"> Remove </button>
                                         
                                         <script>
                                             countCategoriesForSpecificItem('item-<%=restaurant.menuCategories[c].categoryName %>#<%=restaurant.menuItems[x].position %>-input-position', 'item-<%=restaurant.menuCategories[c].categoryName %>#<%=restaurant.menuItems[x].position %>-input-id', '<%=restaurant.menuCategories[c].categoryName %>');
@@ -1217,10 +1254,6 @@
                 <!-- form end -->
                 
             </div>
-            
-            <% if(restaurantMenuItemsLength != 0) { %>
-                <hr>
-            <% } %>
 
         <form hidden id="formMenuEditData" action="/portal/updateMenu" method="POST">
             <input id="inputAllImg" name="inputAllImg" value="img"></input><br />

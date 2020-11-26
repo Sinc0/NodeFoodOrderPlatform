@@ -4,8 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/main.css">
-    <title>Admin Orders</title>
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
+    <title>Admin Restaurants</title>
     <script>
+        // function displayEditRestaurant(number)
+        // {
+        //     console.log(number);
+
+        //     var d = document.getElementById("restaurant#" + number);
+        //     var edit = document.getElementById("edit-restaurant#" + number);
+          
+        //     d.hidden = true;
+        //     edit.hidden = false;
+
+        // }
+
+        // function undisplayEditRestaurant(number)
+        // {
+        //     console.log(number);
+
+        //     var d = document.getElementById("restaurant#" + number);
+        //     var edit = document.getElementById("edit-restaurant#" + number);
+          
+        //     d.hidden = false;
+        //     edit.hidden = true;
+
+        // }
+
         function displayEditRestaurant(number)
         {
             console.log(number);
@@ -29,24 +54,128 @@
             edit.hidden = true;
 
         }
+
+        function displayDeleteRestaurant(number)
+        {
+            console.log(number);
+
+            var d = document.getElementById("restaurant#" + number);
+            var edit = document.getElementById("delete-restaurant#" + number);
+          
+            d.hidden = true;
+            edit.hidden = false;
+
+        }
+
+        function undisplayDeleteRestaurant(number)
+        {
+            console.log(number);
+
+            var d = document.getElementById("restaurant#" + number);
+            var edit = document.getElementById("delete-restaurant#" + number);
+          
+            d.hidden = false;
+            edit.hidden = true;
+
+        }
+
+        function search(totalRestaurants)
+        {
+            var searchBoxInput = document.getElementById("searchBoxInput").value
+            var totalRestaurantsText = document.getElementById("totalRestaurantsText");
+            var searchString = String(searchBoxInput).toLowerCase();
+            var restaurantsArray = [];
+            var searchFoundCount = 0;
+
+            if(searchBoxInput != "")
+            {
+                for(var c = 1; c <= totalRestaurants; c++)
+                {
+                    var restaurant = document.getElementById("restaurant#" + c)
+                    //console.log(menuItem);
+                    //console.log(menuItem.parentNode);
+                    //console.log(menuItemCategory);
+    
+                    if(restaurant.innerHTML.toLowerCase().includes(searchString))
+                    {
+                        restaurantsArray.push(restaurant);
+                        searchFoundCount++;
+                        restaurant.hidden = false;
+                        restaurant.style.opacity = "100%";
+                    }
+                    
+                    else
+                    {
+                        restaurant.hidden = true;
+                    }        
+                    
+                    if(searchFoundCount == 1)
+                    {
+                        totalRestaurantsText.innerHTML = "Found: " + searchFoundCount + " Restaurant";
+                    }
+
+                    else
+                    {
+                        totalRestaurantsText.innerHTML = "Found: " + searchFoundCount + " Restaurants";
+                    }
+                }
+            }
+
+            else
+            {
+                for(var c = 1; c <= totalRestaurants; c++)
+                {
+                    var restaurant = document.getElementById("restaurant#" + c)
+                    
+                    restaurantsArray.push(restaurant);
+                    restaurant.hidden = false;
+                    restaurant.style.opacity = "100%";
+                }
+
+                totalRestaurantsText.innerHTML = "Total Restaurants: " + totalRestaurants;
+            }
+        }
+
+        function saveScrollPosition()
+        {
+            var y = window.scrollY;
+            localStorage.setItem("scrollPositionY", y);
+        }
+
+        function loadSavedScrollPosition()
+        {
+            var positionY = localStorage.getItem("scrollPositionY");
+            window.scrollTo(0, positionY)
+        }
     </script>
 </head>
-<body>
+<body style="background-color: lightgray;" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
     <%- include('../snippets/html_nav_menu_admin.ejs') %>
+    
+    <script>
+        var navButtonAdminHome = document.getElementById("navButtonAdminRestaurants");
+        navButtonAdminHome.style.backgroundColor = "lightgray";
+    </script>
+    
+    <div id="searchBox" style="margin: 0px; margin-top: 25px; padding: 0px; text-align: center;">
+        <input id="searchBoxInput" style="margin-bottom: 25px; height: 38px; width: 396px;" placeholder="Search..." onkeyup="search('<%=restaurants.length %>')"></input>
+    </div>
+    
+    <h3 id="totalRestaurantsText" style="margin-top: 25px; margin-bottom: 15px; text-align: center;">Total Restaurants: <%=restaurants.length %></h3>
 
-    <h3 style="margin-top: 10px; margin-bottom: 5px; text-align: center;">Total Restaurants: <%=restaurants.length %></h3>
+    <!-- <h3 style="margin-top: 10px; margin-bottom: 5px; text-align: center;">Total Restaurants: <%=restaurants.length %></h3> -->
 
     <% for(var i = 0; i < restaurants.length; i++) { %>
-        <div unhidden id="restaurant#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; background-color: orange; padding: 10px; width: 400px;">
+        <!-- <div unhidden id="restaurant#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; border: 1px solid black; background-color: #f7f9f9; padding: 10px; width: 400px;">
             <button style="display: block;" onclick="displayEditRestaurant('<%=i + 1%>')">Edit</button><br />
             <p><%=restaurants[i]._id %></p>
             <p><%=restaurants[i].title %></p>
             <p><%=restaurants[i].owner %></p>
             <p><%=restaurants[i].email %></p>
             <p><%=restaurants[i].address %></p>
-        </div>
+        </div> -->
 
-        <div hidden id="edit-restaurant#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; background-color: orange; padding: 10px; width: 400px;">
+        <!-- <div hidden id="edit-restaurant#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; border: 1px solid black; background-color: #f7f9f9; padding: 10px; width: 400px;">
             <button style="display: block;" onclick="undisplayEditRestaurant('<%=i + 1%>')">Cancel</button><br />
 
             <form action="/admin/edit-restaurants" method="POST">
@@ -56,6 +185,43 @@
                 <input name="owner" value="<%=restaurants[i].owner %>" style="width: 100%"></input><br />
                 <input name="address" value="<%=restaurants[i].address %>" style="width: 100%"></input><br />
                 <button style="display: block; margin: auto; margin-top: 10px; width: 50%;">Submit</button>
+            </form>
+        </div> -->
+
+        <div id="restaurant#<%=i + 1%>" class="admin-card">      
+            <p style="margin-bottom: 4px; margin-left: 2px; margin-top: 9px;"><%=restaurants[i]._id %></p>
+            <p style="margin-bottom: 4px; margin-left: 2px;"><%=restaurants[i].title %></p> 
+            <p style="margin-bottom: 4px; margin-left: 2px;"><%=restaurants[i].email %></p>
+            <p style="margin-bottom: 4px; margin-left: 2px;"><%=restaurants[i].owner %></p>
+            <p style="margin-bottom: -2px; margin-left: 2px;"><%=restaurants[i].address %></p>
+            
+            <div style="text-align: right;">
+                <button class="admin-card-button" onclick="displayEditRestaurant('<%=i + 1%>')" style="margin-top: 10px; margin-right: -5.5px;"><b>Edit</b></button>
+                <button class="admin-card-button" onclick="displayDeleteRestaurant('<%=i + 1%>')" style="background-color: red;"><b>Delete</b></button><br />
+            </div>
+        </div>
+
+        <!-- edit -->
+        <div class="admin-edit" hidden id="edit-restaurant#<%=i + 1%>">
+            <button class="admin-card-button" style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px; margin-right: 303px;" onclick="undisplayEditRestaurant('<%=i + 1%>')"><b>Cancel</b></button><br />
+
+            <form action="/admin/edit-restaurant" method="POST">
+                <input class="input-admin" name="id" value="<%=restaurants[i]._id %>"></input><br />
+                <input  class="input-admin"name="title" value="<%=restaurants[i].title %>"></input><br />
+                <input class="input-admin" name="email" value="<%=restaurants[i].email %>"></input><br />
+                <input class="input-admin" name="owner" value="<%=restaurants[i].owner %>"></input><br />
+                <input class="input-admin" name="address" value="<%=restaurants[i].address %>"></input><br />
+                <button class="admin-card-button" style="display: block; margin: auto; margin-top: 11px; margin-bottom: 11px; width: 200px;"><b>Confirm Edit</b></button>
+            </form>
+        </div>
+
+        <!-- delete -->
+        <div class="admin-delete" hidden id="delete-restaurant#<%=i + 1%>">
+            <button class="admin-card-button" style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px;" onclick="undisplayDeleteRestaurant('<%=i + 1%>')"><b>Cancel</b></button><br />
+
+            <form action="/admin/delete-restaurant" method="POST">
+                <input hidden name="restaurantId" value="<%=restaurants[i]._id %>"></input>
+                <button class="admin-card-button" style="display: block; margin: auto; margin-top: 124px; margin-bottom: 11px; width: 200px; background-color: red;"><b>Confirm Delete</b></button>
             </form>
         </div>
     <% } %>

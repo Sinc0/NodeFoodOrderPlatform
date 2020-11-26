@@ -5,11 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%=pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script src="/js/functionality.js"></script>
+    <script>
+        function checkQueryParams()
+        {
+            var update = "<%=update %>";
+            var errorText = document.getElementById("errorText");
+            var editProfilePassword = document.getElementById("editProfilePassword");
+
+            if(update == "oldpasswordincorrect")
+            {
+                errorText.style.paddingTop = "25px";
+                errorText.style.color = "red";
+                errorText.innerHTML = "<b>old password incorrect</b>";
+                editProfilePassword.style.display = "block";
+            }
+
+            else if(update == "successful")
+            {
+                errorText.style.paddingTop = "25px";
+                errorText.style.color = "green";
+                errorText.innerHTML = "<b>password change successful</b>";
+                editProfilePassword.style.display = "block";
+            }
+        }
+
+        function editProfilePassword()
+        {
+            //var profileCredentials = document.getElementById("profileCredentials");
+            var editProfilePassword = document.getElementById("editProfilePassword");
+
+            if(editProfilePassword.style.display == "none")
+            {
+                editProfilePassword.style.display = "block";  
+            }
+
+            else
+            {
+                editProfilePassword.style.display = "none";
+            }
+        }
+
+        function editProfileCredentials()
+        {
+            //var profileCredentials = document.getElementById("profileCredentials");
+            var editProfileCredentials = document.getElementById("editProfileCredentials");
+
+            if(editProfileCredentials.style.display == "none")
+            {
+                editProfileCredentials.style.display = "block";  
+            }
+
+            else
+            {
+                editProfileCredentials.style.display = "none";
+            }
+        }
+
+        function passwordMatch()
+        {
+            var confirmButton = document.getElementById("confirmButton");
+            var errorText = document.getElementById("errorText");
+            var newPassword = document.getElementById("newPassword");
+            var confirmPassword = document.getElementById("confirmPassword");
+            
+            if(newPassword.value != confirmPassword.value && confirmPassword.value != "")
+            {
+                errorText.style.paddingTop = "25px";
+                errorText.innerHTML = "<b>passwords dont match</b>";
+                errorText.style.color = "red";
+                confirmButton.disabled = true;
+            }
+
+            else if(newPassword.value == confirmPassword.value && confirmPassword.value != "")
+            {
+                errorText.style.paddingTop = "25px";
+                errorText.innerHTML = "<b>passwords match</b>";
+                errorText.style.color = "green";
+                confirmButton.disabled = false;
+            }
+            
+        }
+    </script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=GoogleMapsAdressAutocomplete" async defer></script>
 </head>
 
-<body style="background-color: lightgray">
+<body onload="checkQueryParams()" style="background-color: lightgray">
     <!-- admin view -->
     <% if(admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
@@ -24,13 +106,12 @@
     <% } %>
     
     <main id="main-profile">
+        
         <!-- <h2>Account Credentials</h2> -->
 
         <!-- <p style="color: red;"><b>Note: email and password change requires relog</b></p> -->
 
-        <br />
-
-        <p style="margin: 0px; padding: 0px; margin-bottom: 5px;"><b>Credentials</b></p>
+        <p style="margin: 0px; padding: 0px; margin-top: 15px; margin-bottom: 5px;"><b>Credentials</b></p>
         
         <div id="profileCredentials" style="margin: auto; display: block; width: 400px;">
             <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; width: 400px; border-bottom: 1px solid black; background-color: #f7f9f9;"><b>name:</b> <%=name %></p>
@@ -42,43 +123,54 @@
             <p><b></b></p>
         </div>
 
-        <br />
+        <p style="margin: 0px; padding: 0px; margin-top:25px; margin-bottom: 5px;"><b>Options</b></p>
 
-        <p style="margin: 0px; padding: 0px; margin-bottom: 5px;"><b>Options</b></p>
-        
-        <button disabled class="profile-buttons" style="width: 400px;">change email</button>
+        <!-- <button disabled class="profile-buttons" style="width: 400px;">change email</button> -->
+        <!-- <div id="profileChangeEmail" style="margin: auto; width: 399px; background-color: #f7f9f9;">
+            <form action="/user-update-email" method="POST">
+                <p style="margin: 0px; padding: 0px; padding-top: 2px;">Note: email change requires relog</p><br />
+                <input hidden name="oldEmail" value="<%=email%>"></input>
+                <b>New Email </b><input></input><br />
+                <b style="margin-left: -28.5px;">Confirm Email  </b><input name="newEmail" style="margin-top: 0px;"></input><br /><br />
+                <button type="submit" style="width: 125px; margin-bottom: 5px;">Submit</button>
+            </form>
+        </div> -->
 
-        <br />
-
-        <button disabled class="profile-buttons" style="width: 400px;">change password</button>
-
-        <br />
-
-        <button disabled class="profile-buttons" onclick="editProfileCredentials()" style="width: 400px;">change credentials</button>
-        
-        <br />
-        <br />
-    
-        <br />
-        
-        <div id="editProfileCredentials" style="display: none">
+        <button class="profile-buttons" style="height: 30px; width: 400px;" onclick="editProfileCredentials()"><b>change credentials</b></button><br />
+        <div id="editProfileCredentials" style="margin: auto; width: 400px; background-color: #f7f9f9; display: none; border-top: 1px solid black;">
             <form action="/user-update-credentials" method="POST" onkeydown="return event.key != 'Enter';">
-                <input hidden value="<%=email %>" name="oldEmail"></input>
-                <input hidden value="<%=email %>" name="newEmail" placeholder="email"></input>
-                <b>name: </b><input value="<%=name %>" name="name" placeholder="name"></input>
-                <br/>
-                <b>phone: </b><input value="<%=phone %>" name="phone" placeholder="phone"></input>
-                <br/>
-                <!-- Search input -->
-                <b>adress: </b><input id="searchInput" value="<%=address %>" style="width: 350px;">
+                <input hidden value="<%=email %>" name="email"></input>
                 <input hidden id="userAddress" value="<%=address %>" name="address" placeholder="address"></input>
-                <br/>
-                <br/>
-                <button class="profile-buttons" type="submit" onclick="">confirm</button>
+                
+                <b>new name: </b><input value="<%=name %>" name="name" placeholder="name" style="margin-bottom: -1px; margin-top: 25px;"></input><br/>
+                <b style="margin-left: -6px;">new phone: </b><input value="<%=phone %>" name="phone" placeholder="phone" style="margin-bottom: -1px;"></input><br/>
+                <b style="margin-left: -9.5px;">new adress: </b><input id="searchInput" value="<%=address %>"><br />
+                
+                <button class="profile-buttons confirm-button" type="submit" style="height: 25px; margin-top: 25px; margin-bottom: 25px; border: 1px solid lightgrey;"><b>confirm</b></button>
             </form>
             
-            <button class="profile-buttons"  onclick="editProfileCredentials()">decline</button>
+            <!-- <button class="profile-buttons"  onclick="editProfileCredentials()">decline</button> -->
         </div>
+        
+        <button class="profile-buttons" style="height: 30px; width: 400px; border-top: 1px solid black;" onclick="editProfilePassword()"><b>change password</b></button>
+        <div id="editProfilePassword" style="margin: auto; width: 400px; background-color: #f7f9f9; display: none; border-top: 1px solid black;">
+            <form action="/user-update-password" method="POST" onkeydown="return event.key != 'Enter';">
+                <p id="errorText"></p>
+                <input hidden value="<%=email %>" name="email"></input>
+                
+                <b>old password: </b><input name="oldPassword" type="password" style="margin-bottom: -1px; margin-top: 25px;"></input><br/><br />
+                <b style="margin-left: -7.5px;">new password: </b><input id="newPassword" name="newPassword" type="password" onkeyup="passwordMatch()" style="margin-bottom: -1px;"><br />
+                <b style="margin-left: -35px;">confirm password: </b><input id="confirmPassword" name="confirmPassword" type="password" style="margin-bottom: 25px;" onkeyup="passwordMatch()"><br />
+                
+                <button disabled id="confirmButton" class="profile-buttons confirm-button" type="submit" style="height: 25px; margin-bottom: 25px; border: 1px solid lightgrey;"><b>confirm</b></button>
+            </form>
+            
+            <!-- <button class="profile-buttons"  onclick="editProfileCredentials()">decline</button> -->
+        </div>
+
+        <br />
+        <br />
+        <br />
 
         <div hidden id="map"></div>
     </main>

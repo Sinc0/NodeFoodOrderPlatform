@@ -48,7 +48,7 @@ p, b, h1, h2, h3, h4, h5, label, input, textarea
 {
     margin: 0px;
     padding: 0px;
-    background-color: greenyellow;
+    background-color: #3c41d6;
 }
 
 #NavBar p
@@ -60,6 +60,7 @@ p, b, h1, h2, h3, h4, h5, label, input, textarea
 
 body
 {
+    scroll: auto;
     padding: 0px;
     margin: 0px;
 }
@@ -73,7 +74,6 @@ body
 {
     margin: auto;
     width: 350px;
-    border: 1px solid black;
 }
 
 .NavElement
@@ -98,11 +98,11 @@ p
     text-decoration: none;
     padding: 5px;
     min-width: 125px;
-    user-select: none;
+    /* user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
-    -ms-user-select: none;
+    -ms-user-select: none; */
 }
 
 a
@@ -129,6 +129,11 @@ a
 .Customer
 {
     background-color: lightcoral;
+}
+
+.User
+{
+    background-color: orange;
 }
 
 .menuEditCategoryParagraph
@@ -158,7 +163,7 @@ input[type=number]::-webkit-inner-spin-button {
 
 .categoryArrows
 {
-    background-color: orange;
+    margin-left: 7px;
 }
 
 .categoryArrows:hover
@@ -168,8 +173,46 @@ input[type=number]::-webkit-inner-spin-button {
 
 .categoryArrowUp
 {
-    margin-left: 20px;
+    margin-left: 104px;
+}
+
+input
+{
+    width: 392px;
 }
 
 
+/* Width */
+::-webkit-scrollbar 
+{
+    width: 7px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track 
+{
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb 
+{
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover 
+{
+    background: #555;
+}
+
+/* Hide */
+/* ::-webkit-scrollbar {
+    display: none;
+} */
+
+.item
+{
+    background-color: royalblue;
+}
 

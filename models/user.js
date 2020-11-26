@@ -229,7 +229,38 @@ class User
             .catch(err => console.log(err));
     }
 
-    static updateCredentials(oldEmail, newEmail, name, address, phone)
+    static updateCredentials(email, name, address, phone)
+    {
+        const db = getDb();
+
+        let updateSuccessful = 1;
+        let updateFailed = 0;
+
+        return db.collection('users')
+            .updateOne({email: email},         
+                {$set: 
+                {
+                    name: name,
+                    address: address,
+                    phone: phone
+                }
+            } )
+            .then(result => {
+                if(result.modifiedCount == updateSuccessful)
+                {
+                    //console.log('update ' + email + ' document successful');
+                    return updateSuccessful;
+                } 
+                else
+                {
+                    //console.log('update ' + email + ' document failed');
+                    return updateFailed;
+                }
+            })
+            .catch(err => console.log(err));
+    }
+
+    static updateEmail(oldEmail, newEmail)
     {
         const db = getDb();
 
@@ -241,9 +272,35 @@ class User
                 {$set: 
                 {
                     email: newEmail,
-                    name: name,
-                    address: address,
-                    phone: phone
+                }
+            } )
+            .then(result => {
+                if(result.modifiedCount == updateSuccessful)
+                {
+                    //console.log('update ' + email + ' document successful');
+                    return updateSuccessful;
+                } 
+                else
+                {
+                    //console.log('update ' + email + ' document failed');
+                    return updateFailed;
+                }
+            })
+            .catch(err => console.log(err));
+    }
+
+    static updatePassword(email, newPassword)
+    {
+        const db = getDb();
+
+        let updateSuccessful = 1;
+        let updateFailed = 0;
+
+        return db.collection('users')
+            .updateOne({email: email},         
+                {$set: 
+                {
+                    password: newPassword
                 }
             } )
             .then(result => {

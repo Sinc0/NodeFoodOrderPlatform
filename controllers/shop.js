@@ -4,6 +4,7 @@ const User = require('../models/user');
 const Session = require('../models/session');
 const Order = require('../models/order');
 const Review = require('../models/review');
+const Admin = require('../models/admin');
 const fs = require('fs');
 const path = require('path');
 const pdfDocument = require('pdfkit');
@@ -168,7 +169,7 @@ exports.getRestaurantDetail = async (req, res, next) => {
 
 }
 
-exports.getIndex = (req, res, next) => {
+exports.getIndex = async (req, res, next) => {
     //res.setHeader('Set-Cookie', 'testCookie=kasldalkdslkd');
     
     /*
@@ -208,12 +209,15 @@ exports.getIndex = (req, res, next) => {
     //logged in user
     else if(validation.status == true)
     {
+        var adminPosts = await Admin.fetchAllPosts()
+
         res.render('shop/index', 
         { 
             pageTitle: 'Home',
             path: '/',
             admin: false,
             loggedIn: true,
+            adminPosts: adminPosts
         });
     }
 
@@ -222,7 +226,7 @@ exports.getIndex = (req, res, next) => {
     {
         res.render('shop/index', 
         { 
-            pageTitle: 'Home',
+            pageTitle: 'Food Ordering Platform',
             path: '/',
             admin: false,
             loggedIn: false,
@@ -806,6 +810,7 @@ exports.getCheckout = async (req, res, next) => {
             customerAddress: user.address,
             customerPhone: user.phone,
             customerComment: customerComment,
+            cartItems: JSON.parse(cartItems),
             cartTotalPrice: cartTotalPrice,
             restaurant: restaurant,
             amount: intent.amount,
@@ -891,6 +896,7 @@ exports.getProfile = async (req, res, next) => {
     let userEmail = res.locals.userEmail;
     let loginCookie = req.get('Cookie');
     let cookieId = parseLoginCookie(loginCookie);
+    let update = req.query.update;
 
     var user = await User.findByCookieIdReturnUserObject(cookieId);
 
@@ -906,7 +912,8 @@ exports.getProfile = async (req, res, next) => {
             name: user.name,
             email: user.email,
             address: user.address,
-            phone: user.phone
+            phone: user.phone,
+            update: update
         });
     }
 
@@ -1009,7 +1016,7 @@ exports.postRegisterRestaurant = async (req, res, next) => {
         { 
             pageTitle: 'Login',
             path: '/login',
-            statusText: 'registration successful, login below'
+            statusText: 'registration successful'
         });
     }
 
@@ -1341,13 +1348,42 @@ exports.postUserUpdateCredentials = async (req, res, next) => {
     let cookieId = parseLoginCookie(loginCookie);
     console.log(cookieId);
     
-    var oldEmail = req.body.oldEmail;
-    var newEmail = req.body.newEmail;
+    var email = req.body.email;
     var name = req.body.name;
     var phone = req.body.phone;
     var address = req.body.address;
     
-    var updateUser = await User.updateCredentials(oldEmail, newEmail, name, address, phone);
+    var updateUser = await User.updateCredentials(email, name, address, phone);
+
+    //var deleteSession = await Session.deleteOne(cookieId);
+
+    //res.setHeader('Set-Cookie', 'loginCookie='); 
+
+    res.redirect('/profile');
+}
+
+/* exports.postUserUpdateEmail = async (req, res, next) => {
+    console.log('\npostUserUpdateEmail Test');
+
+    let loginCookie = req.get('Cookie');
+    let cookieId = parseLoginCookie(loginCookie);
+    console.log(cookieId);
+    
+    var oldEmail = req.body.oldEmail;
+    var newEmail = req.body.newEmail;
+
+    var checkIfEmailIsTaken = await User.findByEmail(newEmail);
+
+    if(checkIfEmailIsTaken == null)
+    {
+        var updateUser = await User.updateEmail(oldEmail, newEmail);
+        res.redirect('/login');
+    }
+    
+    else if(checkIfEmailIsTaken != null)
+    {
+        res.redirect('error');
+    }
 
     //var deleteSession = await Session.deleteOne(cookieId);
 
@@ -1355,7 +1391,39 @@ exports.postUserUpdateCredentials = async (req, res, next) => {
 
     //res.redirect('/');
 
-    res.redirect('/profile');
+} */
+
+exports.postUserUpdatePassword = async (req, res, next) => {
+    console.log('\npostUserUpdatePassword Test');
+
+    let loginCookie = req.get('Cookie');
+    let cookieId = parseLoginCookie(loginCookie);
+    var email = req.body.email;
+    var oldPassword = req.body.oldPassword;
+    var newPassword = req.body.newPassword;
+    var test = res.locals.test = "test";
+    console.log(cookieId);
+    console.log(oldPassword);
+    console.log(newPassword);
+
+    var user = await User.findByEmail(email);
+    
+    //check old password
+    if(user.password == oldPassword)
+    {
+        var updatePassword = await User.updatePassword(email, newPassword);
+        res.redirect('/profile?update=successful');
+    }
+
+    else
+    {
+        res.redirect('/profile?update=oldpasswordincorrect');
+    }
+
+    //var updateUser = await User.updateCredentials(email, name, address, phone);
+    //var deleteSession = await Session.deleteOne(cookieId);
+    //res.setHeader('Set-Cookie', 'loginCookie='); 
+
 }
 
 exports.getAbout = (req, res, next) => {
@@ -1400,11 +1468,14 @@ exports.getRestaurantOrdersAccept = async (req, res, next) => {
     console.log('\ngetPortal-Orders-Accept Test');
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
+    console.log(restaurantUrl);
 
+    var restaurant = await Restaurant.findByUrl(restaurantUrl);
     var orders = await Order.fetchAllUnconfirmed(restaurantUrl);
 
     res.render('portal/orders-accept', 
     { 
+        restaurant: restaurant,
         orders: orders
     });
 }
@@ -1426,6 +1497,7 @@ exports.getRestaurantOrdersDeclined = async (req, res, next) => {
     console.log('\ngetPortalOrdersDeclined Test');
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
+    console.log(restaurantUrl);
 
     var orders = await Order.fetchAllDeclined(restaurantUrl);
 
@@ -1493,7 +1565,7 @@ exports.getRestaurantStats = async (req, res, next) => {
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
 
-    var orders = await Order.fetchAllByRestaurantUrl(restaurantUrl);
+    var orders = await Order.fetchAllCompleted(restaurantUrl);
 
     res.render('portal/statistics', 
     {

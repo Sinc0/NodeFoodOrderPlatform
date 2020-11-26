@@ -3,20 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reviews</title>
     <link rel="stylesheet" href="/css/portalRestaurant.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
+    <title>Reviews</title>
 </head>
 <a href="/portal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
-<body id="">
-    <h2 style="text-align: center;">Reviews (<%=reviews.length %>)</h2>
+<body id="" style="background-color: lightgray;">
+
+    <h2 style="margin-top: 25px; margin-bottom: 25px; text-align: center;">Total Reviews (<%=reviews.length %>)</h2>
+
     <% for(var counter = 0; counter < reviews.length; counter++) { %>
-        <div id="customer-review#" + counter style="background-color: orange; width: 450px; margin: auto; margin-bottom: 25px; padding: 5px;">
-            <p style="text-align: left; margin: 0px; padding: 0px;"><b>#<%=counter + 1 %></b></p>
-            <p style="text-align: left; margin: 0px; padding: 0px;"><b>date:</b> <%=reviews[counter].reviewObject.date %></p>
-            <p style="text-align: left; margin: 0px; padding: 0px;"><b>name:</b> <%=reviews[counter].reviewObject.name %></p>
-            <p style="text-align: left; margin: 0px; padding: 0px;"><b>rating:</b> <%=reviews[counter].reviewObject.rating %></p>
-            <p style="text-align: left; margin: 0px; padding: 0px;"><b>items:</b> <%=reviews[counter].reviewObject.items %></p>
-            <p style="text-align: left; margin: 0px; padding: 0px;"><b>comment</b><br /> <%=reviews[counter].reviewObject.comment %></p>
+        <div id="customer-review#" + counter style="border: 1px solid black; background-color: #f7f9f9; width: 390px; margin: auto; margin-bottom: 25px; padding: 5px;">
+            <!--- <p style="text-align: left; margin: 0px; padding: 0px;"><b>#<%=counter + 1 %></b></p> -->
+            <% var date = reviews[counter].reviewObject.date %>
+            <p style="text-align: center; margin: 0px; margin-top: 5px; padding: 0px;"><%=date.toString().slice(0, 24) %></p>
+            
+            <br />
+            
+            
+            <p style="text-align: center; margin: 0px; padding: 0px;"><b><%=reviews[counter].reviewObject.rating %></b></p>
+            <p style="text-align: center; margin: 0px; padding: 0px;"><b></b> <%=reviews[counter].reviewObject.name %></p>
+            
+            <br />
+
+            <% var x = reviews[counter].reviewObject.items %>
+            <% var stringSplit = x.split(","); %>
+
+            <% for(var x = 0; x < stringSplit.length; x++) { %>
+                <p style="text-align: center; margin: 0px; padding: 0px;"><b><%=stringSplit[x] %></b></p> 
+            <% } %>
+        
+            <br />
+
+            <% if(reviews[counter].reviewObject.comment != null) { %>
+                <p style="text-align: center; margin: 0px; margin-bottom: 5px; padding: 0px;"><b>comment</b><br /> <%=reviews[counter].reviewObject.comment %></p>
+            <% } %>
         </div>
     <% } %> 
 </body>

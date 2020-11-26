@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/portalRestaurant.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script src="/js/shortcuts.js"></script>
     <script>
          shortcut.add("1", function() {document.getElementById("NavElementLink#1").click()});   
@@ -18,8 +19,8 @@
     </script>
     <title>Home</title>
 </head>
-<body>
-    <h1 style="text-align: center; margin:0px; margin-top: 50px; margin-bottom: 25px; padding: 0px;"><%=restaurant.title %></h1>
+<body style="background-color: lightgray;">
+    <h1 style="text-align: center;  color: black; margin:0px; margin-top: 50px; margin-bottom: 25px; padding: 0px;"><%=restaurant.title %></h1>
 
     <% if(restaurant.welcomeMessage == true) { %>
         <div id="">

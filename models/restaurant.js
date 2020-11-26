@@ -178,12 +178,12 @@ class Restaurant
             .catch(err => console.log(err));
     }
 
-    static delete(productId)
+    static deleteOne(restaurantId)
     {
         const db = getDb();
 
-        return db.collection('products')
-        .deleteOne({_id: ObjectId(productId)})
+        return db.collection('restaurants')
+        .deleteOne({_id: ObjectId(restaurantId)})
         .then(result => {/* console.log(result); */ return result.deletedCount })
         .catch(err => console.log(err));
     }

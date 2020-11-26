@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script src="js/functionality.js"></script>
     <script>
         function reviewOrder(totalOrders, orderNumber, orderId)
@@ -34,9 +35,21 @@
             }
         }
 
+        function saveScrollPosition()
+        {
+            var y = window.scrollY;
+            localStorage.setItem("scrollPositionY", y);
+        }
+
+        function loadSavedScrollPosition()
+        {
+            var positionY = localStorage.getItem("scrollPositionY");
+            window.scrollTo(0, positionY)
+        }
+
     </script>
 </head>
-<body style="background-color: lightgray">
+<body style="background-color: lightgray" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
     <!-- admin view -->
     <% if(admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
@@ -52,15 +65,24 @@
 
     <br />
 
-    <div id="searchBox" style="text-align: center;"  onkeyup="searchBoxOrders('<%=orders.length %>')">
-        <input id="searchBoxInput" style="height: 40px; width: 386px;" placeholder="Search..."></input>
+    <div id="searchBox" style="margin-top: 6.5px; margin-bottom: 0px; text-align: center;"  onkeyup="searchBoxOrders('<%=orders.length %>')">
+        <input id="searchBoxInput" style="height: 40px; width: 396px;" placeholder="Search..."></input>
     </div>
+
+    <!-- <div id="filterBox" style="margin: auto; width: 400px; text-align: center;">
+        <select style="width: 100%; font-size: 25px; border: none; border-top: 1px solid black;">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+    </div> -->
 
     <main id="main-orders">
         <% if (orders != null) { %>
-        <div id="grid-orders">
+            <div id="grid-orders">
 
-            <p><%=orders.length %></p>
             <!-- <p>unconfirmed = waiting for restaurant to respond</p> -->
             <!-- <p>confirmed = restaurant have accepted order</p> -->
             <!-- <p>declined = restaurant have rejected order</p> -->
@@ -70,47 +92,53 @@
             <% for (let order of orders.reverse()) { counter-- %>
                 
                 <br />
-
-                <div id="order-item#<%=counter %>" class="order-item">
-                    <h3 style="margin: 0px; margin-left: -10px; margin-right: -10px; padding-top: 5px; padding-bottom: 5px; text-align: center; background-color: royalblue;"><%=order.restaurant %></h3>
+                
+                <div id="order-item#<%=counter %>" class="order-item" style="border: 1px solid black;">
+                    <h3 style="margin: 0px; margin-left: -10px; margin-right: -10px; padding-top: 5px; padding-bottom: 5px; text-align: center; border-bottom: 1px solid black;"><%=order.restaurant %></h3>
                     <!-- <p style="padding-top: 5px;"><b>#<%=counter %></b></p> -->
-
-                    <br/>
                     
-                    <p><b>placed at:</b> <%=order.placedAt %></p>
+                    <div id="orders-show-detail" style="margin-left: -10px; width: 398px; border-bottom: 1px solid black;">
+                        <a href='/order-details/<%=order._id %>'><p style="margin: 0px; padding-top: 2.5px; padding-bottom: 2.5px;" style="text-decoration: none;"><b style="padding-left: 10px;">show details</b></p></a>
+                    </div>
+
+                    <p style="margin-top: 5px;"><b>placed at:</b> <%=order.placedAt %></p>
                     <p><b>status:</b> <%=order.status %></p>
                     <p><b>type:</b> <%=order.type %></p>
-
+                    <% if(order.status == "confirmed") { %>
+                        <p><b>estimated time:</b> <%=order.estimatedCompletionTime %> min</p>
+                    <% } %>
+                    
+                    <% if(order.review != null) { %>
+                        <p><b>review: </b><br />
+                            name: <%=order.review.name %><br />
+                            rating: <%=order.review.rating %><br/>
+                            comment: <%=order.review.comment %>
+                        </p>
+                    <% } %>
+                    
+                    <br />
+                    
+                    
+                    <p><% for(var c = 0; c < order.products.items.length; c++) { %>
+                        <p style="text-align: center;"><b>(<%=order.products.items[c].quantity %>) <%=order.products.items[c].name %> - $<%=order.products.items[c].quantity * order.products.items[c].price %></b></p>
+                    <% } %>
+                        
                     <br />
 
-                    <p><b>estimated time:</b> <%=order.estimatedCompletionTime %></p>
-                    <p><b>total amount:</b> <%=order.totalPrice %></p>
-                    <p><b>items:</b> <% for(var c = 0; c < order.products.items.length; c++) { %>
-                        <p>&emsp;<%=order.products.items[c].name %> - <%=order.products.items[c].quantity %> - ($<%=order.products.items[c].quantity * order.products.items[c].price %>)</p>
-                    <% } %></p>
+                    <p style="text-align: center;"><b>total: <%=order.totalPrice %></b></p>
+                    
                     <% if(order.rating != null) { %>
                         <p><b>rating:</b> <%=order.rating %></p>
                     <% } %>
+                    
                     <% if(order.comment != null) { %>
                         <p><b>comment:</b> <%=order.comment %></p>
                     <% } %>
 
-                    <br />
-
-                    <% if(order.review != null) { %>
-                        <p><b>review: </b><br />
-                            &emsp;name: <%=order.review.name %><br />
-                            &emsp;rating: <%=order.review.rating %><br/>
-                            &emsp;comment: <%=order.review.comment %></p>
-                    <% } %>
                     <!-- <p><a href="/reciepts/<%= order._id %>">order reciept PDF</a></p> -->
                     <br />
 
                     <div style="text-align: center; margin-left: -10px; margin-right: -10px;">
-                        <div id="orders-show-detail">
-                            <p style="margin: 0px; padding-top: 2.5px; padding-bottom: 2.5px;"><a href='/order-details/<%=order._id %>' style="text-decoration: none;"><b>show details</b></a></p>
-                        </div>
-
                         <% if(order.status == "completed" && order.review == null) { %>
                         <div class="orders-show-review">
                             <p style="margin: 0px; border-top: 1px solid black; padding-top: 2.5px; padding-bottom: 2.5px;" value="<%=order._id%>" onclick="reviewOrder('<%=orders.length%>', '<%=counter %>', this.value)"><b>review</b></p>
@@ -132,11 +160,23 @@
                     <% orderItems.push(order.products.items[c].name) %>
                 <% } %>
             
-                <div id="order-review#<%=counter %>" class="order-review" style="position: relative; display: none; z-index: 1; background-color: #f7f9f9; padding: 10px;">
+                <div id="order-review#<%=counter %>" class="order-review" style="position: relative; display: none; z-index: 1; width: 338px; margin-left: -7px; padding: 30px; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; background-color: #f7f9f9;">
                     <form action="/review-post" method="POST">
                         <input hidden name="orderId" value="<%=order._id %>"></input>
-                        <input hidden name="restaurant" value="<%=order.restaurant %>"></input>
+                        <input hidden name="restaurant" value="<%=order.restaurantUrl %>"></input>
                         <input hidden name="items" value="<%=orderItems.toString() %>"></input>
+                        
+                        <% if(order.review == null) { %>
+                            <div style="text-align: center;">
+                                <input required name="rating" type="number" min="1" max="5" placeholder="1-5" value="" style="width: 50%; margin-top: 5px;"></input>
+                                <input required name="customerName" maxlength="50" placeholder="name" value="" style="width: 50%; margin-bottom: 10px;"></input>
+
+                                <br />
+
+                                <b>comment</b><br />
+                            </div>
+                            <textarea name="comment" maxlength="250" style ="min-height: 100px; min-width: 100%; max-width: 100%; border: 1px solid lightgray;"></textarea><br />
+                        <% } %>
                         
                         <% if(order.review != null) { %>
                             <div style="text-align: center;">
@@ -156,8 +196,8 @@
                         </div>
                     </form>
                 </div>
-
             <% } %>
+        
         </div>
         
         <% } else { %>

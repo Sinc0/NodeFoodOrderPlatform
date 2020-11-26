@@ -5,6 +5,7 @@ const fs = require('fs');
 const Order = require('../models/order');
 const path = require('path');
 const Review = require('../models/review');
+const Admin = require('../models/admin');
 
 const ObjectId = mongodb.ObjectId;
 
@@ -479,7 +480,33 @@ function parseLoginCookie(cookieId)
     }
 } */
 
-//new  
+//get
+exports.getHome = (req, res, next) => {
+    console.log('getHome');
+    let validation = res.locals.validation;
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        Admin.fetchAllPosts()
+        .then(adminPosts => {
+            res.render('admin/home', { 
+                admin: validation.isAdmin,
+                loggedIn: true,
+                path: '/home',
+                adminPosts: adminPosts
+            });
+        })
+        .catch(err => console.log(err));
+    }
+
+    //anon user 
+    else
+    {
+        res.redirect('/');
+    }
+}
+
 exports.getOrders = (req, res, next) => {
     console.log('getOrders');
     let validation = res.locals.validation;
@@ -639,8 +666,8 @@ exports.getStats = async (req, res, next) => {
 
 }
 
-//editOrders
-exports.postEditOrders = async (req, res, next) => {
+//edit
+exports.postEditOrder = async (req, res, next) => {
     console.log('postEditOrders');
     let validation = res.locals.validation;
 
@@ -664,8 +691,8 @@ exports.postEditOrders = async (req, res, next) => {
         res.redirect('/');
     }
 }
-//editRestaurants
-exports.postEditRestaurants = async (req, res, next) => {
+
+exports.postEditRestaurant = async (req, res, next) => {
     console.log('postEditRestaurants');
     let validation = res.locals.validation;
 
@@ -691,8 +718,8 @@ exports.postEditRestaurants = async (req, res, next) => {
         res.redirect('/');
     }
 }
-//editUsers
-exports.postEditUsers = async (req, res, next) => {
+
+exports.postEditUser = async (req, res, next) => {
     console.log('postEditUsers');
     let validation = res.locals.validation;
 
@@ -705,7 +732,7 @@ exports.postEditUsers = async (req, res, next) => {
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
-        var updateOrder = await User.updateAdmin(userId, name, address, phone, isLoggedIn);
+        var updateUser = await User.updateAdmin(userId, name, address, phone, isLoggedIn);
 
         res.redirect('/admin/users');
     }
@@ -716,8 +743,8 @@ exports.postEditUsers = async (req, res, next) => {
         res.redirect('/');
     }
 }
-//editReviews
-exports.postEditReviews = async (req, res, next) => {
+
+exports.postEditReview = async (req, res, next) => {
     console.log('postEditReviews');
     let validation = res.locals.validation;
 
@@ -732,9 +759,174 @@ exports.postEditReviews = async (req, res, next) => {
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
-        var updateOrder = await Review.updateAdmin(reviewId, date, restaurant, rating, user, items, comment);
+        var updateReview = await Review.updateAdmin(reviewId, date, restaurant, rating, user, items, comment);
 
         res.redirect('/admin/reviews');
+    }
+
+    //anon user 
+    else
+    {
+        res.redirect('/');
+    }
+}
+
+exports.postEditNewsPost = async (req, res, next) => {
+    console.log('postEditNewsPost');
+    let validation = res.locals.validation;
+
+    var id = req.body.id;
+    var postId = req.body.postId;
+    var date = req.body.date;
+    var title = req.body.title;
+    var text = req.body.text;
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        var updateReview = await Admin.updateNewsPost(id, postId, date, title, text);
+
+        res.redirect('/admin/home');
+    }
+
+    //anon user 
+    else
+    {
+        res.redirect('/');
+    }
+}
+
+//delete
+exports.postDeleteOrder = async (req, res, next) => {
+    console.log('postDeleteOrder');
+    let validation = res.locals.validation;
+
+    var orderId = req.body.orderId;
+    console.log(orderId);
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        var deleteOrder = await Order.deleteOne(orderId);
+
+        res.redirect('/admin/orders');
+    }
+
+    //anon user 
+    else
+    {
+        res.redirect('/');
+    }
+}
+
+exports.postDeleteRestaurant = async (req, res, next) => {
+    console.log('postDeleteRestaurant');
+    let validation = res.locals.validation;
+
+    var restaurantId = req.body.restaurantId;
+    console.log(restaurantId);
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        var deleteRestaurant = await Restaurant.deleteOne(restaurantId);
+
+        res.redirect('/admin/restaurants');
+    }
+
+    //anon user 
+    else
+    {
+        res.redirect('/');
+    }
+}
+
+exports.postDeleteUser = async (req, res, next) => {
+    console.log('postDeleteUser');
+    let validation = res.locals.validation;
+
+    var user = req.body.email;
+    console.log(user);
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        var deleteUser = await User.deleteOne(user);
+
+        res.redirect('/admin/users');
+    }
+
+    //anon user 
+    else
+    {
+        res.redirect('/');
+    }
+}
+
+exports.postDeleteReview = async (req, res, next) => {
+    console.log('postDeleteReview');
+    let validation = res.locals.validation;
+
+    var reviewId = req.body.id;
+    console.log(reviewId);
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        var deleteReview = await Review.deleteOne(reviewId);
+
+        res.redirect('/admin/reviews');
+    }
+
+    //anon user 
+    else
+    {
+        res.redirect('/');
+    }
+}
+
+exports.postDeleteNewsPost = async (req, res, next) => {
+    console.log('postDeleteNewsPost');
+    let validation = res.locals.validation;
+
+    var id = req.body.id;
+    console.log(id);
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        var deleteAdminPost = await Admin.deleteOne(id);
+
+        res.redirect('/admin/home');
+    }
+
+    //anon user 
+    else
+    {
+        res.redirect('/');
+    }
+}
+
+
+//other
+exports.postNewsPost = async (req, res, next) => {
+    console.log('postNewsPost');
+    let validation = res.locals.validation;
+
+    var type = req.body.type;
+    var postId = req.body.postId;
+    var date = req.body.date;
+    var title = req.body.title;
+    var text = req.body.text;
+
+    console.log(text);
+    
+    //user is admin
+    if(validation.status == true && validation.isAdmin == true)
+    {
+        var deleteReview = await Admin.createNewsPost(type, postId, date, title, text);
+
+        res.redirect('/admin/home');
     }
 
     //anon user 

@@ -6,8 +6,58 @@
     <!-- <script src="js/functionality.js"></script> -->
     <title>Order Process</title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script src="/js/functionality.js"></script>
     <script>
+        function orderProcessOrderConfirmed(estimatedTime, delivery, pickUp)
+        {
+            document.getElementById("orderProcessImgLoadingGif").remove();
+            document.getElementById("orderProcessImgCheckmarkPng").hidden = false;
+            document.getElementById("OrderProcessWhenConfirmedDetailsLink").hidden = false;
+            document.getElementById("skipWaitingGoToStart").hidden = true;
+
+            var date = new Date();
+            var hours = date.getHours();
+            var minutes = date.getMinutes(); + estimatedTime;
+            var seconds = date.getSeconds();
+            
+            if(minutes + estimatedTime > 60)
+            {
+                hours++;
+                minutes = parseInt(minutes) + parseInt(estimatedTime) - 60;
+
+                if(minutes < 10)
+                {
+                    minutes = "0" + minutes;
+                }
+            }
+
+            var date = hours + ":" + minutes;
+            
+            if(delivery == true)
+            {
+                document.getElementById("orderProcessEstimatedTime").innerHTML = "estimated " + estimatedTime + " mins for comletion <br /> order should be delivered at " + date;
+            }
+
+            if(delivery == false)
+            {
+                document.getElementById("orderProcessEstimatedTime").innerHTML = "estimated " + estimatedTime + " mins for completion <br /> pick up should be ready at " + date;
+            }
+            
+            document.getElementById("orderProcessEstimatedTime").hidden = false;
+            document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false;
+            document.getElementById("orderProcessInfoText").innerHTML = "order confirmed by restaurant";
+        }
+
+        function orderProcessOrderDeclined(estimatedTime, delivery, pickUp)
+        {
+            document.getElementById("orderProcessImgLoadingGif").remove();
+            document.getElementById("orderProcessImgDeclineCrossPng").hidden = false;
+            document.getElementById("orderProcessInfoText").innerHTML = "<p> order declined by restaurant </p> <p> money will be refunded within a week </p>";
+            document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false;
+        }
+
+        //websocket
         var socket = new WebSocket("ws://localhost:65535");
 
         function x(orderId) 
@@ -70,7 +120,7 @@
         */
     </script>
 </head>
-<body onload=""> <!-- "fillCartFormData()" -->
+<body onload="" style="background-color: lightgray;"> <!-- "fillCartFormData()" -->
 
     <!--
     <form action="/order-post" method="POST">
@@ -80,23 +130,25 @@
         <input id="cartTotalPrice" name="cartTotalPrice"></input>
     </form>
     -->
-    <div id="order-process-content">
+    <div id="order-process-content" style="background-color: white">
         <p>order id: <%=order._id %></p>
         <p id="orderProcessPaymentInfoText">payment was successful</p>
         
+        <br />
+
         <img id="orderProcessImgLoadingGif" src="https://retchhh.files.wordpress.com/2015/03/loading2.gif"></img>
         <img hidden id="orderProcessImgCheckmarkPng" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fb%2Fbd%2FCheckmark_green.svg%2F2000px-Checkmark_green.svg.png&f=1&nofb=1"></img>
         <img hidden id="orderProcessImgDeclineCrossPng" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.pngall.com%2Fwp-content%2Fuploads%2F2016%2F04%2FRed-Cross-Mark-Free-PNG-Image.png&f=1&nofb=1"></img>
         
-        <p id="orderProcessInfoText">waiting for restaurant to confirm time</p>
-        <a href="/" style="text-decoration: none; color: black;">skip waiting go to start</a>
-        <p hidden id="orderProcessEstimatedTime"></p>
-        
-        <a href="/order-details/<%=orderId %>" hidden id="OrderProcessWhenConfirmedDetailsLink" onclick="">show details</button>
-        
+        <br />
         <br />
         
-        <a href="/" hidden id="OrderProcessWhenConfirmedStartLink" onclick="">show start</button>
+        <p id="orderProcessInfoText">waiting for restaurant to confirm time</p>
+        <p hidden id="orderProcessEstimatedTime"></p>
+        
+        <a href="/order-details/<%=orderId %>" hidden id="OrderProcessWhenConfirmedDetailsLink" style="text-decoration: none; color: black;">show details</a>
+        <a href="/" hidden id="OrderProcessWhenConfirmedStartLink" style="text-decoration: none; color: black;">show start</a>
+        <a href="/" id="skipWaitingGoToStart" style="text-decoration: none; color: black;">skip waiting go to start</a>
         
         <br />
         <!-- <a href="/orders" hidden id="OrderProcessWhenConfirmedAllOrdersLink" onclick="">show all orders</button> -->

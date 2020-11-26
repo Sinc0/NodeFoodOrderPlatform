@@ -1,28 +1,28 @@
-<header class="main-header">
+<header class="main-header" onclick="">
     <nav class="main-header__nav">
 
         <ul class="main-header__item-list_left">
             
-            <li class="main-header__item" style="border-right: 1px solid black;">
+            <li id="navButtonHome" class="main-header__item" style="border-right: 1px solid black;">
                 <a class="<%= path === '/' ? 'active' : '' %>" href="/">Home</a>
             </li>
 
-            <li class="main-header__item" style="border-right: 1px solid black;">
+            <li id="navButtonRestaurants" class="main-header__item" style="border-right: 1px solid black;">
                 <a class="<%= path === '/restaurant-list' ? 'active' : '' %>" href="/restaurants">Restaurants</a>
             </li>
 
-            <li class="main-header__item" style="border-right: 1px solid black;">
+            <li id="navButtonOrders" class="main-header__item" style="border-right: 1px solid black;">
                 <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">Orders</a>
             </li>
         </ul>
 
         <ul class="main-header__item-list_right">
             
-            <li class="main-header__item" style="border-left: 1px solid black; border-right: 1px solid black;">
-                <a class="" href="/profile"><b>Account</b></a>
+            <li id="navButtonProfile" class="main-header__item" style="border-left: 1px solid black; border-right: 1px solid black;">
+                <a class="" href="/profile">Account</a>
             </li>
 
-            <li class="main-header__item">
+            <li id="navButtonLogout" class="main-header__item">
                 <a class="<%= path === '/logout/' ? 'active' : '' %>" href="/logout">Logout</a>
             </li>
 

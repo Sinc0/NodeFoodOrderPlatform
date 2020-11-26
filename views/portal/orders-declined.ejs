@@ -4,8 +4,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Declined Orders</title>
-        <link rel="stylesheet" href="/css/portalRestaurant.css">
         <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="/css/portalRestaurant.css">
+        <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
         <script src="/js/functionality.js"></script>
         <script>
 
@@ -31,43 +32,32 @@
         </script>
     </head>
     <a href="/portal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
-    <body onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
+    <body onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()" style="background-color: lightgray;">
         <header id="confirmOrderHeader">
-            <br />
-            <h2 id="confirmOrderTitle">total declined orders: <%=orders.length %></h2>
+            <h2 id="confirmOrderTitle" style="margin: 0px; margin-top: 25px; margin-bottom: 25px; padding: 0px;">total declined orders: <%=orders.length %></h2>
             <!-- <p id="confirmOrderPendingOrderInfo">total pending orders: <%=orders.length %></p> -->
         </header>
-        <br />
         <% for(var c = orders.length - 1; c >= 0; c--) { %>
-        <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
+            <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
+                <p style="text-align: left; margin-top: 5px;">id: <%=orders[c]._id %></p>
+                <p style="text-align: left;">date: <%=orders[c].confirmedAt %></p>
+                <p style="text-align: left;">estimated time: <%=orders[c].estimatedTime %></p>
+                <p style="text-align: left;">address: <%=orders[c].customerAddress %></p>
+                <p style="text-align: left;">phone: <%=orders[c].customerPhone %></p>
+                <p style="text-align: left;">total price: <%=orders[c].totalPrice %></p>
+                
+                <br />
+                
+                <p style="margin-bottom: 5px;"><%=orders[c].type %></p>
+                <p><%=orders[c].customerName %></p>
+                <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
+                    <p><b><%= orders[c].products.items[x].name %> (<%= orders[c].products.items[x].quantity %>)</b></p>
+                    <% } %>
+                <p style="margin-top: 5px;"><%=orders[c].customerComment %></p>
 
-            <br />
-            
-            <p>id: <%=orders[c]._id %></p>
-            <p>date: <%=orders[c].date %></p>
-            <p>estimated time: <%=orders[c].estimatedTime %></p>
-            
-            
-            <br />
+                <br />
 
-            <p>name: <%=orders[c].customerName %></p>
-            <p>address: <%=orders[c].customerAddress %></p>
-            <p>phone: <%=orders[c].customerPhone %></p>
-            <p>total price: <%=orders[c].totalPrice %></p>
-            <p>comment: <%=orders[c].customerComment %></p>
-            <p>type: <%=orders[c].type %></p>
-            
-            <br />
-            <p>food items:</p>
-            <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
-                <p><%= orders[c].products.items[x].name %> (<%= orders[c].products.items[x].quantity %>)</p>
-            <% } %>
-
-            <br />
-
-        </div>
-        
-        <br />
+            </div>
         <% } %>
     </body>
 </html>

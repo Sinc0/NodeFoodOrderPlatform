@@ -106,7 +106,7 @@ class Order
         })
     }
 
-    static updateOne(orderId, status, estimatedCompletionTime)
+    static updateOne(orderId, status, estimatedCompletionTime, completedAt)
     {
         const db = getDb();
 
@@ -223,7 +223,7 @@ class Order
 
         return db
             .collection("orders")
-            .find({restaurant: restaurantUrl})
+            .find({restaurantUrl: restaurantUrl})
             .toArray()
             .then(orders => { /* { console.log(orders) */ return orders })
             .catch(err => console.log(err));
@@ -235,7 +235,7 @@ class Order
 
         return db
             .collection("orders")
-            .find({status: "unconfirmed", restaurant: restaurantUrl})
+            .find({status: "unconfirmed", restaurantUrl: restaurantUrl})
             .toArray()
             .then(orders => { /* { console.log(orders) */ return orders })
             .catch(err => console.log(err));
@@ -247,7 +247,7 @@ class Order
 
         return db
             .collection("orders")
-            .find({status: "confirmed", restaurant: restaurantUrl})
+            .find({status: "confirmed", restaurantUrl: restaurantUrl})
             .toArray()
             .then(orders => { /* { console.log(orders) */ return orders })
             .catch(err => console.log(err));
@@ -259,7 +259,7 @@ class Order
 
         return db
             .collection("orders")
-            .find({status: "declined", restaurant: restaurantUrl})
+            .find({status: "declined", restaurantUrl: restaurantUrl})
             .toArray()
             .then(orders => { /* { console.log(orders) */ return orders })
             .catch(err => console.log(err));
@@ -271,7 +271,7 @@ class Order
 
         return db
             .collection("orders")
-            .find({status: "completed", restaurant: restaurantUrl})
+            .find({status: "completed", restaurantUrl: restaurantUrl})
             .toArray()
             .then(orders => { /* { console.log(orders) */ return orders })
             .catch(err => console.log(err));

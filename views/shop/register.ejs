@@ -5,22 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script src="/js/functionality.js"></script>
 </head>
 <%- include('../snippets/html_nav_menu_anon.ejs') %>
-<body>
+<body style="background-color: lightgray">
     <main id="main-register">
 
-        <br />
+        <h3 style="margin-top: 25px; margin-bottom: 25px;">Register Below</h3>
         
-        <h3> Select Register Type Below </h3>
+        <p style="margin-bottom: 25px;"><%=statusText %></p>
         
-        
-        <br/>
-        <p><%= statusText %></p>
-
-        <button id="registerCustomerBtn" onclick="registerCustomer()" style="margin-bottom: 2.5px;">Customer</button>
-        <button id="registerRestaurantBtn" onclick="registerRestaurant()">Restaurant</button>
+        <button id="registerCustomerBtn" onclick="registerCustomer()" style="margin-right: -10px;"><b>Customer</b></button>
+        <button id="registerRestaurantBtn" onclick="registerRestaurant()"><b>Restaurant</b></button>
 
         <div hidden id="registerCustomer">
             <form action="/register-post" method="POST">
@@ -29,7 +26,7 @@
                 </div>
                 
                 <div>
-                    <input type="text" maxlength="100" id="nameCustomer" name="nameCustomer" placeholder="Name" value="">
+                    <input type="text" maxlength="100" id="nameCustomer" name="nameCustomer" placeholder="Name" value="" required>
                 </div>
 
                 <div>
@@ -40,7 +37,7 @@
                     <input type="password" maxlength="100" id="confirmPasswordCustomer" name="confirmPasswordCustomer" placeholder="Confirm Password" value="" oninput="checkPassCustomer()" required>
                 </div>
 
-                <button class="btn" id="submitFormBtnRegisterCustomer" type="submit" style="margin-top: 23.5px">Register</button>
+                <button class="btn" id="submitFormBtnRegisterCustomer" type="submit" style="margin-top: 25px"><b>Confirm</b></button>
             </form>
         </div>
 
@@ -51,11 +48,11 @@
                 </div>
 
                 <div>
-                    <input type="text" maxlength="100" id="addressRestaurant" name="addressRestaurant" placeholder="Address" value="">
+                    <input type="text" maxlength="100" id="addressRestaurant" name="addressRestaurant" placeholder="Address" value="" required>
                 </div>
 
                 <div>
-                    <input type="tel" maxlength="15" id="phoneRestaurant" name="phoneRestaurant" placeholder="Phone" value="">
+                    <input type="tel" maxlength="15" id="phoneRestaurant" name="phoneRestaurant" placeholder="Phone" value="" required>
                 </div>
 
                 <div>
@@ -67,11 +64,11 @@
                 </div>
 
                 <div>
-                    <input type="text" maxlength="15" id="companyIdNumberRestaurant" name="companyIdNumberRestaurant" placeholder="Company Id Number" value="">
+                    <input type="text" maxlength="15" id="companyIdNumberRestaurant" name="companyIdNumberRestaurant" placeholder="Company Id Number" value="" required>
                 </div>
 
                 <div>
-                    <input type="text" maxlength="15" id="city" name="city" placeholder="City" value="">
+                    <input type="text" maxlength="15" id="city" name="city" placeholder="City" value="" required>
                 </div>
 
                 <div>
@@ -82,7 +79,7 @@
                     <input type="password" maxlength="100" id="confirmPasswordRestaurant" name="confirmPasswordRestaurant" placeholder="Confirm Password" value="" oninput="checkPassRestaurant()" required>
                 </div>
 
-                <button id="submitFormBtnRegisterRestaurant" class="btn" type="submit" style="margin-top: 22.5px">Register</button>
+                <button id="submitFormBtnRegisterRestaurant" class="btn" type="submit" style="margin-top: 22.5px;"><b>Confirm</b></button>
             </form>
         </div>
     </main>

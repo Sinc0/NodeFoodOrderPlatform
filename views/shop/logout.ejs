@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <title><%= pageTitle %></title>
 </head>
-<body>
+<body style="background-color: lightgray">
     <!-- admin view -->
-    <% if(admin == true) { %>
+    <% if(admin != null && admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
+        
+        <script>
+            var navButtonAdminHome = document.getElementById("navButtonAdminLogout");
+            navButtonAdminHome.style.backgroundColor = "lightgray";
+        </script>
     
     <!-- logged in user view -->
     <% } else if(loggedIn == true) { %>
@@ -18,15 +24,19 @@
     
     <main id="main-logout">
         <p><%= statusText %></p>
-        <p style="margin-top: 25px;">Are you sure you wanna logout?</p>
+        <h3 style="margin-top: 25px;">Are you sure you wanna logout?</h3>
+        
+        <div style="display: inline-block;">
+            <form action="/" method="GET">
+                <button class="btn" type="submit" style="margin-bottom: 25px;"><b>No</b></button>
+            </form>
+        </div>
 
-        <form action="/logout-post" method="POST">
-            <button class="btn" type="submit" style="margin-top: 25px; margin-bottom: 2.5px;">Yes</button>
-        </form>
-
-        <form action="/" method="GET">
-            <button class="btn" type="submit" style="margin-bottom: 25px;">No</button>
-        </form>
+        <div style="display: inline-block;">
+            <form action="/logout-post" method="POST">
+                <button class="btn" type="submit" style="margin-top: 25px; margin-bottom: -1px; margin-left: -6px;"><b>Yes</b></button>
+            </form>
+        </div>
     </main>
 </body>
 </html>

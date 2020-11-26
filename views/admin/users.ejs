@@ -4,8 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <title>Admin Users</title>
     <script>
+        // function displayEditUser(number)
+        // {
+        //     console.log(number);
+
+        //     var d = document.getElementById("user#" + number);
+        //     var edit = document.getElementById("edit-user#" + number);
+          
+        //     d.hidden = true;
+        //     edit.hidden = false;
+
+        // }
+
+        // function undisplayEditUser(number)
+        // {
+        //     console.log(number);
+
+        //     var d = document.getElementById("user#" + number);
+        //     var edit = document.getElementById("edit-user#" + number);
+          
+        //     d.hidden = false;
+        //     edit.hidden = true;
+
+        // }
+
         function displayEditUser(number)
         {
             console.log(number);
@@ -29,36 +54,193 @@
             edit.hidden = true;
 
         }
+
+        function displayDeleteUser(number)
+        {
+            console.log(number);
+
+            var d = document.getElementById("user#" + number);
+            var edit = document.getElementById("delete-user#" + number);
+          
+            d.hidden = true;
+            edit.hidden = false;
+
+        }
+
+        function undisplayDeleteUser(number)
+        {
+            console.log(number);
+
+            var d = document.getElementById("user#" + number);
+            var edit = document.getElementById("delete-user#" + number);
+          
+            d.hidden = false;
+            edit.hidden = true;
+
+        }
+
+        function search(totalUsers)
+        {
+            var searchBoxInput = document.getElementById("searchBoxInput").value
+            var totalUsersText = document.getElementById("totalUsersText");
+            var searchString = String(searchBoxInput).toLowerCase();
+            var usersArray = [];
+            var searchFoundCount = 0;
+
+            if(searchBoxInput != "")
+            {
+                for(var c = 1; c <= totalUsers; c++)
+                {
+                    var user = document.getElementById("user#" + c)
+                    //console.log(menuItem);
+                    //console.log(menuItem.parentNode);
+                    //console.log(menuItemCategory);
+    
+                    if(user.innerHTML.toLowerCase().includes(searchString))
+                    {
+                        usersArray.push(user);
+                        searchFoundCount++;
+                        user.hidden = false;
+                        user.style.opacity = "100%";
+                    }
+                    
+                    else
+                    {
+                        user.hidden = true;
+                    }        
+                    
+                    if(searchFoundCount == 1)
+                    {
+                        totalUsersText.innerHTML = "Found: " + searchFoundCount + " User";
+                    }
+
+                    else
+                    {
+                        totalUsersText.innerHTML = "Found: " + searchFoundCount + " Users";
+                    }
+                }
+            }
+
+            else
+            {
+                for(var c = 1; c <= totalUsers; c++)
+                {
+                    var user = document.getElementById("user#" + c)
+                    
+                    usersArray.push(user);
+                    user.hidden = false;
+                    user.style.opacity = "100%";
+                }
+
+                totalUsersText.innerHTML = "Total Users: " + totalUsers;
+            }
+        }
+
+        function saveScrollPosition()
+        {
+            var y = window.scrollY;
+            localStorage.setItem("scrollPositionY", y);
+        }
+
+        function loadSavedScrollPosition()
+        {
+            var positionY = localStorage.getItem("scrollPositionY");
+            window.scrollTo(0, positionY)
+        }
     </script>
 </head>
-<body>
+<body style="background-color: lightgray;" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
     <%- include('../snippets/html_nav_menu_admin.ejs') %>
 
-    <h3 style="margin-top: 10px; margin-bottom: 5px; text-align: center;">Total Users: <%=users.length %></h3>
+    <script>
+        var navButtonAdminHome = document.getElementById("navButtonAdminUsers");
+        navButtonAdminHome.style.backgroundColor = "lightgray";
+    </script>
+
+    <div id="searchBox" style="margin: 0px; margin-top: 25px; padding: 0px; text-align: center;">
+    <input id="searchBoxInput" style="margin-bottom: 25px; height: 38px; width: 396px;" placeholder="Search..." onkeyup="search('<%=users.length - 1 %>')"></input>
+    </div>
+    
+    <% var totalUsersCount = users.length %>
+    
+    <!-- remove admins from totalUsersCount -->
+    <% for(var i = 0; i < users.length; i++) { %>
+        <% if(users[i].admin == true) { %>
+            <% totalUsersCount-- %>
+        <% } %>
+    <% } %>
+    
+    <h3 id="totalUsersText" style="margin-top: 25px; margin-bottom: 15px; text-align: center;">Total Users: <%=totalUsersCount %></h3>
+
+    <!-- <h3 style="margin-top: 10px; margin-bottom: 5px; text-align: center;">Total Users: <%=users.length %></h3> -->
 
     <% for(var i = 0; i < users.length; i++) { %>
-        <div id="user#<%=i + 1 %>" style="margin: auto; margin-bottom: 10px; background-color: orange; padding: 10px; width: 400px;">
+        <!-- <div id="user#<%=i + 1 %>" style="margin: auto; margin-bottom: 10px; border: 1px solid black; background-color: #f7f9f9; padding: 10px; width: 400px;">
             <button style="display: block;" onclick="displayEditUser('<%=i + 1%>')">Edit</button><br />
 
             <p><%=users[i]._id %></p>
+            <p><%=users[i].email %></p>
             <p><%=users[i].name %></p>
             <p><%=users[i].address %></p>
             <p><%=users[i].phone %></p>
             <p><%=users[i].isLoggedIn %></p>
-        </div>
+        </div> -->
 
-        <div hidden id="edit-user#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; background-color: orange; padding: 10px; width: 400px;">
+        <!-- <div hidden id="edit-user#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; border: 1px solid black; background-color: #f7f9f9; padding: 10px; width: 400px;">
             <button style="display: block;" onclick="undisplayEditUser('<%=i + 1%>')">Cancel</button><br />
 
             <form action="/admin/edit-users" method="POST">
                 <input name="id" value="<%=users[i]._id %>" style="width: 100%"></input><br />
+                <input name="email" value="<%=users[i].email %>" style="width: 100%"></input><br />
                 <input name="name" value="<%=users[i].name %>" style="width: 100%"></input><br />
                 <input name="address" value="<%=users[i].address %>" style="width: 100%"></input><br />
                 <input name="phone" value="<%=users[i].phone %>" style="width: 100%"></input><br />
                 <input name="isLoggedIn" value="<%=users[i].isLoggedIn %>" style="width: 100%"></input><br />
                 <button style="display: block; margin: auto; margin-top: 10px; width: 50%;">Submit</button>
             </form>
-        </div>
+        </div> -->
+
+        <% if(users[i].admin != true) { %>
+            <div id="user#<%=i + 1%>" class="admin-card">      
+                <p style="margin-bottom: 4px; margin-left: 2px; margin-top: 9px;"><%=users[i]._id %></p>
+                <p style="margin-bottom: 4px; margin-left: 2px;"><%=users[i].email %></p> 
+                <p style="margin-bottom: 4px; margin-left: 2px;"><%=users[i].name %></p>
+                <p style="margin-bottom: 4px; margin-left: 2px;"><%=users[i].address %></p>
+                <p style="margin-bottom: -2px; margin-left: 2px;"><%=users[i].phone %></p>
+                <p style="margin-bottom: -2px; margin-left: 2px;"><%=users[i].isLoggedIn %></p>
+                
+                <div style="text-align: right;">
+                    <button class="admin-card-button" onclick="displayEditUser('<%=i + 1%>')" style="margin-top: 10px; margin-right: -5.5px;"><b>Edit</b></button>
+                    <button class="admin-card-button" onclick="displayDeleteUser('<%=i + 1%>')" style="background-color: red;"><b>Delete</b></button><br />
+                </div>
+            </div>
+
+            <!-- edit -->
+            <div class="admin-edit" hidden id="edit-user#<%=i + 1%>">
+                <button class="admin-card-button" style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px; margin-right: 303px;" onclick="undisplayEditUser('<%=i + 1%>')"><b>Cancel</b></button><br />
+
+                <form action="/admin/edit-user" method="POST">
+                    <input class="input-admin" name="id" value="<%=users[i]._id %>"></input><br />
+                    <input  class="input-admin"name="email" value="<%=users[i].email %>"></input><br />
+                    <input class="input-admin" name="name" value="<%=users[i].name %>"></input><br />
+                    <input class="input-admin" name="address" value="<%=users[i].address %>"></input><br />
+                    <input class="input-admin" name="phone" value="<%=users[i].phone %>"></input><br />
+                    <input class="input-admin" name="isLoggedIn" value="<%=users[i].isLoggedIn %>"></input><br />
+                    <button class="admin-card-button" style="display: block; margin: auto; margin-top: 11px; margin-bottom: 11px; width: 200px;"><b>Confirm Edit</b></button>
+                </form>
+            </div>
+
+            <!-- delete -->
+            <div class="admin-delete" hidden id="delete-user#<%=i + 1%>">
+                <button class="admin-card-button" style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px;" onclick="undisplayDeleteUser('<%=i + 1%>')"><b>Cancel</b></button><br />
+
+                <form action="/admin/delete-user" method="POST">
+                    <input hidden name="email" value="<%=users[i].email %>"></input>
+                    <button class="admin-card-button" style="display: block; margin: auto; margin-top: 124px; margin-bottom: 11px; width: 200px; background-color: red;"><b>Confirm Delete</b></button>
+                </form>
+            </div>
+        <% } %>
+
     <% } %>
 </body>
 </html>

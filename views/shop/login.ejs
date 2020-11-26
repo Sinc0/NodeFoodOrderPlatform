@@ -5,31 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script src="/js/functionality.js"></script>
 </head>
 <%- include('../snippets/html_nav_menu_anon.ejs') %>
-<body>
+<body style="background-color: lightgray">
     <main id="main-login">
 
-        <br />
+        <h3 style="margin-top: 25px; margin-bottom: 25px;">Login Below</h3>
 
-        <h3> Login Below </h3>
-
-        <br />
-        <p><%= statusText %></p>
-
+        <p style="margin-bottom: 25px;"><%=statusText %></p>
+        
         <form action="/login-post" method="POST">
-
             <div>
-                <input type="email" id="email" name="email" placeholder="Email" value="">
+                <input required type="email" id="email" name="email" placeholder="Email" value="">
             </div>
 
             <div>
-                <input type="password" id="password" name="password" placeholder="Password" value="">
+                <input required type="password" id="password" name="password" placeholder="Password" value="">
             </div>
 
-            <button class="btn" type="submit">Login</button>
-
+            <button class="btn" type="submit"><b>Login</b></button>
         </form>
     </main>
 </body>

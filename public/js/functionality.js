@@ -307,35 +307,6 @@ function postOrder()
     form.submit();
 }
 
-function orderProcessOrderConfirmed(estimatedTime, delivery, pickUp)
-{
-    document.getElementById("orderProcessImgLoadingGif").remove();
-    document.getElementById("orderProcessImgCheckmarkPng").hidden = false;
-    document.getElementById("OrderProcessWhenConfirmedDetailsLink").hidden = false;
-    
-    if(delivery == true)
-    {
-        document.getElementById("orderProcessEstimatedTime").innerHTML = "estimated " + estimatedTime + " mins for order to be delivered";
-    }
-
-    if(delivery == false)
-    {
-        document.getElementById("orderProcessEstimatedTime").innerHTML = "estimated " + estimatedTime + " mins for pick up to be ready";
-    }
-    
-    document.getElementById("orderProcessEstimatedTime").hidden = false;
-    document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false;
-    document.getElementById("orderProcessInfoText").innerHTML = "order confirmed by restaurant";
-}
-
-function orderProcessOrderDeclined(estimatedTime, delivery, pickUp)
-{
-    document.getElementById("orderProcessImgLoadingGif").remove();
-    document.getElementById("orderProcessImgDeclineCrossPng").hidden = false;
-    document.getElementById("orderProcessInfoText").innerHTML = "<p> order declined by restaurant </p> <p> money will be refunded within a week </p>";
-    document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false;
-}
-
 function customerDeliverySelector()
 {
     var text = document.querySelector('input[name="customerDelivery"]:checked').value;
@@ -344,24 +315,6 @@ function customerDeliverySelector()
     //paymentSelector.disabled = "";
     var paymentSelector = document.getElementById('new-list-of-payment-options');
     paymentSelector.hidden = false;
-}
-
-function editProfileCredentials()
-{
-    var profileCredentials = document.getElementById("profileCredentials");
-    var editProfileCredentials = document.getElementById("editProfileCredentials");
-
-    if(profileCredentials.style.display == "block" || editProfileCredentials == "none")
-    {
-        profileCredentials.style.display = "none";  
-        editProfileCredentials.style.display = "block";  
-    }
-
-    else
-    {
-        profileCredentials.style.display = "block";
-        editProfileCredentials.style.display = "none";
-    }
 }
 
 function registerCustomer()
@@ -373,8 +326,10 @@ function registerCustomer()
 
     customerForm.style.display = "block";
     restaurantForm.style.display = "none";
-    customerBtn.style.borderColor = "black";
-    restaurantBtn.style.borderColor = "gray";
+    restaurantBtn.style.backgroundColor = "#f7f9f9";
+    restaurantBtn.style.color = "black";
+    customerBtn.style.backgroundColor = "#3c41d6";
+    customerBtn.style.color = "#f7f9f9";
 }
 
 function registerRestaurant()
@@ -386,8 +341,10 @@ function registerRestaurant()
     
     customerForm.style.display = "none";
     restaurantForm.style.display = "block";
-    customerBtn.style.borderColor = "gray";
-    restaurantBtn.style.borderColor = "black";
+    customerBtn.style.backgroundColor = "#f7f9f9";
+    customerBtn.style.color = "black";
+    restaurantBtn.style.backgroundColor = "#3c41d6";
+    restaurantBtn.style.color = "#f7f9f9";
 }
 
 function checkPassRestaurant()
@@ -558,31 +515,6 @@ function GoogleMapsAdressAutocomplete()
         }
     
     });
-}
-
-function searchBoxRestaurants(totalMenuItems)
-{
-    var searchBoxInput = document.getElementById("searchBoxInput").value
-    var searchString = String(searchBoxInput).toLowerCase();
-
-    for(var c = 1; c <= totalMenuItems; c++)
-    {
-        var menuItem = document.getElementById("restaurantMenuItem#" + c)
-        var menuItemSearchText = document.getElementById("restaurantMenuItemSearchText#" + c)
-
-        if(menuItemSearchText.innerHTML.toLowerCase().includes(searchString))
-        {
-            menuItem.style.opacity = "100%";
-            menuItem.style.display = "block";
-        }
-
-        else
-        {
-            menuItem.style.opacity = ".25";
-        }
-
-    }
-
 }
 
 function searchBoxRestaurantMenu(totalMenuItems)
