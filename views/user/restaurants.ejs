@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurants</title>
     <link rel="stylesheet" href="/css/main.css">
-    <script src="/js/functionality.js"></script>
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script>
         function displayRestaurantReviews(menuItemNumber)
@@ -86,10 +85,52 @@
                     //menuItem.style.opacity = ".25";
                     menuItem.style.display = "none";
                 }
+            }
+        }
+
+        function searchBoxRestaurantMenu(totalMenuItems)
+        {
+            var searchBoxInput = document.getElementById("searchBoxInput").value
+            var searchString = String(searchBoxInput).toLowerCase();
+            var menuItemCategories = [];
+            //console.log(searchString);
+
+            for(var c = 1; c <= totalMenuItems; c++)
+            {
+                var menuItem = document.getElementById("menu-item#" + c)
+                var menuItemCategory = document.getElementById("menu-item#" + c + "-category")
+                //console.log(menuItem);
+                //console.log(menuItem.parentNode);
+                //console.log(menuItemCategory);
+                
+                if(menuItem.innerHTML.toLowerCase().includes(searchString))
+                {
+                    menuItemCategories.push(menuItemCategory.innerHTML.toLowerCase());
+                    menuItem.style.opacity = "100%";
+                    menuItem.style.display = "block";
+                    menuItem.parentNode.style.display = "block";
+                }
+
+                else
+                {
+                    menuItem.style.opacity = "25%";
+                    menuItem.style.display = "none";
+                    menuItem.parentNode.style.display = "none";
+                }
 
             }
 
+            //console.log(menuItemCategories.length);
+            for(var c = 0; c < menuItemCategories.length; c++)
+            {
+                //console.log(menuItemCategories[c]);
+                var menuCategory = menuItemCategories[c];
+            //console.log(menuCategory);
+            var category = document.getElementById("menu-category-" + menuCategory)
+            category.style.display = "block";      
         }
+
+}
     </script>
 </head>
 <body id="body-restaurants">

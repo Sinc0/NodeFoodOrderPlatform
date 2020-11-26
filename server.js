@@ -10,7 +10,7 @@ const multer = require('multer');
 const helmet = require('helmet');
 const ws = require('ws').Server;
 
-//files
+//handling files
 const multerStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'images');

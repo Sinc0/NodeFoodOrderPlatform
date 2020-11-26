@@ -8,11 +8,118 @@
     <link rel="stylesheet" href="/css/restaurant.css">
     <link rel="stylesheet" href="/css/stripeForm.css" />
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
-    <script src="/js/functionality.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="/js/stripe.js" defer></script>
+    <script>
+        function GoogleMapsAdressAutocomplete() 
+        {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                //center: {lat: -33.8688, lng: 151.2195},
+                //zoom: 13
+            });
+            
+            var input = document.getElementById('searchInput');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            var infowindow = new google.maps.InfoWindow();
+
+            autocomplete.addListener('place_changed', function() 
+            {
+                infowindow.close();
+                var place = autocomplete.getPlace();
+                
+                if (!place.geometry) 
+                {
+                    return window.alert("Address not found");
+                }
+            
+                var address = '';
+                
+                if (place.address_components) 
+                {
+                    address = [
+                        (place.address_components[0] && place.address_components[0].short_name || ''),
+                        (place.address_components[1] && place.address_components[1].short_name || ''),
+                        (place.address_components[2] && place.address_components[2].short_name || '')
+                    ].join(' ');
+                }
+            
+                infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+                    
+                //location details
+                for (var i = 0; i < place.address_components.length; i++) 
+                {
+                    if(place.address_components[i].types[0] == 'country')
+                    {
+                        if(place.address_components[i].long_name == "Sweden")
+                        {
+                            //document.getElementById('country').innerHTML = place.address_components[i].long_name;
+                            //document.getElementById('location').innerHTML = place.formatted_address;
+                            var userAddress = document.getElementById('userAddress')
+                            var customerAdress = document.getElementById('customerAddress')
+
+                            if(userAddress != null)
+                            {
+                            userAddress.value = place.formatted_address;
+                        }
+
+                        if(customerAdress != null)
+                        {
+                            customerAdress.value = place.formatted_address;
+                        }
+
+                        /*if(place.address_components[6] != undefined)
+                        {
+                            document.getElementById('postal_code').innerHTML = place.address_components[6].long_name;
+                            //console.log(place.address_components[6].long_name);
+                        }*/
+
+                    }
+
+                    if(place.address_components[i].long_name != "Sweden")
+                    {
+                        alert("Location restricted to Sweden only");
+                    }
+                
+                        //document.getElementById('country').innerHTML = place.address_components[i].long_name;
+                    }
+                }
+            
+            });
+        }
+    </script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=GoogleMapsAdressAutocomplete" async defer></script>
     <script>
+        function postOrder()
+        {
+            var form = document.getElementById("post-order-form");
+            form.submit();
+        }
+
+        function customerDeliverySelector()
+        {   
+            var text = document.querySelector('input[name="customerDelivery"]:checked').value;
+            document.getElementById("customerDelivery").value = text;
+            //var paymentSelector = document.getElementById('paymentSelect');
+            //paymentSelector.disabled = "";
+            var paymentSelector = document.getElementById('new-list-of-payment-options');
+            paymentSelector.hidden = false;
+        }   
+        
+        function selectPaymentOption(value)
+        {
+            console.log(value);
+
+            if(value == 0)
+            {
+                document.getElementById("payment-option-stripe").style.display = "none";
+            }
+
+            if(value == 1)
+            {
+                document.getElementById("payment-option-stripe").style.display = "block";
+            }
+        }
+
         function removeBody()
         {
             var img = document.getElementById("loadSpinnerGif");
@@ -52,6 +159,11 @@
 
             var d = document.getElementById("selected-payment-option");
             d.style = "margin: 0px; margin-top: -40px; margin-left: -30px; width: 400px; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center;"
+        }
+
+        function goBack()
+        {
+            window.history.back();
         }
     </script>
 </head>

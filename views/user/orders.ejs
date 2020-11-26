@@ -6,8 +6,33 @@
     <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
-    <script src="js/functionality.js"></script>
-    <script>
+    <script>    
+        function searchBoxOrders(totalOrders)
+        {
+            var searchBoxInput = document.getElementById("searchBoxInput").value
+            var searchString = String(searchBoxInput).toLowerCase();
+
+            for(var c = 1; c <= totalOrders; c++)
+            {
+                var orderItem = document.getElementById("order-item#" + c)
+                //var menuItemSearchText = document.getElementById("restaurantMenuItemSearchText#" + c)
+
+                if(orderItem.innerHTML.toLowerCase().includes(searchString))
+                {
+                    //orderItem.style.opacity = "100%";
+                    orderItem.style.display = "block";
+                }
+
+                else
+                {
+                    //orderItem.style.opacity = ".25";
+                    orderItem.style.display = "none";
+                }
+
+            }
+
+        }
+        
         function reviewOrder(totalOrders, orderNumber, orderId)
         {
             var orderItem = document.getElementById("order-item#" + orderNumber);
@@ -46,7 +71,6 @@
             var positionY = localStorage.getItem("scrollPositionY");
             window.scrollTo(0, positionY)
         }
-
     </script>
 </head>
 <body style="background-color: lightgray" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
