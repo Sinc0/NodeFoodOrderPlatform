@@ -1,3 +1,7 @@
+//load env variables
+const dotenv = require('dotenv')
+dotenv.config();
+
 //imports
 const path = require('path');
 const express = require('express');
@@ -98,8 +102,8 @@ mongoConnect(() => {
 });
 
     //start
-    app.listen(process.env.PORT || 3000);
     //console.log(process.env);
+    app.listen(process.env.PORT || 3000);
 
     //******* test area below *******
 
