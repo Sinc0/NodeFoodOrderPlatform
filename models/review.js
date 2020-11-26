@@ -1,6 +1,5 @@
 const getDb = require('../helpers/database').getDb;
 const mongodb = require('mongodb');
-
 const ObjectId = mongodb.ObjectId;
 
 class Review

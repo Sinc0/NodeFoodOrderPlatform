@@ -1,33 +1,8 @@
-/* const fs = require('fs');
-const path = require('path');
-const p = path.join(path.dirname(process.mainModule.filename), 
-'data', 
-'products.json'
-);
-
-const getProductsFromFile = (callback) => {
-
-
-        fs.readFile(p, (err, fileContent) => {
-            
-            if (err)
-            {
-               callback([]);
-            }
-            else
-            {
-                callback(JSON.parse(fileContent));
-            }
-        });
-} */
-
 const getDb = require('../helpers/database').getDb;
 const mongodb = require('mongodb');
 const fs = require('fs');
 const path = require('path');
-
 const ObjectId = mongodb.ObjectId;
-//const MongoClient = mongodb.MongoClient;
 
 class Restaurant 
 {

@@ -1,6 +1,5 @@
 const getDb = require('../helpers/database').getDb;
 const mongodb = require('mongodb');
-
 const ObjectId = mongodb.ObjectId;
 
 class Admin
@@ -74,11 +73,11 @@ class Admin
         const db = getDb();
 
         return db
-            .collection("admin")
-            .find({type: "post"})
-            .toArray()
-            .then(posts => { /* { console.log(orders) */ return posts })
-            .catch(err => console.log(err));
+        .collection("admin")
+        .find({type: "post"})
+        .toArray()
+        .then(posts => { /* { console.log(orders) */ return posts })
+        .catch(err => console.log(err));
     }
 
 }

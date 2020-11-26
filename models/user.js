@@ -1,7 +1,6 @@
 const getDb = require('../helpers/database').getDb;
 const mongodb = require('mongodb');
 const Session = require('./session');
-
 const ObjectId = mongodb.ObjectId;
 
 class User

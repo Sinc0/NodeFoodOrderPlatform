@@ -1,19 +1,11 @@
 const Restaurant = require('../models/restaurant');
-const Cart = require('../models/cart');
 const User = require('../models/user');
-const Session = require('../models/session');
 const Order = require('../models/order');
 const Review = require('../models/review');
 const Admin = require('../models/admin');
-const fs = require('fs');
-const path = require('path');
-const pdfDocument = require('pdfkit');
 const mongodb = require('mongodb');
 const stripe = require('stripe')('sk_test_51HEENaLFUjzCbJftCmqLgpLjLGgjY1OOI81cAAzEBmozVIetOISREohGCuuJq55KX3FGhFHvx9FENcU2zRdrIGmn00wIaynLwu');
 const paypal = require('@paypal/checkout-server-sdk');
-
-
-//******* variables *******
 const ObjectId = mongodb.ObjectId;
 
 
@@ -66,7 +58,7 @@ exports.getRestaurants = (req, res, next) => {
     {
         Restaurant.fetchAll()
         .then(restaurants => {
-            res.render('shop/shop-restaurant-list', {
+            res.render('user/restaurants', {
                 admin: validation.isAdmin,
                 loggedIn: true,
                 prods: restaurants,
@@ -127,7 +119,7 @@ exports.getRestaurantDetail = async (req, res, next) => {
     {
         if(restaurant != null)
         {   
-            res.render('shop/restaurant-detail', {
+            res.render('user/restaurant-detail', {
                 admin: validation.isAdmin,
                 loggedIn: true,
                 IsOpen: restaurant.open,
@@ -150,7 +142,7 @@ exports.getRestaurantDetail = async (req, res, next) => {
 
         if(restaurant != null)
         {   
-            res.render('shop/restaurant-detail', {
+            res.render('user/restaurant-detail', {
                 admin: false,
                 loggedIn: false,
                 IsOpen: restaurant.open,
@@ -186,6 +178,11 @@ exports.getIndex = async (req, res, next) => {
     */
 
     console.log('getIndex\n');
+    console.log(req.ip);
+    console.log(req.connection.remoteAddress);
+    console.log(req.socket.remoteAddress);
+    console.log(req.headers['x-forwarded-for']);
+
     let validation = res.locals.validation;
     let email = res.locals.userEmail;
 
@@ -197,7 +194,7 @@ exports.getIndex = async (req, res, next) => {
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
-        res.render('shop/index', 
+        res.render('user/index', 
         { 
             pageTitle: 'Home',
             path: '/',
@@ -211,7 +208,7 @@ exports.getIndex = async (req, res, next) => {
     {
         var adminPosts = await Admin.fetchAllPosts()
 
-        res.render('shop/index', 
+        res.render('user/index', 
         { 
             pageTitle: 'Home',
             path: '/',
@@ -224,7 +221,7 @@ exports.getIndex = async (req, res, next) => {
     //anonymous user
     else
     {
-        res.render('shop/index', 
+        res.render('user/index', 
         { 
             pageTitle: 'Food Ordering Platform',
             path: '/',
@@ -233,34 +230,6 @@ exports.getIndex = async (req, res, next) => {
         });
     }
     
-}
-
-exports.getCart = (req, res, next) => {
-    console.log('getCart');
-    let validation = res.locals.validation;
-    let userEmail = res.locals.userEmail;
-    let cartProducts = [];
-
-    //logged in user
-    if(validation.status == true)
-    {
-        User.fetchCart(userEmail).then(cartProducts => {
-            res.render('shop/cart', 
-            {
-                admin: validation.isAdmin,
-                loggedIn: true,
-                cartProducts: cartProducts,
-                path: '/cart',
-                pageTitle: 'Your Cart'
-            });
-        })
-    }
-
-    else
-    {
-        res.redirect('/');
-    }
-
 }
 
 exports.getRestaurantList = async (req, res, next) => {
@@ -293,7 +262,7 @@ exports.getRestaurantList = async (req, res, next) => {
     //logged in user
     if(validationStatus == true)
     {
-        res.render('shop/shop-restaurant-list', {
+        res.render('user/restaurants', {
             admin: validation.isAdmin,
             loggedIn: true,
             restaurantImage: "",
@@ -306,7 +275,7 @@ exports.getRestaurantList = async (req, res, next) => {
     //anon user
     else
     {
-        res.render('shop/shop-restaurant-list', {
+        res.render('user/restaurants', {
             admin: false,
             loggedIn: false,
             restaurantImage: "",
@@ -433,123 +402,6 @@ exports.getAddToCart = (req, res, next) => {
     
 }
 
-exports.postCart = (req, res, next) => {   
-    console.log('postCart >');
-    const productId = req.params.productId;
-    let validation = res.locals.validation;
-    let userEmail = res.locals.userEmail;
-    let addToCartSuccessful = 1;
-    let addoCartFailed = 0;
-
-    //console.log(productId);
-    //console.log(userEmail);
-    
-    //logged in user
-    if(validation.status == true)
-    {
-        Restaurant.findById(ObjectId(productId))
-        .then(result => 
-        {
-            let title = result.title;
-            let price = result.price;
-            let description = result.description;
-            let cartArray = [];
-            let checkProductExists = false;
-
-            User.fetchCart(userEmail)
-            .then(result => {
-                //if users cart have items in it
-                if(result != null)
-                {
-                    cartArray = result;
-                    
-                    //checks if product already exists in cart and if true increments quantity
-                    for (elementCtr = 0; elementCtr < cartArray.length; elementCtr++) 
-                    {   
-                        if(cartArray[elementCtr].productId == productId)
-                        {
-                            cartArray[elementCtr].quantity++;
-                            checkProductExists = true;
-                        }
-                    }
-
-                    if(checkProductExists != true)
-                    {
-                        cartArray.push({productId: ObjectId(productId), title: title, quantity: 1, price: price, description: description});
-                    }
-                    
-                    User.addToCart(userEmail, cartArray)
-                    .then(result => {
-                        if(result == addToCartSuccessful)
-                        {
-                            console.log('add item to cart: successful');
-                            res.redirect('/product-list');
-                        }
-
-                        else 
-                        {
-                            console.log('add item to cart: failed');
-                            res.redirect('/product-list');
-                        }
-                    })
-                    .catch(err => {console.log(err)});
-                }
-
-                //if users cart is empty
-                else
-                {
-                    cartArray.push({productId: ObjectId(productId), title: title, quantity: 1, price: price, description: description});
-                    
-                    User.addToCart(userEmail, cartArray)
-                    .then(result => {
-                        if(result == addToCartSuccessful)
-                        {
-                            console.log('add item to cart: sucessful');                            
-                            res.redirect('/product-list');
-                        }
-
-                        else 
-                        {
-                            console.log('add item to cart: failed');
-                            res.redirect('/product-list');
-                        }
-                    })
-                    .catch(err => {console.log(err)});
-                }
-
-            }).catch(err => {console.log(err)});
-        
-        }).catch(err => {console.log(err)});
-    }
-
-    //anon user
-    else
-    {
-        res.redirect('/');
-    }
-   
-        /*
-        User
-            .findById()
-            .then()
-            .catch()
-
-        Product
-        .findById(prodId)
-        .then(product => {
-            
-            res.render('shop/cart', {
-                productImage: "",
-                product: product,
-                path: 'shop/cart'
-            });
-        })
-        .catch(err => console.log(err));
-        */
-        //anonymous user
-    
-}
-
 exports.getOrders = (req, res, next) => {
     console.log('getOrders');
     let validation = res.locals.validation;
@@ -559,7 +411,7 @@ exports.getOrders = (req, res, next) => {
     if(validation.status == true)
     {
         Order.FindByUser(userEmail).then(orders => {
-            res.render('shop/orders', 
+            res.render('user/orders', 
             {
                 admin: validation.isAdmin,
                 loggedIn: true,
@@ -574,7 +426,7 @@ exports.getOrders = (req, res, next) => {
     //anonymous user
     else
     {
-        res.render('shop/index', 
+        res.render('user/index', 
         { 
             pageTitle: 'Home',
             path: '/',
@@ -802,7 +654,7 @@ exports.getCheckout = async (req, res, next) => {
     //logged in user
     if(validation.status == true && cartItems != null)
     {
-        res.render('shop/checkout', 
+        res.render('user/checkout', 
         {
             path: '/checkout',
             pageTitle: 'Checkout',
@@ -833,7 +685,7 @@ exports.getLogout = (req, res, next) => {
             //logged in user
             if(validation.status == true)
             {
-                res.render('shop/logout', {
+                res.render('user/logout', {
                     admin: validation.isAdmin,
                     loggedIn: true,
                     pageTitle: 'Logout',
@@ -872,7 +724,7 @@ exports.postLogout = (req, res, next) => {
             else
             {
                 //console.log('logout failed')
-                res.render('shop/logout', 
+                res.render('user/logout', 
                 { 
                     pageTitle: 'Logout',
                     path: '/logout',
@@ -903,7 +755,7 @@ exports.getProfile = async (req, res, next) => {
     //logged in user
     if(validation.status == true)
     {
-        res.render('shop/profile', 
+        res.render('user/profile', 
         { 
             admin: validation.isAdmin,
             loggedIn: true,
@@ -920,7 +772,7 @@ exports.getProfile = async (req, res, next) => {
     //anonymous user
     else
     {
-        res.render('shop/index', 
+        res.render('user/index', 
         { 
             pageTitle: 'Home',
             path: '/',
@@ -947,7 +799,7 @@ exports.postRegister = (req, res, next) => {
 
             if(result == 'registration successful')
             {
-                res.render('shop/login', 
+                res.render('user/login', 
                 { 
                     pageTitle: 'Login',
                     path: '/login',
@@ -959,7 +811,7 @@ exports.postRegister = (req, res, next) => {
             {
                 console.log('result: ' + result + '\n')
 
-                res.render('shop/register', 
+                res.render('user/register', 
                 {   
                     
                     pageTitle: 'Register',
@@ -972,7 +824,7 @@ exports.postRegister = (req, res, next) => {
             {
                 console.log('result: ' + result + '\n')
 
-                res.render('shop/register', 
+                res.render('user/register', 
                 { 
                     pageTitle: 'Register',
                     path: '/register',
@@ -984,7 +836,7 @@ exports.postRegister = (req, res, next) => {
             {
                 console.log('result: ' + 'database error')
 
-                res.render('shop/register', 
+                res.render('user/register', 
                 { 
                     pageTitle: 'Register',
                     path: '/register',
@@ -1012,7 +864,7 @@ exports.postRegisterRestaurant = async (req, res, next) => {
 
     if(result == 'registration successful')
     {
-        res.render('shop/login', 
+        res.render('user/login', 
         { 
             pageTitle: 'Login',
             path: '/login',
@@ -1022,7 +874,7 @@ exports.postRegisterRestaurant = async (req, res, next) => {
 
     else if(result == 'email is taken')
     {
-        res.render('shop/register', 
+        res.render('user/register', 
         { 
             pageTitle: 'Register',
             path: '/register',
@@ -1032,7 +884,7 @@ exports.postRegisterRestaurant = async (req, res, next) => {
 
     else
     {
-        res.render('shop/register', 
+        res.render('user/register', 
         { 
             pageTitle: 'Register',
             path: '/register',
@@ -1046,7 +898,7 @@ exports.getRegister = (req, res, next) => {
     console.log('\nanon user >');
     console.log('getRegister');
 
-    res.render('shop/register', {
+    res.render('user/register', {
         pageTitle: 'Register',
         path: '/register',
         statusText: ''
@@ -1057,7 +909,7 @@ exports.getLogin = (req, res, next) => {
     console.log('\nanon user >');
     console.log('getLogin');
 
-    res.render('shop/login', {
+    res.render('user/login', {
         pageTitle: 'Login',
         path: '/login',
         statusText: ''
@@ -1100,7 +952,7 @@ exports.postLogin = async (req, res, next) => {
         else if(result == 'email is invalid')
         {
             console.log('login user: email is invalid');
-            res.render('shop/login', 
+            res.render('user/login', 
             { 
                 pageTitle: 'Login',
                 path: '/login',
@@ -1111,7 +963,7 @@ exports.postLogin = async (req, res, next) => {
         else if(result == 'invalid password')
         {
             console.log('login user: invalid password');
-            res.render('shop/login', 
+            res.render('user/login', 
             { 
                 pageTitle: 'Login',
                 path: '/login',
@@ -1122,7 +974,7 @@ exports.postLogin = async (req, res, next) => {
         else if(result == 'database error, try again in a few minutes')
         {
             console.log('login user: database error');
-            res.render('shop/login', 
+            res.render('user/login', 
             { 
                 pageTitle: 'Login',
                 path: '/login',
@@ -1170,7 +1022,7 @@ exports.getOrderDetails = async (req, res, next) => {
         
         if(validation.status == true)
         {
-            res.render('shop/order-details', 
+            res.render('user/order-details', 
             { 
                 admin: validation.isAdmin,
                 pageTitle: 'Order Details',
@@ -1209,7 +1061,7 @@ exports.getOrderProcess = async (req, res, next) => {
         var orderPickup = order.pickUp;
         var orderDelivery = order.delivery;
     
-        res.render('shop/order-process', 
+        res.render('user/order-process', 
         { 
             order: order
         });
@@ -1232,24 +1084,6 @@ exports.postOrderUpdate = async (req, res, next) => {
     var order = await Order.updateOne(orderId, status, estimatedCompletionTime);
 
     res.redirect('back');
-}
-
-exports.postOrderDetails = async (req, res, next) => {
-    console.log('\npostOrderDetails Test');
-
-    console.log(req.body);
-    
-    let event = req.body;
-    
-    /*
-    res.render('shop/order-details', 
-    { 
-        orderId, orderId,
-        orderDate: orderDate,
-        totalPrice: totalPrice,
-        orderItems: orderItems
-    });
-    */
 }
 
 exports.postWebhook = (req, res, next) => {
@@ -1293,54 +1127,6 @@ exports.postWebhook = (req, res, next) => {
   
 }
 
-exports.getUnconfirmedOrders = async (req, res, next) => {
-    console.log('\ngetUnconfirmedOrders');
-
-    var orders = await Order.fetchAllUnconfirmed();
-    
-    res.render('shop/orders-unconfirmed', 
-    { 
-        orders: orders
-    });
-
-}
-
-exports.getConfirmedOrders = async (req, res, next) => {
-    console.log('\ngetConfirmedOrders');
-
-    var orders = await Order.fetchAllConfirmed();
-    
-    res.render('shop/orders-confirmed', 
-    { 
-        orders: orders
-    });
-
-}
-
-exports.getDeclinedOrders = async (req, res, next) => {
-    console.log('\ngetConfirmedOrders');
-
-    var orders = await Order.fetchAllDeclined();
-    
-    res.render('shop/orders-declined', 
-    { 
-        orders: orders
-    });
-
-}
-
-exports.getCompletedOrders = async (req, res, next) => {
-    console.log('\ngetCompletedOrders');
-
-    var orders = await Order.fetchAllCompleted();
-    
-    res.render('shop/orders-completed', 
-    { 
-        orders: orders
-    });
-
-}
-
 exports.postUserUpdateCredentials = async (req, res, next) => {
     console.log('\npostUserUpdateCredentials Test');
 
@@ -1361,37 +1147,6 @@ exports.postUserUpdateCredentials = async (req, res, next) => {
 
     res.redirect('/profile');
 }
-
-/* exports.postUserUpdateEmail = async (req, res, next) => {
-    console.log('\npostUserUpdateEmail Test');
-
-    let loginCookie = req.get('Cookie');
-    let cookieId = parseLoginCookie(loginCookie);
-    console.log(cookieId);
-    
-    var oldEmail = req.body.oldEmail;
-    var newEmail = req.body.newEmail;
-
-    var checkIfEmailIsTaken = await User.findByEmail(newEmail);
-
-    if(checkIfEmailIsTaken == null)
-    {
-        var updateUser = await User.updateEmail(oldEmail, newEmail);
-        res.redirect('/login');
-    }
-    
-    else if(checkIfEmailIsTaken != null)
-    {
-        res.redirect('error');
-    }
-
-    //var deleteSession = await Session.deleteOne(cookieId);
-
-    //res.setHeader('Set-Cookie', 'loginCookie='); 
-
-    //res.redirect('/');
-
-} */
 
 exports.postUserUpdatePassword = async (req, res, next) => {
     console.log('\npostUserUpdatePassword Test');
@@ -1430,7 +1185,7 @@ exports.getAbout = (req, res, next) => {
     console.log('\nanon user >');
     console.log('getAbout');
 
-    res.render('shop/about', {
+    res.render('user/about', {
 
     })
 }
@@ -1439,7 +1194,7 @@ exports.getContact = (req, res, next) => {
     console.log('\nanon user >');
     console.log('getContact');
 
-    res.render('shop/contact', {
+    res.render('user/contact', {
 
     })
 }
@@ -1777,7 +1532,7 @@ exports.postRestaurantWelcomeMessage = async (req, res, next) => {
 exports.getTest = async (req, res, next) => {
     console.log('getTest');
 
-    res.render('shop/test.ejs', 
+    res.render('user/test.ejs', 
     { 
 
     });
@@ -1822,7 +1577,7 @@ exports.getGoogleMapsApiTest = async (req, res, next) => {
     console.log(req.body);
     console.log(res.locals.userEmail);
 
-    res.render('shop/googleMapsApi.ejs', 
+    res.render('user/googleMapsApi.ejs', 
     { 
 
     });
