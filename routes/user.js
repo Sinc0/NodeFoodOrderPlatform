@@ -36,6 +36,7 @@ router.post('/user-update-password', validation, shopController.postUserUpdatePa
 router.post('/order-post', validation, shopController.postOrder);
 router.post('/logout-post', validation, shopController.postLogout);
 router.post('/webhook', shopController.postWebhook);
+router.post('/review-post', validation, shopController.postRestaurantReview);
 
 //restaurant portal
 router.get('/restaurantPortal', restaurantValidation, shopController.getRestaurantIndex);
@@ -55,8 +56,7 @@ router.post('/restaurantPortal/menuOnline', restaurantValidation, shopController
 router.post('/restaurantPortal/welcomeMessage', restaurantValidation, shopController.postRestaurantWelcomeMessage);
 
 //tests
-router.post('/review-post', validation, shopController.postRestaurantReview);
-router.get('/googleMapsApiTest', validation, shopController.getGoogleMapsApiTest);
+//router.get('/googleMapsApiTest', validation, shopController.getGoogleMapsApiTest);
 //router.get('/stripe', validation, shopController.getStripe);
 //router.get('/paypalTest', shopController.getTest);
 router.post('/paypalCreateOrder', validation, shopController.getPayPalCreateOrder);

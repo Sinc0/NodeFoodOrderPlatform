@@ -1089,7 +1089,7 @@
         </script>
     </head>
     <script>clearLocalStorage()</script>
-    <a href="/portal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
+    <a href="/restaurantPortal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
     <body style="margin-bottom: 50px; text-align: center; background-color: lightgray;" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
         
         <!-- hours -->
@@ -1228,7 +1228,7 @@
                                         <input id="<%=itemInputCategory %>" name="" disabled value="<%=itemCategory %>" class="itemInput" style="display: none;"></input>
                                         <input id="<%=itemInputPosition %>" name="" disabled onkeyup="setItemLocalStorage('<%=item %>')" placeholder="position" class="itemInput" style="display: none;"></input>
                                         
-                                        <input id="<%=itemInputTitle %>" name="" onkeyup="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].title %>" class="itemInput" maxlength="50"></input>
+                                        <input id="<%=itemInputTitle %>" name="" onkeyup="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].title %>" class="itemInput" maxlength="25"></input>
                                         <input id="<%=itemInputPrice %>" name=""  onchange="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].price %>" class="itemInput" maxlength="10"></input>
                                         <input id="<%=itemInputDescription %>" name="" onkeyup="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].description %>" class="itemInput" maxlength="255"></input>
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/mobile.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <title>Home</title>
     <script>
@@ -128,31 +129,31 @@
 <body style="background-color: lightgray;" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()"></body>
     <%- include('../snippets/html_nav_menu_admin.ejs') %>
 
-    <script>
+    <!-- <script>
         var navButtonAdminHome = document.getElementById("navButtonAdminHome");
         navButtonAdminHome.style.backgroundColor = "lightgray";
-    </script>
+    </script> -->
 
-    <div style="margin: auto; width: 400px; text-align: center;">
+    <div style="margin: auto; text-align: center;">
         
         <div id="adminPostNews">
             <h2 style="margin: 0px; margin-top: 25px; margin-bottom: 5px; padding: 0px;">Post News</h2>
             
             <% var adminPostsCount = adminPosts.length + 1%>
 
-            <div>
+            <div id="adminPostNewsPost">
                 <form action="/admin/post-newsPost" method="POST">
                     <input hidden name="type" value="post"></input>
                     <input hidden name="postId" value="<%=adminPostsCount %>"></input>
                     <input hidden name="date" value="<%=new Date() %>"></input>
-                    <input name="title" placeholder="Title" style="margin: 0px; padding-left: 5px; width: 391px; border: 1px solid black; border-bottom: 0px; font-size: 20px;"></input><br />
-                    <textarea name="text" style="margin: 0px; margin-bottom: -4px; padding: 5px; min-height: 150px; max-height: 500px; min-width: 388px; max-width: 338px; border: 1px solid black;" placeholder="Placeholder Text"></textarea>
-                    <button type="submit" style="margin: 0px; padding: 0px; height: 25px; width: 400px; border: 0; background-color: #f7f9f9; border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;"><b>Confirm Post</b></button>
+                    <input id="adminPostNews-title-input" name="title" placeholder="Title" style="border: 1px solid black; border-bottom: 0px; font-size: 20px;"></input><br />
+                    <textarea id="adminPostNews-textarea" name="text" style="margin-bottom: -5px; min-height: 150px; max-height: 500px; border: 1px solid black;" placeholder="Placeholder Text"></textarea>
+                    <button id ="adminPostNews-submit-button" type="submit" style="padding: 0px; height: 25px; border: 0; background-color: #f7f9f9; border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;"><b>Confirm Post</b></button>
                 </form>
             </div>
 
         <div id="searchBox" style="margin: 0px; margin-top: 25px; padding: 0px; text-align: center;">
-            <input id="searchBoxInput" style="margin-bottom: 25px; height: 38px; width: 396px;" placeholder="Search..." onkeyup="search('<%=adminPosts.length %>')"></input>
+            <input id="searchBoxInput" class="search-admin" style="margin-bottom: 25px; height: 38px;" placeholder="Search..." onkeyup="search('<%=adminPosts.length %>')"></input>
         </div>
 
         <h3 id="totalAdminPostsText" style="margin-top: 25px; margin-bottom: 15px; text-align: center;">Total Posts: <%=adminPosts.length %></h3>
@@ -171,7 +172,7 @@
 
             <!-- edit -->
             <div class="admin-edit" hidden id="edit-adminPost#<%=i + 1%>">
-                <button class="admin-card-button" style="margin-bottom: 10px; margin-top: 10px; margin-right: 303px;" onclick="undisplayEditAdminPost('<%=i + 1%>')"><b>Cancel</b></button><br />
+                <button id="admin-cancel-button" class="admin-card-button" onclick="undisplayEditAdminPost('<%=i + 1%>')"><b>Cancel</b></button><br />
 
                 <form action="/admin/edit-NewsPost" method="POST">
                     <input class="input-admin" name="id" value="<%=adminPosts[i]._id %>"></input><br />

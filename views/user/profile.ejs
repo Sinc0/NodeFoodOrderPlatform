@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%=pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/mobile.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script>
         function checkQueryParams()
@@ -74,7 +75,7 @@
                 errorText.style.paddingTop = "25px";
                 errorText.innerHTML = "<b>passwords dont match</b>";
                 errorText.style.color = "red";
-                confirmButton.disabled = true;
+                confirmButton.hidden = true;
             }
 
             else if(newPassword.value == confirmPassword.value && confirmPassword.value != "")
@@ -82,7 +83,7 @@
                 errorText.style.paddingTop = "25px";
                 errorText.innerHTML = "<b>passwords match</b>";
                 errorText.style.color = "green";
-                confirmButton.disabled = false;
+                confirmButton.hidden = false;
             }
             
         }
@@ -168,7 +169,7 @@
 
 <body onload="checkQueryParams()" style="background-color: lightgray">
     <!-- admin view -->
-    <% if(admin == true) { %>
+    <% if(admin != null && admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
     
     <!-- logged in user view -->
@@ -188,11 +189,11 @@
 
         <p style="margin: 0px; padding: 0px; margin-top: 15px; margin-bottom: 5px;"><b>Credentials</b></p>
         
-        <div id="profileCredentials" style="margin: auto; display: block; width: 400px;">
-            <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; width: 400px; border-bottom: 1px solid black; background-color: #f7f9f9;"><b>name:</b> <%=name %></p>
-            <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; width: 400px; border-bottom: 1px solid black; background-color: #f7f9f9;"><b>email:</b> <%=email %></p>
-            <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; width: 400px; border-bottom: 1px solid black;  background-color: #f7f9f9;"><b>phone:</b> <%=phone %></p>
-            <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; width: 400px; background-color: #f7f9f9;"><b>address:</b> <%=address %></p>
+        <div id="profileCredentials" style="margin: auto; display: block;">
+            <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid black; background-color: #f7f9f9;"><b>name:</b> <%=name %></p>
+            <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid black; background-color: #f7f9f9;"><b>email:</b> <%=email %></p>
+            <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid black;  background-color: #f7f9f9;"><b>phone:</b> <%=phone %></p>
+            <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; background-color: #f7f9f9;"><b>address:</b> <%=address %></p>
             <p><b></b></p>
             <p><b></b></p>
             <p><b></b></p>
@@ -211,8 +212,8 @@
             </form>
         </div> -->
 
-        <button class="profile-buttons" style="height: 30px; width: 400px;" onclick="editProfileCredentials()"><b>change credentials</b></button><br />
-        <div id="editProfileCredentials" style="margin: auto; width: 400px; background-color: #f7f9f9; display: none; border-top: 1px solid black;">
+        <button class="profile-buttons" style="height: 30px;" onclick="editProfileCredentials()"><b>change credentials</b></button><br />
+        <div id="editProfileCredentials" style="margin: auto; background-color: #f7f9f9; display: none; border-top: 1px solid black;">
             <form action="/user-update-credentials" method="POST" onkeydown="return event.key != 'Enter';">
                 <input hidden value="<%=email %>" name="email"></input>
                 <input hidden id="userAddress" value="<%=address %>" name="address" placeholder="address"></input>
@@ -227,17 +228,17 @@
             <!-- <button class="profile-buttons"  onclick="editProfileCredentials()">decline</button> -->
         </div>
         
-        <button class="profile-buttons" style="height: 30px; width: 400px; border-top: 1px solid black;" onclick="editProfilePassword()"><b>change password</b></button>
-        <div id="editProfilePassword" style="margin: auto; width: 400px; background-color: #f7f9f9; display: none; border-top: 1px solid black;">
+        <button class="profile-buttons" style="height: 30px; border-top: 1px solid black;" onclick="editProfilePassword()"><b>change password</b></button>
+        <div id="editProfilePassword" style="margin: auto; background-color: #f7f9f9; display: none; border-top: 1px solid black;">
             <form action="/user-update-password" method="POST" onkeydown="return event.key != 'Enter';">
                 <p id="errorText"></p>
                 <input hidden value="<%=email %>" name="email"></input>
                 
-                <b>old password: </b><input name="oldPassword" type="password" style="margin-bottom: -1px; margin-top: 25px;"></input><br/><br />
-                <b style="margin-left: -7.5px;">new password: </b><input id="newPassword" name="newPassword" type="password" onkeyup="passwordMatch()" style="margin-bottom: -1px;"><br />
-                <b style="margin-left: -35px;">confirm password: </b><input id="confirmPassword" name="confirmPassword" type="password" style="margin-bottom: 25px;" onkeyup="passwordMatch()"><br />
+                <b>old password: </b><input required name="oldPassword" type="password" style="margin-bottom: -1px; margin-top: 25px;"></input><br/>
+                <b style="margin-left: -7.5px;">new password: </b><input required id="newPassword" name="newPassword" type="password" onkeyup="passwordMatch()" style="margin-bottom: -1px;"><br />
+                <b style="margin-left: -35px;">confirm password: </b><input required id="confirmPassword" name="confirmPassword" type="password" style="margin-bottom: 25px;" onkeyup="passwordMatch()"><br />
                 
-                <button disabled id="confirmButton" class="profile-buttons confirm-button" type="submit" style="height: 25px; margin-bottom: 25px; border: 1px solid lightgrey;"><b>confirm</b></button>
+                <button hidden id="confirmButton" class="profile-buttons confirm-button" type="submit" style="height: 25px; margin-bottom: 25px; border: 1px solid lightgrey;"><b>confirm</b></button>
             </form>
             
             <!-- <button class="profile-buttons"  onclick="editProfileCredentials()">decline</button> -->

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html id="html-checkout" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/restaurant.css">
     <link rel="stylesheet" href="/css/stripeForm.css" />
+    <link rel="stylesheet" href="/css/mobile.css" />
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script src="https://js.stripe.com/v3/"></script>
     <script src="/js/stripe.js" defer></script>
@@ -158,7 +159,7 @@
             f.hidden = true;
 
             var d = document.getElementById("selected-payment-option");
-            d.style = "margin: 0px; margin-top: -40px; margin-left: -30px; width: 400px; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center;"
+            d.style = "margin: 0px; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center;"
         }
 
         function goBack()
@@ -167,7 +168,7 @@
         }
     </script>
 </head>
-<body id="body-checkout" onload="cartAllItems()" style="background-color: lightgray;">
+<body id="body-checkout" onload="cartAllItems()">
     <div id="navBarGoBack">
         <button onclick="goBack()" style="border: 0; border-style: none; border-radius: 0%; height: 40px; background-color: #3c41d6;"></button>
     </div>
@@ -182,29 +183,33 @@
     </div>
 
     <div id="checkoutCenterDiv" style="margin-top: 25px;">
-        <div id="checkoutCartItems" style="margin: auto; width: 400px; text-align: center;">
+        <div id="checkoutCartItems" style="margin: auto; text-align: center;">
             <h2 style="margin: 0px; margin-top: -2px; margin-bottom: 0px; border: 0px solid black; padding: 6px; 
             background-color: #f7f9f9">Confirm Order</h2><br />
             <h2 style="padding-top: 0px;">Items</h2>
+            
+            <% for(var c = 0; c < cartItemsParsed.items.length; c++) { %>
+                <p><b>(<%=cartItemsParsed.items[c].quantity %>) <%=cartItemsParsed.items[c].name %> - $<%=(cartItemsParsed.items[c].price * cartItemsParsed.items[c].quantity) %></b></p>
+            <% } %>       
             <!-- <h3>Total</h3> -->
             <!-- <h3>Items</h3> -->
         </div>
 
-        <div id="checkoutTotalAmount" style="margin: auto; margin-top: -2px; width: 400px; text-align: center; background-color: #3c41d6;">
+        <div id="checkoutTotalAmount" style="margin: auto; margin-top: -2px; text-align: center; background-color: #3c41d6;">
             <br /><h2 style="margin: 0px; padding: 0px; padding-top: 0px; padding-bottom: 0px;">Total: $<%=cartTotalPrice %></h2><br />
         </div>
         
-        <div id="orderFormDiv" style="width: 400px; margin: auto; margin-top: -1px; padding: 10px; background-color: #3c41d6;">
+        <div id="orderFormDiv" style="margin: auto; margin-top: -1px; padding: 10px; background-color: #3c41d6;">
         <!-- <h2 style="margin: 0px; margin-bottom: 5px; text-align: center;">Credentials</h2> -->
             <form id="post-order-form" action="/order-post" method="POST" style="background-color: #3c41d6; border: 0px solid transparent; border-style: none; box-shadow: none;">
-                <input hidden id="cartAllItems" name="cartAllItems"></input>
-                <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
+                <input hidden id="cartAllItems" name="cartAllItems" value="<%=cartItems %>"></input>
+                <input hidden id="cartTotalPrice" name="cartTotalPrice" value="<%=cartTotalPrice %>"></input>
                 <input hidden id="choosenRestaurant" name="restaurant" value="<%=restaurant %>"></input>
                 <input hidden id="customerDelivery"></input>
                 <input hidden id="customerAddress" name="customerAddress" value='<%=customerAddress %>' placeholder="address"></input>
-                <input id="customerName" name="customerName" value='<%=customerName %>' placeholder="name" style="margin: 0px; margin-left: -10px; padding: 5px; width: 400px; border: 0; border-bottom: 1px solid black; border-radius: 0%; background-color: #EFEFEF;"></input>
-                <input id="searchInput" value="<%=customerAddress %>" style="margin: 0; margin-left: -10px; padding: 5px; width: 400px; border: 0; border-radius: 0%; border-bottom: 1px solid black; background-color: #EFEFEF;">
-                <input id="customerPhone" name="customerPhone" value='<%=customerPhone %>' type="tel" placeholder="phone" style="margin: 0; margin-left: -10px; padding: 5px; width: 400px; border: 0; border-radius: 0%; border-bottom: 1px solid black; background-color: #EFEFEF;"></input>
+                <input id="customerName" name="customerName" value='<%=customerName %>' placeholder="name" style="margin: 0px; margin-left: -10px; padding: 5px; border: 0; border-bottom: 1px solid black; border-radius: 0%; background-color: #EFEFEF;"></input>
+                <input id="searchInput" value="<%=customerAddress %>" style="margin: 0; margin-left: -10px; padding: 5px; border: 0; border-radius: 0%; border-bottom: 1px solid black; background-color: #EFEFEF;">
+                <input id="customerPhone" name="customerPhone" value='<%=customerPhone %>' type="tel" placeholder="phone" style="margin: 0; margin-left: -10px; padding: 5px; border: 0; border-radius: 0%; border-bottom: 1px solid black; background-color: #EFEFEF;"></input>
                 <textarea id="customerCommentCheckout" name="customerComment" placeholder="comment to restaurant" style="margin-left: -10px; padding: 5px;"><%=customerComment %></textarea>
                 
                 <div style="width: 150px; margin: auto; padding-top: 5px; padding-bottom: 0px; border: 1px">
@@ -218,7 +223,7 @@
             </form>
         </div>
 
-        <div hidden id="new-list-of-payment-options" style="margin: auto; background-color: #f7f9f9; width: 400px; text-align: center; font-size: 19px;">
+        <div hidden id="new-list-of-payment-options" style="margin: auto; background-color: #f7f9f9; text-align: center; font-size: 19px;">
             <div>
                 <h3 style="padding-top: 7px; padding-bottom: 7px;">Select Payment Option</h3>
             </div>

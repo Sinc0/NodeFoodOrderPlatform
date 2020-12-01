@@ -1,0 +1,421 @@
+@media screen and (max-width: 800px) 
+{
+    /* search */
+    #searchBoxInput
+    {
+        margin-top: 4px;
+        width: 95vw;
+    }
+
+    /* anon index */
+    #indexAnonMenu, #indexAnonFooter
+    {
+        margin: auto;
+        width: 100vw;
+        text-align: center;
+    }
+
+    #indexAnonMenu
+    {
+        margin-top: 62.5px;
+        top: 0;
+    }
+
+    .indexAnonMenuItem
+    {
+        border-bottom: 1px solid black;
+    }
+
+    #indexAnonMenuAboutButton, #indexAnonMenuContactButton
+    {
+        width: 100vw;
+    }
+
+    /* restaurants */
+    .restaurantMenuItemImg
+    {
+        display: block;
+        background-color: orange;
+    }
+
+    .restaurantMenuItemImg
+    {
+        display: none;
+    }
+
+    .restaurantMenuItem
+    {
+        width: 100vw;
+    }
+
+    #searchBoxRestaurants input
+    {
+        display: block;
+        margin: auto;
+        width: 98vw;
+        text-align: center;
+    }
+
+    .restaurantMenuItem
+    {   
+        margin-top: 25px;
+        margin-bottom: 25px;
+    }
+
+    .restaurantMenuItemText
+    {
+        display: block;
+        margin: 0px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        height: 130px;
+        width: 97vw;
+        text-align: center;
+        border: 0px solid black;
+        border-top: 4px solid black;
+        border-bottom: 4px solid black;
+    }
+
+    #body-restaurants
+    {
+        overflow-y: scroll;
+    }
+
+    .restaurantReview
+    {
+        margin-top: 0px;
+        margin-bottom: 5px;
+        width: 97vw;
+    }
+
+    .restaurantReviewModal
+    {
+        margin-top: 3px;
+        overflow-x: hidden;
+        background-color: black;
+    }
+
+    .restaurantReviewModal::-webkit-scrollbar 
+    {
+        display: none;
+    }
+
+    /* restaurant-detail */
+    #testBackground
+    {
+        width: 98vw;
+    }
+
+    #menu
+    {
+        width: 98vw;
+    }
+
+    .menu-item
+    {
+        margin-top: 5px;
+        width: 98vw;
+    }
+
+    .menu-item-texts
+    {
+        width: 70%;
+    }
+
+    #main-menu
+    {
+        margin: 0px;
+        padding-top: 3.5px;
+        background-color: black;
+    }
+
+    #side-cart
+    {
+        display: block;
+        position: relative;
+        padding-bottom: 4px;
+        width: 98vw;
+    }
+
+    #customerComment
+    {
+        min-width: 96.5vw;
+        max-width: 96.5vw;
+    }
+    
+    #order-button-mobile, #total-price-mobile
+    {
+        display: block;
+    }
+
+    #order-button
+    {
+        display: none;
+    }
+
+    #total-price
+    {
+        display: none;
+    }
+
+    .cart-item button
+    {
+        width: 45px;
+    }
+
+    #informAnonModal
+    {
+        width: 84vw;
+    }
+
+    #modalButton
+    {
+        position: absolute;
+        right: -1px;
+        width: 25px;
+        margin-left: 0px;
+    }
+
+    #menu input
+    {
+        width: 98vw;
+    }
+
+    /* nav */
+    .main-header__nav
+    {
+        overflow-x: scroll;
+    }
+
+    .main-header__nav::-webkit-scrollbar
+    {
+        display: none;
+    }
+
+    #navButtonOrders
+    {
+        margin-right: -1px;
+    }
+
+    /* button */
+    button:focus, button:hover
+    {
+        background-color: white;
+        color: black;
+    }
+
+    button:active
+    {
+        background-color: #3e00a1;
+    }
+
+    /* checkout */
+    #checkoutCartItems, #customerCommentCheckout, #checkoutTotalAmount, #orderFormDiv, #customerName, #searchInput, #customerPhone
+    {
+        margin-left: -1px;
+        width: 98vw;
+    }
+
+    #checkoutCenterDiv
+    {
+        width: 95vw;
+        margin-left: 3.5px;
+    }
+
+    #customerCommentCheckout
+    {
+        max-width: 98vw;
+        min-width: 98vw;
+    }
+
+    #body-checkout
+    {
+        width: 100vw;
+        background-color: black;
+    }
+    
+    #body-checkout iframe
+    {
+        width: 0px;
+    }
+
+    #html-checkout
+    {
+        width: 100vw;
+    }
+
+    #new-list-of-payment-options
+    {
+        width: 98vw;
+    }
+
+    #selected-payment-option
+    {
+        width: 98vw;
+    }
+
+    /* order process */
+    #order-process-content
+    {
+        width: 90vw;
+    }
+
+    /* home */
+    #indexHelpButtons
+    {
+        width: 90vw;
+    }
+
+    .admin-card
+    {
+        width: 90vw;
+    }
+
+    /* orders */
+    .order-item
+    {
+        display: block;
+        margin:  auto;
+        margin-left: -2px;
+        width: 89vw;
+    }
+
+    #grid-orders
+    {
+        width: 95vw;
+    }
+
+    .order-review
+    {
+        margin-left: -2px;
+        padding: 10px;
+        width: 89vw;
+    }
+
+    .textareaReviewComment
+    {
+        min-width: 87vw;
+        max-width: 87vw;
+    }
+
+    #body-orders input
+    {
+        margin-left: -2px;
+        width: 94vw;
+    }
+
+    /* order details */
+    #main-order-details
+    {
+        width: 89vw;
+    }
+
+    /* profile */
+    #profileCredentials
+    {
+        width: 94vw;
+    }
+
+    .profile-buttons
+    {
+        width: 94vw;
+    }
+
+    .confirm-button
+    {
+        width: 50vw;
+    }
+
+    #editProfileCredentials
+    {
+        width: 94vw;
+    }
+
+    #editProfilePassword
+    {
+        width: 94vw;
+    }
+
+    #editProfilePassword input
+    {
+        width: 30vw;
+    }
+
+    /* logout */
+    #main-logout
+    {
+        width: 94vw;
+    }
+
+    /* login */
+    #main-login
+    {
+        width: 94vw;
+    }
+
+    /* register */
+    #main-register
+    {
+        width: 94vw;
+    }
+
+    /* about */
+    #main-about
+    {
+        padding-bottom: 25px;
+        width: 94vw;
+    }
+
+    /* contact */
+    #main-contact
+    {
+        width: 71vw;
+    }
+
+    /* admin home */
+    .admin-edit, .admin-delete
+    {
+        width: 95.5vw;
+    }
+
+    .input-admin
+    {
+        width: 80vw;
+    }
+
+    #admin-cancel-button
+    {
+        display: block;
+        margin: auto;
+        margin-top: 10px;
+        margin-bottom: -7px;
+        width: 200px;
+        text-align: center;
+    }
+
+    #adminPostNewsPost
+    {
+        display: block;
+        margin: auto;
+        width: 95vw;
+    }
+
+    #adminPostNews-title-input
+    {
+        padding: 0px;
+        width: 100%;
+    }
+
+    #adminPostNews-textarea
+    {
+        padding: 0px;
+        min-width: 100%;
+        max-width: 100%;       
+    }
+    
+    #adminPostNews-submit-button
+    {
+        padding: 0px;
+        width: 100%;
+    }
+}

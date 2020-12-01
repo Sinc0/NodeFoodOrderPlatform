@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/mobile.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script>    
         function searchBoxOrders(totalOrders)
@@ -73,9 +74,9 @@
         }
     </script>
 </head>
-<body style="background-color: lightgray" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
+<body id="body-orders" style="background-color: lightgray" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
     <!-- admin view -->
-    <% if(admin == true) { %>
+    <% if(admin != null && admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
     
     <!-- logged in user view -->
@@ -90,7 +91,7 @@
     <br />
 
     <div id="searchBox" style="margin-top: 6.5px; margin-bottom: 0px; text-align: center;"  onkeyup="searchBoxOrders('<%=orders.length %>')">
-        <input id="searchBoxInput" style="height: 40px; width: 396px;" placeholder="Search..."></input>
+        <input id="searchBoxInput" style="height: 40px;" placeholder="Search..."></input>
     </div>
 
     <!-- <div id="filterBox" style="margin: auto; width: 400px; text-align: center;">
@@ -121,8 +122,8 @@
                     <h3 style="margin: 0px; margin-left: -10px; margin-right: -10px; padding-top: 5px; padding-bottom: 5px; text-align: center; border-bottom: 1px solid black;"><%=order.restaurant %></h3>
                     <!-- <p style="padding-top: 5px;"><b>#<%=counter %></b></p> -->
                     
-                    <div id="orders-show-detail" style="margin-left: -10px; width: 398px; border-bottom: 1px solid black;">
-                        <a href='/order-details/<%=order._id %>'><p style="margin: 0px; padding-top: 2.5px; padding-bottom: 2.5px;" style="text-decoration: none;"><b style="padding-left: 10px;">show details</b></p></a>
+                    <div id="orders-show-detail">
+                        <a href='/order-details/<%=order._id %>'><p style="margin: 0px; margin-left: -10px; margin-right: -10px; padding-top: 2.5px; padding-bottom: 2.5px; border-bottom: 1px solid black;" style="text-decoration: none;"><b style="padding-left: 10px;">show details</b></p></a>
                     </div>
 
                     <p style="margin-top: 5px;"><b>placed at:</b> <%=order.placedAt %></p>
@@ -184,7 +185,7 @@
                     <% orderItems.push(order.products.items[c].name) %>
                 <% } %>
             
-                <div id="order-review#<%=counter %>" class="order-review" style="position: relative; display: none; z-index: 1; width: 338px; margin-left: -7px; padding: 30px; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; background-color: #f7f9f9;">
+                <div id="order-review#<%=counter %>" class="order-review" style="position: relative; display: none; z-index: 1; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; background-color: #f7f9f9;">
                     <form action="/review-post" method="POST">
                         <input hidden name="orderId" value="<%=order._id %>"></input>
                         <input hidden name="restaurant" value="<%=order.restaurantUrl %>"></input>
@@ -199,7 +200,7 @@
 
                                 <b>comment</b><br />
                             </div>
-                            <textarea name="comment" maxlength="250" style ="min-height: 100px; min-width: 100%; max-width: 100%; border: 1px solid lightgray;"></textarea><br />
+                            <textarea class="textareaReviewComment" name="comment" maxlength="250" style ="min-height: 100px; border: 1px solid lightgray;"></textarea><br />
                         <% } %>
                         
                         <% if(order.review != null) { %>
@@ -211,7 +212,7 @@
 
                                 <b>comment</b><br />
                             </div>
-                            <textarea name="comment" maxlength="250" style ="min-height: 100px; min-width: 100%; max-width: 100%; border: 1px solid lightgray;"><%=order.review.comment %></textarea><br />
+                            <textarea class="textareaReviewComment" name="comment" maxlength="250" style ="min-height: 100px; border: 1px solid lightgray;"><%=order.review.comment %></textarea><br />
                         <% } %>
                         
                         <div style="text-align: center;">

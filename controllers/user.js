@@ -438,6 +438,7 @@ exports.getOrders = (req, res, next) => {
 
 exports.postOrder = async (req, res, next) => {
     console.log('postOrder >');
+    console.log(req.body);
     let validation = res.locals.validation;
     let userEmail = res.locals.userEmail;
     let insertSuccessful = 1;
@@ -453,99 +454,98 @@ exports.postOrder = async (req, res, next) => {
     let customerAddress = req.body.customerAddress;
     let customerDelivery = req.body.customerDelivery;
     let customerComment = req.body.customerComment;
-    
     let orderProducts = JSON.parse(cartItems);
 
     //logged in user
     if(validation.status == true)
     {
-        var r = await Restaurant.findByUrl(restaurant);
-        var restaurantTitle  = r.title;
-        var createOrder = await Order.createOrder(userEmail, orderProducts, totalPrice, customerComment, restaurant, customerName, customerPhone, customerAddress, customerDelivery, restaurantTitle);
-        var orderId = createOrder.ops[0]._id;
+         var r = await Restaurant.findByUrl(restaurant);
+         var restaurantTitle  = r.title;
+         var createOrder = await Order.createOrder(userEmail, orderProducts, totalPrice, customerComment, restaurant, customerName, customerPhone, customerAddress, customerDelivery, restaurantTitle);
+         var orderId = createOrder.ops[0]._id;
 
-        if(createOrder.insertedCount != null)
-        {
+         if(createOrder.insertedCount != null)
+         {
             console.log('create order: successful');
             //res.redirect('/orders');
-            res.redirect("/order-process/" + orderId);
+             res.redirect("/order-process/" + orderId);
             
-            /*
-            let order;
-            order = result.ops;
+             /*
+             let order;
+             order = result.ops;
 
-            let id = order[0]._id;
-            let user = order[0].user;
-            let date = order[0].date;
-            let products = order[0].products;
-            let totalPrice = order[0].totalPrice;
+             let id = order[0]._id;
+             let user = order[0].user;
+             let date = order[0].date;
+             let products = order[0].products;
+             let totalPrice = order[0].totalPrice;
                                     
-            //create order pdf
-            const reciept = 'Reciept=' + id + '.pdf';
-            const recieptPath = path.join(__dirname, '..', 'public/' + 'orderReciepts', reciept);
-            const pdfReciept = new pdfDocument();
+             //create order pdf
+             const reciept = 'Reciept=' + id + '.pdf';
+             const recieptPath = path.join(__dirname, '..', 'public/' + 'orderReciepts', reciept);
+             const pdfReciept = new pdfDocument();
         
-            //console.log(reciept);
+             //console.log(reciept);
             
-            res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', 'inline; filename="' + reciept + '"');
+             res.setHeader('Content-Type', 'application/pdf');
+             res.setHeader('Content-Disposition', 'inline; filename="' + reciept + '"');
             
-            pdfReciept.pipe(fs.createWriteStream(recieptPath));
-            //pdfReciept.pipe(res); redirects to pdf document
-            //pdfReciept.fontSize(26).text('Reciept', {
-                //underline: true
-            //})
+             pdfReciept.pipe(fs.createWriteStream(recieptPath));
+             //pdfReciept.pipe(res); redirects to pdf document
+             //pdfReciept.fontSize(26).text('Reciept', {
+                 //underline: true
+             //})
 
-            //write pdf start
-            try 
-            {
-                pdfReciept.text('Order: ' + id)
-                pdfReciept.text('\n');
-                pdfReciept.text('Date: ' + date);
-                pdfReciept.text('\n');
-                pdfReciept.text('User: ' + user);
-                pdfReciept.text('\n');
-                pdfReciept.text('Total Products: ' + products.length);
-                pdfReciept.text('\n');
-                pdfReciept.text('Total Amount: ' + totalPrice);
-                pdfReciept.text('\n');
-                for(elementCounter = 0; elementCounter < products.length; elementCounter++)
-                {
-                    pdfReciept.text('\n');
-                    pdfReciept.text('#' + (elementCounter + 1));
-                    pdfReciept.text(products[elementCounter].title);
-                    pdfReciept.text('quantity: ' + products[elementCounter].quantity);
-                    pdfReciept.text('price: ' + products[elementCounter].price);
-                    pdfReciept.text('description: ' + products[elementCounter].description);
-                    pdfReciept.text('\n');
-                }
-                pdfReciept.end();
+             //write pdf start
+             try 
+             {
+                 pdfReciept.text('Order: ' + id)
+                 pdfReciept.text('\n');
+                 pdfReciept.text('Date: ' + date);
+                 pdfReciept.text('\n');
+                 pdfReciept.text('User: ' + user);
+                 pdfReciept.text('\n');
+                 pdfReciept.text('Total Products: ' + products.length);
+                 pdfReciept.text('\n');
+                 pdfReciept.text('Total Amount: ' + totalPrice);
+                 pdfReciept.text('\n');
+                 for(elementCounter = 0; elementCounter < products.length; elementCounter++)
+                 {
+                       pdfReciept.text('\n');
+                     pdfReciept.text('#' + (elementCounter + 1));
+                     pdfReciept.text(products[elementCounter].title);
+                     pdfReciept.text('quantity: ' + products[elementCounter].quantity);
+                     pdfReciept.text('price: ' + products[elementCounter].price);
+                     pdfReciept.text('description: ' + products[elementCounter].description);
+                     pdfReciept.text('\n');
+                 }
+                 pdfReciept.end();
 
-                console.log('create pdf: successful');
-                res.redirect('/orders');
-            } 
-            catch (error) 
-            {
-                console.log('create pdf: failed');
-                console.log(error);
-                res.redirect('/orders');   
-            }
-            */
+                 console.log('create pdf: successful');
+                 res.redirect('/orders');
+             } 
+             catch (error) 
+             {
+                 console.log('create pdf: failed');
+                 console.log(error);
+                 res.redirect('/orders');   
+             }
+             */
 
-        }
+         }
         
-        else
-        {
-            console.log('create order: failed');
-            res.redirect('/cart');
-        }
-    }
+         else
+         {
+             console.log('create order: failed');
+             res.redirect('/cart');
+         }
+     }
 
-    //anonymous user
-    else
-    {
-        res.redirect('/');
-    }
+     //anonymous user
+     else
+     {
+         res.redirect('/');
+     }
 }
 
 exports.getReciept = (req, res, next) => {
@@ -649,7 +649,7 @@ exports.getCheckout = async (req, res, next) => {
         currency: 'usd',
         // Verify your integration in this guide by including this parameter
         metadata: {integration_check: 'accept_a_payment'},
-    });    
+    });
     
     //logged in user
     if(validation.status == true && cartItems != null)
@@ -662,7 +662,8 @@ exports.getCheckout = async (req, res, next) => {
             customerAddress: user.address,
             customerPhone: user.phone,
             customerComment: customerComment,
-            cartItems: JSON.parse(cartItems),
+            cartItems: cartItems,
+            cartItemsParsed: JSON.parse(cartItems),
             cartTotalPrice: cartTotalPrice,
             restaurant: restaurant,
             amount: intent.amount,
@@ -935,7 +936,7 @@ exports.postLogin = async (req, res, next) => {
                     
                     res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';path=/');
                     //res.setHeader('Set-Cookie', 'loginCookie=' + uuidv4() + ';path=/')
-                    res.redirect('/portal');
+                    res.redirect('/restaurantPortal');
                 }
     
                 else if(restaurantCheck == null)
@@ -1212,7 +1213,7 @@ exports.getRestaurantIndex = async (req, res, next) => {
 
     var restaurant = await Restaurant.findByUrl(restaurantUrl);
     
-    res.render('portal/index', 
+    res.render('restaurantPortal/index', 
     { 
         restaurant: restaurant,
         restaurantUrl: restaurantUrl
@@ -1228,7 +1229,7 @@ exports.getRestaurantOrdersAccept = async (req, res, next) => {
     var restaurant = await Restaurant.findByUrl(restaurantUrl);
     var orders = await Order.fetchAllUnconfirmed(restaurantUrl);
 
-    res.render('portal/orders-accept', 
+    res.render('restaurantPortal/orders-accept', 
     { 
         restaurant: restaurant,
         orders: orders
@@ -1242,7 +1243,7 @@ exports.getRestaurantOrdersCompleted = async (req, res, next) => {
 
     var orders = await Order.fetchAllCompleted(restaurantUrl);
 
-    res.render('portal/orders-completed', 
+    res.render('restaurantPortal/orders-completed', 
     {
         orders: orders
     });
@@ -1256,7 +1257,7 @@ exports.getRestaurantOrdersDeclined = async (req, res, next) => {
 
     var orders = await Order.fetchAllDeclined(restaurantUrl);
 
-    res.render('portal/orders-declined', 
+    res.render('restaurantPortal/orders-declined', 
     {
         orders: orders
     });
@@ -1269,7 +1270,7 @@ exports.getRestaurantOrdersChef = async (req, res, next) => {
 
     var orders = await Order.fetchAllConfirmed(restaurantUrl);
 
-    res.render('portal/orders-chef', 
+    res.render('restaurantPortal/orders-chef', 
     { 
         orders: orders
     });
@@ -1284,7 +1285,7 @@ exports.getRestaurantMenuShow = async (req, res, next) => {
 
     if(restaurant != null)
     {   
-        res.render('portal/menu-show', {
+        res.render('restaurantPortal/menu-show', {
             admin: false,
             loggedIn: null,
             IsOpen: restaurant.open,
@@ -1309,7 +1310,7 @@ exports.getRestaurantMenuEdit = async (req, res, next) => {
     var restaurant = await Restaurant.findByUrl(restaurantUrl);
     //console.log(restaurant);
 
-    res.render('portal/menu-edit', 
+    res.render('restaurantPortal/menu-edit', 
     { 
         restaurant: restaurant
     });
@@ -1322,7 +1323,7 @@ exports.getRestaurantStats = async (req, res, next) => {
 
     var orders = await Order.fetchAllCompleted(restaurantUrl);
 
-    res.render('portal/statistics', 
+    res.render('restaurantPortal/statistics', 
     {
         orders: orders
     });
@@ -1335,7 +1336,7 @@ exports.getRestaurantReviews = async (req, res, next) => {
 
     var reviews = await Review.fetchAllByRestaurantUrl(restaurantUrl);
 
-    res.render('portal/reviews', 
+    res.render('restaurantPortal/reviews', 
     { 
         reviews: reviews
     });
@@ -1354,7 +1355,7 @@ exports.getRestaurantSettings = async (req, res, next) => {
     //logged in user
     if(user != null)
     {
-        res.render('portal/settings', 
+        res.render('restaurantPortal/settings', 
         {
             user: user,
             restaurant: restaurant,
@@ -1396,7 +1397,7 @@ exports.getRestaurantLogout = async (req, res, next) => {
                         
         else
         {
-            res.redirect('/portal');
+            res.redirect('/restaurantPortal');
         }
 
     })
@@ -1431,7 +1432,7 @@ exports.postRestaurantUpdateMenu = async (req, res, next) => {
         types
     );
 
-    res.redirect("/portal/menu/show");
+    res.redirect("/restaurantPortal/menu/show");
 
     /*console.log("*** categories (" + categories.length + ") ***");
     console.log(categories);
@@ -1469,7 +1470,7 @@ exports.postRestaurantMenuListed = async (req, res, next) => {
 
     var updateRestaurant = await Restaurant.menuListed(owner, value);
 
-    res.redirect('/portal/settings');
+    res.redirect('/restaurantPortal/settings');
 }
 
 exports.postRestaurantMenuOnline = async (req, res, next) => {
@@ -1492,7 +1493,7 @@ exports.postRestaurantMenuOnline = async (req, res, next) => {
 
     var updateRestaurant = await Restaurant.menuOnline(owner, value);
 
-    res.redirect('/portal/settings');
+    res.redirect('/restaurantPortal/settings');
 }
 
 exports.postRestaurantWelcomeMessage = async (req, res, next) => {
@@ -1518,12 +1519,12 @@ exports.postRestaurantWelcomeMessage = async (req, res, next) => {
 
     if(page == 'home')
     {
-        res.redirect('/portal');
+        res.redirect('/restaurantPortal');
     }
 
     else
     {
-        res.redirect('/portal/settings');
+        res.redirect('/restaurantPortal/settings');
     }
 
 }
@@ -1698,5 +1699,5 @@ exports.getPayPalSuccess = async (req, res, next) => {
 exports.getPayPalCancel = async (req, res, next) => {
     console.log("getPayPalCancel");
 
-    res.redirect('/temp');
+    res.redirect('/');
 }

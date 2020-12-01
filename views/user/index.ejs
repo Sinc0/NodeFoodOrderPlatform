@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/mobile.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script>
         function goBack()
@@ -36,7 +37,7 @@
 </head>
 <body id="bodyIndex" style="background-image: url(/pics/pizza-slice.png);">
     <!-- admin view -->
-    <% if(admin == true) { %>
+    <% if(admin != null && admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
         <!-- <p>admin view</p> -->
         <script> setBackground(); </script>
@@ -50,7 +51,7 @@
         
         <div style="text-align: center;">
             <!-- help -->
-            <div style="margin: auto; margin-top: 50px; margin-bottom: 50px; width: 400px;">
+            <div id="indexHelpButtons" style="margin: auto; margin-top: 50px; margin-bottom: 50px;">
                 <!-- <h2 style="color: black; margin-bottom: 0px;">Help</h2> -->
 
                 <div style="margin-top: 0px;">
@@ -65,7 +66,7 @@
                 <div style="margin: auto;">
                     <h3 style="color: black; margin-bottom: 0px;"><b>Latest News</b></h2>
                     <% for(var i = adminPosts.length - 1; i >= (adminPosts.length - 1); i--) { %>
-                        <div id="adminPost#<%=i + 1%>" class="admin-card" style="margin-top: 5px; margin-bottom: 50px; padding: 0px; padding-bottom: 25px; width: 800px; border: 0;">
+                        <div id="adminPost#<%=i + 1%>" class="admin-card" style="margin-top: 5px; margin-bottom: 50px; padding: 0px; padding-bottom: 25px; border: 0;">
                             <p style="margin-bottom: 25px; margin-left: 0px; margin-top: -1px; margin-right: 0px; padding-top: 6px; padding-bottom: 6px; text-align: center; background-color: #3c41d6"><b>News #<%=adminPosts[i].postId %></b> <%=adminPosts[i].date.substring(0, 24) %></p>
                             <h3 style="margin-bottom: 5px;"><%=adminPosts[i].title %></h3>
                             <p><%=adminPosts[i].text %></p>
@@ -74,7 +75,7 @@
 
                     <h3 style="color: black; margin-bottom: 0px;"><b>Previous News</b></h2>
                     <% for(var i = adminPosts.length - 2; i >= 0; i--) { %>
-                        <div id="adminPost#<%=i + 1%>" class="admin-card" style="margin-top: 5px; padding: 0px; padding-bottom: 25px; width: 800px; border: 0;">
+                        <div id="adminPost#<%=i + 1%>" class="admin-card" style="margin-top: 5px; padding: 0px; padding-bottom: 25px; border: 0;">
                             <p style="margin-bottom: 25px; margin-left: 0px; margin-top: -1px; margin-right: 0px; padding-top: 6px; padding-bottom: 6px; text-align: center; background-color: #3c41d6"><b>News #<%=adminPosts[i].postId %></b> <%=adminPosts[i].date.substring(0, 24) %></p>
                             <h3 style="margin-bottom: 5px;"><b><%=adminPosts[i].title %></b></h3>
                             <p><%=adminPosts[i].text %></p>
@@ -88,14 +89,14 @@
     <% } else { %>
         <div id="indexAnonMenu">
             <!-- <div class="indexAnonMenuItem"><a href="/"><b><p>Shop</p></b></a></div> -->
-            <div class="indexAnonMenuItem" style="display: inline-block; border-right: 2.5px solid #171616; margin-right: -2.5px;"><a href="/login"><b><p>Login</p></b></a></div>
-            <div class="indexAnonMenuItem" style="display: inline-block; margin-left: -2.5px;"></li><a href="/restaurants"><b><p>Restaurants</p></b></a></div>
+            <div id="indexAnonMenuRestaurantsButton" class="indexAnonMenuItem"></li><a href="/restaurants"><b><p>Restaurants</p></b></a></div>
+            <div id="indexAnonMenuLoginButton" class="indexAnonMenuItem"><a href="/login"><b><p>Login</p></b></a></div>
+            <div id="indexAnonMenuRegisterButton" class="indexAnonMenuItem"></li><a href="/register"><b><p>Register</p></b></a></div>
         </div>
         
         <div id="indexAnonFooter" style="position: absolute; right: 0; bottom: 0;">
-            <div class="indexAnonMenuItem" style="display: inline-block; border-right: 2.5px solid #171616; margin-right: -5px;"></li><a href="/register"><b><p>Register</p></b></a></div>
-            <div class="indexAnonMenuItem" style="display: inline-block; border-right: 2.5px solid #171616; margin-right: -5px;"><a href="/about"><b><p>About</p></b></a></div>
-            <div class="indexAnonMenuItem" style="display: inline-block;"><a href="/contact"><b><p>Contact</p></b></a></div>
+            <div id="indexAnonMenuAboutButton" class="indexAnonMenuItem"><a href="/about"><b><p>About</p></b></a></div>
+            <div id="indexAnonMenuContactButton" class="indexAnonMenuItem"><a href="/contact"><b><p>Contact</p></b></a></div>
         </div>
     <% } %>
 </body>

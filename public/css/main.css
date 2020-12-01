@@ -32,7 +32,6 @@ body {
     margin-bottom: 25px;
     padding: 0px;
     background-color: black;
-    height: 200px;
     width: 700px;
     /* transition: all 1.5s ease-in-out; */
     /* padding-bottom: 5px; */
@@ -51,14 +50,15 @@ body {
     margin-right: 2px;
     margin-left: -4px;
     padding: 0px;
-    width: 466px;
     height: 194px;
+    width: 464px;
     text-align: left;
     background-color: #f7f9f9;
 }
 
 .restaurantMenuItemImg
 {
+    display: inline-block;
     margin: 0px;
     padding: 0px;
     vertical-align: top;
@@ -83,6 +83,14 @@ body {
     margin-right: 7px;
     padding: 0px;
     /* user-select: none; */
+}
+
+#searchBoxRestaurants input
+{
+    display: block;
+    margin: auto;
+    width: 695px;
+    text-align: center;
 }
 
 #main-orders
@@ -416,12 +424,39 @@ main {
     padding: 0px;
     height: 50px;
     width: 100%;
+    background-color: #f7f9f9;
+    border-style: none;
+    border-radius: 0px;
+}
+
+#order-button-mobile
+{
+    display: none;
+    margin: 0px;
+    margin-bottom: 2px;
+    padding: 0px;
+    height: 50px;
+    width: 100%;
+    background-color: #f7f9f9;
     border-style: none;
     border-radius: 0px;
 }
 
 #total-price
 {
+    background-color: #f7f9f9;
+    height: 100%;
+    width: 100%;
+    margin-left: 0px;
+    padding: 0px;
+    padding-top: 14.5px;
+    padding-bottom: 14.5px;
+    font-size: 18px;
+}
+
+#total-price-mobile
+{
+    display: none;
     background-color: #f7f9f9;
     height: 100%;
     width: 100%;
@@ -458,6 +493,23 @@ main {
 }
 
 /* checkout */
+#body-checkout
+{
+    background-color: lightgray;
+}
+
+#checkoutCenterDiv
+{
+    display: block;
+    margin: auto;
+    width: 400px;
+}
+
+#customerName, #searchInput, #customerPhone
+{
+    width: 400px;
+}
+
 #checkoutCartItems
 {
     position: relative;
@@ -465,7 +517,7 @@ main {
     margin: auto;
     padding: 0px;
     background-color: #3c41d6;
-    width: 300px;
+    width: 400px;
 }
 
 #checkoutCartItems p
@@ -566,7 +618,7 @@ main {
     position: relative;
     display: block;
     height: 170px;
-    width: 500px;
+    width: 400px;
     margin: auto;
 }
 
@@ -667,7 +719,7 @@ option
 .profile-buttons
 {
     height: 30px;
-    width: 150px;
+    width: 400px;
     border-style: none;
     background-color: #f7f9f9;
     border: 1px solid black;
@@ -927,6 +979,18 @@ hr
     background-color: #f7f9f9;
 }
 
+.searchBoxInput
+{
+    height: 48px;
+    width: 729.5px;
+    font-size: 20px;
+    border: none;
+    text-align: center;
+    font-weight: bold;
+    outline: none;
+    background-color: #f7f9f9;
+}
+
 #searchBoxInput::placeholder 
 {
     color: black;
@@ -1111,3 +1175,104 @@ textarea::placeholder
       background-position: 10000000px 0;
     }
 } */
+
+.indexAnonMenuItem
+{
+    border-bottom: 1px solid black;
+}
+
+#indexAnonMenuAboutButton, #indexAnonMenuContactButton
+{
+    width: 200px;
+    text-align: center;
+}
+
+#indexAnonMenuContactButton
+{
+    border-bottom: 0;
+}
+
+#indexHelpButtons
+{
+    width: 400px;
+}
+
+#profileCredentials
+{
+    width: 400px;
+}
+
+#editProfileCredentials
+{
+    width: 400px;
+}
+
+#editProfileCredentials input
+{
+    width: 150px;
+}
+
+#editProfilePassword
+{
+    width: 400px;
+}
+
+#editProfilePassword input
+{
+    width: 150px;
+}
+
+.confirm-button
+{
+    width: 200px;
+}
+
+.order-review
+{
+    margin-left: -7px;
+    padding: 30px;
+    width: 338px;
+}
+
+.textareaReviewComment
+{
+    min-height: 100px;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+#modalButton
+{
+    position: absolute;
+    right: -1px;
+}
+
+#admin-cancel-button
+{
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+#adminPostNewsPost
+{
+    display: block;
+    margin: auto;
+    width: 394px;
+}
+
+#adminPostNews-title-input,  #adminPostNews-textarea, #adminPostNews-submit-button
+{
+    margin-left: -3px;
+    width: 100%;
+}
+
+#adminPostNews-submit-button
+{
+    width: 400px;
+}
+
+.search-admin
+{
+    width: 396px;
+}
+
