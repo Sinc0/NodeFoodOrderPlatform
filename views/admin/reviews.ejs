@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/mobile.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <title>Admin Reviews</title>
     <script>
@@ -158,7 +159,7 @@
     </script> -->
     
     <div id="searchBox" style="margin: 0px; margin-top: 25px; padding: 0px; text-align: center;">
-        <input id="searchBoxInput" style="margin-bottom: 25px; height: 38px; width: 396px;" placeholder="Search..." onkeyup="search('<%=reviews.length %>')"></input>
+        <input id="searchBoxInput" class="search-admin" style="margin-bottom: 25px; height: 38px;" placeholder="Search..." onkeyup="search('<%=reviews.length %>')"></input>
     </div>
 
     <h3 id="totalReviewsText" style="margin-top: 25px; margin-bottom: 15px; text-align: center;">Total Reviews: <%=reviews.length %></h3>

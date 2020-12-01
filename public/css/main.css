@@ -1276,3 +1276,10 @@ textarea::placeholder
     width: 396px;
 }
 
+#admin-stats
+{
+    display: block;
+    margin: auto;
+    width: 450px;
+}
+

@@ -418,4 +418,15 @@
         padding: 0px;
         width: 100%;
     }
+
+    #admin-stats
+    {
+        padding-bottom: 25px;
+        width: 94vw;
+    }
+
+    #navButtonAdminStats
+    {
+        margin-right: -1px;
+    }
 }
