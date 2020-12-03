@@ -4,87 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
-    <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/portalRestaurant.css">
+    <link rel="stylesheet" href="/css/mobile.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script>
-        function GoogleMapsAdressAutocomplete() 
-        {
-            var map = new google.maps.Map(document.getElementById('map'), {
-                //center: {lat: -33.8688, lng: 151.2195},
-                //zoom: 13
-            });
+    //     function GoogleMapsAdressAutocomplete() 
+    //     {
+    //         var map = new google.maps.Map(document.getElementById('map'), {
+    //             //center: {lat: -33.8688, lng: 151.2195},
+    //             //zoom: 13
+    //         });
             
-            var input = document.getElementById('searchInput');
-            var autocomplete = new google.maps.places.Autocomplete(input);
-            var infowindow = new google.maps.InfoWindow();
+    //         var input = document.getElementById('searchInput');
+    //         var autocomplete = new google.maps.places.Autocomplete(input);
+    //         var infowindow = new google.maps.InfoWindow();
 
-            autocomplete.addListener('place_changed', function() 
-            {
-                infowindow.close();
-                var place = autocomplete.getPlace();
+    //         autocomplete.addListener('place_changed', function() 
+    //         {
+    //             infowindow.close();
+    //             var place = autocomplete.getPlace();
                 
-                if (!place.geometry) 
-                {
-                    return window.alert("Address not found");
-                }
+    //             if (!place.geometry) 
+    //             {
+    //                 return window.alert("Address not found");
+    //             }
             
-                var address = '';
+    //             var address = '';
                 
-                if (place.address_components) 
-                {
-                    address = [
-                        (place.address_components[0] && place.address_components[0].short_name || ''),
-                        (place.address_components[1] && place.address_components[1].short_name || ''),
-                        (place.address_components[2] && place.address_components[2].short_name || '')
-                    ].join(' ');
-                }
+    //             if (place.address_components) 
+    //             {
+    //                 address = [
+    //                     (place.address_components[0] && place.address_components[0].short_name || ''),
+    //                     (place.address_components[1] && place.address_components[1].short_name || ''),
+    //                     (place.address_components[2] && place.address_components[2].short_name || '')
+    //                 ].join(' ');
+    //             }
             
-                infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+    //             infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
                     
-                //location details
-                for (var i = 0; i < place.address_components.length; i++) 
-                {
-                    if(place.address_components[i].types[0] == 'country')
-                    {
-                        if(place.address_components[i].long_name == "Sweden")
-                        {
-                            //document.getElementById('country').innerHTML = place.address_components[i].long_name;
-                            //document.getElementById('location').innerHTML = place.formatted_address;
-                            var userAddress = document.getElementById('userAddress')
-                            var customerAdress = document.getElementById('customerAddress')
+    //             //location details
+    //             for (var i = 0; i < place.address_components.length; i++) 
+    //             {
+    //                 if(place.address_components[i].types[0] == 'country')
+    //                 {
+    //                     if(place.address_components[i].long_name == "Sweden")
+    //                     {
+    //                         //document.getElementById('country').innerHTML = place.address_components[i].long_name;
+    //                         //document.getElementById('location').innerHTML = place.formatted_address;
+    //                         var userAddress = document.getElementById('userAddress')
+    //                         var customerAdress = document.getElementById('customerAddress')
 
-                            if(userAddress != null)
-                            {
-                                userAddress.value = place.formatted_address;
-                            }
+    //                         if(userAddress != null)
+    //                         {
+    //                             userAddress.value = place.formatted_address;
+    //                         }
 
-                            if(customerAdress != null)
-                            {
-                                customerAdress.value = place.formatted_address;
-                            }
+    //                         if(customerAdress != null)
+    //                         {
+    //                             customerAdress.value = place.formatted_address;
+    //                         }
 
-                            /*if(place.address_components[6] != undefined)
-                            {
-                                document.getElementById('postal_code').innerHTML = place.address_components[6].long_name;
-                                //console.log(place.address_components[6].long_name);
-                            }*/
+    //                         /*if(place.address_components[6] != undefined)
+    //                         {
+    //                             document.getElementById('postal_code').innerHTML = place.address_components[6].long_name;
+    //                             //console.log(place.address_components[6].long_name);
+    //                         }*/
 
-                        }
+    //                     }
 
-                        if(place.address_components[i].long_name != "Sweden")
-                        {
-                            alert("Location restricted to Sweden only");
-                        }
+    //                     if(place.address_components[i].long_name != "Sweden")
+    //                     {
+    //                         alert("Location restricted to Sweden only");
+    //                     }
                         
-                        //document.getElementById('country').innerHTML = place.address_components[i].long_name;
-                    }
-                }
+    //                     //document.getElementById('country').innerHTML = place.address_components[i].long_name;
+    //                 }
+    //             }
             
-            });
-        }
+    //         });
+    //     }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=GoogleMapsAdressAutocomplete" async defer></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=GoogleMapsAdressAutocomplete" async defer></script> -->
     <script>
         function editProfileCredentials()
         {
@@ -108,79 +108,75 @@
 <a href="/restaurantPortal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
 <body style="background-color: lightgray;">
     <main id="main-profile" style="text-align: center">
-
-        <br />
-
-        <p><b>Status</b></p>
-        <% if(restaurant.menuOnline == false) { %>
-            <p style="margin: auto; background-color: red; border-bottom: 1px solid black; width: 400px;"><b>restaurant</b> closed</p>
-        <% } %>
-            
-        <% if(restaurant.menuOnline == true) { %>
-            <p style="margin: auto; background-color: green; border-bottom: 1px solid black; width: 400px;"><b>restaurant</b> open</p>
-        <% } %>
-
+        <p style="margin: 0px; margin-bottom: 5px; padding: 0px;"><b>Status</b></p>
         <% if(restaurant.menuListed == false) { %>
-            <p style="margin: auto; background-color: red; width: 400px;"><b>restaurant</b> inactive</p>
+            <p style="margin: auto; background-color: red; border-bottom: 1px solid black;"><b>restaurant</b> inactive</p>
         <% } %>
         
         <% if(restaurant.menuListed == true) { %>
-            <p style="margin: auto; background-color: green; width: 400px;"><b>restaurant</b> active</p>
+            <p style="margin: auto; background-color: green; border-bottom: 1px solid black;"><b>restaurant</b> active</p>
         <% } %>
 
+        <% if(restaurant.menuOnline == false) { %>
+            <p style="margin: auto; background-color: red;"><b>restaurant</b> closed</p>
+        <% } %>
+            
+        <% if(restaurant.menuOnline == true) { %>
+            <p style="margin: auto; background-color: green;"><b>restaurant</b> open</p>
+        <% } %>
         <br />
 
         <div id="profileCredentials" style="display: block;">
-            <p><b>Credentials</b></p>
-            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>email:</b> <%=email %></p>
-            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>name:</b> <%=name %></p>
-            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>phone:</b> <%=phone %></p>
-            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black; width: 400px;"><b>address:</b> <%=address %></p>
-            <p style="text-align: left; margin: auto; background-color: orange; width: 400px;"><b>city:</b> <%=restaurant.city %></p>
+            <p style="margin: 0px; margin-bottom: 5px; padding: 0px;"><b>Credentials</b></p>
+            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black;"><b>email:</b> <%=email %></p>
+            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black;"><b>name:</b> <%=name %></p>
+            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black;"><b>phone:</b> <%=phone %></p>
+            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black;"><b>address:</b> <%=address %></p>
+            <p style="text-align: left; margin: auto; background-color: orange;"><b>city:</b> <%=restaurant.city %></p>
         </div>
 
         <br />
 
         <!-- <p style="color: red;"><b>Note: email and password change requires relog</b></p><br /> -->
-        <p><b>Options</b></p>
+        <p style="margin: 0px; margin-bottom: 5px; padding: 0px;"><b>Options</b></p>
         
-        <form action="/portal/welcomeMessage" method="POST">
+        <form action="/restaurantPortal/welcomeMessage" method="POST">
             <% if(restaurant.welcomeMessage == false) { %>
                 <input hidden name="welcomeMessage" value=true></input>
-                <button class="profile-buttons" style="width: 400px;">show welcome message</button><br />
+                <button class="profile-buttons">show welcome message</button><br />
             <% } %>
             
             <% if(restaurant.welcomeMessage == true) { %>
                 <input hidden name="welcomeMessage" value=false></input>
-                <button class="profile-buttons" style="width: 400px;">dont show welcome message</button><br />
+                <button class="profile-buttons">dont show welcome message</button><br />
             <% } %>
         </form>
         
-        <button disabled class="profile-buttons" style="width: 400px;">change email</button><br />
-        <button disabled class="profile-buttons" style="width: 400px;">change password</button><br />
-        <button disabled class="profile-buttons" style="width: 400px;" onclick="editProfileCredentials()">change credentials</button><br />
+        <!-- <button disabled class="profile-buttons">change email</button><br /> -->
+        <!-- <button disabled class="profile-buttons">change password</button><br /> -->
+        <!-- <button disabled class="profile-buttons" onclick="editProfileCredentials()">change credentials</button><br /> -->
         
-        <form action="/portal/menuOnline" method="POST">
+        <form action="/restaurantPortal/menuOnline" method="POST">
             <% if(restaurant.menuOnline == false) { %>
                 <input hidden name="menuOnline" value="true"></input>
-                <button class="profile-buttons" style="width: 400px;">open restaurant</button><br />
+                <button class="profile-buttons">open restaurant</button><br />
             <% } %>
                 
             <% if(restaurant.menuOnline == true) { %>
                 <input hidden name="menuOnline" value="false"></input>
-                <button class="profile-buttons" style="width: 400px;">close restaurant</button><br />
+                <button class="profile-buttons">close restaurant</button><br />
             <% } %>
         </form>
         
-        <form action="/portal/menuListed" method="POST">
+        <form action="/restaurantPortal/menuListed" method="POST">
             <% if(restaurant.menuListed == false) { %>
                 <input hidden name="menuListed" value=true></input>
-                <button class="profile-buttons" style="width: 400px;">activate restaurant</button><br />
+                <button class="profile-buttons">activate restaurant</button><br />
             <% } %>
             
             <% if(restaurant.menuListed == true) { %>
                 <input hidden name="menuListed" value=false></input>
-                <button class="profile-buttons" style="width: 400px;">deactivate restaurant</button><br />
+                <button class="profile-buttons"  style="border-bottom: 1px solid black;">deactivate restaurant</button><br />
             <% } %>
         </form>
 

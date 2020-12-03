@@ -155,6 +155,7 @@ a
 {
     display: block;
     margin: auto;
+    width: 400px;
 }
 
 input[type=number]::-webkit-inner-spin-button {
@@ -163,17 +164,12 @@ input[type=number]::-webkit-inner-spin-button {
 
 .categoryArrows
 {
-    margin-left: 7px;
+    width: 50px;
 }
 
 .categoryArrows:hover
 {
     background-color: lightslategray;
-}
-
-.categoryArrowUp
-{
-    margin-left: 104px;
 }
 
 input
@@ -213,6 +209,145 @@ input
 
 .item
 {
+    width: 695px;
     background-color: royalblue;
+}
+
+#restaurantPortal-index-title
+{
+    text-align: center;  
+    color: black; 
+    margin: 0px; 
+    margin-top: 50px; 
+    margin-bottom: 25px; 
+    padding: 0px;
+}
+
+#restaurantPortal-index-body
+{
+    background-color: lightgray;
+}
+
+#menu
+{
+    width: 94vw;
+}
+
+.menu-edit-hours
+{
+    margin: auto; 
+    background-color: royalblue; 
+    border-bottom: 1px solid black; 
+    width: 400px;
+}
+
+.menu-edit-hours input
+{
+    width: 225px;
+}
+
+#inputDescription
+{
+    height: 75px;
+    width: 400px;
+}
+
+#inputType, #inputImg, #inputPhone, #inputAddress
+{
+    width: 400px;
+}
+
+#menu-edit-button-addCategory
+{
+    width: 690px;
+}
+
+#menuEditRestaurantCategory
+{
+    width: 690px;
+}
+
+.categoryInput
+{
+    width: 390px;
+}
+
+.menu-edit-category
+{
+    width: 695px;
+}
+
+#NavBarEdit
+{
+    position: fixed; 
+    background-color: red; 
+    bottom: 5px;
+    right: 0px; 
+    margin-right: 5px; 
+    vertical-align: bottom;
+}
+
+#body-menu-edit
+{
+    margin-bottom: 50px; 
+    text-align: center; 
+    background-color: lightgray;
+}
+
+.buttonRemoveItem
+{
+    width: 408px;
+}
+
+#restaurant-statistics
+{
+    width: 450px;
+}
+
+.customerReview
+{
+    width: 388px;
+}
+
+#main-profile
+{
+    display: block;
+    margin: auto;
+    width: 400px;
+}
+
+#restaurant-welcomeMessage
+{
+    display: block;
+    margin: auto;
+    width: 400px;
+}
+
+#restaurant-welcomeMessage button
+{
+    width: 400px;
+}
+
+.profile-buttons
+{
+    height: 30px;
+    width: 400px;
+    border-style: none;
+    background-color: #f7f9f9;
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.profile-buttons:active
+{
+    outline: none;
+    border-color: green;
+    border-style: none;
+}
+
+.profile-buttons:focus
+{
+    outline: none;
 }
 

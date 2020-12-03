@@ -6,6 +6,7 @@
     <title>Completed Orders</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/portalRestaurant.css">
+    <link rel="stylesheet" href="/css/mobile.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script>
         
@@ -33,7 +34,7 @@
 <a href="/restaurantPortal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
 <body onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()" style="background-color: lightgray;">
     <header id="confirmOrderHeader">
-        <h2 id="confirmOrderTitle" style="margin: 0px; margin-top: 25px; margin-bottom: 25px; padding: 0px;">Total Completed Orders: <%=orders.length %></h2>
+        <h2 id="confirmOrderTitle" style="margin: 0px; margin-top: 25px; margin-bottom: 25px; padding: 0px;"> Completed Orders: <%=orders.length %></h2>
         <!-- <p id="confirmOrderPendingOrderInfo">total pending orders: <%=orders.length %></p> -->
     </header>
     <% for(var c = orders.length - 1; c >= 0; c--) { %>

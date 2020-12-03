@@ -20,36 +20,35 @@
     </script>
     <title>Home</title>
 </head>
-<body style="background-color: lightgray;">
-    <h1 style="text-align: center;  color: black; margin:0px; margin-top: 50px; margin-bottom: 25px; padding: 0px;"><%=restaurant.title %></h1>
+<body id="restaurantPortal-index-body">
+    <h1 id="restaurantPortal-index-title"><%=restaurant.title %></h1>
 
     <% if(restaurant.welcomeMessage == true) { %>
-        <div id="">
+        <div id="restaurant-welcomeMessage">
             <p style="margin: 0px; margin-bottom: 5px; padding: 0px;">Welcome to the restaurant portal, before you can take orders you need to complete following steps:</p>
             <p style="margin: 0px; padding: 0px;"></p>
 
-            <div style="margin: auto; width: 400px;">
-                <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; text-align: center; background-color: orange; border-bottom: 1px solid black; width: 400px;"><a href="/portal/menu/edit"><b>1:</b> edit your menu </a></p>
-                <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; text-align: center; background-color: orange; border-bottom: 1px solid black; width: 400px; "><a href="/portal/settings"><b>2:</b> activate restaurant in settings</a></p>
-                <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; text-align: center; background-color: orange; width: 400px; "><a href="/portal/settings"><b>3:</b> open restaurant in settings</a></p>
-            </div>
+            <div style="margin: auto;">
+                <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; text-align: center; background-color: orange; border-bottom: 1px solid black;"><a href="/restaurantPortal/menu/edit"><b>1:</b> edit your menu </a></p>
+                <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; text-align: center; background-color: orange; border-bottom: 1px solid black;"><a href="/restaurantPortal/settings"><b>2:</b> activate restaurant in settings</a></p>
+                <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; text-align: center; background-color: orange;"><a href="/restaurantPortal/settings"><b>3:</b> open restaurant in settings</a></p>
 
             <br />
 
-            <div style="margin: auto; width: 400px;">
+            <div style="margin: auto;">
             <!-- <button style="text-align: center; width: 400px;"><a href="/portal/menu/show">show menu</a></button><br /> -->
             <!-- <button style="text-align: center; width: 400px;"><a href="/portal/menu/edit">edit menu</a></button><br /> -->
             <!-- <button style="text-align: center; width: 400px;"><a href="/portal/settings">settings</a></button><br /> -->
 
             <p style="margin: 0px; margin-bottom: 5px; padding: 0px;">Options</p>
             
-            <form action="/portal/welcomeMessage" method="POST">
+            <form action="/restaurantPortal/welcomeMessage" method="POST">
                 <input hidden name="welcomeMessage" value=false></input>
                 <input hidden name="page" value="home"></input>
-                <button class="profile-buttons" style="padding-top: 5px; padding-bottom: 5px; width: 400px;">Stop Showing This Message</button><br />
+                <button class="profile-buttons" style="padding-top: 5px; padding-bottom: 5px;">Stop Showing This Message</button><br />
             </form>
             
-            <button style="text-align: center; padding-top: 5px; padding-bottom: 5px; width: 400px;"><a href="/restaurantPortal/logout">Logout</a></button><br />
+            <button style="text-align: center; padding-top: 5px; padding-bottom: 5px;"><a href="/restaurantPortal/logout">Logout</a></button><br />
             </div>
         </div>
     <% } %>

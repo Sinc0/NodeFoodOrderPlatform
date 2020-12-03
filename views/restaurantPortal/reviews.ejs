@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/portalRestaurant.css">
+    <link rel="stylesheet" href="/css/mobile.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <title>Reviews</title>
 </head>
@@ -13,7 +14,7 @@
     <h2 style="margin-top: 25px; margin-bottom: 25px; text-align: center;">Total Reviews (<%=reviews.length %>)</h2>
 
     <% for(var counter = 0; counter < reviews.length; counter++) { %>
-        <div id="customer-review#" + counter style="border: 1px solid black; background-color: #f7f9f9; width: 390px; margin: auto; margin-bottom: 25px; padding: 5px;">
+        <div id="customer-review#<%=counter + 1%>" class="customerReview" style="border: 1px solid black; background-color: #f7f9f9; margin: auto; margin-bottom: 25px; padding: 5px;">
             <!--- <p style="text-align: left; margin: 0px; padding: 0px;"><b>#<%=counter + 1 %></b></p> -->
             <% var date = reviews[counter].reviewObject.date %>
             <p style="text-align: center; margin: 0px; margin-top: 5px; padding: 0px;"><%=date.toString().slice(0, 24) %></p>

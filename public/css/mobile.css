@@ -1,4 +1,4 @@
-@media screen and (max-width: 800px) 
+@media screen and (max-width: 700px) 
 {
     /* search */
     #searchBoxInput
@@ -429,4 +429,162 @@
     {
         margin-right: -1px;
     }
+
+    .NavCategory 
+    {
+        width: 99.5vw;
+    }
+
+    #restaurantPortal-index-title
+    {
+        visibility: hidden;
+        text-align: center;  
+        color: black; 
+        margin: 0px; 
+        margin-top: -36px; 
+        margin-bottom: 0px; 
+        padding: 0px;
+    }
+
+    #restaurantPortal-index-body
+    {
+        background-color: black;
+    }
+
+    .customerOrder
+    {
+        width: 94vw;
+    }
+
+    #testBackground
+    {
+        display: block;
+        margin: auto;
+        width: 98vw;
+        background-color: #0000009c;
+        padding-bottom: 25px;
+    }
+
+    #menuEditRestaurantHours
+    {
+        display: block;
+        margin: auto;
+        width: 94vw;
+    }
+
+    .menu-edit-hours
+    {
+        margin: auto; 
+        width: 94vw;
+    }
+
+    .menu-edit-hours input
+    {
+        width: 50vw;
+    }
+    
+    #menuEditRestaurantDescription, #inputDescription, 
+    #menuEditRestaurantType, #inputType,
+    #menuEditRestaurantImageUrl, #inputImg,
+    #menuEditRestaurantPhone, #inputPhone,
+    #menuEditRestaurantAdress, #inputAddress
+    {
+        display: block;
+        margin: auto;
+        width: 89vw;
+    }
+
+    #menu-edit-button-addCategory
+    {
+        width: 94vw;
+    }
+
+    #menuEditRestaurantCategory
+    {
+        width: 94vw;
+    }
+
+    .categoryInput
+    {
+        width: 22vw;
+    }
+
+    .categoryArrowUp
+    {
+        margin: 0px;
+    }
+    
+    .categoryArrows
+    {
+        margin: 0px;
+        width: 50px;
+    }
+
+    .menu-edit-category
+    {
+        width: 90vw;
+    }
+
+    #NavBarEdit
+    {
+        display: block;
+        position: relative;
+        bottom: 0;
+        margin: auto;
+        margin-top: 70px;
+        padding-top: 1px;
+        padding-bottom: 1px;
+        width: 100vw;
+    }
+
+    #body-menu-edit
+    {
+        margin-bottom: 0;
+    }
+
+    #laskdssassdad div, input
+    {
+        width: 90vw;
+    }
+
+    .itemInput
+    {
+        width: 50vw;
+    }
+
+    .buttonRemoveItem
+    {
+        width: 52vw;
+    }
+
+    .item
+    {
+        width: 100%;
+    }
+
+    #restaurant-statistics
+    {
+        width: 94vw;
+    }
+
+    .customerReview
+    {
+        width: 94vw;
+    }
+
+    #main-profile
+    {
+        width: 94vw;
+    }
+
+    #restaurant-welcomeMessage
+    {
+        width: 94vw;
+    }
+
+    #restaurant-welcomeMessage button
+    {
+        width: 94vw;
+    }
+    
 }

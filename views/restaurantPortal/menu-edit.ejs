@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Edit Menu</title>
         <link rel="stylesheet" href="/css/portalRestaurant.css">
+        <link rel="stylesheet" href="/css/mobile.css">
         <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
         <script>
             function collapseMenuEditCategory(id)
@@ -169,7 +170,7 @@
                 //remove item on click text
                 buttonRemove.innerHTML = "Remove";
                 buttonRemove.onclick = function() {deleteItem(itemName, itemCategory, (itemsInCategoryCount + 1))};
-                buttonRemove.style.width = "400px";
+                buttonRemove.className = "buttonRemoveItem"
 
                 //appends
                 document.getElementById("category" + itemCategory + "Body").appendChild(div)
@@ -300,6 +301,10 @@
                         //console.log(split.toString().replace(/,/g, ''));  
                     var formattedString = split.toString().replace(/,/g, '');
                     categoryDiv.id = "category" + formattedString;
+                    categoryDiv.className = "menu-edit-category";
+                    categoryDiv.style.display = "block";
+                    categoryDiv.style.margin = "auto";
+                    categoryDiv.style.border = "2px solid black";
 
                     //categoryHeader
                     var categoryHeaderBold = document.createElement("b");   
@@ -322,13 +327,17 @@
                     categoryHeaderInput1.hidden = true;
 
                     var categoryHeaderDiv = document.createElement("div");
-                    categoryHeaderDiv.style = "background-color: green;";
                     categoryHeaderDiv.id = "category" + promptAnswerFirstLetterUpperCase + "Header";
+                    categoryHeaderDiv.className = "menu-edit-category";
+                    categoryHeaderDiv.style = "margin: auto; padding-top: 5px; padding-bottom: 5px; background-color: royalblue;";
 
 
                     //categoryBody
                     var categoryBodyDiv = document.createElement("div");
                     categoryBodyDiv.id = "category" + promptAnswerFirstLetterUpperCase + "Body";
+                    categoryBodyDiv.className = "item";
+                    categoryBodyDiv.style.display = "block";
+                    categoryBodyDiv.style.margin = "auto";
                     
                     var label = document.createElement("label");
                     label.innerHTML = " X ";
@@ -348,7 +357,6 @@
                     div.appendChild(bold1);
                     //div.appendChild(bold2); only need up arrow since new category
                     div.appendChild(bold3);
-                    categoryDiv.innerHTML += "<hr>";
                     categories.appendChild(div);
                     categoryDiv.appendChild(categoryHeaderDiv);
                     categoryDiv.appendChild(categoryBodyDiv);
@@ -438,7 +446,6 @@
                     div.style.paddingTop = "30px";
                     div.style.paddingBottom = "50px";
                     div.style.backgroundColor = "royalblue";
-                    div.style.width = "695px";
                 }
        
                 //console.log(id);
@@ -972,8 +979,8 @@
                     bold2.name = categoryName;
                     bold2.value = p;
                     bold2.className = "categoryArrows categoryDown"
-                    bold2.innerHTML = "<button> Move Down </button>";
-                    bold2.style = "margin-left: 11px;";
+                    bold2.innerHTML = "<button> Down </button>";
+                    bold2.style = "width: 50px; margin-left: 4px;";
                     bold2.onclick = function() {changePositionCategories(this.value, (this.value + 1), this.name)};
 
                     var bold3 = document.createElement("b");
@@ -981,8 +988,8 @@
                     bold3.name = categoryName;
                     bold3.value = p;
                     bold3.className = "categoryArrows categoryUp"
-                    bold3.innerHTML = "<button> Move Up </button>";
-                    bold3.style = "margin-left: 108px;";
+                    bold3.innerHTML = "<button style='margin-left: 4px; width: 50px;'> Up </button>";
+                    bold3.style = "";
                     bold3.onclick = function() {changePositionCategories(this.value, (this.value - 1), this.name)};
 
                     var br = document.createElement("br");
@@ -1008,9 +1015,7 @@
                     {
                         //label.style = "margin-left: 20px;";
                         bold2.className = "categoryArrows";
-                        bold2.style = "margin-left: 11px;";
                         bold3.className = "categoryArrows";
-                        bold3.style = "margin-left: 11px;";
 
                         div.appendChild(bold2);
                         div.appendChild(bold3);
@@ -1090,20 +1095,19 @@
     </head>
     <script>clearLocalStorage()</script>
     <a href="/restaurantPortal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
-    <body style="margin-bottom: 50px; text-align: center; background-color: lightgray;" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
+    <body id="body-menu-edit" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
         
         <!-- hours -->
         <div id="menuEditRestaurantHours" onclick="collapseMenuEditCategory(this.id)">
             <p class="menuEditCategoryParagraph"><b>Hours</b></p>
             <% for(var c = 0; c < restaurant.hours.length; c++) { %>
-                <% if(c == 0) { %><div style="margin: auto; background-color: royalblue; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 20px;">Monday: </b> <input id="inputHoursMonday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 21px;"></input><br /></div> <% } %>
-                <% if(c == 1) { %><div style="margin: auto; background-color: royalblue; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 21px;">Tuesday: </b> <input id="inputHoursTuesday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 25px;"></input><br /></div> <% } %>
-                <% if(c == 2) { %><div style="margin: auto; background-color: royalblue; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: -2px;">Wednesday: </b> <input id="inputHoursWednesday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 27px;"></input><br /></div> <% } %>
-                <% if(c == 3) { %><div style="margin: auto; background-color: royalblue; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 10px;">Thursday: </b> <input id="inputHoursThursday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 23px;"></input><br /></div> <% } %>
-                <% if(c == 4) { %><div style="margin: auto; background-color: royalblue; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 31px;">Friday: </b> <input id="inputHoursFriday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 20px;"></input><br /></div> <% } %>
-                <% if(c == 5) { %><div style="margin: auto; background-color: royalblue; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 13px;">Saturday: </b> <input id="inputHoursSaturday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 23px;"></input><br /></div> <% } %>
-                <% if(c == 6) { %><div style="margin: auto; background-color: royalblue; border-bottom: 1px solid black; width: 400px;"><b style="margin-left: 23.5px;">Sunday: </b> <input id="inputHoursSunday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="width: 225px; margin-right: 23px;"></input><br /></div> <% } %>
-                
+                <% if(c == 0) { %><div class="menu-edit-hours"><b style="margin-left: 20px;">Monday: </b> <input id="inputHoursMonday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="margin-right: 21px;"></input><br /></div> <% } %>
+                <% if(c == 1) { %><div class="menu-edit-hours"><b style="margin-left: 21px;">Tuesday: </b> <input id="inputHoursTuesday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="margin-right: 25px;"></input><br /></div> <% } %>
+                <% if(c == 2) { %><div class="menu-edit-hours"><b style="margin-left: -2px;">Wednesday: </b> <input id="inputHoursWednesday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="margin-right: 27px;"></input><br /></div> <% } %>
+                <% if(c == 3) { %><div class="menu-edit-hours"><b style="margin-left: 10px;">Thursday: </b> <input id="inputHoursThursday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="margin-right: 23px;"></input><br /></div> <% } %>
+                <% if(c == 4) { %><div class="menu-edit-hours"><b style="margin-left: 31px;">Friday: </b> <input id="inputHoursFriday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="margin-right: 20px;"></input><br /></div> <% } %>
+                <% if(c == 5) { %><div class="menu-edit-hours"><b style="margin-left: 13px;">Saturday: </b> <input id="inputHoursSaturday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="margin-right: 23px;"></input><br /></div> <% } %>
+                <% if(c == 6) { %><div class="menu-edit-hours"><b style="margin-left: 23.5px;">Sunday: </b> <input id="inputHoursSunday" maxlength="30" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" style="margin-right: 23px;"></input><br /></div> <% } %>
             <% } %>
             <script>setHoursToLocalStorage()</script>
         </div>
@@ -1111,42 +1115,42 @@
         <!-- Description -->
         <div id="menuEditRestaurantDescription" onclick="collapseMenuEditCategory(this.id)">
             <p class="menuEditCategoryParagraph"><b>Description</b></p>
-            <textarea id="inputDescription" onkeyup="setDescriptionToLocalStorage()" style="height: 75px; width: 400px;" maxlength="250"><%=restaurant.description %></textarea>
+            <textarea id="inputDescription" onkeyup="setDescriptionToLocalStorage()" maxlength="250"><%=restaurant.description %></textarea>
             <script>setDescriptionToLocalStorage()</script>
         </div>
 
         <!-- Type -->
         <div id="menuEditRestaurantType" onclick="collapseMenuEditCategory(this.id)">
             <p class="menuEditCategoryParagraph"><b>Type</b></p>
-            <input id="inputType" value="<%=restaurant.type %>" onkeyup="setTypesToLocalStorage()" style="width: 400px;" maxlength="250"></input>
+            <input id="inputType" value="<%=restaurant.type %>" onkeyup="setTypesToLocalStorage()" maxlength="250"></input>
             <script>setTypesToLocalStorage()</script>
         </div>
         
         <!-- Image -->
         <div id="menuEditRestaurantImageUrl" onclick="collapseMenuEditCategory(this.id)">
             <p class="menuEditCategoryParagraph"><b>Img Url</b></p>
-            <input id="inputImg" value="<%=restaurant.imageUrl %>" onkeyup="setImgToLocalStorage()" style="width: 400px"></input>
+            <input id="inputImg" value="<%=restaurant.imageUrl %>" onkeyup="setImgToLocalStorage()"></input>
             <script>setImgToLocalStorage()</script>
         </div>
         
         <!-- Phone -->
         <div id="menuEditRestaurantPhone" onclick="collapseMenuEditCategory(this.id)">
             <p class="menuEditCategoryParagraph"><b>Phone</b></p>
-            <input id="inputPhone" value="<%=restaurant.phone %>" onkeyup="setPhoneToLocalStorage()" style="width: 400px;" maxlength="30"></input>
+            <input id="inputPhone" value="<%=restaurant.phone %>" onkeyup="setPhoneToLocalStorage()" maxlength="30"></input>
             <script>setPhoneToLocalStorage()</script>
         </div>
         
         <!-- Adress -->
         <div id="menuEditRestaurantAdress" onclick="collapseMenuEditCategory(this.id)">
             <p class="menuEditCategoryParagraph"><b>Address</b></p>
-            <input id="inputAddress" value="<%=restaurant.address %>" onkeyup="setAddressToLocalStorage()" style="width: 400px;" maxlength="50"></input>
+            <input id="inputAddress" value="<%=restaurant.address %>" onkeyup="setAddressToLocalStorage()" maxlength="50"></input>
             <script>setAddressToLocalStorage()</script>
         </div>
         
         <!-- Categories -->
         <b><p id="menuEditCategories" class="menuEditCategoryParagraph" style="margin-top: 50px;">Categories (<%=restaurant.menuCategories.length %>)</p></b>
-        <label onclick="addCategory()"><button style="height: 30px; width: 690px; border-radius: 0%;">Add Category</button></label>
-        <div id="menuEditRestaurantCategory" onclick="collapseMenuEditCategory(this.id)" style="margin: auto; width: 690px; text-align: left;">
+        <label onclick="addCategory()"><button  id="menu-edit-button-addCategory" style="height: 30px; border-radius: 0%;">Add Category</button></label>
+        <div id="menuEditRestaurantCategory" onclick="collapseMenuEditCategory(this.id)" style="margin: auto; text-align: left;">
             <% for(var c = 0; c < restaurant.menuCategories.length; c++) { %>
                 <div id="category#<%=c + 1 %>" style="margin: auto; padding-top: 10px; padding-bottom: 10px; border: 1px solid black;  background-color: royalblue;">
                     <% if(c != restaurant.menuCategories.length - 1 && c != 0) { %>
@@ -1160,12 +1164,12 @@
                     <input disabled id="categoryInput#<%=c + 1 %>" class="categoryInput" value="<%=restaurant.menuCategories[c].categoryName %>"></input>
                     <!-- <input id="categoryInput#<%=c + 1 %>-position" type="number" value="<%=restaurant.menuCategories[c].position %>" min="1" max='<%=restaurant.menuCategories.length %>' style="width: 15px;" onchange="changePositionCategories('<%=c + 1 %>', this.value, '<%=restaurant.menuCategories[c].categoryName %>')"></input> -->
                     <% if(c == 0) { %>
-                        <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrowDown categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 2 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Move Down</button>
+                        <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrowDown categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 2 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Down</button>
                     <% } else if(c == restaurant.menuCategories.length - 1) { %>
-                        <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrowUp categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 0 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Move Up</button>
+                        <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrowUp categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 0 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Up</button>
                     <% } else { %>
-                        <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 2 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Move Down</button>
-                        <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 0 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Move Up</button>
+                        <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrows categoryArrowDownMobile" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 2 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Down</button>
+                        <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrows categoryArrowUpMobile" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 0 %>', '<%=restaurant.menuCategories[c].categoryName %>')">Up</button>
                     <% } %>
                     <br />
 
@@ -1196,9 +1200,9 @@
                         <% var category = restaurant.menuCategories[c].categoryName %>
                         <% var categoryFirstLetterUpperCase = category.charAt(0).toUpperCase() + category.slice(1); %>
                         
-                        <div id="category<%=categoryFirstLetterUpperCase %>" style="margin: auto; margin-bottom: 25px; width: 695px; border: 2px solid;">
+                        <div id="category<%=categoryFirstLetterUpperCase %>" class="menu-edit-category" style="margin: auto; margin-bottom: 25px; border: 2px solid;">
                             
-                            <div id="category<%=categoryFirstLetterUpperCase %>Header" style="margin: auto; padding-top: 5px; padding-bottom: 5px; background-color: royalblue; width: 695px;">
+                            <div id="category<%=categoryFirstLetterUpperCase %>Header" style="margin: auto; padding-top: 5px; padding-bottom: 5px; background-color: royalblue;">
                                 <!-- <b id="category<%=categoryFirstLetterUpperCase %>InputPosition"><%=c + 1 %></b> -->
                                 <label onclick="collapseDiv('category<%=categoryFirstLetterUpperCase %>Body')"> [Collapse]</label>
                                 <input hidden id="categoryInput#<%=c + 1 %>-disabled" disabled value="<%=restaurant.menuCategories[c].categoryName %>"></input>
@@ -1232,7 +1236,7 @@
                                         <input id="<%=itemInputPrice %>" name=""  onchange="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].price %>" class="itemInput" maxlength="10"></input>
                                         <input id="<%=itemInputDescription %>" name="" onkeyup="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].description %>" class="itemInput" maxlength="255"></input>
 
-                                        <button onclick="deleteItem('<%=item  %>', '<%=restaurant.menuCategories[c].categoryName %>', '<%=restaurant.menuItems[x].position %>')" class="itemInput" style="width: 400px;"> Remove </button>
+                                        <button onclick="deleteItem('<%=item  %>', '<%=restaurant.menuCategories[c].categoryName %>', '<%=restaurant.menuItems[x].position %>')" class="itemInput buttonRemoveItem"> Remove </button>
                                         
                                         <script>
                                             countCategoriesForSpecificItem('item-<%=restaurant.menuCategories[c].categoryName %>#<%=restaurant.menuItems[x].position %>-input-position', 'item-<%=restaurant.menuCategories[c].categoryName %>#<%=restaurant.menuItems[x].position %>-input-id', '<%=restaurant.menuCategories[c].categoryName %>');
@@ -1269,7 +1273,7 @@
 
         <script>setFormWithCorrectData();</script>
         
-        <nav id="NavBarEdit" style="position: fixed; background-color: red; bottom: 5px; right: 0px; margin-right: 5px; vertical-align: bottom;" onclick="editMenuSubmitChanges()"><p><b>Confirm Edit</b></p></nav>
         <!-- <nav id="NavBarEdit" style="position: fixed; background-color: red; margin-left: 160px;"><p><b>Cancel Edit</b></p></nav> -->
     </body>
+    <nav id="NavBarEdit" onclick="editMenuSubmitChanges()"><p><b>Confirm Edit</b></p></nav>
 </html>
