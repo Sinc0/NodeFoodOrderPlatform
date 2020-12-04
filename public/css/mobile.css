@@ -8,27 +8,28 @@
     }
 
     /* anon index */
+    #bodyIndex
+    {
+        background-image: none;
+        background-color: black;
+    }
+
     #indexAnonMenu, #indexAnonFooter
     {
         margin: auto;
-        width: 100vw;
+        width: 94vw;
         text-align: center;
     }
 
     #indexAnonMenu
     {
-        margin-top: 62.5px;
+        margin-top: 85%;
         top: 0;
     }
 
     .indexAnonMenuItem
     {
         border-bottom: 1px solid black;
-    }
-
-    #indexAnonMenuAboutButton, #indexAnonMenuContactButton
-    {
-        width: 100vw;
     }
 
     /* restaurants */
@@ -43,23 +44,19 @@
         display: none;
     }
 
-    .restaurantMenuItem
-    {
-        width: 100vw;
-    }
-
     #searchBoxRestaurants input
     {
         display: block;
         margin: auto;
-        width: 98vw;
+        width: 96vw;
         text-align: center;
     }
 
     .restaurantMenuItem
     {   
-        margin-top: 25px;
-        margin-bottom: 25px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        width: 100vw;
     }
 
     .restaurantMenuItemText
@@ -67,7 +64,7 @@
         display: block;
         margin: 0px;
         padding-top: 15px;
-        padding-bottom: 15px;
+        padding-bottom: 50px;
         height: 130px;
         width: 97vw;
         text-align: center;
@@ -125,14 +122,17 @@
     #main-menu
     {
         margin: 0px;
-        padding-top: 3.5px;
+        padding: 0px;
+        padding-top: 2.5px;
         background-color: black;
     }
 
     #side-cart
     {
-        display: block;
+        display: none;
         position: relative;
+        margin-bottom: -2px;
+        margin-left: 1px;
         padding-bottom: 4px;
         width: 98vw;
     }
@@ -218,8 +218,9 @@
 
     #checkoutCenterDiv
     {
-        width: 95vw;
+        margin-top: 25px;
         margin-left: 3.5px;
+        width: 95vw;
     }
 
     #customerCommentCheckout
@@ -328,12 +329,12 @@
 
     #editProfileCredentials
     {
-        width: 94vw;
+        width: 93.5vw;
     }
 
     #editProfilePassword
     {
-        width: 94vw;
+        width: 93.5vw;
     }
 
     #editProfilePassword input

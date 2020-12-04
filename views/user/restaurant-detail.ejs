@@ -197,6 +197,7 @@
                 if(d != undefined ||d != null)
                 {
                     d.style.visibility = "hidden";
+                    d.style.display = "none";
                 }
             }
 
@@ -244,6 +245,7 @@
                 var totalPrice = document.getElementById("total-price").innerHTML = "Total: " + "$" + cartTotalPrice();
                 var totalPriceMobile = document.getElementById("total-price-mobile").innerHTML = "Total: " + "$" + cartTotalPrice();
                 var sideCartVisibility = document.getElementById("side-cart").style.visibility = "visible";
+                var sideCartDisplay = document.getElementById("side-cart").style.display = "inline-block";
 
                 fillCartFormData();
             }
@@ -486,7 +488,7 @@
             <!-- search -->
             <% if(restaurantMenuItemsLength != 0) { %>
                 <div id="searchBox" onkeyup="searchBoxRestaurantMenu('<%=restaurantMenuItemsLength %>')">
-                    <input id="searchBoxInput" placeholder="Search..." style="margin: 0px; padding: 0px; height: 50px; border-top: 0px solid black; border-bottom: 0px solid black; background-color: #f7f9f9;"></input>
+                    <input class="search-restaurant-detail" id="searchBoxInput" placeholder="Search..." style="margin: 0px; padding: 0px; height: 50px; border-top: 0px solid black; border-bottom: 0px solid black; background-color: #f7f9f9;"></input>
                 </div>
             <% } %>
             
@@ -550,7 +552,7 @@
         </div>
  
         <% if(loggedIn == true && restaurant.open == true) { %>
-        <div id="side-cart" style="margin-left: 3.5px;">
+        <div id="side-cart">
             <form action="/checkout" method="POST" style="background-color: black;">
                 <button id="order-button" type="submit"><b>Checkout</b></button>
                 <h3 id="total-price-mobile" style="margin-bottom: 2px; background-color: #f7f9f9;"></h3>

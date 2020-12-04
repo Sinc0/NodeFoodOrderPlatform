@@ -151,12 +151,17 @@
                             <h3 style="color: rgb(214, 14, 14)">Open</h3> open or closed
                         <% } %> -->
 
+                        <br />
+
                         <h3><%=restaurant.city %></h3> <!-- location -->
                         <h3 hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
                         <h3><%=restaurant.type %></h3> <!-- type -->
                         <!-- <p><%=restaurant.description %></p> --> <!-- description -->
                         </a>
-                        <h3 id="restaurantReviewHeader#<%=counter %>" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
+                        
+                        <br />
+                        
+                        <h3 id="restaurantReviewHeader#<%=counter %>" onclick="displayRestaurantReviews('<%=counter %>')" style="padding-bottom: 5px;">Reviews</h3>
                     </div>
                 
                     <div class="restaurantReviewModal" id="restaurantsRestaurantReview#<%=counter %>" style="display: none;">

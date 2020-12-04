@@ -35,7 +35,7 @@
         }
     </script>
 </head>
-<body id="bodyIndex" style="background-image: url(/pics/pizza-slice.png);">
+<body id="bodyIndex">
     <!-- admin view -->
     <% if(admin != null && admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
@@ -89,15 +89,17 @@
     <% } else { %>
         <div id="indexAnonMenu">
             <!-- <div class="indexAnonMenuItem"><a href="/"><b><p>Shop</p></b></a></div> -->
-            <div id="indexAnonMenuRestaurantsButton" class="indexAnonMenuItem"></li><a href="/restaurants"><b><p>Restaurants</p></b></a></div>
             <div id="indexAnonMenuLoginButton" class="indexAnonMenuItem"><a href="/login"><b><p>Login</p></b></a></div>
             <div id="indexAnonMenuRegisterButton" class="indexAnonMenuItem"></li><a href="/register"><b><p>Register</p></b></a></div>
-        </div>
-        
-        <div id="indexAnonFooter" style="position: absolute; right: 0; bottom: 0;">
+            <div id="indexAnonMenuRestaurantsButton" class="indexAnonMenuItem"></li><a href="/restaurants"><b><p>Restaurants</p></b></a></div>
             <div id="indexAnonMenuAboutButton" class="indexAnonMenuItem"><a href="/about"><b><p>About</p></b></a></div>
             <div id="indexAnonMenuContactButton" class="indexAnonMenuItem"><a href="/contact"><b><p>Contact</p></b></a></div>
         </div>
+        
+        <!-- <div id="indexAnonFooter" style="position: absolute; right: 0; bottom: 0;">
+            <div id="indexAnonMenuAboutButton" class="indexAnonMenuItem"><a href="/about"><b><p>About</p></b></a></div>
+            <div id="indexAnonMenuContactButton" class="indexAnonMenuItem"><a href="/contact"><b><p>Contact</p></b></a></div>
+        </div> -->
     <% } %>
 </body>
 </html>
