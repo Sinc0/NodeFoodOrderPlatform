@@ -12,8 +12,6 @@
         {
             var d = document.getElementById("restaurantsRestaurantReview#" + menuItemNumber);
             var a = document.getElementById("restaurantMenuItem#" + menuItemNumber);
-            console.log(menuItemNumber);
-
             
             if(d.style.display == "none")
             {
@@ -31,9 +29,6 @@
 
         function setRestaurantNumberOfReviews(restaurantNumber, value)
         {
-            console.log(restaurantNumber);
-            console.log(value);
-
             var d = document.getElementById("restaurantReviewHeader#" + restaurantNumber);
 
             if(value == 0)
@@ -50,8 +45,6 @@
 
         function setRestaurantRating(restaurantNumber, rating)
         {
-            //console.log(rating);
-            
             var checkIfNaN = isNaN(parseFloat(rating));
             var d = document.getElementById("restaurantRating#" + restaurantNumber);
 
@@ -109,68 +102,65 @@
         <%- include('../snippets/html_nav_menu_anon.ejs') %>
     <% } %>
 
+    <!-- arrays -->
     <% var restaurantsOpen = [] %>
     <% var restaurantsClosed = [] %>
 
+    <!-- add open restaurants to array -->
     <% for (let restaurant of restaurants) { %>
         <% if(restaurant.menuListed == true && restaurant.open == true) { %>
             <% restaurantsOpen.push(restaurant); %>
         <% } %>
     <% } %>
 
+    <!-- add closed restaurants to array -->
     <% for (let restaurant of restaurants) { %>
         <% if(restaurant.menuListed == true && restaurant.open == false) { %>
             <% restaurantsClosed.push(restaurant); %>
         <% } %>
     <% } %>
 
-    <!-- <h1>My restaurants</h1>
-    <p> List of all the restaurants...</p> -->
-
     <br />
-    
+
+    <!-- search box -->
     <div id="searchBoxRestaurants" style="margin: 0px; padding: 0px; text-align: center;" onkeyup="searchBoxRestaurants('<%=restaurants.length - 1 %>')">
         <input id="searchBoxInput" style="height: 38px;" placeholder="Search..."></input>
     </div>
 
-    <!-- open restaurants -->
     <div id="grid-restaurants" class="grid">
         <% counter = 0 %>
+        
+        <!-- open restaurants -->
         <% if (restaurantsOpen.length > 0) { %>
+            
             <% for (let restaurant of restaurantsOpen) { %>
-            <% counter++ %>
-            <div id="restaurantMenuItem#<%=counter %>" class="restaurantMenuItem">
                 
+                <% counter++ %>
+
+                <!-- restaurant -->
+                <div id="restaurantMenuItem#<%=counter %>" class="restaurantMenuItem">
+                    
+                    <!-- restaurant profile image -->
                     <a style="text-decoration: none; color: black" href="/restaurant/<%= restaurant.url %>">
                         <div class="restaurantMenuItemImg">
                             <img src="<%= restaurant.imageUrl %>" alt="<%=restaurant.title %>">
                         </div>                  
-                    
-
-                    <div class="restaurantMenuItemText" style="display: inline-block;">
-                        <h1 style="margin-top: 0px;"><%=restaurant.title %></h1>
-                    
-                        <!-- <% if(restaurant.open == true) { %>
-                            <h3 style="color: rgb(30, 209, 54)">Open</h3> open or closed
-                        <% } %>
-
-                        <% if(restaurant.open == false) { %>
-                            <h3 style="color: rgb(214, 14, 14)">Open</h3> open or closed
-                        <% } %> -->
-
-                        <h3><%=restaurant.city %></h3> <!-- location -->
-                        <h3 hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
-                        <h3><%=restaurant.type %></h3> <!-- type -->
-                        <!-- <p><%=restaurant.description %></p> --> <!-- description -->
-                        </a>
+                        
+                        <!-- restaurant info -->
+                        <div class="restaurantMenuItemText" style="display: inline-block;">
+                            <h1 style="margin-top: 0px;"><%=restaurant.title %></h1> <!-- title -->
+                            <h3><%=restaurant.city %></h3> <!-- location -->
+                            <h3 hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
+                            <h3><%=restaurant.type %></h3> <!-- type -->
+                    </a>
                         
                         <br />
                         
                         <h3 id="restaurantReviewHeader#<%=counter %>" onclick="displayRestaurantReviews('<%=counter %>')" style="padding-bottom: 5px;">Reviews</h3>
                     </div>
                 
+                    <!-- review -->
                     <div class="restaurantReviewModal" id="restaurantsRestaurantReview#<%=counter %>" style="display: none;">
-                        
                         <% var sortArray = [] %>
                         <% var restaurantRating = null %>
                         
@@ -189,21 +179,21 @@
                         </script>
                                 
                         <% if(sortArray.length != 0) { %>
-                            <!-- <p><b>Total Comments (<%=sortArray.length %>)</b></p> -->
                             
                             <% for(var i = 0; i < sortArray.length; i++) { %>
                                 <div class="restaurantReview">
-                                    <!-- <p>Date: <%=sortArray[i].reviewObject.date %></p> -->
                                     <% var dateFormatted = sortArray[i].reviewObject.date %>
                                     <% var dateFormatted = dateFormatted.toString().split(" ") %>
-                                    <!-- % var dateFormatted = dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] + " - " + dateFormatted[4]%> -->
                                     <% var dateFormatted = dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] %>
+                 
                                     <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; text-align: center; background-color: lightgray;"><b>Rating</b> <%=sortArray[i].reviewObject.rating %></p><br />
+                 
                                     <div style="margin: auto; width: 55%;">
                                         <p style="text-align: center;"><%=sortArray[i].reviewObject.name %></p>
                                         <p style="text-align: center;"><%=dateFormatted %></p>
                                         <p style="text-align: center;"><%=sortArray[i].reviewObject.items %></p><br />
                                     </div>
+                 
                                     <p style="text-align: center;"><b>Comment</b></p>
                                     <p style="text-align: center; margin-bottom: 15px;"><%=sortArray[i].reviewObject.comment %></p>
                                 </div>                                
@@ -216,6 +206,7 @@
                         <% } %>
                     </div>
 
+                    <!-- search object -->
                     <p hidden id="restaurantMenuItemSearchText#<%=counter %>">
                         <%=restaurant.title %>
                         <%=restaurant.status %>
@@ -225,121 +216,115 @@
                         <%=restaurant.description %>
                     </p>
                     
-                    <!--
-                    <div class="card__actions">
-                        <a href="/restaurants/<%= restaurant._id %>" class="btn"><button>Details</button></a>
-                        <a href="/cart/<%= restaurant._id %>" class="btn"><button>Details</button></a>
-                    </div>
-                    -->  
-            </div>
+                </div>
             <% } %>
         
             <% } else { %>
                 
             <% } %>
 
-            <!-- closed restaurants -->
-            <% if (restaurantsClosed.length > 0) { %>
-                <% for (let restaurant of restaurantsClosed) { %>
+        <!-- closed restaurants -->
+        <% if (restaurantsClosed.length > 0) { %>
+            
+            <% for (let restaurant of restaurantsClosed) { %>
 
-                    <% counter++ %>
-                    
-                    <div id="RestaurantClosed" style="display: inline-block;">
-                        <p><b>Closed</b></p>
+                <% counter++ %>
+
+                <!-- restaurant -->
+                <div id="RestaurantClosed" style="display: inline-block;">
+                    <p><b>Closed</b></p>
+                </div>
+
+                <div id="restaurantMenuItem#<%=counter %>" class="restaurantMenuItem" style="opacity: 25%;">
+                    <a style="text-decoration: none; color: black" href="/restaurant/<%= restaurant.url %>">
+                
+                        <!-- restaurant profile image -->
+                        <div class="restaurantMenuItemImg">
+                            <img src="<%= restaurant.imageUrl %>" alt="<%=restaurant.title %>">
+                        </div>
+                   
+                        <!-- restaurant info -->
+                        <div class="restaurantMenuItemText" style="display: inline-block;">
+                            <% if(restaurant.open == true) { %>
+                                <h3 style="color: rgb(30, 209, 54)">Closed</h3> <!-- open or closed -->
+                            <% } %>
+            
+                            <% if(restaurant.open == false) { %>
+                                <h3 style="margin-top: 5px; margin-bottom: -2px; color: rgb(214, 14, 14)">Closed</h3> <!-- open or closed -->
+                            <% } %>
+
+                            <h1 style="margin-top: 0px;"><%=restaurant.title %></h1> <!-- title -->
+                            <h3 hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
+                            <h3><%=restaurant.type %></h3> <!-- type -->
+                            <h3><%=restaurant.location %></h3> <!-- location -->
+                    </a>
+
+                        <br >
+
+                        <h3 id="restaurantReviewHeader#<%=counter %>" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
                     </div>
-        
-                    <div id="restaurantMenuItem#<%=counter %>" class="restaurantMenuItem" style="opacity: 25%;">
-                            <a style="text-decoration: none; color: black" href="/restaurant/<%= restaurant.url %>">
+
+                    <!-- review -->
+                    <div id="restaurantsRestaurantReview#<%=counter %>" style="display: none;">
+                        <% var sortArray = [] %>
+                        <% var restaurantRating = 0 %>
                         
-                                <div class="restaurantMenuItemImg">
-                                    <img src="<%= restaurant.imageUrl %>" alt="<%=restaurant.title %>">
-                                </div>
-                            </a>
-                            
-                            <div class="restaurantMenuItemText" style="display: inline-block;">
-                                <% if(restaurant.open == true) { %>
-                                    <h3 style="color: rgb(30, 209, 54)">Closed</h3> <!-- open or closed -->
-                                <% } %>
-                
-                                <% if(restaurant.open == false) { %>
-                                    <h3 style="margin-top: 5px; margin-bottom: -2px; color: rgb(214, 14, 14)">Closed</h3> <!-- open or closed -->
-                                <% } %>
+                        <% for(var i = 0; i < reviews.length; i++) { %>
+                            <% if(reviews[i].restaurant == restaurant.url) { %>
+                                <% sortArray.push(reviews[i]); %>
+                                <% restaurantRating += parseInt(reviews[i].reviewObject.rating) %>
+                            <% } %>
+                        <% } %>
 
-                                <h1 style="margin-top: 0px;"><%=restaurant.title %></h1>
-                
-                                <h3 hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
-                                <h3><%=restaurant.type %></h3> <!-- type -->
-                                <h3><%=restaurant.location %></h3> <!-- location -->
-                                <!-- <p><%=restaurant.description %></p> --> <!-- description -->
-                                <h3 id="restaurantReviewHeader#<%=counter %>" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
-                            </div>
+                        <% var rating = restaurantRating / parseInt(sortArray.length); %>                 
 
-                            <div id="restaurantsRestaurantReview#<%=counter %>" style="display: none;">
-                                <% var sortArray = [] %>
-                                <% var restaurantRating = 0 %>
-                                
-                                <% for(var i = 0; i < reviews.length; i++) { %>
-                                    <% if(reviews[i].restaurant == restaurant.url) { %>
-                                        <% sortArray.push(reviews[i]); %>
-                                        <% restaurantRating += parseInt(reviews[i].reviewObject.rating) %>
-                                    <% } %>
-                                <% } %>
-        
-                                <% var rating = restaurantRating / parseInt(sortArray.length); %>                 
-        
-                                <script>
-                                    setRestaurantRating('<%=counter %>', '<%=rating %>');
-                                    setRestaurantNumberOfReviews('<%=counter %>', '<%=parseInt(sortArray.length) %>');
-                                </script>
+                        <script>
+                            setRestaurantRating('<%=counter %>', '<%=rating %>');
+                            setRestaurantNumberOfReviews('<%=counter %>', '<%=parseInt(sortArray.length) %>');
+                        </script>
 
-                                <% if(sortArray.length != 0) { %>
-                                    <!-- <p><b>Total Comments (<%=sortArray.length %>)</b></p> -->
+                        <% if(sortArray.length != 0) { %>
 
-                                    <% for(var i = 0; i < sortArray.length; i++) { %>
-                                        <div class="restaurantReview" style="margin-top: 25px; padding-top: 0px;">
-                                            <!-- <p>Date: <%=sortArray[i].reviewObject.date %></p> -->
-                                            <% var dateFormatted = sortArray[i].reviewObject.date %>
-                                            <% var dateFormatted = dateFormatted.toString().split(" ") %>
-                                            <% var dateFormatted =  dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] + " - " + dateFormatted[4]%>
-                                            <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom:5px; text-align: center; background-color: lightgray;"><b>Rating:</b> <%=sortArray[i].reviewObject.rating %></p><br />
-                                            <div style="margin: auto; width: 55%">
-                                                <p style="text-align: center;"><%=sortArray[i].reviewObject.name %></p>
-                                                <p style="text-align: center;"><%=dateFormatted %></p>
-                                                <p style="text-align: center;"><%=sortArray[i].reviewObject.items %></p><br />
-                                            </div>
-                                            <p style="text-align: center;"><b>Comment:</b></p>
-                                            <p style="text-align: center; margin-bottom: 15px;"><%=sortArray[i].reviewObject.comment %></p>
-                                        </div>                                
-                                    <% } %> 
-                                
-                                <% } else { %>
-                                    <h3>No reviews exist</h3>
-                                <% } %>
-                            </div>
-                           
-                            <p hidden id="restaurantMenuItemSearchText#<%=counter %>">
-                                <%=restaurant.status %>
-                                <%=restaurant.title %>
-                                <%=restaurant.rating %>
-                                <%=restaurant.type %>
-                                <%=restaurant.location %>
-                                <%=restaurant.description %>
-                            </p>
-
-                            <!--
-                            <div class="card__actions">
-                                <a href="/restaurants/<%= restaurant._id %>" class="btn"><button>Details</button></a>
-                                <a href="/cart/<%= restaurant._id %>" class="btn"><button>Details</button></a>
-                            </div>
-                            -->
+                            <% for(var i = 0; i < sortArray.length; i++) { %>
+                                <div class="restaurantReview" style="margin-top: 25px; padding-top: 0px;">
+                                    <% var dateFormatted = sortArray[i].reviewObject.date %>
+                                    <% var dateFormatted = dateFormatted.toString().split(" ") %>
+                                    <% var dateFormatted =  dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] + " - " + dateFormatted[4]%>
+                                    
+                                    <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom:5px; text-align: center; background-color: lightgray;"><b>Rating:</b> <%=sortArray[i].reviewObject.rating %></p><br />
+                                    
+                                    <div style="margin: auto; width: 55%">
+                                        <p style="text-align: center;"><%=sortArray[i].reviewObject.name %></p>
+                                        <p style="text-align: center;"><%=dateFormatted %></p>
+                                        <p style="text-align: center;"><%=sortArray[i].reviewObject.items %></p><br />
+                                    </div>
+                                    
+                                    <p style="text-align: center;"><b>Comment:</b></p>
+                                    <p style="text-align: center; margin-bottom: 15px;"><%=sortArray[i].reviewObject.comment %></p>
+                                </div>                                
+                            <% } %> 
+                        
+                        <% } else { %>
+                            <h3>No reviews exist</h3>
+                        <% } %>
                     </div>
-                <% } %>
-            <% } else { %>
-                
-            <% } %>
-        </div>
 
-    </main>
-    
+                    <!-- search object -->
+                    <p hidden id="restaurantMenuItemSearchText#<%=counter %>">
+                        <%=restaurant.status %>
+                        <%=restaurant.title %>
+                        <%=restaurant.rating %>
+                        <%=restaurant.type %>
+                        <%=restaurant.location %>
+                        <%=restaurant.description %>
+                    </p>
+
+                </div>
+        <% } %>
+
+        <% } else { %>
+            <!-- do nothing -->
+        <% } %>
+    </div>
 </body>
 </html>

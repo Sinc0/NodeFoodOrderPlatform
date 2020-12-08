@@ -1,4 +1,4 @@
-const getDb = require('../helpers/database').getDb;
+const getDb = require('../controllers/database').getDb;
 const mongodb = require('mongodb');
 const ObjectId = mongodb.ObjectId;
 

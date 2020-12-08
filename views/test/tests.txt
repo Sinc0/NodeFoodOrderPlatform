@@ -1,0 +1,24 @@
+//Order.fetchAll();
+//Order.deleteOne('5ee8fdc204550299110cef58');
+//Order.FindByUser('andersson@mail.com')
+//Order.findById('5ee755d867fa4b4d5dfd4734');
+//Order.updateOne('5f3673e095408d19ee244ea4', "15 min");
+//Order.findById("5f3d20a18b452d3ffee4353c", "orders");
+//Order.fetchAllUnconfirmed("akosdmks").then(orders => {console.log(orders)});
+//Restaurant.findById('5ebeac773c4721f4f1ca4369');
+//Restaurant.delete('5ebeaa2052e60df379eb3d1d');
+//User.emptyCart('andersson@mail.com');
+//User.fetchCart('andersson@mail.com');
+//User.findById('5ecbe168d0e1f9d4753f5fd5');
+//User.findByEmail('bill@mail.com');
+//User.findByCookieId(0.6455338872058423);
+//User.validateLogin(0.9769220100073956);
+//Session.deleteOne(0.20029134749794464);
+//Session.findByCookieId(0.9769220100073956);
+//Session.createSession('jokka@mail.com', '123456', 0.128931032330131, true);
+//User.deleteOne('ham@mail.com');
+//User.updateOne('jokka@mail.com', 0.1317381373812)
+//const testUser = new User('test@email.com', 'testAccount', '123456');
+//testUser.save();
+//User.findById('5ecbe168d0e1f9d4753f5fd5');
+//User.fetchAll();

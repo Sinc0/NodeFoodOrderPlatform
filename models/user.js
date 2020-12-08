@@ -1,4 +1,4 @@
-const getDb = require('../helpers/database').getDb;
+const getDb = require('../controllers/database').getDb;
 const mongodb = require('mongodb');
 const Session = require('./session');
 const ObjectId = mongodb.ObjectId;
@@ -598,7 +598,7 @@ class User
                 hours.push({day: "Sunday", time: "Closed"})
 
                 var description = "description of " + restaurantName;
-                var imageUrl = "exampleImage.jpg";
+                var imageUrl = "pics/exampleImage.jpg";
                 
                 var menuCategories = [];
 

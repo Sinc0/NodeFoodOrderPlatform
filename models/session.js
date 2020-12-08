@@ -1,4 +1,4 @@
-const getDb = require('../helpers/database').getDb;
+const getDb = require('../controllers/database').getDb;
 
 class Session
 {
