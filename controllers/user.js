@@ -75,31 +75,15 @@ exports.getRestaurants = (req, res, next) => {
     {
         res.redirect('/');
     }
-
-    //.then(User.findByUsername);
     
-    /*
-    Product.fetchAll()
-        .then(products => {
-            res.render('shop/shop-product-list', {
-                prods: products,
-                pageTitle: 'All Products',
-                path: '/products'
-            });
-        })
-        .catch(err => console.log(err));
-    */
 }
 
 exports.getRestaurantDetail = async (req, res, next) => {
     console.log('getRestaurantDetail >');
     const restaurantUrl = req.params.restaurantUrl;
     console.log(restaurantUrl);
-    console.log("");
 
-    //console.log('ProdId: ' + String(req.params.restaurantId));
     let validation = res.locals.validation;
-    //let validationStatus = null;
     
     if(validation == undefined)
     {
@@ -112,7 +96,6 @@ exports.getRestaurantDetail = async (req, res, next) => {
     }
 
     var restaurant = await Restaurant.findByUrl(restaurantUrl);
-    //console.log(restaurant);
 
     //logged in user
     if(validationStatus == true)
@@ -129,6 +112,7 @@ exports.getRestaurantDetail = async (req, res, next) => {
                 path: '/restaurants'
             });
         }
+
         else
         {
             res.redirect('/');
@@ -139,7 +123,6 @@ exports.getRestaurantDetail = async (req, res, next) => {
     //anonymous user
     else
     {
-
         if(restaurant != null)
         {   
             res.render('user/restaurant-detail', {
@@ -152,6 +135,7 @@ exports.getRestaurantDetail = async (req, res, next) => {
                 path: '/restaurants'
             });
         }
+        
         else
         {
             res.redirect('/');
@@ -162,21 +146,6 @@ exports.getRestaurantDetail = async (req, res, next) => {
 }
 
 exports.getIndex = async (req, res, next) => {
-    //res.setHeader('Set-Cookie', 'testCookie=kasldalkdslkd');
-    
-    /*
-    Product.fetchAll()
-        .then(([rows], fieldData) => {
-            res.render('shop/index', 
-            { 
-                prods: rows,
-                pageTitle: 'Home',
-                path: '/'
-            });
-        })
-        .catch(err => console.log(err));
-    */
-
     console.log('getIndex\n');
     console.log(req.ip);
     console.log(req.connection.remoteAddress);
@@ -185,11 +154,6 @@ exports.getIndex = async (req, res, next) => {
 
     let validation = res.locals.validation;
     let email = res.locals.userEmail;
-
-    //console.log(res.locals.text);
-    //console.log(validation);
-    //console.log(validation.status);
-    //console.log(validation.isAdmin);
 
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
@@ -247,15 +211,6 @@ exports.getRestaurantList = async (req, res, next) => {
         validationStatus = validation.status;
     }
     
-    let userEmail = res.locals.userEmail;
-    let addToCartSuccessful = 1;
-    let addoCartFailed = 0;    
-    
-    //const restaurantUrl = req.params.restaurantUrl;
-    //console.log(restaurantUrl);
-    //console.log(restaurantId);
-    //console.log(userEmail);
-
     var restaurants = await Restaurant.fetchAll();
     var reviews = await Review.fetchAll();
     
@@ -283,121 +238,6 @@ exports.getRestaurantList = async (req, res, next) => {
             reviews: reviews,
             path: '/restaurants'
         });
-    }       
-    
-}
-
-exports.getAddToCart = (req, res, next) => {
-    console.log('getCartx');
-    let validation = res.locals.validation;
-    let userEmail = res.locals.userEmail;
-    let cartProducts = [];
-    console.log('postCartx >');
-    const productId = req.params.productId;
-    const menuItemId = req.params.menuItemId;
-    console.log(productId);
-    console.log(menuItemId);
-    let addToCartSuccessful = 1;
-    let addoCartFailed = 0;
-
-    //console.log(productId);
-    //console.log(userEmail);
-    
-    //logged in user
-    if(validation.status == true)
-    {
-        Restaurant.findById(ObjectId(productId))
-        .then(resultProduct => 
-        {
-            let menuItemsArray = resultProduct.menu;
-            let menuItem = null;
-            console.log(resultProduct.menu);
-
-            for(let c = 0; c < menuItemsArray.length; c++)
-            {
-                if(menuItemsArray[c].productId == menuItemId)
-                {
-                    menuItem = c;
-                }
-            }
-
-            let title = menuItemsArray[menuItem].title;
-            let price = menuItemsArray[menuItem].price;
-            let description = menuItemsArray[menuItem].description;
-            let cartArray = [];
-            let checkProductExists = false;
-
-            User.fetchCart(userEmail)
-            .then(result => {
-                //if users cart have items in it
-                if(result != null)
-                {
-                    cartArray = result;
-                    
-                    //checks if product already exists in cart and if true increments quantity
-                    for (elementCtr = 0; elementCtr < cartArray.length; elementCtr++) 
-                    {   
-                        if(cartArray[elementCtr].productId == menuItemId)
-                        {
-                            cartArray[elementCtr].quantity++;
-                            checkProductExists = true;
-                        }
-                    }
-
-                    if(checkProductExists != true)
-                    {
-                        cartArray.push({productId: menuItemId, title: title, quantity: 1, price: price, description: description});
-                        //cartArray.push({productId: ObjectId(productId), title: title, quantity: 1, price: price, description: description});
-                    }
-                    
-                    User.addToCart(userEmail, cartArray)
-                    .then(result => {
-                        if(result == addToCartSuccessful)
-                        {
-                            console.log('add item to cart: successful');
-                            res.redirect("/restaurant/" + productId);
-                        }
-
-                        else 
-                        {
-                            console.log('add item to cart: failed');
-                            res.redirect('/product-list');
-                        }
-                    })
-                    .catch(err => {console.log(err)});
-                }
-
-                //if users cart is empty
-                else
-                {
-                    cartArray.push({productId: menuItemId, title: title, quantity: 1, price: price, description: description});
-                    
-                    User.addToCart(userEmail, cartArray)
-                    .then(result => {
-                        if(result == addToCartSuccessful)
-                        {
-                            console.log('add item to cart: successful');
-                            res.redirect("/restaurant/" + productId);
-                        }
-
-                        else 
-                        {
-                            console.log('add item to cart: failed');
-                            res.redirect('/product-list');
-                        }
-                    })
-                    .catch(err => {console.log(err)});
-                }
-
-            }).catch(err => {console.log(err)});
-        
-        }).catch(err => {console.log(err)});
-    }
-
-    //anon user
-    else
-    {
-        res.redirect('/');
     }       
     
 }
@@ -438,14 +278,9 @@ exports.getOrders = (req, res, next) => {
 
 exports.postOrder = async (req, res, next) => {
     console.log('postOrder >');
-    console.log(req.body);
     let validation = res.locals.validation;
     let userEmail = res.locals.userEmail;
-    let insertSuccessful = 1;
-    //let cartItems = req.body.cartAllItems;
-    //let totalPrice = req.body.cartTotalPrice;
-    //let commentToRestaurant = req.body.commentToRestaurant;
-
+    
     let cartItems = req.body.cartAllItems;
     let totalPrice = req.body.cartTotalPrice;
     let restaurant = req.body.restaurant;
@@ -467,77 +302,13 @@ exports.postOrder = async (req, res, next) => {
          if(createOrder.insertedCount != null)
          {
             console.log('create order: successful');
-            //res.redirect('/orders');
-             res.redirect("/order-process/" + orderId);
-            
-             /*
-             let order;
-             order = result.ops;
-
-             let id = order[0]._id;
-             let user = order[0].user;
-             let date = order[0].date;
-             let products = order[0].products;
-             let totalPrice = order[0].totalPrice;
-                                    
-             //create order pdf
-             const reciept = 'Reciept=' + id + '.pdf';
-             const recieptPath = path.join(__dirname, '..', 'public/' + 'orderReciepts', reciept);
-             const pdfReciept = new pdfDocument();
-        
-             //console.log(reciept);
-            
-             res.setHeader('Content-Type', 'application/pdf');
-             res.setHeader('Content-Disposition', 'inline; filename="' + reciept + '"');
-            
-             pdfReciept.pipe(fs.createWriteStream(recieptPath));
-             //pdfReciept.pipe(res); redirects to pdf document
-             //pdfReciept.fontSize(26).text('Reciept', {
-                 //underline: true
-             //})
-
-             //write pdf start
-             try 
-             {
-                 pdfReciept.text('Order: ' + id)
-                 pdfReciept.text('\n');
-                 pdfReciept.text('Date: ' + date);
-                 pdfReciept.text('\n');
-                 pdfReciept.text('User: ' + user);
-                 pdfReciept.text('\n');
-                 pdfReciept.text('Total Products: ' + products.length);
-                 pdfReciept.text('\n');
-                 pdfReciept.text('Total Amount: ' + totalPrice);
-                 pdfReciept.text('\n');
-                 for(elementCounter = 0; elementCounter < products.length; elementCounter++)
-                 {
-                       pdfReciept.text('\n');
-                     pdfReciept.text('#' + (elementCounter + 1));
-                     pdfReciept.text(products[elementCounter].title);
-                     pdfReciept.text('quantity: ' + products[elementCounter].quantity);
-                     pdfReciept.text('price: ' + products[elementCounter].price);
-                     pdfReciept.text('description: ' + products[elementCounter].description);
-                     pdfReciept.text('\n');
-                 }
-                 pdfReciept.end();
-
-                 console.log('create pdf: successful');
-                 res.redirect('/orders');
-             } 
-             catch (error) 
-             {
-                 console.log('create pdf: failed');
-                 console.log(error);
-                 res.redirect('/orders');   
-             }
-             */
-
+            res.redirect("/order-process/" + orderId);
          }
         
          else
          {
              console.log('create order: failed');
-             res.redirect('/cart');
+             res.redirect('/');
          }
      }
 
@@ -548,105 +319,22 @@ exports.postOrder = async (req, res, next) => {
      }
 }
 
-exports.getReciept = (req, res, next) => {
-    console.log('getReciept >');
-    let recieptId = req.params.orderId;
-    let validation = res.locals.validation;
-    let userEmail = res.locals.userEmail;
-
-    //logged in user
-    if(validation.status == true)
-    {
-        Order.findById(recieptId)
-        .then(result => {
-            if(userEmail == result.user)
-            {
-                console.log('reciept fetch: successful');
-                res.redirect('/orderReciepts/' + 'Reciept=' + recieptId + '.pdf');
-                    
-            }
-
-            else
-            {
-                console.log('reciept fetch: failed');
-                res.redirect('/orders');
-            }
-        })
-        .catch(err => {console.log(err)})
-    }
-
-    //anon
-    else
-    {
-        console.log('reciept fetch: access denied');
-        res.redirect('/');
-    }
-
-    /*
-    const orderId = req.params.orderId;
-    const reciept = 'reciept' + orderId + '.pdf';
-    const recieptPath = path.join('reciepts', reciept);
-    const pdfReciept = new pdfDocument();
-
-    console.log(reciept);
-    
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'inline; filename="' + reciept + '"');
-    
-    pdfReciept.pipe(fs.createWriteStream(recieptPath));
-    pdfReciept.pipe(res);
-    pdfReciept.fontSize(26).text('Reciept', {
-        //underline: true
-    })
-    pdfReciept.text('Example text');
-    pdfReciept.end();
-     
-    //preload
-    /*
-    fs.readFile(recieptPath, (err, recieptFile) => {
-        if(err)
-        {
-            return next(err)
-        }
-
-        else
-        {
-            //inline == in browser
-            //attachment == download window
-            res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', 'attachment; filename="' + reciept + '"');
-            res.send(recieptFile);
-        }
-    })
-    */
-
-    //stream
-    /*
-    const file = fs.createReadStream(recieptPath);
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'attachment; filename="' + reciept + '"');
-    file.pipe(res);
-    */
-}
-
 exports.getCheckout = async (req, res, next) => {
     console.log('getCheckout');
     let validation = res.locals.validation;
     let email = res.locals.userEmail;    
+    
     let cartItems = req.body.cartAllItems;
     let customerComment = req.body.customerComment;
     let cartTotalPrice = req.body.cartTotalPrice;
     let restaurant = req.body.restaurant;
-    //let currency = req.body.currency;
-    //console.log(req.body.cartAllItems);
-    //console.log(req.body.cartTotalPrice);
-    //console.log(req.body);
 
     var user = await User.findByEmail(email);
 
     const intent = await stripe.paymentIntents.create({
         amount: 100, //cartTotalPrice 
-        currency: 'usd',
+        currency: 'usd', 
+        
         // Verify your integration in this guide by including this parameter
         metadata: {integration_check: 'accept_a_payment'},
     });
@@ -683,23 +371,23 @@ exports.getLogout = (req, res, next) => {
     console.log('getLogout');
     let validation = res.locals.validation;
             
-            //logged in user
-            if(validation.status == true)
-            {
-                res.render('user/logout', {
-                    admin: validation.isAdmin,
-                    loggedIn: true,
-                    pageTitle: 'Logout',
-                    path: '/logout',
-                    statusText: ''
-                })
-            }
-    
-            //anonymous user
-            else
-            {
-                res.redirect('/');
-            }
+    //logged in user
+    if(validation.status == true)
+    {
+        res.render('user/logout', {
+            admin: validation.isAdmin,
+            loggedIn: true,
+            pageTitle: 'Logout',
+            path: '/logout',
+            statusText: ''
+        })
+    }
+
+    //anonymous user
+    else
+    {
+        res.redirect('/');
+    }
 }
 
 exports.postLogout = (req, res, next) => {  
@@ -718,21 +406,21 @@ exports.postLogout = (req, res, next) => {
         User.logout(loginCookie).then(result => {
             if(result == logoutSuccessful)
             {
-                //console.log('logout succesful')
+                console.log('logout succesful')
                 res.redirect('/');
             }
     
             else
             {
-                //console.log('logout failed')
+                console.log('logout failed')
                 res.render('user/logout', 
                 { 
                     pageTitle: 'Logout',
                     path: '/logout',
                     statusText: 'logout failed, try again in a few minutes'
-                });
+                })
             }
-        })
+        });
     }
 
     else
@@ -770,7 +458,7 @@ exports.getProfile = async (req, res, next) => {
         });
     }
 
-    //anonymous user
+    //anon user
     else
     {
         res.render('user/index', 
@@ -793,10 +481,7 @@ exports.postRegister = (req, res, next) => {
     const email = req.body.emailCustomer;
     const password = req.body.passwordCustomer;
 
-    User.register(email, username, password)
-        .then(result => {
-            //console.log("result:");
-            //console.log(result)
+    User.register(email, username, password).then(result => {
 
             if(result == 'registration successful')
             {
@@ -861,7 +546,6 @@ exports.postRegisterRestaurant = async (req, res, next) => {
     
     var registerRestaurant = await User.registerRestaurant(email, address, phone, owner, restaurantName, companyIdNumber, password, city);
     var result = registerRestaurant;
-    //console.log(registerRestaurant);
 
     if(result == 'registration successful')
     {
@@ -923,7 +607,6 @@ exports.postLogin = async (req, res, next) => {
     const password = req.body.password;
     
     User.login(email, password).then(result => {
-        //console.log("result: " + result);
 
         if(result.statusText == 'login successful')
         {
@@ -940,10 +623,7 @@ exports.postLogin = async (req, res, next) => {
                 }
     
                 else if(restaurantCheck == null)
-                {
-                    //console.log(result.statusText);
-                    //console.log(result.cookieId);
-        
+                {        
                     res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';path=/')
                     res.redirect('/');
                 }
@@ -1010,17 +690,12 @@ exports.getOrderDetails = async (req, res, next) => {
     let validation = res.locals.validation;
     let userEmail = res.locals.userEmail;
 
-    orderId = req.params.orderId;
+    var orderId = req.params.orderId;
 
     var order = await Order.findById(orderId);
-    //console.log(order);
 
     if(order != null)
     {
-        var totalPrice = order.totalPrice;
-        var orderDate = order.date;
-        var orderItems = order.products.items;
-        
         if(validation.status == true)
         {
             res.render('user/order-details', 
@@ -1032,6 +707,7 @@ exports.getOrderDetails = async (req, res, next) => {
                 order: order,
             });
         }
+
         else
         {
             res.redirect('/');
@@ -1043,25 +719,16 @@ exports.getOrderDetails = async (req, res, next) => {
         res.redirect('/');
     }
 
-
 }
 
 exports.getOrderProcess = async (req, res, next) => {
     console.log('\ngetOrderProcess');
     
-    orderId = req.params.orderId;
-
+    var orderId = req.params.orderId;
     var order = await Order.findById(orderId);
-    //console.log(order);
 
     if(order != null && order.status == "unconfirmed")
     {
-        var totalPrice = order.totalPrice;
-        var orderDate = order.date;
-        var orderItems = order.products.items;
-        var orderPickup = order.pickUp;
-        var orderDelivery = order.delivery;
-    
         res.render('user/order-process', 
         { 
             order: order
@@ -1090,21 +757,8 @@ exports.postOrderUpdate = async (req, res, next) => {
 exports.postWebhook = (req, res, next) => {
     console.log('\npostWebhook Test');
 
-    //console.log(req.body);
-    
     let event = req.body;
 
-    /*
-    try 
-    {
-        event = JSON.parse(req.body);
-    } 
-    catch (err) 
-    {
-        res.status(400).send(`Webhook Error: ${err.message}`);
-    }
-    */
-    
     // Handle the event
     if(event.type == 'payment_intent.succeeded') 
     {
@@ -1113,6 +767,7 @@ exports.postWebhook = (req, res, next) => {
         // Return a 200 response to acknowledge receipt of the event  
         res.json({received: true});
     }
+
     else if(event.type == 'payment_method.attached')
     {
         const paymentMethod = event.data.object;
@@ -1120,6 +775,7 @@ exports.postWebhook = (req, res, next) => {
         // Return a 200 response to acknowledge receipt of the event  
         res.json({received: true});
     }
+
     else
     {
         // Unexpected event type
@@ -1130,21 +786,15 @@ exports.postWebhook = (req, res, next) => {
 
 exports.postUserUpdateCredentials = async (req, res, next) => {
     console.log('\npostUserUpdateCredentials Test');
-
+    
     let loginCookie = req.get('Cookie');
     let cookieId = parseLoginCookie(loginCookie);
-    console.log(cookieId);
-    
     var email = req.body.email;
     var name = req.body.name;
     var phone = req.body.phone;
     var address = req.body.address;
     
     var updateUser = await User.updateCredentials(email, name, address, phone);
-
-    //var deleteSession = await Session.deleteOne(cookieId);
-
-    //res.setHeader('Set-Cookie', 'loginCookie='); 
 
     res.redirect('/profile');
 }
@@ -1157,10 +807,6 @@ exports.postUserUpdatePassword = async (req, res, next) => {
     var email = req.body.email;
     var oldPassword = req.body.oldPassword;
     var newPassword = req.body.newPassword;
-    var test = res.locals.test = "test";
-    console.log(cookieId);
-    console.log(oldPassword);
-    console.log(newPassword);
 
     var user = await User.findByEmail(email);
     
@@ -1176,40 +822,59 @@ exports.postUserUpdatePassword = async (req, res, next) => {
         res.redirect('/profile?update=oldpasswordincorrect');
     }
 
-    //var updateUser = await User.updateCredentials(email, name, address, phone);
-    //var deleteSession = await Session.deleteOne(cookieId);
-    //res.setHeader('Set-Cookie', 'loginCookie='); 
+}
 
+exports.postRestaurantReview = async (req, res, next) => {
+    console.log('postUserRestaurantReview');
+
+    var orderId = req.body.orderId;
+    var restaurant = req.body.restaurant;
+    var user = res.locals.userEmail;
+    var date = new Date();
+    var name = req.body.customerName;
+    var rating = req.body.rating;
+    var items = req.body.items;
+    var comment = req.body.comment;
+    reviewObject = {date: date, name: name, rating: rating, items: items, comment: comment};
+
+    var checkIfOrderReviewExist = await Review.findByOrderId(orderId);
+
+    if(checkIfOrderReviewExist == null)
+    {
+        var review = await Review.create(user, restaurant, reviewObject, orderId);
+        var update = await Order.updateWithReview(orderId, reviewObject);
+    }
+
+    else if(checkIfOrderReviewExist != null)
+    {
+        var review = await Review.update(user, restaurant, reviewObject, orderId);
+        var update = await Order.updateWithReview(orderId, reviewObject);
+    }
+
+    res.redirect("/orders");
+    
 }
 
 exports.getAbout = (req, res, next) => {
     console.log('\nanon user >');
     console.log('getAbout');
 
-    res.render('user/about', {
-
-    })
+    res.render('user/about', {})
 }
 
 exports.getContact = (req, res, next) => {
     console.log('\nanon user >');
     console.log('getContact');
 
-    res.render('user/contact', {
-
-    })
+    res.render('user/contact', {})
 }
 
 //portal restaurant
 exports.getRestaurantIndex = async (req, res, next) => {
-    console.log('\ngetPortalRestaurant Test');
+    console.log('\ngetRetaurantPortalIndex');
     
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
-    console.log(userEmail);
-    console.log(restaurantUrl);
-    //var user = await User.findByEmail(userEmail);
-    //console.log(user);
 
     var restaurant = await Restaurant.findByUrl(restaurantUrl);
     
@@ -1221,10 +886,9 @@ exports.getRestaurantIndex = async (req, res, next) => {
 }
 
 exports.getRestaurantOrdersAccept = async (req, res, next) => {
-    console.log('\ngetPortal-Orders-Accept Test');
+    console.log('\ngetRestaurantPortalOrdersAccept');
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
-    console.log(restaurantUrl);
 
     var restaurant = await Restaurant.findByUrl(restaurantUrl);
     var orders = await Order.fetchAllUnconfirmed(restaurantUrl);
@@ -1237,7 +901,7 @@ exports.getRestaurantOrdersAccept = async (req, res, next) => {
 }
 
 exports.getRestaurantOrdersCompleted = async (req, res, next) => {
-    console.log('\ngetPortalOrdersCompleted Test');
+    console.log('\ngetRestaurantPortalOrdersCompleted');
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
 
@@ -1250,10 +914,9 @@ exports.getRestaurantOrdersCompleted = async (req, res, next) => {
 }
 
 exports.getRestaurantOrdersDeclined = async (req, res, next) => {
-    console.log('\ngetPortalOrdersDeclined Test');
+    console.log('\ngetRestaurantPortalOrdersDeclined');
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
-    console.log(restaurantUrl);
 
     var orders = await Order.fetchAllDeclined(restaurantUrl);
 
@@ -1264,7 +927,7 @@ exports.getRestaurantOrdersDeclined = async (req, res, next) => {
 }
 
 exports.getRestaurantOrdersChef = async (req, res, next) => {
-    console.log('\ngetPortalOrdersChef Test');
+    console.log('\ngetRestaurantPortalOrdersChef');
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
 
@@ -1277,7 +940,7 @@ exports.getRestaurantOrdersChef = async (req, res, next) => {
 }
 
 exports.getRestaurantMenuShow = async (req, res, next) => {
-    console.log('\ngetPortalMenuShow Test');
+    console.log('\ngetRestaurantPortalMenuShow');
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
 
@@ -1303,12 +966,11 @@ exports.getRestaurantMenuShow = async (req, res, next) => {
 }
 
 exports.getRestaurantMenuEdit = async (req, res, next) => {
-    console.log('\ngetPortalMenuEdit Test');
+    console.log('\ngetRestaurantPortalMenuEdit');
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
 
     var restaurant = await Restaurant.findByUrl(restaurantUrl);
-    //console.log(restaurant);
 
     res.render('restaurantPortal/menu-edit', 
     { 
@@ -1317,7 +979,7 @@ exports.getRestaurantMenuEdit = async (req, res, next) => {
 }
 
 exports.getRestaurantStats = async (req, res, next) => {
-    console.log('\ngetPortalStats Test');
+    console.log('\ngetRestaurantPortalStats');
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
 
@@ -1330,7 +992,7 @@ exports.getRestaurantStats = async (req, res, next) => {
 }
 
 exports.getRestaurantReviews = async (req, res, next) => {
-    console.log('\ngetPortalReviews Test');
+    console.log('\ngetRestaurantPortalReviews');
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
 
@@ -1343,7 +1005,7 @@ exports.getRestaurantReviews = async (req, res, next) => {
 }
 
 exports.getRestaurantSettings = async (req, res, next) => {
-    console.log('\ngetPortalSettings Test');
+    console.log('\ngetRestaurantPortalSettings');
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
     let loginCookie = req.get('Cookie');
@@ -1374,11 +1036,11 @@ exports.getRestaurantSettings = async (req, res, next) => {
 }
 
 exports.getRestaurantLogout = async (req, res, next) => {
-    console.log('\ngetPortalLogout Test');
+    console.log('\ngetRestaurantPortalLogout');
+    console.log('postLogout >');
     var userEmail = res.locals.userEmail;
     var restaurantUrl = res.locals.restaurantUrl;
 
-    console.log('postLogout >');
  
     let logoutSuccessful = 1;
     let logoutFailed = 0;
@@ -1389,7 +1051,6 @@ exports.getRestaurantLogout = async (req, res, next) => {
     User.logout(loginCookie).then(result => {
         if(result == logoutSuccessful)
         {
-            //res.setHeader('Set-Cookie', 'loginCookie='); 
             console.log('logout succesful')
             res.setHeader('Set-Cookie', 'loginCookie="";expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/');
             res.redirect('/');
@@ -1402,13 +1063,10 @@ exports.getRestaurantLogout = async (req, res, next) => {
 
     })
     
-
 }
 
 exports.postRestaurantUpdateMenu = async (req, res, next) => {
-    console.log('getTest postRestaurantUpdateMenu');
-    console.log(req.body);
-    console.log(res.locals.userEmail);
+    console.log('postRestaurantPortalUpdateMenu');
 
     var owner = res.locals.userEmail;
     var img = JSON.parse(req.body.inputAllImg);
@@ -1432,26 +1090,11 @@ exports.postRestaurantUpdateMenu = async (req, res, next) => {
         types
     );
 
-    res.redirect("/restaurantPortal/menu/show");
-
-    /*console.log("*** categories (" + categories.length + ") ***");
-    console.log(categories);
-    console.log("*** items (" + items.length + ") ***");
-    console.log(items);
-    console.log("*** img ***");
-    console.log(img);
-    console.log("*** hours ***");
-    console.log(hours);
-    console.log("*** description ***");
-    console.log(description);*/
-
-
-    //if successful redirect
-    //res.redirect("/portal/menu-edit");
+    res.redirect("/restaurantPortal/menu/edit");
 }
 
 exports.postRestaurantMenuListed = async (req, res, next) => {
-    console.log('getTest postRestaurantMenuListed');
+    console.log('postRestaurantPortalMenuListed');
     console.log(req.body);
     console.log(res.locals.userEmail);
 
@@ -1474,12 +1117,10 @@ exports.postRestaurantMenuListed = async (req, res, next) => {
 }
 
 exports.postRestaurantMenuOnline = async (req, res, next) => {
-    console.log('getTest postRestaurantMenuOnline');
-    console.log(req.body);
-    console.log(res.locals.userEmail);
+    console.log('postRestaurantPortalMenuOnline');
 
     var owner = res.locals.userEmail;
-    value = req.body.menuOnline;
+    var value = req.body.menuOnline;
         
     if(value == "true")
     {
@@ -1497,9 +1138,7 @@ exports.postRestaurantMenuOnline = async (req, res, next) => {
 }
 
 exports.postRestaurantWelcomeMessage = async (req, res, next) => {
-    console.log('getTest postRestaurantWelcomeMessage');
-    console.log(req.body);
-    console.log(res.locals.userEmail);
+    console.log('postRestaurantPortalWelcomeMessage');
 
     var owner = res.locals.userEmail;
     var value = req.body.welcomeMessage;
@@ -1533,44 +1172,7 @@ exports.postRestaurantWelcomeMessage = async (req, res, next) => {
 exports.getTest = async (req, res, next) => {
     console.log('getTest');
 
-    res.render('user/test.ejs', 
-    { 
-
-    });
-}
-
-exports.postRestaurantReview = async (req, res, next) => {
-    console.log('getTest postRestaurantReview');
-    console.log(req.body);
-    console.log(res.locals.userEmail);
-
-    var orderId = req.body.orderId;
-    var restaurant = req.body.restaurant;
-    var user = res.locals.userEmail;
-    var date = new Date();
-    var name = req.body.customerName;
-    var rating = req.body.rating;
-    var items = req.body.items;
-    var comment = req.body.comment;
-    reviewObject = {date: date, name: name, rating: rating, items: items, comment: comment};
-
-    var checkIfOrderReviewExist = await Review.findByOrderId(orderId);
-    console.log(checkIfOrderReviewExist);
-
-    if(checkIfOrderReviewExist == null)
-    {
-        var review = await Review.create(user, restaurant, reviewObject, orderId);
-        var update = await Order.updateWithReview(orderId, reviewObject);
-    }
-
-    else if(checkIfOrderReviewExist != null)
-    {
-        var review = await Review.update(user, restaurant, reviewObject, orderId);
-        var update = await Order.updateWithReview(orderId, reviewObject);
-    }
-
-    res.redirect("/orders");
-    
+    res.render('test/test.ejs', { });
 }
 
 exports.getGoogleMapsApiTest = async (req, res, next) => {
@@ -1578,7 +1180,7 @@ exports.getGoogleMapsApiTest = async (req, res, next) => {
     console.log(req.body);
     console.log(res.locals.userEmail);
 
-    res.render('user/googleMapsApi.ejs', 
+    res.render('test/googleMapsApi.ejs', 
     { 
 
     });

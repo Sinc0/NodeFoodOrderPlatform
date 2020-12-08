@@ -24,6 +24,7 @@
 </nav>
 <body id="body-order-details" style="background-color: lightgray;">
     <div id="main-order-details" style="border: 1px solid black;">
+        
         <!-- title -->
         <h3 style="text-align: center; margin-left: -10px; margin-right: -10px; padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid black;"><%=order.restaurant %></h3>
 
@@ -51,25 +52,32 @@
         
         <!-- order info -->
         <p><b>type:</b> <%=order.type %></p>
+        
         <% if(order.status == "confirmed") { %>
             <p><b>estimated time:</b> <%=order.estimatedCompletionTime %> min</p>
         <% } %>
+
         <% if(order.comment != null) { %>
             <p><b>comment:</b> <%=order.customerComment %></p>
         <% } %>
+        
         <p><b>items:</b></p>
         <% for(var c = 0; c < order.products.items.length; c++) { %>
             <p>(<%=order.products.items[c].quantity %>) <%=order.products.items[c].name %> - $<%=order.products.items[c].quantity * order.products.items[c].price %></p>
-            <% } %>
+        <% } %>
+        
         <br />
+        
         <p><b>total:</b> <%=order.totalPrice %></p>
+        
         <br />
 
+        <!-- check if review exist -->
         <% if(order.review != null) { %>
-        <p><b>review:</b></p>
-        <p>name: <%=order.review.name %></p>
-        <p>rating: <%=order.review.rating %></p>
-        <p>comment: <%=order.review.comment %></p>
+            <p><b>review:</b></p>
+            <p>name: <%=order.review.name %></p>
+            <p>rating: <%=order.review.rating %></p>
+            <p>comment: <%=order.review.comment %></p>
         <% } %>
         <br />
     </div>

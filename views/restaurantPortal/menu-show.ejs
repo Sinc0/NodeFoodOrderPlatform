@@ -36,25 +36,30 @@
         <main id="main-menu" class="centered">
             <div id="menu" style="background-image: url('/pics/moroccan-flower-dark.png');">
                 <div id="testBackground" style="background-color: #0000009c; padding-bottom: 25px;">      
+                    
                 <% var date = new Date().getDay() %>
-                
+                    
+                <!-- check date -->
                 <% if (date == 0) { %>
                     <% date = 7; %>
                 <% } %>
     
+
+                <!-- if restaurant is closed -->
                 <% if(restaurant.open == false) { %>
                     <div id="restaurantDetailRestaurantIsClosed">
                         <h1>Closed</h1>
                     </div>
                 <% } %>
 
+                <!-- title -->
                 <div>
-                    <!-- <h1><%= restaurant.title %></h1> -->
                     <h1 style="margin: 0px; padding-top: 5px; padding-bottom: 5px; background-color: white; color: black;"><%=restaurant.title %></h1>
                 </div>
 
                 <br />
-    
+
+                <!-- image -->
                 <div class="card__image">
                     <!-- <img src="/<%=restaurant.image %>"> //hosted on server -->
                     <img src="<%=restaurant.imageUrl %>"> <!-- //link to another site -->
@@ -65,7 +70,6 @@
                 <!-- hours -->
                 <div>
                     <b>Hours</b>
-                    <!-- <p><%= restaurant._id %></p> -->
                     <% for(let c = 0; c < restaurant.hours.length; c++) { %>
                         <% if(date == c + 1) { %>
                             <p style="color: green"><%=restaurant.hours[c].day %> <%=restaurant.hours[c].time %></p>
@@ -73,17 +77,17 @@
                         <p><%=restaurant.hours[c].day %> <%=restaurant.hours[c].time %></p>
                         <% } %>
                     <% } %>
-                    <!-- <h2><%= restaurant.price %></h2> -->
                 </div>
 
                 <br />
     
+                <!-- phone -->
                 <b>Phone</b>
                 <p><%=restaurant.phone %></p>
 
                 <br />
-
-                <!-- phone -->
+        
+                <!-- address -->
                 <b>Address</b>
                 <p><%=restaurant.address %></p>
                                
@@ -96,9 +100,8 @@
                 
                 <!-- description -->
                 <div>
-                <b>About</b>
-                <p style="margin: auto; max-width: 250px;"><%= restaurant.description %></p>
-                <!-- <p><%= restaurant.description %></p> -->
+                    <b>About</b>
+                    <p style="margin: auto; max-width: 250px;"><%= restaurant.description %></p>
                 </div>
                 
                 <br />
@@ -112,13 +115,15 @@
                 <% } else { %>
                     <% restaurantMenuItemsLength = restaurant.menuItems.length %>
                 <% } %>
-    
+
+                <!-- search box -->
                 <% if(restaurantMenuItemsLength != 0) { %>
                     <div id="searchBox" style="text-align: center"  onkeyup="searchBoxRestaurantMenu('<%=restaurantMenuItemsLength %>')">
                         <input id="searchBoxInput" style="width: 100%;" placeholder="Search..."></input>
                     </div>
                 <% } %>
 
+                <!-- menu -->
                 <% for(let c = 0; c < restaurant.menuCategories.length; c++) { %>
                     <% let restaurantCategory = restaurant.menuCategories[c].categoryName %>
                     
@@ -132,7 +137,6 @@
                             
                             <% if(restaurant.menuItems[c].category == restaurantCategory) { %>
                                 <div id="menu-item#<%=c + 1 %>" class="menu-item">
-                                    <!-- <p><%= restaurant.menuItems[c].restaurantId %></p> -->
                                     <div class="menu-item-texts">
                                         <p><b><%= restaurant.menuItems[c].title %></b></p>
                                         <p><%= restaurant.menuItems[c].description %></p>
@@ -144,13 +148,10 @@
                                     <div class="menu-item-add-to-cart-button">
                                         <% let buttonNumber = c %>
                                         <button disabled onclick="updateCart('<%=buttonNumber %>', '<%=restaurant.menuItems[c].title %>', '<%=restaurant.menuItems[c].price %>')" class="cart-add-to-cart-button" style="border: 1px solid black;">+</button></a>
-                                        <!-- <a href="/addToCart/<%= restaurant._id %>&<%= restaurant.menuItems[c].restaurantId %>" class="btn"><button id="cart-add-to-cart-button">+</button></a> -->
                                     </div>
                                 </div>
-                            <% } %>
-    
-                            
-                        
+                            <% } %>                                
+               
                         <% } %>
                         
                         <br />
@@ -159,7 +160,7 @@
                 <% } %>
                 </div>  
             </div>
-
         </main>
+    
     </body>
 </html>

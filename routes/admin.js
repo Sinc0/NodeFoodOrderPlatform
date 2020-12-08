@@ -5,6 +5,8 @@ const adminController = require('../controllers/admin');
 const router = express.Router();
 const validation = require('../validation/userValidation');
 
+
+
 //get
 router.get('/admin/home', validation, adminController.getHome);
 router.get('/admin/orders', validation, adminController.getOrders);

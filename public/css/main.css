@@ -1,4 +1,6 @@
-body {
+/* body */
+body 
+{
     overflow: auto;
     font-family: Arial, Helvetica, sans-serif;
     padding: 0px;
@@ -24,6 +26,12 @@ body {
     background-color: lightgray;
 }
 
+#bodyIndex 
+{
+    background-image: url(/pics/pizza-slice.png);
+}
+
+/* restaurant */
 .restaurantMenuItem
 {
     display: block;   
@@ -91,6 +99,12 @@ body {
     margin: auto;
     width: 694px;
     text-align: center;
+}
+
+/* main */
+main 
+{
+    padding-right: 0px;
 }
 
 #main-orders
@@ -196,6 +210,16 @@ body {
     margin-top: 25px;
     width: 250px;
 }
+
+#main-menu
+{
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background-color: lightgray;
+    width: 100%;
+}
+
+/* grid */
 #grid-restaurants
 {
     text-align: center;
@@ -208,16 +232,14 @@ body {
     margin-top: 0px;
 }
 
+/* img */
 img
 {
     height: 50px;
     width: 50px;
 }
 
-main {
-    padding-right: 0px;
-}
-
+/* header */
 .main-header {
     margin: 0px;
     padding: 0px;
@@ -279,14 +301,7 @@ main {
     text-align: center;
 }
 
-#main-menu
-{
-    margin-top: 25px;
-    margin-bottom: 25px;
-    background-color: lightgray;
-    width: 100%;
-}
-
+/* menu */
 #menu
 {
     display: inline-block;
@@ -294,15 +309,9 @@ main {
     height: 100%;
     width: 730px;
     padding: 0px;
-    /* padding-bottom: 70px; */
     margin: 0px;
     color: #f7f9f9;
 }
-
-/* #menu h1, h2, h3, p, b
-{
-   font-family: ;
-} */
 
 .menu-item
 {
@@ -344,12 +353,12 @@ main {
     /* background-color: gray; */
 }
 
+/* cart */
 #side-cart
 {
     visibility: hidden;
     display: inline-block;
     position: fixed;
-    /* background-color: green; */
     vertical-align: top;
     width: 350px;
     padding: 0px;
@@ -385,21 +394,6 @@ main {
     padding: 0px;
     margin: 0px;
 }
-
-/*
-.cart-item button
-{   
-    display: inline-block;
-}
-
-.cart-item p
-{
-    background-color: salmon;
-    padding: 0px;
-    padding-top: 15px;
-    padding-bottom: 15px;   
-}
-*/
 
 .cart-add-to-cart-button
 {
@@ -643,6 +637,28 @@ option
     font-weight: bold;
 }
 
+#customerDeliveryRadioButton
+{
+    padding: 0px; 
+    margin: 0px; 
+    margin-bottom: 5px; 
+    margin-right: -10px; 
+    height: 20px; 
+    width: 50px; 
+    vertical-align: top;
+}
+
+#customerPickUpRadioButton
+{
+    padding: 0px; 
+    margin: 0px; 
+    margin-right: -10px; 
+    height: 20px; 
+    width: 50px; 
+    vertical-align: top;
+}
+
+/* other */
 .acceptCustomerOrder, .declineCustomerOrder
 {
     margin: 0px;
@@ -696,27 +712,6 @@ option
     border: 1px solid black;
 }
 
-#customerDeliveryRadioButton
-{
-    padding: 0px; 
-    margin: 0px; 
-    margin-bottom: 5px; 
-    margin-right: -10px; 
-    height: 20px; 
-    width: 50px; 
-    vertical-align: top;
-}
-
-#customerPickUpRadioButton
-{
-    padding: 0px; 
-    margin: 0px; 
-    margin-right: -10px; 
-    height: 20px; 
-    width: 50px; 
-    vertical-align: top;
-}
-
 .profile-buttons
 {
     height: 30px;
@@ -753,6 +748,7 @@ option
     text-align: center;
 }
 
+/* nav */
 #backArrow:hover
 {
     color:  #3e00a1;
@@ -771,6 +767,22 @@ option
 
 }
 
+#NavBar
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+#NavBar p
+{
+    margin-top: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    color: black;
+}
+
+/* index anon */
 #indexAnonMenu
 {
     margin: 0px;
@@ -813,6 +825,7 @@ option
     color: white;
 }
 
+/* about */
 .about-bold-text-title
 {
     margin: 0px;
@@ -825,6 +838,7 @@ option
     text-align: center;
 }
 
+/* modal */
 #informAnonModal
 {
     position: fixed;
@@ -866,6 +880,13 @@ option
     color: black;
 }
 
+#modalButton
+{
+    position: absolute;
+    right: -1px;
+}
+
+/* search */
 #resturantsSearchBar
 {
     width: 300px;
@@ -873,93 +894,6 @@ option
     padding: 0px;
     padding-top: 25px;
     margin: auto;
-}
-
-#RestaurantClosed
-{
-    position: absolute;
-    z-index: 1;
-    margin: 0px;
-    margin-left: -350px;
-    padding: 0px;
-    height: 200px;
-    width: 700px;
-    text-align: center;
-    background-color: rgb(121, 55, 55, 75%);
-    visibility: hidden;
-}
-
-#RestaurantClosed p
-{
-    margin-top: 75px;
-    color: black;
-    font-size: xx-large;
-}
-
-#RestaurantClosed h3, b
-{
-    margin: 0px;
-    padding: 0px;
-}
-
-#restaurantDetailRestaurantIsClosed h1
-{
-    margin: 0px;
-    padding: 0px;
-    background-color: red;
-}
-
-#NavBar
-{
-    margin: 0px;
-    padding: 0px;
-}
-
-#NavBar p
-{
-    margin-top: 0px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    text-align: center;
-    color: black;
-}
-
-/* .restaurantReviewModal
-{
-    position: absolute;
-    top: 150px;
-    width: 700px;
-    background-color: orange;
-} */
-
-.restaurantReview
-{
-    margin: auto;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    padding-top: 4.5px;
-    padding-bottom: 4.5px;
-    background-color: #f7f9f9;
-    text-align: left;
-    width: 65%;
-}
-
-input[type=number]::-webkit-inner-spin-button {
-    opacity: 1
-}
-
-textarea
-{
-    border: none;
-    outline: none;
-    background-color: #f7f9f9;
-}
-
-hr
-{
-    height: 2px;
-    background-color: black;
-    border: none;
 }
 
 #searchBox
@@ -999,37 +933,123 @@ hr
     color: black;
 }
 
-#customerComment::placeholder 
+.search-restaurant-detail
+{
+    width: 730px;
+}
+
+.search-orders
+{
+    width: 396px;
+}
+
+.search-admin
+{
+    width: 396px;
+}
+
+/* restaurant */
+#RestaurantClosed
+{
+    position: absolute;
+    z-index: 1;
+    margin: 0px;
+    margin-left: -350px;
+    padding: 0px;
+    height: 200px;
+    width: 700px;
+    text-align: center;
+    background-color: rgb(121, 55, 55, 75%);
+    visibility: hidden;
+}
+
+#RestaurantClosed p
+{
+    margin-top: 75px;
+    color: black;
+    font-size: xx-large;
+}
+
+#RestaurantClosed h3, b
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+#restaurantDetailRestaurantIsClosed h1
+{
+    margin: 0px;
+    padding: 0px;
+    background-color: red;
+}
+
+/* review */
+.restaurantReview
+{
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-top: 4.5px;
+    padding-bottom: 4.5px;
+    background-color: #f7f9f9;
+    text-align: left;
+    width: 65%;
+}
+
+.order-review
+{
+    margin-left: -7px;
+    padding: 30px;
+    width: 338px;
+}
+
+.textareaReviewComment
+{
+    min-height: 100px;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+/* elements */
+input
+{
+    border: 1px solid lightgray;
+    border-radius: 0%;
+    background-color: #EFEFEF;
+}
+
+textarea
+{
+    border: none;
+    outline: none;
+    background-color: #f7f9f9;
+}
+
+textarea
+{
+    background-color: #EFEFEF;
+}
+
+textarea::placeholder
 {
     color: black;
 }
 
-#orders-show-detail
+hr
 {
-    
+    height: 2px;
+    background-color: black;
+    border: none;
 }
 
-#orders-show-detail a
+button
 {
     color: black;
-    text-decoration: none;
 }
 
-.orders-show-review
-{
-    
-}
-
-.orders-show-review p:hover
-{
-    background-color: #3e00a1;
-    color: white;
-}
-
-#orders-show-detail p:hover
-{
-    background-color: #3e00a1;
-    color: white;
+/* input */
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1
 }
 
 input::placeholder
@@ -1051,34 +1071,7 @@ input:focus
     background-color: #EFEFEF;
 }
 
-input
-{
-    border: 1px solid lightgray;
-    border-radius: 0%;
-    background-color: #EFEFEF;
-}
-
-.help-links
-{
-    background-color: #3c41d6;
-    color: black;
-}
-
-.help-links:hover
-{
-    background-color: #3e00a1;
-}
-
-.help-links:active
-{
-    background-color: #3e00a1;
-}
-
-button
-{
-    color: black;
-}
-
+/* button */
 button:hover
 {
     background-color: #3e00a1;
@@ -1096,87 +1089,52 @@ button:focus
     outline: none;
 }
 
-.admin-edit, .admin-delete
+.confirm-button
 {
-    margin: auto; 
-    margin-bottom: 25px;  
-    border: 1px solid black; 
-    background-color: #f7f9f9;
-    width: 398px;
+    width: 200px;
 }
 
-.admin-card
-{
-    margin: auto; 
-    width: 378px;
-    margin-bottom: 25px; 
-    padding: 10px; 
-    border: 1px solid black; 
-    background-color: #f7f9f9;
-}
-
-.admin-card-button
-{
-    display: inline-block; 
-    height: 21px; 
-    width: 75px; 
-    border: 0.1px solid lightgray;
-    border-radius: 1%;
-}
-
-textarea
-{
-    background-color: #EFEFEF;
-}
-
-textarea::placeholder
+/* comment */
+#customerComment::placeholder 
 {
     color: black;
 }
 
-/* Width */
-::-webkit-scrollbar 
+/* order detail */
+#orders-show-detail a
 {
-    width: 7px;
-}
-  
-/* Track */
-::-webkit-scrollbar-track 
-{
-    background: #f1f1f1;
+    color: black;
+    text-decoration: none;
 }
 
-/* Handle */
-::-webkit-scrollbar-thumb 
+.orders-show-review p:hover
 {
-    background: #888;
+    background-color: #3e00a1;
+    color: white;
 }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover 
+#orders-show-detail p:hover
 {
-    background: #555;
+    background-color: #3e00a1;
+    color: white;
 }
 
-/* Hide */
-/* ::-webkit-scrollbar {
-    display: none;
-} */
-
-#bodyIndex 
+/* help */
+.help-links
 {
-    background-image: url(/pics/pizza-slice.png);
+    background-color: #3c41d6;
+    color: black;
 }
 
-@keyframes clouds 
+.help-links:hover
 {
-    0% {
-      background-position: 0 0;
-    }
-    100% {
-      background-position: 10000000px 0;
-    }
-} */
+    background-color: #3e00a1;
+}
+
+.help-links:active
+{
+    background-color: #3e00a1;
+}
 
 .indexAnonMenuItem
 {
@@ -1193,54 +1151,33 @@ textarea::placeholder
     width: 400px;
 }
 
-#profileCredentials
+/* admin */
+.admin-edit, .admin-delete
 {
+    margin: auto; 
+    margin-bottom: 25px;  
+    border: 1px solid black; 
+    background-color: #f7f9f9;
+    width: 398px;
+}
+
+.admin-card
+{
+    margin: auto; 
     width: 400px;
+    margin-bottom: 25px; 
+    padding: 10px; 
+    border: 1px solid black; 
+    background-color: #f7f9f9;
 }
 
-#editProfileCredentials
+.admin-card-button
 {
-    width: 400px;
-}
-
-#editProfileCredentials input
-{
-    width: 150px;
-}
-
-#editProfilePassword
-{
-    width: 400px;
-}
-
-#editProfilePassword input
-{
-    width: 150px;
-}
-
-.confirm-button
-{
-    width: 200px;
-}
-
-.order-review
-{
-    margin-left: -7px;
-    padding: 30px;
-    width: 338px;
-}
-
-.textareaReviewComment
-{
-    min-height: 100px;
-    min-width: 100%;
-    max-width: 100%;
-}
-
-#modalButton
-{
-    position: absolute;
-    right: -1px;
+    display: inline-block; 
+    height: 21px; 
+    width: 75px; 
+    border: 0.1px solid lightgray;
+    border-radius: 1%;
 }
 
 #admin-cancel-button
@@ -1267,11 +1204,6 @@ textarea::placeholder
     width: 400px;
 }
 
-.search-admin
-{
-    width: 396px;
-}
-
 #admin-stats
 {
     display: block;
@@ -1279,9 +1211,70 @@ textarea::placeholder
     width: 450px;
 }
 
-.search-restaurant-detail
+/* scrollbar */
+    /* Width */
+    ::-webkit-scrollbar 
+    {
+        width: 7px;
+    }
+    
+    /* Track */
+    ::-webkit-scrollbar-track 
+    {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb 
+    {
+        background: #888;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover 
+    {
+        background: #555;
+    }
+
+    /* Hide */
+    /* ::-webkit-scrollbar {
+        display: none;
+    } */
+
+/* profile */
+#profileCredentials
 {
-    width: 730px;
+    width: 400px;
 }
 
+#editProfileCredentials
+{
+    width: 400px;
+}
+
+#editProfileCredentials input
+{
+    width: 150px;
+}
+
+#editProfilePassword
+{
+    width: 400px;
+}
+
+#editProfilePassword input
+{
+    width: 150px;
+}
+
+/* animation */
+@keyframes clouds 
+{
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 10000000px 0;
+    }
+}
 

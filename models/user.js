@@ -27,59 +27,6 @@ class User
             .catch(err => {console.log(err); return "error"});
     }
 
-    static fetchCart(userEmail)
-    {
-        const db = getDb();
-
-        return db
-            .collection('users')
-            .find({email: userEmail})
-            .next()
-            .then(user => {
-                if(user != null)
-                {
-                    //console.log(user.cart); 
-                    return user.cart;
-                }
-
-                else
-                {
-                    return null;
-                }
-            })
-            .catch(err => console.log(err))
-    }
-
-    static emptyCart(userEmail)
-    {
-        const db = getDb();
-
-        return db.collection('users')
-            .updateOne({email: userEmail}, {$set: 
-                {
-                    cart: null
-                }
-            } )
-            .then(result => { return result; /* console.log(result) */ })
-            .catch(err => console.log(err));
-    }
-
-    static addToCart(userEmail, cartArray)
-    {
-        const db = getDb();
-
-        //const cart = this.cart.items;
-
-        //let cartArray = [{productId: ObjectId(productId), quantity: 10}];
-
-        //const updateCart = cartArray;
-
-        return db.collection('users')
-            .updateOne({email: userEmail}, {$set: {cart: cartArray}})
-            .then(result => {return result.modifiedCount})
-            .catch(err => console.log(err));
-    }
-
     static validateLogin(cookieId)
     {   
         //check if cookie have a session
@@ -97,40 +44,25 @@ class User
 
                 else
                 {
-                    //cookieId = result.loginCookie;
-                    //email = result.email;
-                    //console.log(cookieId);
-                    //console.log(email);
-                    //console.log(result.loginCookie);
-                    //console.log(result.email);
-
                     cookieFromSessions = result.loginCookie;
 
-                //check if cookie have a user
-                return User.findByEmail(result.email).then(result => 
+                    //check if cookie have a user
+                    return User.findByEmail(result.email).then(result => 
                     {
-                        //console.log(result); 
                         cookieFromUsers = result.loginCookie;
-                        //console.log('cookie from sessions: ' + cookieFromSessions);
-                        //.log('cookie from users: ' + cookieFromUsers);
 
                         if(cookieFromSessions == cookieFromUsers)
                         {
-                            //console.log('user and sessions cookie is identical');
                             var obj = {status: true, isAdmin: result.admin, userEmail: result.email};
                             return obj;
-                            //console.log(result.username);
-                            //console.log(result.email);
-                            //return true;
                         }
 
                         else
                         {
-                            //console.log('user and sessions cookie is not identical');
                             return false;
                         }
                     });
-            }
+                }
         })
         
     }
@@ -147,12 +79,12 @@ class User
             .then(result => {
                 if(result.deletedCount == deleteSuccessful)
                 {
-                    console.log('delete ' + email + ' document successful');
+                    //console.log('delete ' + email + ' document successful');
                     return deleteSuccessful;
                 } 
                 else
                 {
-                    console.log('delete ' + email + ' document failed');
+                    //console.log('delete ' + email + ' document failed');
                     return deleteFailed;
                 } })
             .catch(err => console.log(err));
@@ -333,8 +265,6 @@ class User
     {
         const db = getDb();
 
-        //check if userId characters are by the rules or else redirect
-        
         return db
             .collection('users')
             .findOne({_id: ObjectId(userId)})
@@ -435,18 +365,13 @@ class User
         .then(result => {
             if(result == null)
             {
-                //console.log(result);
-                //console.log('email is invalid');
                 statusText = 'email is invalid';
                 return statusText;
             }
             else
             {
-                //console.log(result);
-
                 if(password != result.password)
                 {
-                    //console.log('invalid password');
                     statusText = 'invalid password';
                     return statusText;
                 }
@@ -465,11 +390,7 @@ class User
                         {
                             return Session.createSession(email, cookieId).then(result => {
                                 if(result == sessionSuccessful)
-                                {
-                                    //console.log('update of user successful');
-                                    //console.log('session created successful');
-                                    //console.log('login successful');
-                                    
+                                {                                    
                                     statusText = 'login successful';
 
                                     var obj = {statusText: statusText, cookieId: cookieId, email: email};
@@ -477,7 +398,6 @@ class User
                                 }
                                 if(result == sessionFailed)
                                 {
-                                    //console.log('creation of session failed');
                                     statusText = 'database error, try again in a few minutes';
                                     return statusText;
                                 }
@@ -486,7 +406,6 @@ class User
 
                         if(result == updateFailed)
                         {
-                            //console.log('update of user failed');
                             statusText = 'database error, try again in a few minutes';
                             return statusText;
                         }
@@ -512,13 +431,10 @@ class User
     
         var cookieId = parseFloat(loginCookieId);
         var email = String(loginCookieEmail);
-        //console.log(cookieId);
-        //console.log(email);
     
         return Session.deleteOne(cookieId).then(result => {
             if(result == deleteSuccessful)
             {
-                //res.setHeader('Set-Cookie', 'loginCookie=empty');
                 return User.updateOne(email, 'expired:' + cookieId, false).then(result => {
                     if(result == updateSuccessful)
                     {
@@ -562,6 +478,7 @@ class User
                 email = email;
                 return cb();
             }
+            
             //if email is taken
             else
             {
@@ -582,23 +499,22 @@ class User
             //if email is available
             else if(name != null && email != null)
             {
-                    var registerUser = await db.collection('users').insertOne(
-                    {
-                        email: email,
-                        name: name,
-                        address: null,
-                        phone: null,
-                        cart: null,
-                        loginCookie: null,
-                        isLoggedIn: false,
-                        admin: false,
-                        restaurantName: null,
-                        companyIdNumber: null,
-                        password: password,
-                        createdAt: new Date(),
-                    })
-
-                    
+                var registerUser = await db.collection('users').insertOne(
+                {
+                    email: email,
+                    name: name,
+                    address: null,
+                    phone: null,
+                    cart: null,
+                    loginCookie: null,
+                    isLoggedIn: false,
+                    admin: false,
+                    restaurantName: null,
+                    companyIdNumber: null,
+                    password: password,
+                    createdAt: new Date(),
+                })
+                   
                 if(registerUser.insertedCount == successful)
                 {
                     return statusText = 'registration successful';
@@ -620,7 +536,6 @@ class User
 
         //generate cookie id
         let statusText = "";
-        let cookieId = Math.random();
         let successful = 1;
 
         //check if email is taken
@@ -633,9 +548,9 @@ class User
             {
                 email = email;
                 //console.log('email is available');
-                //console.log(email);
                 return cb();
             }
+
             else
             {
                 email = null;
@@ -671,7 +586,6 @@ class User
                     password: password,
                     createdAt: new Date()
                 })
-                //console.log(registerUser.insertedCount);
 
                 //set up temporary restaurant values
                 var hours = [];
@@ -687,14 +601,10 @@ class User
                 var imageUrl = "exampleImage.jpg";
                 
                 var menuCategories = [];
-                //menuCategories.push({position: 1, categoryName: "dummycategory"});
 
                 var type = "Pasta, Pizza, Sallad";
 
                 var menuItems = [];
-                //menuItems.push({position: 1, id: "dummycategory1", category: "dummycategory", title: "example item 1", price: "10", description: "description of example item 1"});
-                //menuItems.push({position: 2, id: "dummycategory2", category: "dummycategory", title: "example item 2", price: "10", description: "description of example item 2"});
-                //menuItems.push({position: 3, id: "dummycategory3", category: "dummycategory", title: "example item 3", price: "10", description: "description of example item 3"});
 
                 var url = restaurantName;
                 url = url.toString().toLowerCase();
@@ -725,7 +635,6 @@ class User
                     createdAt: new Date(),
                     welcomeMessage: true
                 })
-                //console.log(registerRestaurant.insertedCount);
 
                 if(registerUser.insertedCount == successful && registerRestaurant.insertedCount == successful)
                 {

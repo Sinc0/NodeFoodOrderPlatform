@@ -69,9 +69,6 @@
                 for(var c = 1; c <= totalAdminPosts; c++)
                 {
                     var adminPost = document.getElementById("adminPost#" + c)
-                    //console.log(menuItem);
-                    //console.log(menuItem.parentNode);
-                    //console.log(menuItemCategory);
     
                     if(adminPost.innerHTML.toLowerCase().includes(searchString))
                     {
@@ -129,13 +126,9 @@
 <body style="background-color: lightgray;" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()"></body>
     <%- include('../snippets/html_nav_menu_admin.ejs') %>
 
-    <!-- <script>
-        var navButtonAdminHome = document.getElementById("navButtonAdminHome");
-        navButtonAdminHome.style.backgroundColor = "lightgray";
-    </script> -->
-
     <div style="margin: auto; text-align: center;">
-        
+
+        <!-- post news -->
         <div id="adminPostNews">
             <h2 style="margin: 0px; margin-top: 25px; margin-bottom: 5px; padding: 0px;">Post News</h2>
             
@@ -152,12 +145,15 @@
                 </form>
             </div>
 
+        <!-- search box -->
         <div id="searchBox" style="margin: 0px; margin-top: 25px; padding: 0px; text-align: center;">
             <input id="searchBoxInput" class="search-admin" style="margin-bottom: 25px; height: 38px;" placeholder="Search..." onkeyup="search('<%=adminPosts.length %>')"></input>
         </div>
 
+        <!-- total posts -->
         <h3 id="totalAdminPostsText" style="margin-top: 25px; margin-bottom: 15px; text-align: center;">Total Posts: <%=adminPosts.length %></h3>
 
+        <!-- posts -->
         <% for(var i = adminPosts.length - 1; i >= 0; i--) { %>
             <div id="adminPost#<%=i + 1%>" class="admin-card">
                 <p style="margin-bottom: 25px; margin-left: 2px; text-align: left;"><b>#<%=adminPosts[i].postId %></b> <%=adminPosts[i].date.substring(0, 24) %></p>

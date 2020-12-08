@@ -8,30 +8,6 @@
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <title>Admin Reviews</title>
     <script>
-        // function displayEditReview(number)
-        // {
-        //     console.log(number);
-
-        //     var d = document.getElementById("review#" + number);
-        //     var edit = document.getElementById("edit-review#" + number);
-          
-        //     d.hidden = true;
-        //     edit.hidden = false;
-
-        // }
-
-        // function undisplayEditReview(number)
-        // {
-        //     console.log(number);
-
-        //     var d = document.getElementById("review#" + number);
-        //     var edit = document.getElementById("edit-review#" + number);
-          
-        //     d.hidden = false;
-        //     edit.hidden = true;
-
-        // }
-
         function displayEditReview(number)
         {
             console.log(number);
@@ -152,49 +128,17 @@
 </head>
 <body style="background-color: lightgray;" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
     <%- include('../snippets/html_nav_menu_admin.ejs') %>
-
-    <!-- <script>
-        var navButtonAdminHome = document.getElementById("navButtonAdminReviews");
-        navButtonAdminHome.style.backgroundColor = "lightgray";
-    </script> -->
     
+    <!-- search box -->
     <div id="searchBox" style="margin: 0px; margin-top: 25px; padding: 0px; text-align: center;">
         <input id="searchBoxInput" class="search-admin" style="margin-bottom: 25px; height: 38px;" placeholder="Search..." onkeyup="search('<%=reviews.length %>')"></input>
     </div>
 
+    <!-- total reviews -->
     <h3 id="totalReviewsText" style="margin-top: 25px; margin-bottom: 15px; text-align: center;">Total Reviews: <%=reviews.length %></h3>
 
-    <!-- <h3 style="margin-top: 10px; margin-bottom: 5px; text-align: center;">Total Reviews: <%=reviews.length %></h3> -->
-
+    <!-- reviews -->
     <% for(var i = 0; i < reviews.length; i++) { %>
-        <!-- <div id="review#<%=i + 1 %>" style="margin: auto; margin-bottom: 10px; border: 1px solid black; background-color: #f7f9f9; padding: 10px; width: 400px;">    
-        <button style="display: block;" onclick="displayEditReview('<%=i + 1%>')">Edit</button><br />
-        
-            <p><%=reviews[i]._id %></p>
-            <p><%=reviews[i].reviewObject.date %></p>
-            <p><%=reviews[i].restaurant %></p>
-            <p><%=reviews[i].reviewObject.rating %></p>
-            <p><%=reviews[i].user %></p>
-            <p><%=reviews[i].reviewObject.items %></p>
-            <p><%=reviews[i].reviewObject.comment %></p>
-        </div> -->
-
-        <!-- <div hidden id="edit-review#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; border: 1px solid black; background-color: #f7f9f9; padding: 10px; width: 400px;">
-            <button style="display: block;" onclick="undisplayEditReview('<%=i + 1%>')">Cancel</button><br />
-
-            <form action="/admin/edit-reviews" method="POST">
-                <input name="id" value="<%=reviews[i]._id %>" style="width: 100%"></input><br />
-                <input name="date" value="<%=reviews[i].reviewObject.date %>" style="width: 100%"></input><br />
-                <input name="restaurant" value="<%=reviews[i].restaurant %>" style="width: 100%"></input><br /><br />
-                <p style="text-align: center;"><b>Review</b></p>
-                <input name="rating" value="<%=reviews[i].reviewObject.rating %>" style="width: 100%"></input><br />
-                <input name="user" value="<%=reviews[i].user %>" style="width: 100%"></input><br />
-                <input name="items" value="<%=reviews[i].reviewObject.items %>" style="width: 100%"></input><br />
-                <textarea name="comment" style="min-height: 75px; max-height: 225px; min-width: 404px; max-width: 404px; background-color: white"><%=reviews[i].reviewObject.comment %></textarea><br />
-                <button style="display: block; margin: auto; margin-top: 10px; width: 50%;">Submit</button>
-            </form>
-        </div> -->
-
         <div id="review#<%=i + 1%>" class="admin-card">      
             <p style="margin-bottom: 4px; margin-left: 2px; margin-top: 9px;"><%=reviews[i]._id %></p>
             <p style="margin-bottom: 4px; margin-left: 2px;"><%=reviews[i].reviewObject.date %></p> 

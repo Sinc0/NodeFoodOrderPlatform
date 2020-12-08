@@ -26,8 +26,11 @@
     <% var totalDelivery = 0 %>
     <% var totalPickUp = 0 %>
     <% var customers = [] %>
+
+    <!-- title -->
     <h2 style="text-align: center;">Statistics</h2>
     
+    <!-- calculate stats -->
     <% for(var counter = 0; counter < orders.length; counter++) { %>
         <% var orderCustomer = orders[counter].user %>
         <% var orderTotalAmount = parseFloat((orders[counter].totalPrice.slice(1))); %>
@@ -95,7 +98,10 @@
         
     <% } %> 
 
+    <!-- stats -->
     <div id="restaurant-statistics" style="margin: auto;">
+        
+        <!-- sales -->
         <p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Sales</b></p>
             <p style="text-align: center; margin: 0px; padding: 0px;"><b>All Time:</b> $<%=totalSales %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>This Month:</b> $<%=totalSalesThisMonth %></p>
@@ -106,16 +112,20 @@
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Fridays:</b> $<%=totalSalesFridays %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Saturdays:</b> $<%=totalSalesSaturdays %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Sundays:</b> $<%=totalSalesSundays %></p>
+
+        <!-- orders -->
         <p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Orders</b></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Total:</b> <%=totalOrders %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Completed:</b> <%=totalCompleted %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Declined:</b> <%=totalDeclined %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Delivery:</b> <%=totalDelivery %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Pick Up:</b> <%=totalPickUp %></p>
+
+        <!-- customers -->
         <p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Customers</b></p>
         <% customersNoDuplicates = Array.from(new Set(customers)); %>
-        <!-- <p style="text-align: center; margin: 0px; padding: 0px;"><b>Unique:</b> <%=customersNoDuplicates.length %></p> -->
         <p style="text-align: center; margin: 0px; padding: 0px;"><b>Total:</b> <%=customersNoDuplicates.length %></p>
+
     </div>
 </body>
 </html>

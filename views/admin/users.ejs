@@ -8,30 +8,6 @@
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <title>Admin Users</title>
     <script>
-        // function displayEditUser(number)
-        // {
-        //     console.log(number);
-
-        //     var d = document.getElementById("user#" + number);
-        //     var edit = document.getElementById("edit-user#" + number);
-          
-        //     d.hidden = true;
-        //     edit.hidden = false;
-
-        // }
-
-        // function undisplayEditUser(number)
-        // {
-        //     console.log(number);
-
-        //     var d = document.getElementById("user#" + number);
-        //     var edit = document.getElementById("edit-user#" + number);
-          
-        //     d.hidden = false;
-        //     edit.hidden = true;
-
-        // }
-
         function displayEditUser(number)
         {
             console.log(number);
@@ -93,9 +69,6 @@
                 for(var c = 1; c <= totalUsers; c++)
                 {
                     var user = document.getElementById("user#" + c)
-                    //console.log(menuItem);
-                    //console.log(menuItem.parentNode);
-                    //console.log(menuItemCategory);
     
                     if(user.innerHTML.toLowerCase().includes(searchString))
                     {
@@ -153,11 +126,7 @@
 <body style="background-color: lightgray;" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
     <%- include('../snippets/html_nav_menu_admin.ejs') %>
 
-    <!-- <script>
-        var navButtonAdminHome = document.getElementById("navButtonAdminUsers");
-        navButtonAdminHome.style.backgroundColor = "lightgray";
-    </script> -->
-
+    <!-- search box -->
     <div id="searchBox" style="margin: 0px; margin-top: 25px; padding: 0px; text-align: center;">
         <input id="searchBoxInput" class="search-admin" style="margin-bottom: 25px; height: 38px;" placeholder="Search..." onkeyup="search('<%=users.length - 1 %>')"></input>
     </div>
@@ -170,36 +139,12 @@
             <% totalUsersCount-- %>
         <% } %>
     <% } %>
-    
+            
+    <!-- total users -->
     <h3 id="totalUsersText" style="margin-top: 25px; margin-bottom: 15px; text-align: center;">Total Users: <%=totalUsersCount %></h3>
 
-    <!-- <h3 style="margin-top: 10px; margin-bottom: 5px; text-align: center;">Total Users: <%=users.length %></h3> -->
-
+    <!-- users -->
     <% for(var i = 0; i < users.length; i++) { %>
-        <!-- <div id="user#<%=i + 1 %>" style="margin: auto; margin-bottom: 10px; border: 1px solid black; background-color: #f7f9f9; padding: 10px; width: 400px;">
-            <button style="display: block;" onclick="displayEditUser('<%=i + 1%>')">Edit</button><br />
-
-            <p><%=users[i]._id %></p>
-            <p><%=users[i].email %></p>
-            <p><%=users[i].name %></p>
-            <p><%=users[i].address %></p>
-            <p><%=users[i].phone %></p>
-            <p><%=users[i].isLoggedIn %></p>
-        </div> -->
-
-        <!-- <div hidden id="edit-user#<%=i + 1%>" style="margin: auto; margin-bottom: 10px; border: 1px solid black; background-color: #f7f9f9; padding: 10px; width: 400px;">
-            <button style="display: block;" onclick="undisplayEditUser('<%=i + 1%>')">Cancel</button><br />
-
-            <form action="/admin/edit-users" method="POST">
-                <input name="id" value="<%=users[i]._id %>" style="width: 100%"></input><br />
-                <input name="email" value="<%=users[i].email %>" style="width: 100%"></input><br />
-                <input name="name" value="<%=users[i].name %>" style="width: 100%"></input><br />
-                <input name="address" value="<%=users[i].address %>" style="width: 100%"></input><br />
-                <input name="phone" value="<%=users[i].phone %>" style="width: 100%"></input><br />
-                <input name="isLoggedIn" value="<%=users[i].isLoggedIn %>" style="width: 100%"></input><br />
-                <button style="display: block; margin: auto; margin-top: 10px; width: 50%;">Submit</button>
-            </form>
-        </div> -->
 
         <% if(users[i].admin != true) { %>
             <div id="user#<%=i + 1%>" class="admin-card">      

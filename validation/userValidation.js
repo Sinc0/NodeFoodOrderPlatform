@@ -59,7 +59,6 @@ module.exports = (req, res, next) => {
             {
                 res.locals.validation = validation;
                 res.locals.userEmail = validation.userEmail;
-                //res.locals.text = 'admin'
                 next();
             }
     
@@ -78,7 +77,6 @@ module.exports = (req, res, next) => {
 
                     else
                     {
-                        //res.locals.text = 'logged in user';
                         next();
                     }
                 })
@@ -88,7 +86,6 @@ module.exports = (req, res, next) => {
             else
             {
                 res.locals.validation = validation;
-                //res.locals.text = 'anon';
                 next();
             }
         })

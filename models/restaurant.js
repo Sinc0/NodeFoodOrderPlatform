@@ -1,7 +1,5 @@
 const getDb = require('../helpers/database').getDb;
 const mongodb = require('mongodb');
-const fs = require('fs');
-const path = require('path');
 const ObjectId = mongodb.ObjectId;
 
 class Restaurant 
@@ -119,7 +117,7 @@ class Restaurant
                 {
                     menuListed: value
                 }
-            }  )
+            })
             .then(result => { return result /* console.log(result) */ })
             .catch(err => console.log(err));
     }
@@ -134,7 +132,7 @@ class Restaurant
                     open: value,
                     menuOnline: value
                 }
-            }  )
+            })
             .then(result => { return result /* console.log(result) */ })
             .catch(err => console.log(err));
     }
@@ -148,7 +146,7 @@ class Restaurant
                 {
                     welcomeMessage: value
                 }
-            }  )
+            })
             .then(result => { return result /* console.log(result) */ })
             .catch(err => console.log(err));
     }
@@ -179,8 +177,6 @@ class Restaurant
     {
         const db = getDb();
 
-       //TODO check if prodId characters are by the rules or else redirect
-        
         return db
             .collection('products')
             .findOne({_id: ObjectId(prodId)})
@@ -205,8 +201,6 @@ class Restaurant
     {
         const db = getDb();
 
-       //TODO check if prodId characters are by the rules or else redirect
-        
         return db
             .collection('restaurants')
             .findOne({url: url})
@@ -231,8 +225,6 @@ class Restaurant
     {
         const db = getDb();
 
-       //TODO check if prodId characters are by the rules or else redirect
-        
         return db
             .collection('restaurants')
             .findOne({email: email})

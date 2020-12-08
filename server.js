@@ -35,13 +35,7 @@ const multerFilter = (req, file, cb) => {
 //internal
 const adminRoutes = require('./routes/admin.js');
 const userRoutes = require('./routes/user.js');
-const rootDir = require('./helpers/path.js'); //shortcut to root directory
-const userController = require('./controllers/user.js');
 const errorController = require('./controllers/error');
-const User = require('./models/user');
-const Session = require('./models/session');
-const Restaurant = require('./models/restaurant');
-const Order = require('./models/order.js');
 const mongoConnect = require('./helpers/database').mongoConnect;
 const app = express();
 
@@ -79,34 +73,23 @@ mongoConnect(() => {
 
     webSocket = new ws({port: 65535});
     webSocket.on('connection', function(ws, req){
-
     //var clientIp = req.socket.remoteAddress;
     //var clientKey = req.headers['sec-websocket-key'];
-
-    //console.log("client " + clientKey + " connected");
-
-    console.log("number of clients:", webSocket.clients.size);
+    //var clientCount = webSocket.clients.size;
     
     ws.on('message', function(message) {
-        //console.log("\nmessage recieved: " + message);
-        //ws.send("response message");
-        //ws.close();
-        
         webSocket.clients.forEach(function event(client){
-            //console.log(client);
             client.send(message);
-            //client.send("another message");
             //client.close();
         });
     });
 });
 
-    //start
+    //******* start app *******
     //console.log(process.env);
     app.listen(process.env.PORT || 3000);
 
     //******* test area below *******
-
     //Order.fetchAll();
     //Order.deleteOne('5ee8fdc204550299110cef58');
     //Order.FindByUser('andersson@mail.com')

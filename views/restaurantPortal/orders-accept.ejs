@@ -11,24 +11,13 @@
     <script>
         var socket = new WebSocket("ws://localhost:65535");
 
-        /*
-        function removeOrderDiv(buttonValue)
-        {
-            document.getElementById("updateOrderWithTime#" + buttonValue).submit();
-            //document.getElementById("customerOrder#" + buttonValue).remove();
-        }
-        */
-        
         function orderAccepted(buttonValue, orderId, time)
         {
             socket.send("order:" + orderId + ":accepted:" + "time=" + time);
             //socket.close();
-            console.log(buttonValue);
-            //document.getElementById("customerOrder#" + buttonValue).remove();
-            //setTimeout(removeOrderDiv(buttonValue), 3000);
+
             document.getElementById("updateOrderWithTime#" + buttonValue).submit();
-        }
-        
+        }        
 
         function orderDeclined(buttonValue, orderId)
         {
@@ -36,7 +25,6 @@
             socket.send("order:" + orderId + ":declined");
             //socket.close();
 
-            console.log(buttonValue);
             document.getElementById("inputOrderStatus#" + buttonValue).value = "declined";
             document.getElementById("updateOrderWithTime#" + buttonValue).submit();
             
@@ -83,16 +71,9 @@
     <script>
         function initMapX(origin, destination) 
         {
-            console.log(origin);
-            console.log(destination);
-            
             var service = new google.maps.DistanceMatrixService;
-
             var origin = origin;
-            var destination = destination;
-            //var origin = 'Karlstad, Sweden';
-            //var destination = 'Stockholm, Sweden';
-            
+            var destination = destination;           
             var map = new google.maps.Map(document.getElementById('map'), 
             {
                 center: {lat: 55.53, lng: 9.4},
@@ -139,8 +120,6 @@
                             var travelETA = results[i].duration.text;
                             var outputDiv = document.getElementById('output');
     
-                            //document.getElementById('originAddress').innerHTML = "start: " + originAddress;
-                            //document.getElementById('destinationAddress').innerHTML = "end: " + destinationAddress;
                             document.getElementById("originAddress").hidden = true;
                             document.getElementById("destinationAddress").hidden = true;
                             document.getElementById('travelDistance').innerHTML = "distance: " + travelDistance + "";
@@ -249,92 +228,91 @@
     <div hidden id="map"></div>
 
     <body onload="loadSavedScrollPosition(), googleMapsCalculate()" onscroll="saveScrollPosition()" style="background-color: lightgray;">
+        
+        <!-- total orders -->
         <header id="confirmOrderHeader">
             <h2 id="confirmOrderTitle" style="margin: 0px; margin-top: 25px; margin-bottom: 25px; padding: 0px;"> Unconfirmed Orders: <%=orders.length %></h2>
-            <!-- <p id="confirmOrderPendingOrderInfo">total pending orders: <%=orders.length %></p> -->
         </header>
         
         <% orders = orders.sort((a, b) => b.date - a.date) %>
         
-        <% for(var c = orders.length - 1; c >= 0; c--) { %>
-            <% if(c == orders.length - 1) { %>
-            <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
+            <!-- order -->
+            <% for(var c = orders.length - 1; c >= 0; c--) { %>
+
+                <% if(c == orders.length - 1) { %>
+                <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
                     <div hidden id="inputs" style="text-align: center; margin-bottom: 10px">
                         <button id="googleMapsCalculate" onclick="initMapX('<%=restaurant.address %>', '<%=orders[c].customerAddress %>')">Google Distance Matrix</button>
                     </div>
-            <% } else { %>
-                <div hidden id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>" style="opacity: 50%;">
-            <% } %>
-            
-            <div style="text-align: center;">
-                <form id="updateOrderWithTime#<%=c %>" action="/order-update" method="POST">
-                    <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
-                    <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="60"></input>
-                    <input hidden id="inputOrderStatus#<%=c %>" name="status" value="confirmed"></input>
-                    <button id="declineCustomerOrder#<%=c %>" class="declineCustomerOrder" type="button" onclick="orderDeclined('<%=c %>', '<%= orders[c]._id %>')" style="border-bottom: 1px solid black;">DECLINE</button>
-                </form>
-            </div>
-
-            <p style="text-align: left; margin-top: 5px;">ordered: <%=orders[c].placedAt %></p>
-            <p style="text-align: left;">id: <%=orders[c]._id %></p>
-            <p style="text-align: left;">phone: <%=orders[c].customerPhone %></p>
-            <p style="text-align: left;">address: <%=orders[c].customerAddress %></p>
-            <p style="text-align: left;">total price: <%=orders[c].totalPrice %></p>
-            
-            <br />
-            
-            <p><%=orders[c].type %></p>
-            <p><%=orders[c].customerName %></p>
-            
-            <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
-                <p><b><%= orders[c].products.items[x].name %> (<%= orders[c].products.items[x].quantity %>)</b></p>
+                <% } else { %>
+                    <div hidden id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>" style="opacity: 50%;">
                 <% } %>
-               
-            <% if(orders[c].customerComment !=   null) { %>
-                <p><%=orders[c].customerComment %></p>
+                    
+                    <div style="text-align: center;">
+                        <form id="updateOrderWithTime#<%=c %>" action="/order-update" method="POST">
+                            <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
+                            <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="60"></input>
+                            <input hidden id="inputOrderStatus#<%=c %>" name="status" value="confirmed"></input>
+                            <button id="declineCustomerOrder#<%=c %>" class="declineCustomerOrder" type="button" onclick="orderDeclined('<%=c %>', '<%= orders[c]._id %>')" style="border-bottom: 1px solid black;">DECLINE</button>
+                        </form>
+                    </div>
+
+                    <p style="text-align: left; margin-top: 5px;">ordered: <%=orders[c].placedAt %></p>
+                    <p style="text-align: left;">id: <%=orders[c]._id %></p>
+                    <p style="text-align: left;">phone: <%=orders[c].customerPhone %></p>
+                    <p style="text-align: left;">address: <%=orders[c].customerAddress %></p>
+                    <p style="text-align: left;">total price: <%=orders[c].totalPrice %></p>
+                    
+                    <br />
+                    
+                    <p><%=orders[c].type %></p>
+                    <p><%=orders[c].customerName %></p>
+                    
+                    <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
+                        <p><b><%= orders[c].products.items[x].name %> (<%= orders[c].products.items[x].quantity %>)</b></p>
+                        <% } %>
+                    
+                    <% if(orders[c].customerComment !=   null) { %>
+                        <p><%=orders[c].customerComment %></p>
+                    <% } %>
+
+                    <br />
+                    
+                    <div style="text-align: center; margin-top: 5px;">
+                        <form id="updateOrderWithTime#<%=c %>" action="/order-update" method="POST">
+                            <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
+                            <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="60"></input>
+                            <input hidden id="inputOrderStatus#<%=c %>" name="status" value="confirmed"></input>
+                            <button id="acceptCustomerOrder#<%=c %>" class="acceptCustomerOrder" type="button" value="60" onclick="orderAccepted('<%=c %>', '<%= orders[c]._id %>', value)" style="border-top: 1px solid black;">ACCEPT</button> <!-- onclick = ws data to client, update db, ws data to restaurant -->
+                        </form>
+                    </div>
+                    
+                    <% if(c == orders.length - 1) { %>
+                    <div id="output" style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; border-top: 1px solid black;">
+                        <p id="googleMapsEstimationTitle"><b>Google Maps Estimation</b></p>
+                        <p id="originAddress"></p>
+                        <p id="destinationAddress"></p>
+                        <p id="travelDistance"></p>
+                        <p id="travelETA"></p>
+                    </div>
+                    <% } %>
+
+                    <div style="text-align: center;">
+                        <select id="customerOrderSetTime" onchange="orderTime('<%=c %>', this.value)" style="width: 100%; height: 30px; border: none; border-top: 1px solid black; text-align-last: center; font-weight: bold; background-color: #f7f9f9;">
+                            <option value="60">60 min</option>
+                            <option value="55">55 min</option>
+                            <option value="50">50 min</option>
+                            <option value="45">45 min</option>
+                            <option value="40">40 min</option>
+                            <option value="35">35 min</option>
+                            <option value="30">30 min</option>
+                            <option value="25">25 min</option>
+                            <option value="20">20 min</option>
+                            <option value="15">15 min</option>
+                        </select>
+                    </div>
+
+                </div>
             <% } %>
-
-            <br />
-            
-            <div style="text-align: center; margin-top: 5px;">
-                <form id="updateOrderWithTime#<%=c %>" action="/order-update" method="POST">
-                    <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
-                    <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="60"></input>
-                    <input hidden id="inputOrderStatus#<%=c %>" name="status" value="confirmed"></input>
-                    <button id="acceptCustomerOrder#<%=c %>" class="acceptCustomerOrder" type="button" value="60" onclick="orderAccepted('<%=c %>', '<%= orders[c]._id %>', value)" style="border-top: 1px solid black;">ACCEPT</button> <!-- onclick = ws data to client, update db, ws data to restaurant -->
-                </form>
-            </div>
-            
-            <% if(c == orders.length - 1) { %>
-            <!-- <p>from: <%=restaurant.address %></p> -->
-            <!-- <p>to: <%=orders[c].customerAddress %></p> -->
-            <div id="output" style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; border-top: 1px solid black;">
-                <p id="googleMapsEstimationTitle"><b>Google Maps Estimation</b></p>
-                <p id="originAddress"></p>
-                <p id="destinationAddress"></p>
-                <p id="travelDistance"></p>
-                <p id="travelETA"></p>
-            </div>
-            <% } %>
-
-            <div style="text-align: center;">
-                <!-- <b style="font-weight: normal;">set time:</b> -->
-                <select id="customerOrderSetTime" onchange="orderTime('<%=c %>', this.value)" style="width: 100%; height: 30px; border: none; border-top: 1px solid black; text-align-last: center; font-weight: bold; background-color: #f7f9f9;">
-                    <option value="60">60 min</option>
-                    <option value="55">55 min</option>
-                    <option value="50">50 min</option>
-                    <option value="45">45 min</option>
-                    <option value="40">40 min</option>
-                    <option value="35">35 min</option>
-                    <option value="30">30 min</option>
-                    <option value="25">25 min</option>
-                    <option value="20">20 min</option>
-                    <option value="15">15 min</option>
-                </select>
-            </div>
-
-        </div>
-        
-        <% } %>
     </body>
 </html>

@@ -4,7 +4,7 @@ const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 const connectionString = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@programmingprojects.cpk0g.mongodb.net/${process.env.MONGO_DEFAULT_DB}?retryWrites=true&w=majority&useUnifiedTopology=true`
 
-const  mongoConnect = (callback) => {
+const mongoConnect = (callback) => {
     MongoClient.connect(connectionString)
     .then(client => {
         db = client.db('nodeRestaurant');
@@ -21,6 +21,7 @@ const getDb = () => {
     {
         return db;
     }
+
     else
     {
         throw 'Database not found!'

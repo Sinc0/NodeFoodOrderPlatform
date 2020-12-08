@@ -33,7 +33,6 @@
 
         function editProfilePassword()
         {
-            //var profileCredentials = document.getElementById("profileCredentials");
             var editProfilePassword = document.getElementById("editProfilePassword");
 
             if(editProfilePassword.style.display == "none")
@@ -49,7 +48,6 @@
 
         function editProfileCredentials()
         {
-            //var profileCredentials = document.getElementById("profileCredentials");
             var editProfileCredentials = document.getElementById("editProfileCredentials");
 
             if(editProfileCredentials.style.display == "none")
@@ -129,8 +127,6 @@
                     {
                         if(place.address_components[i].long_name == "Sweden")
                         {
-                            //document.getElementById('country').innerHTML = place.address_components[i].long_name;
-                            //document.getElementById('location').innerHTML = place.formatted_address;
                             var userAddress = document.getElementById('userAddress')
                             var customerAdress = document.getElementById('customerAddress')
 
@@ -143,13 +139,6 @@
                             {
                                 customerAdress.value = place.formatted_address;
                             }
-
-                            /*if(place.address_components[6] != undefined)
-                            {
-                                document.getElementById('postal_code').innerHTML = place.address_components[6].long_name;
-                                //console.log(place.address_components[6].long_name);
-                            }*/
-
                         }
 
                         if(place.address_components[i].long_name != "Sweden")
@@ -157,7 +146,6 @@
                             alert("Location restricted to Sweden only");
                         }
                         
-                        //document.getElementById('country').innerHTML = place.address_components[i].long_name;
                     }
                 }
             
@@ -182,11 +170,8 @@
     <% } %>
     
     <main id="main-profile">
-        
-        <!-- <h2>Account Credentials</h2> -->
 
-        <!-- <p style="color: red;"><b>Note: email and password change requires relog</b></p> -->
-
+        <!-- title -->
         <p style="margin: 0px; padding: 0px; margin-top: 15px; margin-bottom: 5px;"><b>Credentials</b></p>
         
         <div id="profileCredentials" style="margin: auto; display: block;">
@@ -199,19 +184,10 @@
             <p><b></b></p>
         </div>
 
+        <!-- options -->
         <p style="margin: 0px; padding: 0px; margin-top:25px; margin-bottom: 5px;"><b>Options</b></p>
-
-        <!-- <button disabled class="profile-buttons" style="width: 400px;">change email</button> -->
-        <!-- <div id="profileChangeEmail" style="margin: auto; width: 399px; background-color: #f7f9f9;">
-            <form action="/user-update-email" method="POST">
-                <p style="margin: 0px; padding: 0px; padding-top: 2px;">Note: email change requires relog</p><br />
-                <input hidden name="oldEmail" value="<%=email%>"></input>
-                <b>New Email </b><input></input><br />
-                <b style="margin-left: -28.5px;">Confirm Email  </b><input name="newEmail" style="margin-top: 0px;"></input><br /><br />
-                <button type="submit" style="width: 125px; margin-bottom: 5px;">Submit</button>
-            </form>
-        </div> -->
-
+        
+        <!-- change credentials -->
         <button class="profile-buttons" style="height: 30px;" onclick="editProfileCredentials()"><b>change credentials</b></button><br />
         <div id="editProfileCredentials" style="margin: auto; background-color: #f7f9f9; display: none; border-top: 1px solid black;">
             <form action="/user-update-credentials" method="POST" onkeydown="return event.key != 'Enter';">
@@ -224,10 +200,9 @@
                 
                 <button class="profile-buttons confirm-button" type="submit" style="height: 25px; margin-top: 25px; margin-bottom: 25px; border: 1px solid lightgrey;"><b>confirm</b></button>
             </form>
-            
-            <!-- <button class="profile-buttons"  onclick="editProfileCredentials()">decline</button> -->
         </div>
         
+        <!-- change password -->
         <button class="profile-buttons" style="height: 30px; border-bottom: 1px solid black;" onclick="editProfilePassword()"><b>change password</b></button>
         <div id="editProfilePassword" style="margin: auto; background-color: #f7f9f9; display: none; border-top: 1px solid black;">
             <form action="/user-update-password" method="POST" onkeydown="return event.key != 'Enter';">
@@ -240,8 +215,6 @@
                 
                 <button hidden id="confirmButton" class="profile-buttons confirm-button" type="submit" style="height: 25px; margin-bottom: 25px; border: 1px solid lightgrey;"><b>confirm</b></button>
             </form>
-            
-            <!-- <button class="profile-buttons"  onclick="editProfileCredentials()">decline</button> -->
         </div>
 
         <br />

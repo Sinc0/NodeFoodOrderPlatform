@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <script src="js/functionality.js"></script> -->
     <title>Order Process</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/mobile.css">
@@ -60,76 +59,27 @@
         //websocket
         var socket = new WebSocket("ws://localhost:65535");
 
-        function x(orderId) 
-        {
-            //console.log("orderId: " + orderId);
-            socket.send(orderId);
-        }  
-
-        function t(orderId)
-        {
-            socket.send(orderId);
-        }
-
-        socket.onopen = function(event) {
-            //alert("socket is connected");
-            //socket.send("socket is connected");
-        };
-
         socket.onmessage = function(message) {
-            //console.log(message.data);
-
-            var regex = new RegExp("^order:<%=orderId %>:accepted:time=\\d\\d$");
+            var regex = new RegExp("^order:<%=order._id %>:accepted:time=\\d\\d$");
             var str = message.data;
-            //console.log(str);
             var regexMatch = regex.test(str);
             var substringTime = str.substring(str.length - 2, str.length);
-            //console.log(result);
             
             if(regexMatch == true)
             {
-                //console.log(":)");
                 orderProcessOrderConfirmed(substringTime, '<%=order.delivery %>', '<%=order.pickUp %>');
                 socket.close();
             }
 
-            if(message.data == "order:<%=orderId %>:declined")
+            if(message.data == "order:<%=order._id %>:declined")
             {
-                //console.log(":(");
                 orderProcessOrderDeclined();
                 socket.close();
             }
-            
-            //console.log(message);
-            //console.log("confirm order");
         };
-        
-        /*
-        socket.onopen = function(event) {
-            alert("socket is connected");
-            socket.send("websocket test message");
-            console.log("socket is open");
-            socket.close();
-        };
-        */
-
-        /*
-        socket.onclose = function(event) {
-            console.log("socket is closed");
-        }
-        */
     </script>
 </head>
 <body onload="" style="background-color: lightgray;"> <!-- "fillCartFormData()" -->
-
-    <!--
-    <form action="/order-post" method="POST">
-        <button type="submit" onclick="clearCart()">Pay</button>
-        <input id="commentToRestaurant" name="commentToRestaurant" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></input>          
-        <input id="cartAllItems" name="cartAllItems"></input>
-        <input id="cartTotalPrice" name="cartTotalPrice"></input>
-    </form>
-    -->
     <div id="order-process-content" style="background-color: white">
         <p>order id: <%=order._id %></p>
         <p id="orderProcessPaymentInfoText">payment was successful</p>
@@ -146,12 +96,11 @@
         <p id="orderProcessInfoText">waiting for restaurant to confirm time</p>
         <p hidden id="orderProcessEstimatedTime"></p>
         
-        <a href="/order-details/<%=orderId %>" hidden id="OrderProcessWhenConfirmedDetailsLink" style="text-decoration: none; color: black;">show details</a>
+        <a href="/order-details/<%=order._id %>" hidden id="OrderProcessWhenConfirmedDetailsLink" style="text-decoration: none; color: black;">show details</a>
         <a href="/" hidden id="OrderProcessWhenConfirmedStartLink" style="text-decoration: none; color: black;">show start</a>
         <a href="/" id="skipWaitingGoToStart" style="text-decoration: none; color: black;">skip waiting go to start</a>
         
         <br />
-        <!-- <a href="/orders" hidden id="OrderProcessWhenConfirmedAllOrdersLink" onclick="">show all orders</button> -->
     </div>
 </body>
 </html>

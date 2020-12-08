@@ -1,11 +1,11 @@
 //imports
-const path = require('path');
 const express = require('express');
 const shopController = require('../controllers/user');
 const router = express.Router();
 const validation = require('../validation/userValidation');
 const restaurantValidation = require('../validation/restaurantValidation');
-const stripe = require("stripe")("");
+
+
 
 //route handling no validation
 router.post('/register-post', shopController.postRegister);
@@ -26,10 +26,6 @@ router.get('/order-details/:orderId', validation, shopController.getOrderDetails
 router.all('/order-process/:orderId', validation, shopController.getOrderProcess);
 router.get('/logout', validation, shopController.getLogout);
 router.all('/checkout', validation, shopController.getCheckout);
-// router.get('/reciepts/:orderId', validation, shopController.getReciept);
-// router.get('/orders-unconfirmed', shopController.getUnconfirmedOrders);
-// router.get('/orders-confirmed', shopController.getConfirmedOrders);
-// router.get('/orders-completed', shopController.getCompletedOrders);
 router.post('/order-update', shopController.postOrderUpdate);
 router.post('/user-update-credentials', validation, shopController.postUserUpdateCredentials);
 router.post('/user-update-password', validation, shopController.postUserUpdatePassword);

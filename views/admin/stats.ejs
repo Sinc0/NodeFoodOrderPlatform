@@ -10,12 +10,8 @@
 </head>
 <body style="background-color: lightgray;">
     <%- include('../snippets/html_nav_menu_admin.ejs') %>
-    
-    <!-- <script>
-        var navButtonAdminHome = document.getElementById("navButtonAdminStats");
-        navButtonAdminHome.style.backgroundColor = "lightgray";
-    </script> -->
 
+    <!-- title -->
     <h3 style="margin-top: 10px; margin-bottom: 5px; text-align: center;">Statistics</h3>
 
     <% var thisMonth = new Date().getMonth() %>
@@ -29,18 +25,22 @@
     <% var totalSalesFridays = 0 %>
     <% var totalSalesSaturdays = 0 %>
     <% var totalSalesSundays = 0 %>
+
     <!-- orders -->
     <% var totalOrders = orders.length %>
     <% var totalCompleted = 0 %>
     <% var totalDeclined = 0 %>
     <% var totalDelivery = 0 %>
     <% var totalPickUp = 0 %>
+    
     <!-- restaurants -->
     <% var totalRestaurants = restaurants.length; %>
+    
     <!-- users -->
     <% var totalUsers = users.length %>
     <% var loggedInUsers = 0 %>
     <% var customers = [] %>
+
     <!-- reviews -->
     <% var totalReviews = reviews.length %>
     
@@ -126,32 +126,40 @@
     <% } %>
 
     <div id="admin-stats">
-        <br /><p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Sales</b></p>
+
+            <br />
+            
+            <!-- sales -->
+            <p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Sales</b></p>
             <p style="text-align: center; margin: 0px; padding: 0px;"><b>All Time:</b> $<%=totalSales %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>This Month:</b> $<%=totalSalesThisMonth %></p>
-            <!-- <p style="text-align: center; margin: 0px; padding: 0px;""><b>Restaurant X:</b> X</p> -->
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Mondays:</b> $<%=totalSalesMondays %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Tuesdays:</b> $<%=totalSalesTuesdays %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Wednesdays:</b> $<%=totalSalesWednesdays %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Thursdays:</b> $<%=totalSalesThursdays %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Fridays:</b> $<%=totalSalesFridays %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Saturdays:</b> $<%=totalSalesSaturdays %></p>
-            <p style="text-align: center; margin: 0px; padding: 0px;""><b>Sundays:</b> $<%=totalSalesSundays %></p>
-        <br /><p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Orders</b></p>
+            <p style="text-align: center; margin: 0px; padding: 0px;""><b>Sundays:</b> $<%=totalSalesSundays %></p><br />
+            
+            <!-- orders -->
+            <p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Orders</b></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Total:</b> <%=totalOrders %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Completed:</b> <%=totalCompleted %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Declined:</b> <%=totalDeclined %></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Delivery:</b> <%=totalDelivery %></p>
-            <p style="text-align: center; margin: 0px; padding: 0px;""><b>Pick Up:</b> <%=totalPickUp %></p>
-            <br /><p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Restaurants</b></p>
-            <p style="text-align: center; margin: 0px; padding: 0px;""><b>Total:</b> <%=totalRestaurants %></p>
-            <br /><p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Users</b></p>
-            <!-- <% customersNoDuplicates = Array.from(new Set(customers)); %> -->
-            <!-- <p style="text-align: center; margin: 0px; padding: 0px;"><b>Unique:</b> <%=customersNoDuplicates.length %></p> -->
+            <p style="text-align: center; margin: 0px; padding: 0px;""><b>Pick Up:</b> <%=totalPickUp %></p><br />
+            
+            <!-- restaurants -->
+            <p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Restaurants</b></p>
+            <p style="text-align: center; margin: 0px; padding: 0px;""><b>Total:</b> <%=totalRestaurants %></p><br />
+            
+            <!-- users -->
+            <p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Users</b></p>
             <p style="text-align: center; margin: 0px; padding: 0px;""><b>Total:</b> <%=totalUsers %></p>
-            <p style="text-align: center; margin: 0px; padding: 0px;"><b>Logged In:</b> <%=loggedInUsers %></p>
-        <br /><p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Reviews</b></p>
+            <p style="text-align: center; margin: 0px; padding: 0px;"><b>Logged In:</b> <%=loggedInUsers %></p><br />
+
+            <!-- reviews -->
+            <p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Reviews</b></p>
             <p style="text-align: center; margin: 0px; padding: 0px;"><b>Total:</b> <%=totalReviews %></p>
-            <!-- <p style="text-align: center; margin: 0px; padding: 0px;"><b>Restaurant X:</b> X</p> -->
     </div>
 </html>

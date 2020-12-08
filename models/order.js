@@ -1,16 +1,12 @@
 const getDb = require('../helpers/database').getDb;
 const mongodb = require('mongodb');
-const Session = require('./session');
-const User = require('./user');
 const ObjectId = mongodb.ObjectId;
 
 class Order 
 {
-    static async createOrder(userEmail, productArray, totalPrice, customerComment, restaurant, customerName, customerPhone, customerAddress, customerDelivery, restaurantTitle)
+    static createOrder(userEmail, productArray, totalPrice, customerComment, restaurant, customerName, customerPhone, customerAddress, customerDelivery, restaurantTitle)
     {
         const db = getDb();
-
-        let insertSuccessful = 1;
 
         var dateObject = new Date().toString();
         var sub1 = dateObject.substring(16, 24);
@@ -49,7 +45,6 @@ class Order
             })  
             .catch(err => {
                 console.log(err); 
-                //console.log('insert of session document failed'); 
                 return null;
             });
     }
@@ -58,13 +53,10 @@ class Order
     {
         const db = getDb();
 
-        //check if userId characters are by the rules or else redirect
-        
         return db
             .collection("orders")
             .findOne({_id: ObjectId(orderId)})
             .then(order => {
-                //console.log(order); 
                 return order;
             })
             .catch(err => {console.log(err)})
@@ -81,7 +73,6 @@ class Order
             .then(order => {
                 if(order.length != 0)
                 {
-                    //console.log(order)
                     return order;
                 }
 
@@ -129,12 +120,10 @@ class Order
             .then(result => {
                 if(result.modifiedCount == updateSuccessful)
                 {
-                    //console.log('update ' + email + ' document successful');
                     return updateSuccessful;
                 } 
                 else
                 {
-                    //console.log('update ' + email + ' document failed');
                     return updateFailed;
                 }
             })
@@ -192,12 +181,12 @@ class Order
             .then(result => {
                 if(result.deletedCount == deleteSuccessful)
                 {
-                    console.log('order document ' + orderId + ' deleted successful');
+                    //console.log('order document ' + orderId + ' deleted successful');
                     return deleteSuccessful;
                 } 
                 else
                 {
-                    console.log('order document ' + orderId + ' deleted failed');
+                    //console.log('order document ' + orderId + ' deleted failed');
                     return deleteFailed;
                 } 
             })

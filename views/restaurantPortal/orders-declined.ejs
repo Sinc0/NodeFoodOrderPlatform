@@ -33,10 +33,13 @@
     </head>
     <a href="/restaurantPortal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
     <body onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()" style="background-color: lightgray;">
+        
+        <!-- total orders -->
         <header id="confirmOrderHeader">
             <h2 id="confirmOrderTitle" style="margin: 0px; margin-top: 25px; margin-bottom: 25px; padding: 0px;">Declined Orders: <%=orders.length %></h2>
-            <!-- <p id="confirmOrderPendingOrderInfo">total pending orders: <%=orders.length %></p> -->
         </header>
+        
+        <!-- order -->
         <% for(var c = orders.length - 1; c >= 0; c--) { %>
             <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
                 <p style="text-align: left; margin-top: 5px;">id: <%=orders[c]._id %></p>
@@ -50,9 +53,11 @@
                 
                 <p style="margin-bottom: 5px;"><%=orders[c].type %></p>
                 <p><%=orders[c].customerName %></p>
+                
                 <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
                     <p><b><%= orders[c].products.items[x].name %> (<%= orders[c].products.items[x].quantity %>)</b></p>
-                    <% } %>
+                <% } %>
+                
                 <p style="margin-top: 5px;"><%=orders[c].customerComment %></p>
 
                 <br />

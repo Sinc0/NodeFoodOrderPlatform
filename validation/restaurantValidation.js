@@ -49,27 +49,22 @@ module.exports =  async (req, res, next) => {
 
         res.locals.validation = false;
         res.redirect('/');
-        //next();
     }
 
     else
     {
         //check user validation
         var userCheck = await User.validateLogin(cookieId);
-        //var admin = userCheck.admin;
         var validation = userCheck.status;
         var email = userCheck.userEmail;
-        //console.log(userCheck);
 
         if(validation == true)
         {
             res.locals.validation = validation;
             res.locals.userEmail = email;
-            //res.locals.text = 'logged in user';              
             
             //check if user have restaurant
             var restaurantCheck = await Restaurant.findByEmail(email);
-            //console.log(restaurantCheck);
 
             //if user have restaurant
             if(restaurantCheck != null)
@@ -88,7 +83,6 @@ module.exports =  async (req, res, next) => {
         else
         {
             res.locals.validation = validation;
-            //res.locals.text = 'anon';
             res.redirect('/');
         }
     }

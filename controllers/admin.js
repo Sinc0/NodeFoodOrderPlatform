@@ -1,57 +1,8 @@
 const Restaurant = require('../models/restaurant');
 const User = require('../models/user');
-const mongodb = require('mongodb');
-const fs = require('fs');
 const Order = require('../models/order');
-const path = require('path');
 const Review = require('../models/review');
 const Admin = require('../models/admin');
-const ObjectId = mongodb.ObjectId;
-
-function deleteFile(filePath)
-{
-    fs.unlink(filePath, (err) => {
-        if(err)
-        {
-            throw(err);
-        }
-    });
-}
-
-function parseLoginCookie(cookieId)
-{
-    var findLoginCookie = cookieId;
-
-    if(findLoginCookie == null)
-    {
-        return null;
-    }
-    
-    var regexFindLoginCookieId = /(?!\sloginCookie=id:)\d.\d*(?=email)/g;
-
-    if(regexFindLoginCookieId == null)
-    {
-        return null;
-    }
-
-    var loginCookieId = findLoginCookie.match(regexFindLoginCookieId);
-    //var regexFindLoginCookieEmail = /(?!email:)[\w\d]*@.*\.\w*/g;
-    //var loginCookieEmail = findLoginCookie.match(regexFindLoginCookieEmail);
-
-    var cookieId = parseFloat(loginCookieId);
-    //console.log(String(loginCookieId));
-    //console.log(String(loginCookieEmail))
-
-    if(cookieId != null)
-    {
-        return cookieId;
-    }
-
-    else
-    {
-        return null;
-    }
-}
 
 //get
 exports.getHome = (req, res, next) => {
@@ -108,7 +59,6 @@ exports.getOrders = (req, res, next) => {
 }
 
 exports.getRestaurants = (req, res, next) => {
-    
     console.log('getAdminRestaurantList');
     let validation = res.locals.validation;
 
@@ -126,11 +76,9 @@ exports.getRestaurants = (req, res, next) => {
             });
         })
         .catch(err => console.log(err));
-        //console.log('In the middleware');
-        //console.log('shop.js', products);
-        //res.sendFile(path.join(__dirname, '../', 'views', 'shop.html'));
     }
 
+    //anon user
     else
     {
         res.redirect('/');
@@ -157,11 +105,9 @@ exports.getUsers = (req, res, next) => {
             });
         })
         .catch(err => console.log(err));
-        //console.log('In the middleware');
-        //console.log('shop.js', products);
-        //res.sendFile(path.join(__dirname, '../', 'views', 'shop.html'));
     }
     
+    //anon user
     else
     {
         res.redirect('/');
@@ -170,7 +116,6 @@ exports.getUsers = (req, res, next) => {
 }
 
 exports.getReviews = (req, res, next) => {
-    
     console.log('getAdminReviews');
     let validation = res.locals.validation;
 
@@ -188,11 +133,9 @@ exports.getReviews = (req, res, next) => {
             });
         })
         .catch(err => console.log(err));
-        //console.log('In the middleware');
-        //console.log('shop.js', products);
-        //res.sendFile(path.join(__dirname, '../', 'views', 'shop.html'));
     }
 
+    //anon user
     else
     {
         res.redirect('/');
@@ -204,8 +147,6 @@ exports.getStats = async (req, res, next) => {
     
     console.log('getAdminReviews');
     let validation = res.locals.validation;
-    var userEmail = res.locals.userEmail;
-    var restaurantUrl = res.locals.restaurantUrl;
 
     
     //user is admin
@@ -226,12 +167,9 @@ exports.getStats = async (req, res, next) => {
             path: '/stats',
             pageTitle: 'Admin Stats'
         });
-
-        //console.log('In the middleware');
-        //console.log('shop.js', products);
-        //res.sendFile(path.join(__dirname, '../', 'views', 'shop.html'));
     }
 
+    //anon user
     else
     {
         res.redirect('/');
@@ -254,7 +192,6 @@ exports.postEditOrder = async (req, res, next) => {
     if(validation.status == true && validation.isAdmin == true)
     {
         var updateOrder = await Order.updateAdmin(orderId, date, user, status, restaurant);
-
         res.redirect('/admin/orders');
     }
 
@@ -269,8 +206,6 @@ exports.postEditRestaurant = async (req, res, next) => {
     console.log('postEditRestaurants');
     let validation = res.locals.validation;
 
-    console.log(req.body);
-
     var restaurantId = req.body.id;
     var title = req.body.title;
     var email = req.body.email;
@@ -280,8 +215,7 @@ exports.postEditRestaurant = async (req, res, next) => {
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
-        var updateRestaurants = await Restaurant.updateAdmin(restaurantId, title, email, owner, address);
-
+        var updateRestaurant = await Restaurant.updateAdmin(restaurantId, title, email, owner, address);
         res.redirect('/admin/restaurants');
     }
 
@@ -306,7 +240,6 @@ exports.postEditUser = async (req, res, next) => {
     if(validation.status == true && validation.isAdmin == true)
     {
         var updateUser = await User.updateAdmin(userId, name, address, phone, isLoggedIn);
-
         res.redirect('/admin/users');
     }
 
@@ -333,7 +266,6 @@ exports.postEditReview = async (req, res, next) => {
     if(validation.status == true && validation.isAdmin == true)
     {
         var updateReview = await Review.updateAdmin(reviewId, date, restaurant, rating, user, items, comment);
-
         res.redirect('/admin/reviews');
     }
 
@@ -358,7 +290,6 @@ exports.postEditNewsPost = async (req, res, next) => {
     if(validation.status == true && validation.isAdmin == true)
     {
         var updateReview = await Admin.updateNewsPost(id, postId, date, title, text);
-
         res.redirect('/admin/home');
     }
 
@@ -381,7 +312,6 @@ exports.postDeleteOrder = async (req, res, next) => {
     if(validation.status == true && validation.isAdmin == true)
     {
         var deleteOrder = await Order.deleteOne(orderId);
-
         res.redirect('/admin/orders');
     }
 
@@ -397,13 +327,11 @@ exports.postDeleteRestaurant = async (req, res, next) => {
     let validation = res.locals.validation;
 
     var restaurantId = req.body.restaurantId;
-    console.log(restaurantId);
     
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
         var deleteRestaurant = await Restaurant.deleteOne(restaurantId);
-
         res.redirect('/admin/restaurants');
     }
 
@@ -419,13 +347,11 @@ exports.postDeleteUser = async (req, res, next) => {
     let validation = res.locals.validation;
 
     var user = req.body.email;
-    console.log(user);
     
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
         var deleteUser = await User.deleteOne(user);
-
         res.redirect('/admin/users');
     }
 
@@ -441,13 +367,11 @@ exports.postDeleteReview = async (req, res, next) => {
     let validation = res.locals.validation;
 
     var reviewId = req.body.id;
-    console.log(reviewId);
     
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
         var deleteReview = await Review.deleteOne(reviewId);
-
         res.redirect('/admin/reviews');
     }
 
@@ -463,13 +387,11 @@ exports.postDeleteNewsPost = async (req, res, next) => {
     let validation = res.locals.validation;
 
     var id = req.body.id;
-    console.log(id);
     
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
         var deleteAdminPost = await Admin.deleteOne(id);
-
         res.redirect('/admin/home');
     }
 
@@ -492,13 +414,10 @@ exports.postNewsPost = async (req, res, next) => {
     var title = req.body.title;
     var text = req.body.text;
 
-    console.log(text);
-    
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
         var deleteReview = await Admin.createNewsPost(type, postId, date, title, text);
-
         res.redirect('/admin/home');
     }
 

@@ -171,12 +171,12 @@
         <form action="/restaurantPortal/menuListed" method="POST">
             <% if(restaurant.menuListed == false) { %>
                 <input hidden name="menuListed" value=true></input>
-                <button class="profile-buttons">activate restaurant</button><br />
+                <button class="profile-buttons" style="border-bottom: 1px solid black;">activate restaurant</button><br />
             <% } %>
             
             <% if(restaurant.menuListed == true) { %>
                 <input hidden name="menuListed" value=false></input>
-                <button class="profile-buttons"  style="border-bottom: 1px solid black;">deactivate restaurant</button><br />
+                <button class="profile-buttons" style="border-bottom: 1px solid black;">deactivate restaurant</button><br />
             <% } %>
         </form>
 

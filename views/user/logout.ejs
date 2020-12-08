@@ -12,11 +12,6 @@
     <!-- admin view -->
     <% if(admin != null && admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
-        
-        <!-- <script>
-            var navButtonAdminHome = document.getElementById("navButtonAdminLogout");
-            navButtonAdminHome.style.backgroundColor = "lightgray";
-        </script> -->
     
     <!-- logged in user view -->
     <% } else if(loggedIn == true) { %>

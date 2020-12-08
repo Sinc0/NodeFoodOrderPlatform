@@ -11,16 +11,16 @@
 <a href="/restaurantPortal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
 <body id="" style="background-color: lightgray;">
 
+    <!-- total reviews -->
     <h2 style="margin-top: 25px; margin-bottom: 25px; text-align: center;">Total Reviews (<%=reviews.length %>)</h2>
 
+    <!-- review -->
     <% for(var counter = 0; counter < reviews.length; counter++) { %>
         <div id="customer-review#<%=counter + 1%>" class="customerReview" style="border: 1px solid black; background-color: #f7f9f9; margin: auto; margin-bottom: 25px; padding: 5px;">
-            <!--- <p style="text-align: left; margin: 0px; padding: 0px;"><b>#<%=counter + 1 %></b></p> -->
             <% var date = reviews[counter].reviewObject.date %>
             <p style="text-align: center; margin: 0px; margin-top: 5px; padding: 0px;"><%=date.toString().slice(0, 24) %></p>
             
             <br />
-            
             
             <p style="text-align: center; margin: 0px; padding: 0px;"><b><%=reviews[counter].reviewObject.rating %></b></p>
             <p style="text-align: center; margin: 0px; padding: 0px;"><b></b> <%=reviews[counter].reviewObject.name %></p>

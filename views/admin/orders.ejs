@@ -69,9 +69,6 @@
                 for(var c = 1; c <= totalOrders; c++)
                 {
                     var order = document.getElementById("order#" + c)
-                    //console.log(menuItem);
-                    //console.log(menuItem.parentNode);
-                    //console.log(menuItemCategory);
     
                     if(order.innerHTML.toLowerCase().includes(searchString))
                     {
@@ -129,17 +126,15 @@
 <body style="background-color: lightgray;" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
     <%- include('../snippets/html_nav_menu_admin.ejs') %>
     
-    <!-- <script>
-        var navButtonAdminHome = document.getElementById("navButtonAdminOrders");
-        navButtonAdminHome.style.backgroundColor = "lightgray";
-    </script> -->
-    
+    <!-- search box -->    
     <div id="searchBox" style="margin: 0px; margin-top: 25px; padding: 0px; text-align: center;">
         <input id="searchBoxInput" class="search-admin" style="margin-bottom: 25px; height: 38px;" placeholder="Search..." onkeyup="search('<%=orders.length %>')"></input>
     </div>
     
+    <!-- total orders -->
     <h3 id="totalOrdersText" style="margin-top: 25px; margin-bottom: 15px; text-align: center;">Total Orders: <%=orders.length %></h3>
 
+    <!-- orders -->
     <% for(var i = 0; i < orders.length; i++) { %>
     <div id="orders">
         <div id="order#<%=i + 1%>" class="admin-card">      

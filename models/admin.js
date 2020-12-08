@@ -7,6 +7,7 @@ class Admin
     static createNewsPost(type, postId, date, title, text)
     {
         const db = getDb();
+        
         return db
             .collection('admin')
             .insertOne({
@@ -46,12 +47,10 @@ class Admin
             .then(result => {
                 if(result.modifiedCount == updateSuccessful)
                 {
-                    //console.log('update ' + email + ' document successful');
                     return updateSuccessful;
                 } 
                 else
                 {
-                    //console.log('update ' + email + ' document failed');
                     return updateFailed;
                 }
             })
@@ -64,7 +63,7 @@ class Admin
 
         return db.collection('admin')
         .deleteOne({_id: ObjectId(id)})
-        .then(result => {/* console.log(result); */ return result.deletedCount })
+        .then(result => { /* console.log(result); */ return result.deletedCount })
         .catch(err => console.log(err));
     }
 

@@ -38,7 +38,8 @@
 
             if(value == 0)
             {
-                d.innerHTML = "";
+                d.innerHTML = "Reviews (0)";
+                d.onclick = "";
             }
             
             else
@@ -58,6 +59,12 @@
             {
                 rating = Number(rating).toFixed(1);
                 d.innerHTML = rating + " of 5";
+                d.hidden = false;
+            }
+
+            else
+            {
+                d.innerHTML = "Rating N/A";
                 d.hidden = false;
             }
         }
@@ -150,8 +157,6 @@
                         <% if(restaurant.open == false) { %>
                             <h3 style="color: rgb(214, 14, 14)">Open</h3> open or closed
                         <% } %> -->
-
-                        <br />
 
                         <h3><%=restaurant.city %></h3> <!-- location -->
                         <h3 hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->

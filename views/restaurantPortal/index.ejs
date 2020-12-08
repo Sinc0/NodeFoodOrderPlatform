@@ -23,6 +23,7 @@
 <body id="restaurantPortal-index-body">
     <h1 id="restaurantPortal-index-title"><%=restaurant.title %></h1>
 
+    <!-- welcome message -->
     <% if(restaurant.welcomeMessage == true) { %>
         <div id="restaurant-welcomeMessage">
             <p style="margin: 0px; margin-bottom: 5px; padding: 0px;">Welcome to the restaurant portal, before you can take orders you need to complete following steps:</p>
@@ -36,9 +37,6 @@
             <br />
 
             <div style="margin: auto;">
-            <!-- <button style="text-align: center; width: 400px;"><a href="/portal/menu/show">show menu</a></button><br /> -->
-            <!-- <button style="text-align: center; width: 400px;"><a href="/portal/menu/edit">edit menu</a></button><br /> -->
-            <!-- <button style="text-align: center; width: 400px;"><a href="/portal/settings">settings</a></button><br /> -->
 
             <p style="margin: 0px; margin-bottom: 5px; padding: 0px;">Options</p>
             
@@ -53,6 +51,7 @@
         </div>
     <% } %>
 
+    <!-- restaurant portal menu -->
     <% if(restaurant.welcomeMessage == false) { %>
         <nav id="PortalNav">
             <!-- non category -->
@@ -85,26 +84,6 @@
                 <a id="NavElementLink#10" href="/restaurantPortal/logout"><div class="NavElement"><p><b>#10 Logout</b></p></div></a>
             </div>
     
-            <!-- 
-            tbd
-            <div class="NavCategory">
-                <div class="NavElement FirstColumnDiv">
-                    <p><b>x</b></p>
-                </div>
-                
-                <div class="NavElement">
-                    <p><b>x</b></p>
-                </div>
-                
-                <div class="NavElement">
-                    <p><b>x</b></p>
-                </div>
-                
-                <div class="NavElement">
-                    <p><b>x</b></p>
-                </div>
-            </div> 
-            -->
         </nav>   
     <% } %>
 </body>

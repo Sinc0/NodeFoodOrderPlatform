@@ -81,9 +81,9 @@ class Review
         const db = getDb();
 
         return db.collection('reviews')
-        .deleteOne({_id: ObjectId(reviewId)})
-        .then(result => {/* console.log(result); */ return result.deletedCount })
-        .catch(err => console.log(err));
+            .deleteOne({_id: ObjectId(reviewId)})
+            .then(result => {/* console.log(result); */ return result.deletedCount })
+            .catch(err => console.log(err));
     }
 
     static fetchAll()
