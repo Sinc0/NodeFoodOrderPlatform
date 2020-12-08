@@ -12,6 +12,7 @@ const ws = require('ws').Server;
 //internal
 const adminRoutes = require('./routes/admin.js');
 const userRoutes = require('./routes/user.js');
+const restaurantPortalRoutes = require('./routes/restaurantPortal.js');
 const errorController = require('./controllers/error');
 const mongoConnect = require('./controllers/database').mongoConnect;
 const app = express();
@@ -31,34 +32,36 @@ app.use(bodyParser.urlencoded({extended: false})); //parsing
 // app.use('/', (req, res, next) => { next(); });
 app.use(adminRoutes);
 app.use(userRoutes);
+app.use(restaurantPortalRoutes);
 
 //controllers
 app.use(errorController.get404ErrorPage);
 
-//db and websocket connection
-mongoConnect(() => {
-    
-    webSocket = new ws({port: 65535});
+//******* start *******
 
-    webSocket.on('connection', function(ws, req)
+//connect db
+mongoConnect(() => {});
+
+//connect websocket
+var webSocket = new ws({port: 65535});
+
+webSocket.on('connection', function(ws, req)
+{
+    //var clientIp = req.socket.remoteAddress;
+    //var clientKey = req.headers['sec-websocket-key'];
+    //var clientCount = webSocket.clients.size;
+    
+    ws.on('message', function(message)
     {
-        //var clientIp = req.socket.remoteAddress;
-        //var clientKey = req.headers['sec-websocket-key'];
-        //var clientCount = webSocket.clients.size;
-        
-        ws.on('message', function(message)
+        webSocket.clients.forEach(function event(client)
         {
-            webSocket.clients.forEach(function event(client){
-                client.send(message);
-                //client.close();
+            client.send(message);
+            //client.close();
         });
-        
     });
 
 });
 
-//******* start app *******
-//console.log(process.env);
+//start app
 app.listen(process.env.PORT || 3000);
-
-});
+//console.log(process.env);

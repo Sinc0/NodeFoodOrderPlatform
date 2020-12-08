@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/mobile.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <script>
-        function orderProcessOrderConfirmed(estimatedTime, delivery, pickUp)
+        function orderProcessOrderConfirmed(estimatedTime, type)
         {
             document.getElementById("orderProcessImgLoadingGif").remove();
             document.getElementById("orderProcessImgCheckmarkPng").hidden = false;
@@ -33,12 +33,12 @@
 
             var date = hours + ":" + minutes;
             
-            if(delivery == true)
+            if(type == "delivery")
             {
                 document.getElementById("orderProcessEstimatedTime").innerHTML = "estimated " + estimatedTime + " mins for comletion <br /> order should be delivered at " + date;
             }
 
-            if(delivery == false)
+            else if(type == "pick up")
             {
                 document.getElementById("orderProcessEstimatedTime").innerHTML = "estimated " + estimatedTime + " mins for completion <br /> pick up should be ready at " + date;
             }
@@ -67,7 +67,7 @@
             
             if(regexMatch == true)
             {
-                orderProcessOrderConfirmed(substringTime, '<%=order.delivery %>', '<%=order.pickUp %>');
+                orderProcessOrderConfirmed(substringTime, '<%=order.type %>');
                 socket.close();
             }
 
