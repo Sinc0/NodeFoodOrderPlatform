@@ -190,7 +190,7 @@
         <!-- change credentials -->
         <button class="profile-buttons" style="height: 30px;" onclick="editProfileCredentials()"><b>change credentials</b></button><br />
         <div id="editProfileCredentials" style="margin: auto; background-color: #f7f9f9; display: none; border-top: 1px solid black;">
-            <form action="/user-update-credentials" method="POST" onkeydown="return event.key != 'Enter';">
+            <form action="/user-update-credentials" method="POST" onkeydown="return event.key != 'Enter';" style="border-left: 1px solid black; border-right: 1px solid black;">
                 <input hidden value="<%=email %>" name="email"></input>
                 <input hidden id="userAddress" value="<%=address %>" name="address" placeholder="address"></input>
                 
@@ -204,8 +204,8 @@
         
         <!-- change password -->
         <button class="profile-buttons" style="height: 30px; border-bottom: 1px solid black;" onclick="editProfilePassword()"><b>change password</b></button>
-        <div id="editProfilePassword" style="margin: auto; background-color: #f7f9f9; display: none; border-top: 1px solid black;">
-            <form action="/user-update-password" method="POST" onkeydown="return event.key != 'Enter';">
+        <div id="editProfilePassword" style="margin: auto; background-color: #f7f9f9; display: none;">
+            <form action="/user-update-password" method="POST" onkeydown="return event.key != 'Enter';" style="border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;">
                 <p id="errorText"></p>
                 <input hidden value="<%=email %>" name="email"></input>
                 

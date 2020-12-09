@@ -832,8 +832,8 @@ exports.postRestaurantReview = async (req, res, next) => {
     var name = req.body.customerName;
     var rating = req.body.rating;
     var items = req.body.items;
-    var comment = req.body.comment;
-    reviewObject = {date: date, name: name, rating: rating, items: items, comment: comment};
+    var comment = req.body.comment.toLowerCase();
+    reviewObject = {date: date, name: name, rating: rating, items: null, comment: comment};
 
     var checkIfOrderReviewExist = await Review.findByOrderId(orderId);
 

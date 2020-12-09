@@ -126,7 +126,7 @@ main
 #main-profile
 {
     text-align: center;
-    padding: 10px;
+    padding: 9px;
 }
 
 #main-register
@@ -297,6 +297,11 @@ img
     color: white;
 }
 
+.main-header__item a:hover
+{
+    color: white;
+}
+
 .centered {
     text-align: center;
 }
@@ -434,6 +439,11 @@ img
     background-color: #f7f9f9;
     border-style: none;
     border-radius: 0px;
+}
+
+#order-button:hover
+{
+    background-color: #3e00a1;
 }
 
 #total-price
@@ -810,13 +820,17 @@ option
     padding-top: 11px;
     padding-right: 4px;
     text-decoration: none;
-    color: black;
 }
 
 .indexAnonMenuItem a
 {
     text-decoration: none;
     color: black;
+}
+
+.indexAnonMenuItem a:hover
+{
+    color: white;
 }
 
 .indexAnonMenuItem:hover
@@ -983,13 +997,22 @@ option
     background-color: red;
 }
 
+.restaurant-backgroundImage
+{
+    display: block;
+}
+
+.restaurant-backgroundImage-mobile
+{
+    display: none;
+}
+
 /* review */
 .restaurantReview
 {
     margin: auto;
     margin-top: 5px;
     margin-bottom: 5px;
-    padding-top: 4.5px;
     padding-bottom: 4.5px;
     background-color: #f7f9f9;
     text-align: left;
