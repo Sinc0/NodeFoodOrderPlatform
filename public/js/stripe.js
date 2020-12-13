@@ -22,6 +22,11 @@ var style = {
   }
 };
 
+function clearCart()
+{
+    localStorage.removeItem("cartItems");
+}
+
 var card = elements.create("card", { style: style });
 card.mount("#card-element");
 

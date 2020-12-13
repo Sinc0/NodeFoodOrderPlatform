@@ -20,6 +20,7 @@ router.get('/restaurantPortal/settings', restaurantValidation, restaurantPortalC
 router.get('/restaurantPortal/logout', restaurantValidation, restaurantPortalController.getRestaurantLogout);
 
 //post
+router.post('/restaurantPortal/order-update', restaurantValidation, restaurantPortalController.postOrderUpdate);
 router.post('/restaurantPortal/updateMenu', restaurantValidation, restaurantPortalController.postRestaurantUpdateMenu);
 router.post('/restaurantPortal/menuListed', restaurantValidation, restaurantPortalController.postRestaurantMenuListed);
 router.post('/restaurantPortal/menuOnline', restaurantValidation, restaurantPortalController.postRestaurantMenuOnline);

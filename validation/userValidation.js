@@ -72,7 +72,7 @@ module.exports = (req, res, next) => {
                     
                     if(restaurantCheck != null)
                     {
-                        res.redirect('/portal');
+                        res.redirect('/restaurantPortal');
                     }
 
                     else

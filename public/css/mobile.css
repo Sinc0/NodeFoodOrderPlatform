@@ -11,7 +11,7 @@
     #bodyIndex
     {
         background-image: none;
-        background-color: black;
+        background-color: lightgray;
     }
 
     #indexAnonMenu, #indexAnonFooter
@@ -83,7 +83,7 @@
     {
         margin-top: 0px;
         margin-bottom: 5px;
-        width: 93vw;
+        width: 90vw;
     }
 
     .restaurantReviewModal
@@ -243,7 +243,7 @@
     #body-checkout
     {
         width: 100vw;
-        background-color: black;
+        background-color: lightgray;
     }
     
     #body-checkout iframe

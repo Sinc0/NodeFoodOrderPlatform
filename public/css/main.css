@@ -348,8 +348,9 @@ img
     margin: 0px;
     margin-top: -9px;
     padding: 0px;
-    display: inline-block; 
-    vertical-align: top; width: 15%;
+    width: 15%;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .menu-item:hover

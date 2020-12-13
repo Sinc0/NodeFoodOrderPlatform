@@ -118,7 +118,7 @@
         
         <br />
         
-        <form id="updateOrderWithTime#<%=c %>" action="/order-update" method="POST">
+        <form id="updateOrderWithTime#<%=c %>" action="/restaurantPortal/order-update" method="POST">
             <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
             <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="60"></input>
             <input hidden id="inputOrderStatus#<%=c %>" name="status" value="confirmed"></input>

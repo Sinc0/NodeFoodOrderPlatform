@@ -80,7 +80,7 @@
     <% if(orders == null) { %>
         <% var totalOrders = 0 %>
     <% } else { %>
-        <% var totalOrders = totalOrders %>
+        <% var totalOrders = orders.length %>
     <% } %>
     
     <div id="searchBox" style="margin-top: 6.5px; margin-bottom: 0px; text-align: center;"  onkeyup="searchBoxOrders('<%=totalOrders %>')">
@@ -97,7 +97,9 @@
             <!-- <p>completed = order is ready for pick up or delivery</p> -->
 
             <% let counter = totalOrders + 1; %>
-            <% for (let order of orders.reverse()) { counter-- %>
+            <% for (let order of orders.reverse()) { %>
+                
+                <% counter-- %>
                 
                 <br />
                 
@@ -162,6 +164,7 @@
                 <% var customerNameSplit = order.customerName.split("@"); %>
                 <% var customerName = customerNameSplit[0]; %>
                 <% var orderItems = [] %>
+                
                 <% for(var c = 0; c < order.products.items.length; c++) { %>
                     <% orderItems.push(order.products.items[c].name + ", ") %>
                 <% } %>

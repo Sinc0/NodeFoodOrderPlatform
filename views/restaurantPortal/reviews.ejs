@@ -16,29 +16,22 @@
 
     <!-- review -->
     <% for(var counter = 0; counter < reviews.length; counter++) { %>
-        <div id="customer-review#<%=counter + 1%>" class="customerReview" style="border: 1px solid black; background-color: #f7f9f9; margin: auto; margin-bottom: 25px; padding: 5px;">
+        <div id="customer-review#<%=counter + 1%>" class="customerReview" style="border: 1px solid black; background-color: #f7f9f9; margin: auto; margin-bottom: 25px;">
+            <p style="text-align: center; margin: 0px; padding: 0px; padding-bottom: 5px; padding-top: 5px; background-color: lightgray;"><b>Rating </b> <%=reviews[counter].reviewObject.rating %> </p>
+            
+            <br />
+
             <% var date = reviews[counter].reviewObject.date %>
-            <p style="text-align: center; margin: 0px; margin-top: 5px; padding: 0px;"><%=date.toString().slice(0, 24) %></p>
-            
-            <br />
-            
-            <p style="text-align: center; margin: 0px; padding: 0px;"><b><%=reviews[counter].reviewObject.rating %></b></p>
-            <p style="text-align: center; margin: 0px; padding: 0px;"><b></b> <%=reviews[counter].reviewObject.name %></p>
-            
-            <br />
-
-            <% var x = reviews[counter].reviewObject.items %>
-            <% var stringSplit = x.split(","); %>
-
-            <% for(var x = 0; x < stringSplit.length; x++) { %>
-                <p style="text-align: center; margin: 0px; padding: 0px;"><b><%=stringSplit[x] %></b></p> 
-            <% } %>
+            <p style="text-align: center; margin: 0px; padding: 0px;"><%=reviews[counter].reviewObject.name %> - <%=date.toString().slice(4, 15) %></p>
         
             <br />
 
             <% if(reviews[counter].reviewObject.comment != null) { %>
-                <p style="text-align: center; margin: 0px; margin-bottom: 5px; padding: 0px;"><b>comment</b><br /> <%=reviews[counter].reviewObject.comment %></p>
+                <p style="text-align: center; margin: 0px; margin-bottom: 5px; padding: 0px;"><b>Comment</b><br /> <%=reviews[counter].reviewObject.comment %></p>
             <% } %>
+
+            <br />
+            
         </div>
     <% } %> 
 </body>

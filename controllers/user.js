@@ -740,18 +740,6 @@ exports.getOrderProcess = async (req, res, next) => {
 
 }
 
-exports.postOrderUpdate = async (req, res, next) => {
-    console.log('\npostOrderUpdate Test');
-
-    orderId = req.body.orderId;
-    status = req.body.status;
-    estimatedCompletionTime = req.body.estimatedTime;
-
-    var order = await Order.updateOne(orderId, status, estimatedCompletionTime);
-
-    res.redirect('back');
-}
-
 exports.postWebhook = (req, res, next) => {
     console.log('\npostWebhook Test');
 

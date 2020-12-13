@@ -67,7 +67,7 @@
         <br />
 
         <div style="text-align: center;">
-            <form id="updateOrderCompletionTime#<%=c %>" action="/order-update" method="POST">
+            <form id="updateOrderCompletionTime#<%=c %>" action="/restaurantPortal/order-update" method="POST">
                 <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
                 <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="<%=orders[c].estimatedCompletionTime %>"></input>
                 <input hidden id="inputOrderStatus#<%=c %>" name="status" value="completed"></input>

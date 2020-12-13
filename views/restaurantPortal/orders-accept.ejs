@@ -249,7 +249,7 @@
                 <% } %>
                     
                     <div style="text-align: center;">
-                        <form id="updateOrderWithTime#<%=c %>" action="/order-update" method="POST">
+                        <form id="updateOrderWithTime#<%=c %>" action="/restaurantPortal/order-update" method="POST">
                             <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
                             <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="60"></input>
                             <input hidden id="inputOrderStatus#<%=c %>" name="status" value="confirmed"></input>
@@ -278,8 +278,18 @@
 
                     <br />
                     
+                    <% if(c == orders.length - 1 && orders[c].type == "delivery") { %>
+                    <div id="output" style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px;">
+                        <p id="googleMapsEstimationTitle" style="text-align: left;"><b>Google Maps Estimation</b></p>
+                        <p id="originAddress" style="text-align: left;"></p>
+                        <p id="destinationAddress" style="text-align: left;"></p>
+                        <p id="travelDistance" style="text-align: left;"></p>
+                        <p id="travelETA" style="text-align: left;"></p>
+                    </div>
+                    <% } %>
+                    
                     <div style="text-align: center; margin-top: 5px;">
-                        <form id="updateOrderWithTime#<%=c %>" action="/order-update" method="POST">
+                        <form id="updateOrderWithTime#<%=c %>" action="/restaurantPortal/order-update" method="POST">
                             <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
                             <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="60"></input>
                             <input hidden id="inputOrderStatus#<%=c %>" name="status" value="confirmed"></input>
@@ -287,15 +297,6 @@
                         </form>
                     </div>
                     
-                    <% if(c == orders.length - 1) { %>
-                    <div id="output" style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; border-top: 1px solid black;">
-                        <p id="googleMapsEstimationTitle"><b>Google Maps Estimation</b></p>
-                        <p id="originAddress"></p>
-                        <p id="destinationAddress"></p>
-                        <p id="travelDistance"></p>
-                        <p id="travelETA"></p>
-                    </div>
-                    <% } %>
 
                     <div style="text-align: center;">
                         <select id="customerOrderSetTime" onchange="orderTime('<%=c %>', this.value)" style="width: 100%; height: 30px; border: none; border-top: 1px solid black; text-align-last: center; font-weight: bold; background-color: #f7f9f9;">

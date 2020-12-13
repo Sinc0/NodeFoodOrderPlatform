@@ -339,3 +339,16 @@ exports.postRestaurantWelcomeMessage = async (req, res, next) => {
     }
 
 }
+
+
+exports.postOrderUpdate = async (req, res, next) => {
+    console.log('\npostOrderUpdate');
+
+    orderId = req.body.orderId;
+    status = req.body.status;
+    estimatedCompletionTime = req.body.estimatedTime;
+
+    var order = await Order.updateOne(orderId, status, estimatedCompletionTime);
+
+    res.redirect('back');
+}

@@ -15,7 +15,7 @@
             
             if(d.style.display == "none")
             {
-                d.style = "height: 350px; overflow-y: auto; border-bottom: 3px solid black; border-left: 3px solid black; border-right: 3px solid black;"
+                d.style = "height: 250px; overflow-y: auto; border-bottom: 3px solid black; border-left: 3px solid black; border-right: 3px solid black;"
                 d.style.display = "block";
             }
 
@@ -110,6 +110,7 @@
     <!-- arrays -->
     <% var restaurantsOpen = [] %>
     <% var restaurantsClosed = [] %>
+    <% var restaurantCities = [] %>
 
     <!-- add open restaurants to array -->
     <% for (let restaurant of restaurants) { %>
@@ -159,12 +160,16 @@
                                     <h3><%=restaurant.city %></h3> <!-- location -->
                                     <h3 hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
                                     <h3><%=restaurant.type %></h3> <!-- type -->
+    
+                                    <br />
+                                    <br />
+    
                                 </div>
+                                
+                               <br />
                         </a>
                             
-                            <br />
-                            
-                            <h3 id="restaurantReviewHeader#<%=counter %>" onclick="displayRestaurantReviews('<%=counter %>')" style="padding-bottom: 5px;">Reviews</h3>
+                            <h3 id="restaurantReviewHeader#<%=counter %>" onclick="displayRestaurantReviews('<%=counter %>')" style="margin-top: 10px; padding-bottom: 5px;">Reviews</h3>
                             </div>
                     </div>
 
@@ -182,6 +187,10 @@
                                     <h3><%=restaurant.city %></h3> <!-- location -->
                                     <h3 hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
                                     <h3><%=restaurant.type %></h3> <!-- type -->
+                                    
+                                    <br/>
+                                    <br/>
+
                                 </div>
                         </a>
                             
@@ -192,7 +201,7 @@
                     </div>
                 
                     <!-- review -->
-                    <div class="restaurantReviewModal" id="restaurantsRestaurantReview#<%=counter %>" style="display: none;">
+                    <div id="restaurantsRestaurantReview#<%=counter %>" class="restaurantReviewModal" style="display: none;">
                         <% var sortArray = [] %>
                         <% var restaurantRating = null %>
                         
@@ -213,7 +222,7 @@
                         <% if(sortArray.length != 0) { %>
                             
                             <% for(var i = 0; i < sortArray.length; i++) { %>
-                                <div class="restaurantReview">
+                                <div class="restaurantReview" style="margin-bottom: 12px; margin-top: 12px;">
                                     <% var dateFormatted = sortArray[i].reviewObject.date %>
                                     <% var dateFormatted = dateFormatted.toString().split(" ") %>
                                     <% var dateFormatted = dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] %>
@@ -221,8 +230,7 @@
                                     <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom: 5px; text-align: center; background-color: lightgray;"><b>Rating</b> <%=sortArray[i].reviewObject.rating %></p><br />
                  
                                     <div style="margin: auto; width: 55%;">
-                                        <p style="text-align: center;"><%=sortArray[i].reviewObject.name %></p>
-                                        <p style="text-align: center;"><%=dateFormatted %></p>  
+                                        <p style="text-align: center;"><%=sortArray[i].reviewObject.name %> - <%=dateFormatted %></p>  
                                         <p style="text-align: center;"><%=sortArray[i].reviewObject.items %></p><br />
                                     </div>
                  
@@ -280,15 +288,19 @@
                     
                             <!-- restaurant info -->
                             <div class="restaurantMenuItemText" style="display: inline-block;">
+                                <h3 style="margin-bottom: -3px; margin-top: 3px; color: rgb(214, 14, 14)">Closed</h3> <!-- open or closed -->
                                 <h1 style="margin-top: 0px;"><%=restaurant.title %></h1> <!-- title -->
+                                <h3><%=restaurant.city %></h3> <!-- location -->
                                 <h3 hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
                                 <h3><%=restaurant.type %></h3> <!-- type -->
-                                <h3><%=restaurant.location %></h3> <!-- location -->
+
+                                <br />
+
                          </a>
 
                             <br >
 
-                            <h3 id="restaurantReviewHeader#<%=counter %>" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
+                            <h3 id="restaurantReviewHeader#<%=counter %>" onclick="displayRestaurantReviews('<%=counter %>')" style="margin-top: 6px;">Reviews</h3>
                             </div>
                         </div>
                     
@@ -307,6 +319,9 @@
                                    <h3><%=restaurant.city %></h3> <!-- location -->
                                    <h3 hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
                                    <h3><%=restaurant.type %></h3> <!-- type -->
+
+                                   <br />
+                                   
                                </div>
                        </a>
                            
@@ -317,7 +332,7 @@
                        </div>
 
                     <!-- review -->
-                    <div id="restaurantsRestaurantReview#<%=counter %>" style="display: none;">
+                    <div id="restaurantsRestaurantReview#<%=counter %>" class="restaurantReviewModal" style="display: none;">
                         <% var sortArray = [] %>
                         <% var restaurantRating = 0 %>
                         
@@ -338,16 +353,15 @@
                         <% if(sortArray.length != 0) { %>
 
                             <% for(var i = 0; i < sortArray.length; i++) { %>
-                                <div class="restaurantReview" style="margin-top: 25px; padding-top: 0px;">
+                                <div class="restaurantReview" style="margin-bottom: 12px; margin-top: 12px;">
                                     <% var dateFormatted = sortArray[i].reviewObject.date %>
                                     <% var dateFormatted = dateFormatted.toString().split(" ") %>
-                                    <% var dateFormatted =  dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] + " - " + dateFormatted[4]%>
+                                    <% var dateFormatted = dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] %>
                                     
                                     <p style="margin: 0px; padding: 0px; padding-top: 5px; padding-bottom:5px; text-align: center; background-color: lightgray;"><b>Rating:</b> <%=sortArray[i].reviewObject.rating %></p><br />
                                     
                                     <div style="margin: auto; width: 55%;">
-                                        <p style="text-align: center;"><%=sortArray[i].reviewObject.name %></p>
-                                        <p style="text-align: center;"><%=dateFormatted %></p>
+                                        <p style="text-align: center;"><%=sortArray[i].reviewObject.name %> - <%=dateFormatted %></p>
                                         <p style="text-align: center;"><%=sortArray[i].reviewObject.items %></p><br />
                                     </div>
                                     
