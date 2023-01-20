@@ -1,3 +1,4 @@
+<!-- user/restaurant-detail.ejs -->
 <!DOCTYPE html>
 <html lang="en" style="background-color: lightgray">
 <head>
@@ -8,88 +9,233 @@
     <link rel="stylesheet" href="/css/restaurant.css">
     <link rel="stylesheet" href="/css/mobile.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
-    <script src="/js/shortcuts.js"></script>
-    <script>
-        //modals
-        function InformAnonOpen()
-        {
-            var modalBox = document.getElementById("informAnonModal");
+</head>
 
-            modalBox.style.display = "block";
+<script src="/js/shortcuts.js"></script>
+<script>
+    //modals
+    function InformAnonOpen()
+    {
+        let modalBox = document.getElementById("informAnonModal");
+
+        modalBox.style.display = "block";
+    }
+
+    function InformAnonClose()
+    {
+        let modalBox = document.getElementById("informAnonModal");
+
+        modalBox.style.display = "none";
+    }
+
+    //cart
+    function clearCart()
+    {
+        localStorage.removeItem("cartItems");
+    }
+
+    function cartAllItems()
+    {
+        let cartItems = localStorage.getItem("cartItems");
+        let p = "";
+
+        cartItems = JSON.parse(cartItems);
+        
+        if(cartItems != null)
+        {
+            for(let c = cartItems.items.length - 1; c >= 0; c--)
+            {
+                p = "<p>" + "(" + cartItems.items[c].quantity + ") " + cartItems.items[c].name + " - " + "$" + (cartItems.items[c].quantity * cartItems.items[c].price); + "</p>"
+                let text = document.createElement("div");
+                text.innerHTML = p;
+                document.getElementById("checkoutCartItems").append(text);  
+            }
+
+            fillCartFormData();
         }
 
-        function InformAnonClose()
-        {
-            var modalBox = document.getElementById("informAnonModal");
+    }
 
-            modalBox.style.display = "none";
+    function fillCartFormData()
+    {
+        let cartItems = localStorage.getItem("cartItems");
+        document.getElementById("cartAllItems").value = cartItems;
+
+        cartItems = localStorage.getItem("cartItems");
+        cartItems = JSON.parse(cartItems);
+
+        let cartItem = cartItems.items;
+        let totalPrice = null;
+
+        for(let c = 0; c < cartItems.items.length; c++)
+        {
+            totalPrice += (cartItem[c].quantity * cartItem[c].price);
         }
 
-        //cart
-        function clearCart()
+        document.getElementById("cartTotalPrice").value = totalPrice;
+    }
+
+    function cartTotalPrice()
+    {
+        let cartItems = localStorage.getItem("cartItems");
+        cartItems = JSON.parse(cartItems);
+
+        let cartItem = cartItems.items;
+        let totalPrice = null;
+
+        for(let c = 0; c < cartItems.items.length; c++)
         {
-            localStorage.removeItem("cartItems");
+            totalPrice += (cartItem[c].quantity * cartItem[c].price);
         }
 
-        function cartAllItems()
-        {
-            var cartItems = localStorage.getItem("cartItems");
-            cartItems = JSON.parse(cartItems);
-            var p = "";
+        return totalPrice;
+    }
+
+    function cartItemPlus(item)
+    {
+        let itemsArray = [];
+        cart = JSON.parse(localStorage.getItem("cartItems"));
             
-            if(cartItems != null)
+        //populate itemsArray with items from cart
+        for(let c = 0; c < cart.items.length; c++)
+        {
+            itemsArray.push(cart.items[c]);
+        }
+        
+        //check if item already exists in cart
+        for(let c = 0; c < itemsArray.length; c++)
+        {
+            if(itemsArray[c].id === item)
             {
-                for(let c = cartItems.items.length - 1; c >= 0; c--)
-                {
-                    p = "<p>" + "(" + cartItems.items[c].quantity + ") " + cartItems.items[c].name + " - " + "$" + (cartItems.items[c].quantity * cartItems.items[c].price); + "</p>"
-                    var text = document.createElement("div");
-                    text.innerHTML = p;
-                    document.getElementById("checkoutCartItems").append(text);  
-                }
-
-                fillCartFormData();
+                duplicateCheck = true;
+                let itemQuantity = itemsArray[c].quantity;
+                itemsArray[c].quantity = ++itemQuantity;
             }
- 
         }
 
-        function fillCartFormData()
+        if(duplicateCheck)
         {
-            var cartItems = localStorage.getItem("cartItems");
-            document.getElementById("cartAllItems").value = cartItems;
+            localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
+        }
 
-            var cartItems = localStorage.getItem("cartItems");
+        loadSideCart();
+    }
+
+    function cartItemMinus(item)
+    {
+        let itemsArray = [];
+        cart = JSON.parse(localStorage.getItem("cartItems"));
+            
+        //populate itemsArray with items from cart
+        for(let c = 0; c < cart.items.length; c++)
+        {
+            itemsArray.push(cart.items[c]);
+        }
+        
+        //check if item already exists in cart
+        for(let c = 0; c < itemsArray.length; c++)
+        {
+            if(itemsArray[c].id === item)
+            {
+                duplicateCheck = true;
+                let itemQuantity = itemsArray[c].quantity;
+                itemsArray[c].quantity = --itemQuantity;
+            }
+            if(itemsArray[c].quantity == 0)
+            {
+                document.getElementById("cart-item-" + itemsArray[c].id).remove();
+                itemsArray.splice(c, 1);
+            }
+        }
+
+        if(duplicateCheck)
+        {
+            localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
+        }
+
+        loadSideCart();
+    }
+
+    function loadSideCart()
+    {
+        let cartItems = localStorage.getItem("cartItems");
+        cartItems = JSON.parse(cartItems);
+        
+        if(cartItems == null || cartItems.items.length == 0)
+        {
+            var d = document.getElementById("side-cart");
+
+            if(d != undefined ||d != null)
+            {
+                d.style.visibility = "hidden";
+                d.style.display = "none";
+            }
+        }
+        else
+        {
+            cartItems = localStorage.getItem("cartItems");
             cartItems = JSON.parse(cartItems);
-            var cartItem = cartItems.items;
-            var totalPrice = null;
 
+            let cartItem = cartItems.items;
+            let cartItemsDiv = document.getElementById("cart-items").innerHTML = "";
+        
             for(let c = 0; c < cartItems.items.length; c++)
             {
-                totalPrice += (cartItem[c].quantity * cartItem[c].price);
-            }
-
-            document.getElementById("cartTotalPrice").value = totalPrice;
-        }
-
-        function cartTotalPrice()
-        {
-            var cartItems = localStorage.getItem("cartItems");
-            cartItems = JSON.parse(cartItems);
-            var cartItem = cartItems.items;
-            var totalPrice = null;
-
-            for(let c = 0; c < cartItems.items.length; c++)
-            {
-                totalPrice += (cartItem[c].quantity * cartItem[c].price);
-            }
-
-            return totalPrice;
-        }
-
-        function cartItemPlus(item)
-        {
-            let itemsArray = [];
-            cart = JSON.parse(localStorage.getItem("cartItems"));
+                //divs
+                let cartItemHolderDiv = document.createElement("div");
+                cartItemHolderDiv.id ="cart-item-" + cartItem[c].id;
+                cartItemHolderDiv.className = "cart-item";
                 
+                let cartItemX = document.createElement("div");
+                cartItemX.id = "cart-item";
+                cartItemX.innerHTML = "(" + cartItem[c].quantity + ") " + cartItem[c].name + " - " + "$" + (cartItem[c].quantity * cartItem[c].price);
+                
+                //buttons
+                let buttonAdd = document.createElement("button");
+                buttonAdd.className = "cart-item-add-one-button";
+                buttonAdd.value = cartItem[c].id;
+                buttonAdd.onclick = function(){cartItemPlus(cartItem[c].id)};
+                buttonAdd.innerHTML = " + ";
+                
+                let buttonRemove = document.createElement("button");
+                buttonRemove.className = "cart-item-remove-one-button";
+                buttonRemove.value = cartItem[c].id;
+                buttonRemove.onclick = function(){cartItemMinus(cartItem[c].id)};
+                buttonRemove.innerHTML = " - ";
+                
+                //prepends
+                document.getElementById("cart-items").prepend(cartItemHolderDiv);
+                document.getElementById("cart-item-" + cartItem[c].id).prepend(buttonAdd);
+                document.getElementById("cart-item-" + cartItem[c].id).prepend(cartItemX);
+                document.getElementById("cart-item-" + cartItem[c].id).prepend(buttonRemove);
+            }
+            
+            //side cart
+            let totalPrice = document.getElementById("total-price").innerHTML = "Total: " + "$" + cartTotalPrice();
+            let totalPriceMobile = document.getElementById("total-price-mobile").innerHTML = "Total: " + "$" + cartTotalPrice();
+            let sideCartVisibility = document.getElementById("side-cart").style.visibility = "visible";
+            let sideCartDisplay = document.getElementById("side-cart").style.display = "inline-block";
+
+            fillCartFormData();
+        }
+    }
+
+    function updateCart(buttonNumber, itemName, itemPrice)
+    {
+        let itemsArray = [];
+        let duplicateCheck = false;
+        let cart = localStorage.getItem("cartItems");
+                
+        if(cart == null)
+        {
+            itemsArray.push({id: buttonNumber, name: itemName, price: itemPrice, quantity: 1});
+            localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
+        }
+
+        else
+        {
+            cart = JSON.parse(localStorage.getItem("cartItems"));
+            
             //populate itemsArray with items from cart
             for(let c = 0; c < cart.items.length; c++)
             {
@@ -99,7 +245,7 @@
             //check if item already exists in cart
             for(let c = 0; c < itemsArray.length; c++)
             {
-                if(itemsArray[c].id === item)
+                if(itemsArray[c].id === buttonNumber)
                 {
                     duplicateCheck = true;
                     let itemQuantity = itemsArray[c].quantity;
@@ -112,226 +258,166 @@
                 localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
             }
 
-            loadSideCart();
-        }
-
-        function cartItemMinus(item)
-        {
-            let itemsArray = [];
-            cart = JSON.parse(localStorage.getItem("cartItems"));
-                
-            //populate itemsArray with items from cart
-            for(let c = 0; c < cart.items.length; c++)
-            {
-                itemsArray.push(cart.items[c]);
-            }
-            
-            //check if item already exists in cart
-            for(let c = 0; c < itemsArray.length; c++)
-            {
-                if(itemsArray[c].id === item)
-                {
-                    duplicateCheck = true;
-                    let itemQuantity = itemsArray[c].quantity;
-                    itemsArray[c].quantity = --itemQuantity;
-                }
-
-                if(itemsArray[c].quantity == 0)
-                {
-                    document.getElementById("cart-item-" + itemsArray[c].id).remove();
-                    itemsArray.splice(c, 1);
-                }
-            }
-
-            if(duplicateCheck)
-            {
-                localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
-            }
-
-            loadSideCart();
-        }
-
-        function loadSideCart()
-        {
-            var cartItems = localStorage.getItem("cartItems");
-            cartItems = JSON.parse(cartItems);
-            
-            if(cartItems == null || cartItems.items.length == 0)
-            {
-                var d = document.getElementById("side-cart");
-
-                if(d != undefined ||d != null)
-                {
-                    d.style.visibility = "hidden";
-                    d.style.display = "none";
-                }
-            }
-
             else
-            {
-                var cartItems = localStorage.getItem("cartItems");
-                cartItems = JSON.parse(cartItems);
-                var cartItem = cartItems.items;
-                var cartItemsDiv = document.getElementById("cart-items").innerHTML = "";
-            
-                for(let c = 0; c < cartItems.items.length; c++)
-                {
-                    //divs
-                    var cartItemHolderDiv = document.createElement("div");
-                    cartItemHolderDiv.id ="cart-item-" + cartItem[c].id;
-                    cartItemHolderDiv.className = "cart-item";
-                    
-                    var cartItemX = document.createElement("div");
-                    cartItemX.id = "cart-item";
-                    cartItemX.innerHTML = "(" + cartItem[c].quantity + ") " + cartItem[c].name + " - " + "$" + (cartItem[c].quantity * cartItem[c].price);
-                    
-                    //buttons
-                    var buttonAdd = document.createElement("button");
-                    buttonAdd.className = "cart-item-add-one-button";
-                    buttonAdd.value = cartItem[c].id;
-                    buttonAdd.onclick = function(){cartItemPlus(cartItem[c].id)};
-                    buttonAdd.innerHTML = " + ";
-                    
-                    var buttonRemove = document.createElement("button");
-                    buttonRemove.className = "cart-item-remove-one-button";
-                    buttonRemove.value = cartItem[c].id;
-                    buttonRemove.onclick = function(){cartItemMinus(cartItem[c].id)};
-                    buttonRemove.innerHTML = " - ";
-                    
-                    //prepends
-                    document.getElementById("cart-items").prepend(cartItemHolderDiv);
-                    document.getElementById("cart-item-" + cartItem[c].id).prepend(buttonAdd);
-                    document.getElementById("cart-item-" + cartItem[c].id).prepend(cartItemX);
-                    document.getElementById("cart-item-" + cartItem[c].id).prepend(buttonRemove);
-                }
-                
-                //side cart
-                var totalPrice = document.getElementById("total-price").innerHTML = "Total: " + "$" + cartTotalPrice();
-                var totalPriceMobile = document.getElementById("total-price-mobile").innerHTML = "Total: " + "$" + cartTotalPrice();
-                var sideCartVisibility = document.getElementById("side-cart").style.visibility = "visible";
-                var sideCartDisplay = document.getElementById("side-cart").style.display = "inline-block";
-
-                fillCartFormData();
-            }
-        }
-
-        function updateCart(buttonNumber, itemName, itemPrice)
-        {
-            let itemsArray = [];
-            let duplicateCheck = false;
-            let cart = localStorage.getItem("cartItems");
-                    
-            if(cart == null)
             {
                 itemsArray.push({id: buttonNumber, name: itemName, price: itemPrice, quantity: 1});
                 localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
             }
+            
+        }
 
+        loadSideCart();
+    }
+
+    function setRestaurantLocalStorage(restaurant)
+    {
+        let r = localStorage.getItem("restaurant");
+        
+        //clears cart if select new restaurant
+        if(r != restaurant)
+        {
+            clearCart();
+        }
+
+        localStorage.setItem("restaurant", restaurant);
+    }
+
+    function searchBoxRestaurantMenu(totalMenuItems)
+    {
+        let searchBoxInput = document.getElementById("searchBoxInput").value
+        let searchString = String(searchBoxInput).toLowerCase();
+        let menuItemCategories = [];
+
+        for(let c = 1; c <= totalMenuItems; c++)
+        {
+            let menuItem = document.getElementById("menu-item#" + c)
+            let menuItemCategory = document.getElementById("menu-item#" + c + "-category")
+            
+            if(menuItem.innerHTML.toLowerCase().includes(searchString))
+            {
+                menuItemCategories.push(menuItemCategory.innerHTML.toLowerCase());
+                menuItem.style.opacity = "100%";
+                menuItem.style.display = "block";
+                menuItem.parentNode.style.display = "block";
+            }
             else
             {
-                cart = JSON.parse(localStorage.getItem("cartItems"));
-                
-                //populate itemsArray with items from cart
-                for(let c = 0; c < cart.items.length; c++)
-                {
-                    itemsArray.push(cart.items[c]);
-                }
-                
-                //check if item already exists in cart
-                for(let c = 0; c < itemsArray.length; c++)
-                {
-                    if(itemsArray[c].id === buttonNumber)
-                    {
-                        duplicateCheck = true;
-                        let itemQuantity = itemsArray[c].quantity;
-                        itemsArray[c].quantity = ++itemQuantity;
-                    }
-                }
-
-                if(duplicateCheck)
-                {
-                    localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
-                }
-
-                else
-                {
-                    itemsArray.push({id: buttonNumber, name: itemName, price: itemPrice, quantity: 1});
-                    localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
-                }
-                
+                menuItem.style.opacity = "25%";
+                menuItem.style.display = "none";
+                menuItem.parentNode.style.display = "none";
             }
 
-            loadSideCart();
         }
 
-        function setRestaurantLocalStorage(restaurant)
+        for(let c = 0; c < menuItemCategories.length; c++)
         {
-            let r = localStorage.getItem("restaurant");
-            
-            //clears cart if select new restaurant
-            if(r != restaurant)
-            {
-                clearCart();
-            }
+            let menuCategory = menuItemCategories[c];
+            let category = document.getElementById("menu-category-" + menuCategory)
 
-            localStorage.setItem("restaurant", restaurant);
+            category.style.display = "block";      
         }
+    }
 
-        function searchBoxRestaurantMenu(totalMenuItems)
+    shortcut.add("escape", function() {document.getElementById("modalButton").click()});
+</script>
+
+<style>
+    ::-webkit-scrollbar { width: 0px; }
+
+    body { height: 100vh; background-color: #3c41d6 }
+
+    .menu-category { border-top: 0px solid black; }
+    .menu-item
+    {
+        /* display: inline-block; */  
+        max-width: 520px;
+        padding: 10px 0px 0px 0px;
+        margin: auto;
+        border: 0px solid black;
+        box-shadow: 2px 1px black;
+        color: black;
+        border-bottom: 1px solid black;
+        background-color: white; /* #f7f9f9 */
+    }
+    .restaurantInfoText { max-width: 250px; margin: auto; font-weight: bold; user-select: none; color: black; }
+    .menuCategoryTitle 
+    { 
+        max-width: 520px; 
+        margin: auto; 
+        margin-top: 20px; 
+        margin-bottom: 2px; 
+        user-select: none; 
+        /* text-shadow: 1px 0px white;  */
+        text-align: left;
+        color: black; 
+    }
+    .menu-item-texts { user-select: none; }
+
+    #menu 
+    {
+        display: inline-block;
+        /* height: 100%; */
+        /* height: 86vh; */
+        /* width: 730px; */
+        padding: 0px;
+        margin: 0px;
+        color: #f7f9f9;
+        background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.rubicon.com%2Fwp-content%2Fuploads%2F2021%2F06%2Fcardboard-box.jpg&f=1&nofb=1&ipt=4a3a147a73a2368ca907d049fe15a253364146f73296375f425a56a605b31190&ipo=images');
+        background-color: #3c41d6;
+        border-right: 2px solid black;
+        border-left: 2px solid black;
+        border-bottom: 2px solid black;
+    }
+    #main-menu { margin: 0px; padding: 0px; height: 96vh; overflow-y: scroll; }
+    #side-cart
+    {
+        display: inline-block;
+        position: fixed;
+        width: 350px;
+        padding: 0px;
+        margin: 0px;
+        visibility: hidden;
+        vertical-align: top;
+        border-right: 2px solid black;
+        border-left: 2px solid black;
+    }
+    #restaurantTitle { margin: auto; margin-top: 12px; margin-bottom: 11px; }
+    #restaurantDetailRestaurantIsClosed { margin: 0px; margin: auto; padding: 20px 0px 0px 0px; color: red; }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        .menuCategoryTitle { text-align: center; }
+        .menu-item p 
         {
-            var searchBoxInput = document.getElementById("searchBoxInput").value
-            var searchString = String(searchBoxInput).toLowerCase();
-            var menuItemCategories = [];
-
-            for(var c = 1; c <= totalMenuItems; c++)
-            {
-                var menuItem = document.getElementById("menu-item#" + c)
-                var menuItemCategory = document.getElementById("menu-item#" + c + "-category")
-                
-                if(menuItem.innerHTML.toLowerCase().includes(searchString))
-                {
-                    menuItemCategories.push(menuItemCategory.innerHTML.toLowerCase());
-                    menuItem.style.opacity = "100%";
-                    menuItem.style.display = "block";
-                    menuItem.parentNode.style.display = "block";
-                }
-
-                else
-                {
-                    menuItem.style.opacity = "25%";
-                    menuItem.style.display = "none";
-                    menuItem.parentNode.style.display = "none";
-                }
-
-            }
-
-            for(var c = 0; c < menuItemCategories.length; c++)
-            {
-                var menuCategory = menuItemCategories[c];
-                var category = document.getElementById("menu-category-" + menuCategory)
-                category.style.display = "block";      
-            }
+            text-align: left;
+            margin-left: -10px;
         }
 
-        shortcut.add("escape", function() {document.getElementById("modalButton").click()});
-    </script>
-</head>
-<nav>
-    <!-- admin view -->
-    <% if(admin != null && admin == true) { %>
-        <%- include('../snippets/html_nav_menu_admin.ejs') %>
-    
-    <!-- logged in user view -->
-    <% } else if(loggedIn == true) { %>
-        <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
-    
-    <!-- anonmymous view -->
-    <% } else { %>
-        <%- include('../snippets/html_nav_menu_anon.ejs') %>
-    <% } %> 
-</nav>
+        #main-menu { height: 94vh; }
+        #side-cart
+        {
+            display: none;
+            position: relative;
+            margin-bottom: -2px;
+            margin-left: 1px;
+            padding-bottom: 4px;
+            width: 98vw;
+        }
+    }
+</style>
+
+
 <body onload="loadSideCart()">
     <script> setRestaurantLocalStorage('<%=restaurant.title %>'); </script>
+
+    <!-- nav menu -->
+    <% if(admin != null && admin == true) { %> <!-- admin view -->
+        <%- include('../snippets/html_nav_menu_admin.ejs') %>
+    <% } else if(loggedIn == true) { %> <!-- logged in user view -->
+        <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
+    <% } else { %> <!-- anonmymous view -->
+        <%- include('../snippets/html_nav_menu_anon.ejs') %>
+    <% } %> 
 
     <!-- modal -->
     <modal>
@@ -357,71 +443,55 @@
 
     <!-- menu -->
     <main id="main-menu" class="centered">
-        <div id="menu" style="background-image: url('/pics/moroccan-flower-dark.png');">
-            <div id="testBackground" style="background-color: #0000009c">
+        <div id="menu"> <!-- style="background-image: url('/pics/moroccan-flower-dark.png');" -->
             <% var date = new Date().getDay() %>
                 
             <% if (date == 0) { %>
                 <% date = 7; %>
             <% } %>
             
-            <div style="background-color: #f7f9f9;">
-                <h1 style="margin: 0px; padding: 0px; padding-top: 6px; padding-bottom: 7px; height: 37px; border-bottom: 0px solid black; color: black;"><%=restaurant.title %></h1>
-            </div>
-            
             <% if(restaurant.open == false) { %>
-                <div id="restaurantDetailRestaurantIsClosed">
-                    <h1>Closed</h1>
-                </div>
+                <h1 class="restaurantInfoText" id="restaurantDetailRestaurantIsClosed">Closed</h1>
             <% } %>
 
-            <br />
-
-            <div class="card__image">
+            <h1 class="restaurantInfoText" id="restaurantTitle"><%=restaurant.title %></h1>
+            
+            <!-- <div class="card__image"> -->
                 <!-- <img src="/<%=restaurant.image %>"> //hosted on server -->
-                <img src="<%=restaurant.imageUrl %>"> <!-- //link to another site -->
-            </div>
-
+                <!-- <img src="<%=restaurant.imageUrl %>"> //link to another site -->
+            <!-- </div> -->
+            
+            
+            <p class="restaurantInfoText"><b>Type</b> · <%=restaurant.type %></p>
+            <p class="restaurantInfoText"><b>Phone</b> · <%=restaurant.phone %></p>
+            <p class="restaurantInfoText"><b>Address</b> · <%=restaurant.address %></p>
+            
             <br />
             
             <!-- hours -->
-            <div>
-                <b>Hours</b>
+            <div class="restaurantInfoText">
+                <!-- <b>Hours</b> -->
                 <% for(let c = 0; c < restaurant.hours.length; c++) { %>
-                    <% if(date == c + 1) { %>
-                        <p style="color: green;"><%=restaurant.hours[c].day %> <%=restaurant.hours[c].time %></p>
+                    <% if(restaurant.hours[c].time == "Closed") { %>
+                        <p style="color: red;"><%=restaurant.hours[c].day %> <%=restaurant.hours[c].time %></p>
+                    <% } else if(date == c + 1) { %>
+                        <p style="color: green;"><b><%=restaurant.hours[c].day %> <%=restaurant.hours[c].time %></b></p>
                     <% } else { %>
                     <p><%=restaurant.hours[c].day %> <%=restaurant.hours[c].time %></p>
                     <% } %>
                 <% } %>
             </div>
 
-            <br />
-
-            <!-- phone -->
-            <b>Phone</b>
-            <p><%=restaurant.phone %></p>
-
-            <br />
-
-            <!-- address -->
-            <b>Address</b>
-            <p><%=restaurant.address %></p>
-                            
-            <br />
-
-            <!-- type -->
-            <b>Type</b>
-            <p><%=restaurant.type %></p>
-
-            <br />
             
+            <br />
+
             <!-- description -->
             <div>
-                <b>About</b>
-                <p style="margin: auto; margin-bottom: 7px; max-width: 250px;"><%= restaurant.description %></p>
+                <!-- <b>About</b> -->
+                <p  class="restaurantInfoText"><%= restaurant.description %></p>
             </div>
             
+            <br />
             <br />
             
             <% var restaurantMenuItemsLength = null %>
@@ -449,11 +519,11 @@
                     <% } %>
                 
                     <% if(c != 0) { %>
-                        <hr>
+                        <!-- <hr> -->
                     <% } %>
 
 
-                    <h2><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></h2>
+                    <h2 class="menuCategoryTitle"><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></h2>
                     
                     <% for(let c = 0; c < restaurantMenuItemsLength; c++) { %>
                         
@@ -499,7 +569,7 @@
         <% if(loggedIn == true && restaurant.open == true) { %>
         <div id="side-cart">
             <form action="/checkout" method="POST" style="background-color: black;">
-                <button id="order-button" type="submit"><b>Checkout</b></button>
+                <h3 id="total-price" style="background-color: #f7f9f9;"></h3>
                 <h3 id="total-price-mobile" style="margin-bottom: 2px; background-color: #f7f9f9;"></h3>
                 
                 <div id="cart-items"></div> 
@@ -507,11 +577,11 @@
                 <textarea id="customerComment" name="customerComment" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></textarea>
                 
                 <button id="order-button-mobile" type="submit" style="margin-top: -2px;"><b>Checkout</b></button>
-                <h3 id="total-price" style="margin-top: -2px;" style="background-color: #f7f9f9;"></h3>
-                                
+                
                 <input hidden id="cartAllItems" name="cartAllItems"></input>
                 <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
                 <input hidden name="restaurant" value='<%=restaurantUrl %>'></input>
+                <button id="order-button" type="submit"><b>Checkout</b></button>
             </form>
         </div>
         <% } %>

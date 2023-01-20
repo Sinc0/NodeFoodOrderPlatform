@@ -1,3 +1,4 @@
+<!-- user/index.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,94 +8,98 @@
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/mobile.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
-    <script>
-        function goBack()
-        {
-            window.history.back();
-        }
-
-        function setBackground()
-        {
-            var d = document.getElementById("bodyIndex");
-            d.style = "background-image: none; background-color: lightgray;";
-        }
-
-        function copyToClipboard(element)
-        {
-            var d = document.getElementById(element);
-    
-            if(d.id == "help-phone")
-            {
-                navigator.clipboard.writeText("000 111 22 456");
-            }
-
-            else if(d.id == "help-email")
-            {
-                navigator.clipboard.writeText("contact@madeup.com");
-            }
-        }
-    </script>
 </head>
-<body id="bodyIndex">
-    <!-- admin view -->
-    <% if(admin != null && admin == true) { %>
-        <%- include('../snippets/html_nav_menu_admin.ejs') %>
-        <!-- <p>admin view</p> -->
-        <script> setBackground(); </script>
 
-        <h2 style="text-align: center;">Admin Portal</h2>
+<script>
+    function goBack()
+    {
+        window.history.back();
+    }
+
+    function copyToClipboard(element)
+    {
+        var d = document.getElementById(element);
+
+        if(d.id == "help-phone")
+        {
+            navigator.clipboard.writeText("000 111 22 456");
+        }
+
+        else if(d.id == "help-email")
+        {
+            navigator.clipboard.writeText("contact@madeup.com");
+        }
+    }
+
+    function setBackgroundGif()
+    {
+        let html = document.querySelector("html")
+        let randomNumber = Math.floor(Math.random() * 20) + 1
+
+        html.style.backgroundImage = "url(/gifs/" + randomNumber + ".gif)"
+    }
+</script>
+
+<style>
+    ::-webkit-scrollbar { width: 0px; }
+
+    body { height: 100vh; }
     
-    <!-- logged in user view -->
-    <% } else if(loggedIn == true) { %>
+    #newsPosts { height: 74vh; text-align: center; overflow-y: scroll; }
+</style>
+
+<body id="bodyIndex" onload="setBackgroundGif()">
+    <% if(admin != null && admin == true) { %> <!-- admin view -->
+        <%- include('../snippets/html_nav_menu_admin.ejs') %>
+        <h2 style="text-align: center;">Admin Portal</h2>    
+    <% } else if(loggedIn == true) { %> <!-- logged in user view -->
+        <!-- nav menu -->
         <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
-        <script> setBackground(); </script>
-        
-        <div style="text-align: center;">
-            <!-- help -->
-            <div id="indexHelpButtons" style="margin: auto; margin-top: 50px; margin-bottom: 50px;">
-                <!-- <h2 style="color: black; margin-bottom: 0px;">Help</h2> -->
 
-                <div style="margin-top: 0px;">
-                    <a href="/about" style="text-decoration: none;"><p class="help-links" style="margin: 0px; padding: 0px; padding-top: 6px; padding-bottom: 6px; border-bottom: 1px solid black;"><b>FAQ</b></p></a>
-                    <a href="#copyPhoneNumber" style="text-decoration: none;"><p id="helpPhone" class="help-links" style="margin: 0px; padding: 0px; padding-top: 5.5px; padding-bottom: 5.5px; border-bottom: 1px solid black" onclick="copyToClipboard(this.id)"><b>Phone:</b> 000 111 22 456</p></a>
-                    <a href="#copyEmail" style="text-decoration: none;"><p id="help-email" class="help-links" style="margin: 0px; padding: 0px; padding-top: 5.5px; padding-bottom: 5.5px;" onclick="copyToClipboard(this.id)"><b>Email:</b> contact@madeup.com</p></a>
-                </div>
-            </div>
+        <!-- help -->
+        <div id="indexHelpButtons">
+            <a href="/about">
+                <p class="help-links"><b>FAQ</b></p>
+            </a>
+            <a href="#copyPhoneNumber">
+                <p id="helpPhone" class="help-links" onclick="copyToClipboard(this.id)"><b>Phone:</b> 000 111 22 456</p>
+            </a>
+            <a href="#copyEmail">
+                <p id="help-email" class="help-links" onclick="copyToClipboard(this.id)"><b>Email:</b> contact@madeup.com</p>
+            </a>
+        </div>
 
-            <!-- news -->
+        <!-- news -->
+        <div id="newsPosts">
             <% if(adminPosts.length != 0 || adminPosts.length) { %>
-                <div style="margin: auto;">
-                    <h3 style="color: black; margin-bottom: 0px;"><b>Latest News</b></h2>
-                    <% for(var i = adminPosts.length - 1; i >= (adminPosts.length - 1); i--) { %>
-                        <div id="adminPost#<%=i + 1%>" class="admin-card" style="margin-top: 5px; margin-bottom: 50px; padding: 0px; padding-bottom: 25px; border: 0;">
-                            <p style="margin-bottom: 25px; margin-left: 0px; margin-top: -1px; margin-right: 0px; padding-top: 6px; padding-bottom: 6px; text-align: center; background-color: #3c41d6"><b>News #<%=adminPosts[i].postId %></b> <%=adminPosts[i].date.substring(0, 24) %></p>
-                            <h3 style="margin-bottom: 5px;"><%=adminPosts[i].title %></h3>
-                            <p><%=adminPosts[i].text %></p>
-                        </div>
-                    <% } %>
+                <!-- <h3 style="color: black; margin-bottom: 0px;"><b>Latest News</b></h2> -->
+                <!-- <% for(var i = adminPosts.length - 1; i >= (adminPosts.length - 1); i--) { %>
+                    <div id="adminPost#<%=i + 1%>" class="admin-card" style="margin-top: 5px; margin-bottom: 50px; padding: 0px; padding-bottom: 25px; border: 0;">
+                        <p style="margin-bottom: 25px; margin-left: 0px; margin-top: -1px; margin-right: 0px; padding-top: 6px; padding-bottom: 6px; text-align: center; background-color: #3c41d6"><b>News #<%=adminPosts[i].postId %></b> <%=adminPosts[i].date.substring(0, 24) %></p>
+                        <h3 style="margin-bottom: 5px;"><%=adminPosts[i].title %></h3>
+                        <p><%=adminPosts[i].text %></p>
+                    </div>
+                <% } %> -->
 
-                    <h3 style="color: black; margin-bottom: 0px;"><b>Previous News</b></h2>
-                    <% for(var i = adminPosts.length - 2; i >= 0; i--) { %>
-                        <div id="adminPost#<%=i + 1%>" class="admin-card" style="margin-top: 5px; padding: 0px; padding-bottom: 25px; border: 0;">
-                            <p style="margin-bottom: 25px; margin-left: 0px; margin-top: -1px; margin-right: 0px; padding-top: 6px; padding-bottom: 6px; text-align: center; background-color: #3c41d6"><b>News #<%=adminPosts[i].postId %></b> <%=adminPosts[i].date.substring(0, 24) %></p>
-                            <h3 style="margin-bottom: 5px;"><b><%=adminPosts[i].title %></b></h3>
-                            <p><%=adminPosts[i].text %></p>
-                        </div>
-                    <% } %>
-                </div>
+                <!-- <h3 style="color: black; margin-bottom: 0px;"><b>Previous News</b></h2> -->
+                <% for(var i = 0; i <= adminPosts.length - 1; i++) { %>
+                    <div id="adminPost#<%=i + 1%>" class="admin-card">
+                        <h3><b><%=adminPosts[i].title %></b></h3>
+                        <p><%=adminPosts[i].text %></p>
+                        <br />
+                        <p><%=adminPosts[i].date.substring(0, 24) %></p>
+                    </div>
+                <% } %>
             <% } %>
         </div>
-    
-    <!-- anonmymous view -->
-    <% } else { %>
+    <% } else { %> <!-- anonmymous view -->
         <div id="indexAnonMenu">
             <div id="indexAnonMenuLoginButton" class="indexAnonMenuItem"><a href="/login"><b><p>Login</p></b></a></div>
             <div id="indexAnonMenuRegisterButton" class="indexAnonMenuItem"></li><a href="/register"><b><p>Register</p></b></a></div>
             <div id="indexAnonMenuRestaurantsButton" class="indexAnonMenuItem"></li><a href="/restaurants"><b><p>Restaurants</p></b></a></div>
             <div id="indexAnonMenuAboutButton" class="indexAnonMenuItem"><a href="/about"><b><p>About</p></b></a></div>
-            <div id="indexAnonMenuContactButton" class="indexAnonMenuItem"><a href="/contact"><b><p>Contact</p></b></a></div>
+            <!-- <div id="indexAnonMenuContactButton" class="indexAnonMenuItem"><a href="/contact"><b><p>Contact</p></b></a></div> -->
         </div>
-        
     <% } %>
 </body>
 </html>

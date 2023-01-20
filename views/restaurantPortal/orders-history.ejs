@@ -1,0 +1,572 @@
+<!-- resturantPortal/orders-declined.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/portalRestaurant.css">
+    <link rel="stylesheet" href="/css/mobile.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
+</head>
+
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=initMap" async defer></script>
+<script>
+    function saveScrollPosition() { localStorage.setItem("scrollPositionY", window.scrollY) }
+
+    function loadSavedScrollPosition() { window.scrollTo(0, localStorage.getItem("scrollPositionY")) }
+    
+    function showOrders(type)
+    {
+        let ordersDeclined = document.getElementById("ordersDeclined")
+        let ordersCompleted = document.getElementById("ordersCompleted")
+        let ordersAccept = document.getElementById("ordersAccept")
+        let ordersCook = document.getElementById("ordersCook")
+        let buttonOrdersCompleted = document.getElementById("buttonOrdersCompleted")
+        let buttonOrdersDeclined = document.getElementById("buttonOrdersDeclined")
+        let buttonOrdersAccept = document.getElementById("buttonOrdersAccept")
+        let buttonOrdersCook = document.getElementById("buttonOrdersCook")
+
+        ordersDeclined.style.display = "none"
+        ordersCompleted.style.display = "none"
+        ordersAccept.style.display = "none"
+        ordersCook.style.display = "none"
+        buttonOrdersDeclined.style.opacity = "0.4"
+        buttonOrdersCompleted.style.opacity = "0.4"
+        buttonOrdersAccept.style.opacity = "0.4"
+        buttonOrdersCook.style.opacity = "0.4"
+        
+        if(type == "declined")
+        {
+            ordersDeclined.style.display = "block"
+            buttonOrdersDeclined.style.opacity = "1"
+            localStorage.setItem("restuarant-order-history", "declined")
+        }
+        else if(type == "completed")
+        {
+            ordersCompleted.style.display = "block"
+            buttonOrdersCompleted.style.opacity = "1"
+            localStorage.setItem("restuarant-order-history", "completed")
+        }
+        else if(type == "accept")
+        {
+            ordersAccept.style.display = "block"
+            buttonOrdersAccept.style.opacity = "1"
+            localStorage.setItem("restuarant-order-history", "accept")
+        }
+        else if(type == "cook")
+        {
+            ordersCook.style.display = "block"
+            buttonOrdersCook.style.opacity = "1"
+            localStorage.setItem("restuarant-order-history", "cook")
+        }
+    }
+
+    function refreshPage() 
+    { 
+        location.reload()
+    }
+
+    function selectOrderType()
+    {
+        let buttonOrdersCompleted = document.getElementById("buttonOrdersCompleted")
+        let buttonOrdersDeclined = document.getElementById("buttonOrdersDeclined")
+        let buttonOrdersAccept = document.getElementById("buttonOrdersAccept")
+        let buttonOrdersCook = document.getElementById("buttonOrdersCook")
+
+        ls = localStorage.getItem("restuarant-order-history")
+
+        if(ls == "completed") { showOrders('completed') }
+        else if(ls == "declined") { showOrders('declined') }
+        else if(ls == "accept") { showOrders('accept') }
+        else if(ls == "cook") { showOrders('cook') }
+    }
+
+    function orderCompleted(buttonValue, orderId) { document.getElementById("updateOrderCompletionTime#" + buttonValue).submit() }
+
+    
+    function orderAccepted(buttonValue, orderId, time)
+    {
+        socket.send("order:" + orderId + ":accepted:" + "time=" + time); //socket.close();
+        document.getElementById("updateOrderWithTime#" + buttonValue).submit();
+    }        
+
+    function orderDeclined(buttonValue, orderId)
+    {
+        socket.send("order:" + orderId + ":declined"); //socket.close();        
+        document.getElementById("inputOrderStatus#" + buttonValue).value = "declined";
+        document.getElementById("updateOrderWithTime#" + buttonValue).submit();
+    }
+
+    function orderTime(orderNumber, time)
+    {
+        document.getElementById("acceptCustomerOrder#" + orderNumber).value = time;
+        document.getElementById("inputOrderTime#" + orderNumber).value = time;
+    }
+
+    function initMapX(origin, destination) 
+    {
+        //variables
+        var service = new google.maps.DistanceMatrixService;
+        var origin = origin;
+        var destination = destination;           
+        var map = new google.maps.Map(document.getElementById('mapGoogleMaps'), { center: {lat: 55.53, lng: 9.4}, zoom: 10 });
+
+        service.getDistanceMatrix(
+        {
+            origins: [origin],
+            destinations: [destination],
+            travelMode: 'DRIVING',
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false
+        }, 
+        
+        function(response, status) {
+            if (status != 'OK') { alert('Error was: ' + status) } 
+            else 
+            {   
+                //variables
+                let originList = response.originAddresses;
+                let destinationList = response.destinationAddresses;
+                
+                for (let i = 0; i < originList.length; i++) 
+                {
+                    let results = response.rows[i].elements;
+                    let originAddress = originList[i];
+                    let destinationAddress = destinationList[i];
+                    let travelDistance = null;
+                    
+                    if(results[i].distance != null && results[i].duration != null) 
+                    {
+                        let travelDistance = results[i].distance.text;
+                        let travelETA = results[i].duration.text;
+                        let outputDiv = document.getElementById('output');
+                         
+                        //set origin address
+                        document.getElementById("originAddress").hidden = true;
+                        // document.getElementById("originAddress").innerHTML = "start: " + originAddress + "";
+                        
+                        //set destination address
+                        // document.getElementById("destinationAddress").hidden = true;
+                        document.getElementById("destinationAddress").innerHTML = "address: " + destinationAddress + "";
+
+                        //set driving distance
+                        document.getElementById('travelDistance').innerHTML = "driving distance: " + travelDistance.replaceAll(",", "") + "";
+
+                        //set driving time
+                        document.getElementById('travelETA').innerHTML = "driving time: " + travelETA + "";
+                    }
+                    else
+                    {
+                        //set origin address
+                        document.getElementById('originAddress').hidden = true;
+
+                        //set destination address
+                        document.getElementById('destinationAddress').hidden = true;
+
+                        //set driving distance
+                        document.getElementById('travelDistance').hidden = true;
+
+                        //set driving time
+                        document.getElementById('travelETA').innerHTML = "could not calculate";
+                    }
+                }
+            }
+    });
+    }
+
+    function initMap() 
+    {
+        let map = new google.maps.Map(document.getElementById('mapGoogleMaps'), {center: {lat: -33.8688, lng: 151.2195}, zoom: 13});
+        // let input = document.getElementById('searchInput');
+        let infowindow = new google.maps.InfoWindow();
+        let marker = new google.maps.Marker({map: map, anchorPoint: new google.maps.Point(0, -29)});
+        let autocomplete = new google.maps.places.Autocomplete(input);
+        
+        autocomplete.bindTo('bounds', map);
+        
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    
+        autocomplete.addListener('place_changed', function() {
+            let place = autocomplete.getPlace();
+            
+            infowindow.close();
+            marker.setVisible(false);
+            
+            //check if address exists
+            if (!place.geometry) { window.alert("Autocomplete's returned place contains no geometry"); return }
+            else if (place.geometry.viewport) 
+            {
+                map.fitBounds(place.geometry.viewport);
+            } 
+            else 
+            {
+                map.setCenter(place.geometry.location);
+                map.setZoom(17);
+            }
+            
+            //set marker
+            marker.setIcon({
+                url: place.icon,
+                size: new google.maps.Size(71, 71),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(17, 34),
+                scaledSize: new google.maps.Size(35, 35)
+            });
+            marker.setPosition(place.geometry.location);
+            marker.setVisible(true);
+        
+            let address = '';
+
+            if (place.address_components) 
+            {
+                address = [
+                    (place.address_components[0] && place.address_components[0].short_name || ''),
+                    (place.address_components[1] && place.address_components[1].short_name || ''),
+                    (place.address_components[2] && place.address_components[2].short_name || '')
+                ].join(' ');
+            }
+        
+            infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+            infowindow.open(map, marker);
+        
+            // Location details
+            for (let i = 0; i < place.address_components.length; i++) 
+            {
+                if(place.address_components[i].types[0] == 'postal_code')
+                {
+                    document.getElementById('postal_code').innerHTML = place.address_components[i].long_name;
+                }
+
+                else if(place.address_components[i].types[0] == 'country')
+                {
+                    document.getElementById('country').innerHTML = place.address_components[i].long_name;
+                }
+            }
+            
+            document.getElementById('location').innerHTML = place.formatted_address;
+            document.getElementById('lat').innerHTML = place.geometry.location.lat();
+            document.getElementById('lon').innerHTML = place.geometry.location.lng();
+        });
+    }
+
+    
+    var socket = new WebSocket("ws://localhost:65535");
+    
+    setInterval(refreshPage, 60000);
+
+    function googleMapsCalculate() { document.getElementById("googleMapsCalculate").click(); }
+</script>
+
+<style>
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { height: 0px; width: 0px; }
+    #selectOrderType::-webkit-scrollbar { height: 8px; width: 0px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: black; }
+    ::-webkit-scrollbar-thumb:hover {} 
+
+    body { background-color: #3c41d6; }
+
+    .customerOrder 
+    { 
+        width: 378px; 
+        margin: auto; 
+        /* margin-bottom: 20px;  */
+        padding: 12px; 
+        user-select: none; 
+        border: 1px solid black;
+        border-bottom: 2px solid black; 
+        background-color: white; 
+    }
+    .selectCategoryButton 
+    {
+        min-width: 149px; 
+        margin: 0px; 
+        padding: 12px; 
+        font-weight: bold;
+        font-size: 16px;
+        border: 1px solid black; 
+    }
+    .customerOrder 
+    { 
+        width: 378px; 
+        margin: auto; 
+        /* margin-bottom: 20px;  */
+        padding: 12px 12px 12px 12px; 
+        user-select: none; 
+        border: 1px solid black;
+        border-bottom: 2px solid black; 
+        background-color: white; 
+    }
+    .completeCustomerOrder 
+    { 
+        display: block;
+        width: calc(378px + 24px); 
+        margin: 12px 0px -12px -12px;
+        padding: 20px;
+        text-align: center; 
+        font-weight: bold; 
+        font-size: 16px; 
+        border: 0px solid black;
+        border-top: 1px solid black;
+        background-color: lightgreen; 
+    }
+    .acceptCustomerOrder 
+    { 
+        width: 180px;
+        margin: 0px; 
+        padding: 20px; 
+        font-weight: bold;
+        font-size: 16px; 
+        border: 1px solid lightgray; 
+        background-color: lightgreen; 
+    }
+    .declineCustomerOrder 
+    { 
+        width: 180px; 
+        margin: 0px 0px 0px -4px; 
+        padding: 20px; 
+        font-weight: bold; 
+        font-size: 16px;
+        border: 1px solid lightgray; 
+        background-color: red; 
+    }
+
+    #pageTitle { margin: 20px 0px 18px 0px; padding: 0px; text-align: center; text-shadow: 1px 1px black; color: white; }
+    #selectOrderType 
+    { 
+        display: flex; 
+        width: 400px; 
+        margin: auto; 
+        margin-top: 10px; 
+        margin-bottom: 26px; 
+        text-align: center; 
+        user-select: none; 
+        overflow-x: scroll; 
+    }
+    #orders { height: 83vh; overflow-y: scroll; }
+    #ordersCompleted { display: none; }
+    #ordersDeclined { display: none; }
+    #ordersAccept { display: none; }
+    #ordersDeclined { display: none; }
+    #orderStatusDeclined { font-weight: bold; color: red; }
+    #orderStatusCompleted{ font-weight: bold; color: lightgreen; }
+    #buttonOrdersCompleted { background-color: lightgreen; }
+    #buttonOrdersDeclined { background-color: red; }
+    #NavBar { padding-left: 7px; text-align: left; color: white; text-shadow: 1px 1px black; background-color: #3c41d6; }
+    #customerOrderSetTime 
+    { 
+        width: 100%; 
+        padding: 0px 0px 12px 0px;
+        text-align-last: center; 
+        font-size: 16px;
+        font-weight: bold; 
+        outline: none;
+        border: 0px solid black;
+        background-color: white; 
+    }   
+    #acceptOrDeclineButtons { display: inline-flex; width: 100%; margin: 20px 0px 10px 0px; justify-content: center; }
+    #orderItems { margin: 20px 0px 20px 0px; }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        ::-webkit-scrollbar { display: none; }
+        ::-webkit-scrollbar { height: 0px; width: 0px; }
+        
+        .customerOrder { width: 84vw; }
+        .completeCustomerOrder  { width: calc(84vw + 24px); }
+        .acceptCustomerOrder { width: 142px; }
+        .declineCustomerOrder { width: 142px; } 
+
+        #selectOrderType { width: 90vw; margin: auto; margin-top: 10px; margin-bottom: 26px; }
+        #orders { height: 78vh; }
+        #ordersToMake { height: 81vh; }
+    }
+</style>
+
+<body onload="loadSavedScrollPosition(), selectOrderType(), googleMapsCalculate()" onscroll="saveScrollPosition()">
+    <a href="/restaurantPortal">
+        <nav id="NavBar">
+            <p><b>❮</b></p>
+        </nav>
+    </a>
+    
+    <!-- categories -->    
+    <div id="selectOrderType">
+        <button id="buttonOrdersAccept" class="selectCategoryButton" onclick="showOrders('accept')">Accept (<%=ordersAccept.length %>)</button>
+        <button id="buttonOrdersCook" class="selectCategoryButton" onclick="showOrders('cook')">Cook (<%=ordersCook.length %>)</button>
+        <button id="buttonOrdersCompleted" class="selectCategoryButton" onclick="showOrders('completed')">Completed (<%=ordersCompleted.length %>)</button>
+        <button id="buttonOrdersDeclined" class="selectCategoryButton" onclick="showOrders('declined')">Declined (<%=ordersDeclined.length %>)</button>
+    </div>
+
+    <div id="orders">
+        <!-- accept orders -->
+        <div id="ordersAccept">
+            <div hidden id="mapGoogleMaps"></div> <!-- map for google maps api -->
+                
+            <!-- sort orders -->
+            <% orders = ordersAccept.sort((a, b) => b.date - a.date) %>
+                
+            <!-- order -->
+            <% for(var c = orders.length - 1; c >= 0; c--) { %>
+                <% if(c == orders.length - 1) { %>
+                    <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
+                <% } else { %>
+                    <div hidden id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>" style="opacity: 50%;">
+                <% } %>
+
+                <select id="customerOrderSetTime" onchange="orderTime('<%=c %>', this.value)">
+                    <option value="60">60 min</option>
+                    <option value="50">50 min</option>
+                    <option value="40">40 min</option>
+                    <option value="30">30 min</option>
+                    <option value="20">20 min</option>
+                    <option value="15">10 min</option>
+                </select>
+        
+                <!-- google maps -->
+                <button hidden id="googleMapsCalculate" onclick="initMapX('<%=restaurant.address %>', '<%=orders[c].customerAddress %>')">Google Distance Matrix</button>
+                
+                <!-- order details -->
+                <p id="orderPlaced">ordered at <%=orders[c].placedAt.toString().substring(0, 8) %>-<%=orders[c].placedAt.toString().substring(15).replaceAll(" ", "-") %></p>
+                <p id="orderUser">ordered by <%=orders[c].customerName.split("@")[0] %> / phone: <%=orders[c].customerPhone.toString().replace(" ", "") %></p>
+                
+                <div id="orderItems">
+                <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
+                    <p class="orderItem"><%= orders[c].products.items[x].quantity %> <%= orders[c].products.items[x].name %></p>
+                <% } %>
+                <% if(orders[c].customerComment != null) { %> <p id="orderComment"><%=orders[c].customerComment %></p> <% } %>
+                </div>
+                <!-- <p><%=orders[c]._id %></p> -->
+                <!-- <p><%=orders[c].customerAddress %></p> -->
+                <!-- <p><%=orders[c].totalPrice %> total amount</p> -->
+                <!-- <p><%=orders[c].customerName %></p> -->
+                
+                <!-- order delivery details -->
+                <% if(orders[c].type == "delivery") { %>
+                    <div id="output">
+                        <!-- <p id="googleMapsEstimationTitle"><b>Google Maps Estimation</b></p> -->
+                        <p id="googleMapsEstimationTitle"><b><%=orders[c].type.toUpperCase() %></b></p>
+                        <p id="travelDistance"></p>
+                        <p id="travelETA"></p>
+                        <p id="originAddress"></p>
+                        <p id="destinationAddress"></p>
+                    </div>
+                <% } else { %>
+                    <p><b><%=orders[c].type.toUpperCase() %></b></p>
+                <% } %>
+                
+                <!-- accept or decline order -->
+                <div id="acceptOrDeclineButtons">
+                    <form id="updateOrderWithTime#<%=c %>" action="/restaurantPortal/order-update" method="POST">
+                        <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
+                        <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="60"></input>
+                        <input hidden id="inputOrderStatus#<%=c %>" name="status" value="confirmed"></input>
+                        <button id="acceptCustomerOrder#<%=c %>" class="acceptCustomerOrder" type="button" value="60" onclick="orderAccepted('<%=c %>', '<%= orders[c]._id %>', value)">ACCEPT</button> <!-- onclick = ws data to client, update db, ws data to restaurant -->
+                        <button id="declineCustomerOrder#<%=c %>" class="declineCustomerOrder" type="button" onclick="orderDeclined('<%=c %>', '<%= orders[c]._id %>')">DECLINE</button>
+                    </form>
+                </div>
+            </div>
+            <% } %>
+        </div>
+
+        <!-- cook orders -->
+        <div id="ordersCook">
+            <% for(var c = 0; c <= ordersCook.length - 1; c++) { %> <!-- order -->
+                <% if(c == 0) { %>
+                <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
+                    <p id="orderHeader">
+                        <!-- #<%=c + 1%> ·  -->
+                        <%=ordersCook[c].type.toUpperCase() %> · 
+                        <%=ordersCook[c].confirmedAt.toString().substring(0, 5) %> · 
+                        <%=ordersCook[c].estimatedCompletionTime %> min
+                    </p>
+                    
+                    <div id="orderItems">
+                        <% for(var x = 0; x < ordersCook[c].products.items.length; x++) { %>
+                            <p class="orderItem"><%= ordersCook[c].products.items[x].quantity %> <%= ordersCook[c].products.items[x].name %></p>
+                        <% } %>
+                        <% if(ordersCook[c].customerComment != null) { %> <p id="orderComment"><%=ordersCook[c].customerComment %></p> <% } %>
+                    </div>
+            
+                    <!-- order details -->
+                    <div id="orderFooter">
+                        <% if(ordersCook[c].type == "delivery") { %>
+                            <p id="orderUser"><%=ordersCook[c].customerName.split("@")[0] %></p> 
+                            <p id="orderPhone"><%=ordersCook[c].customerPhone.toString().replace(" ", "") %></p>
+                            <p id="orderDeliveryAddress"><%=ordersCook[c].customerAddress %></p>
+                        <% } else { %>
+                                <p id="orderUser">ordered by <%=ordersCook[c].customerName.split("@")[0] %> / phone <%=ordersCook[c].customerPhone.toString().replace(" ", "") %></p> 
+                        <% } %> 
+                    </div>
+                    <!-- <p id="orderPlaced">confirmed at <%=ordersCook[c].confirmedAt.toString().substring(0, 5) %></p> -->
+                    <!-- <p>completion time <%=ordersCook[c].estimatedCompletionTime %> mins</p> -->
+                    <!-- <p><%=ordersCook[c]._id %></p> -->
+                    <!-- <p><%=ordersCook[c].totalPrice %> total amount</p> -->
+                    <!-- <p><%=ordersCook[c].customerName %></p> -->
+                        
+                    <!-- mark order as completed -->
+                    <form id="updateOrderCompletionTime#<%=c %>" action="/restaurantPortal/order-update" method="POST">
+                        <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=ordersCook[c]._id %>'></input>
+                        <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="<%=ordersCook[c].estimatedCompletionTime %>"></input>
+                        <input hidden id="inputOrderStatus#<%=c %>" name="status" value="completed"></input>
+                        <button id="completeCustomerOrder#<%=c %>" class="completeCustomerOrder" type="button" onclick="orderCompleted('<%=c %>', '<%= ordersCook[c]._id %>')">&#10003; mark as completed</button>
+                    </form>
+                </div>
+                <% } %>
+            <% } %>
+        </div>
+        
+        <!-- declined orders -->
+        <div id="ordersDeclined">
+            <% for(var c = ordersDeclined.length - 1; c >= 0; c--) { %>
+                <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
+                    <p id="orderStatusDeclined"><%=ordersDeclined[c].status %></p>
+                    <p id="orderNumber">completion number #<%=c + 1%></p>
+
+                    <!-- order details -->
+                    <p id="orderPlaced">ordered at <%=ordersDeclined[c].placedAt.toString().substring(0, 8) %>-<%=ordersDeclined[c].placedAt.toString().substring(15).replaceAll(" ", "-") %></p>
+                    <p id="orderUser">ordered by <%=ordersDeclined[c].customerName.split("@")[0] %> / phone: <%=ordersDeclined[c].customerPhone.toString().replace(" ", "") %></p>
+                    <div id="orderItemsDeclined">
+                    <% for(var x = 0; x < ordersDeclined[c].products.items.length; x++) { %>
+                        <p class="orderItem"><%= ordersDeclined[c].products.items[x].quantity %> <%= ordersDeclined[c].products.items[x].name %></p>
+                    <% } %>
+                    <% if(ordersDeclined[c].customerComment != null) { %> <p id="orderComment"><%=ordersDeclined[c].customerComment %></p> <% } %>
+                    </div>
+                    <p><%=ordersDeclined[c].customerAddress %></p>
+                    <p><%=ordersDeclined[c].totalPrice %> total amount</p>
+                    <p><%=ordersDeclined[c].customerName %></p>
+                    <p><%=ordersDeclined[c]._id %></p>
+                </div>
+            <% } %>
+        </div>
+        
+        <!-- completed orders -->
+        <div id="ordersCompleted">
+            <% for(var c = ordersCompleted.length - 1; c >= 0; c--) { %>
+                <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
+                    <p id="orderStatusCompleted"><%=ordersCompleted[c].status %></p>
+                    <p id="orderNumber">completion number #<%=c + 1%></p>
+
+                    <!-- order details -->
+                    <p id="orderPlaced">ordered at <%=ordersCompleted[c].placedAt.toString().substring(0, 8) %>-<%=ordersCompleted[c].placedAt.toString().substring(15).replaceAll(" ", "-") %></p>
+                    <p id="orderUser">ordered by <%=ordersCompleted[c].customerName.split("@")[0] %> / phone: <%=ordersCompleted[c].customerPhone.toString().replace(" ", "") %></p>
+                    <div id="orderItemsCompleted">
+                        <% for(var x = 0; x < ordersCompleted[c].products.items.length; x++) { %>
+                            <p class="orderItem"><%= ordersCompleted[c].products.items[x].quantity %> <%= ordersCompleted[c].products.items[x].name %></p>
+                        <% } %>
+                        <% if(ordersCompleted[c].customerComment != null) { %> <p id="orderComment"><%=ordersCompleted[c].customerComment %></p> <% } %>
+                    </div>
+                    <p><%=ordersCompleted[c].customerAddress %></p>
+                    <p><%=ordersCompleted[c].totalPrice %> total amount</p>
+                    <p><%=ordersCompleted[c].customerName %></p>
+                    <p><%=ordersCompleted[c]._id %></p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

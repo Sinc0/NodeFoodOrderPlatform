@@ -1,64 +1,17 @@
 @media screen and (max-width: 700px) 
 {
-    /* search */
-    #searchBoxInput
-    {
-        margin-top: 4px;
-        width: 95vw;
-    }
-
     /* anon index */
-    #bodyIndex
-    {
-        background-image: none;
-        background-color: lightgray;
-    }
-
-    #indexAnonMenu, #indexAnonFooter
-    {
-        margin: auto;
-        width: 94vw;
-        text-align: center;
-    }
-
-    #indexAnonMenu
-    {
-        margin-top: 85%;
-        top: 0;
-    }
-
-    .indexAnonMenuItem
-    {
-        border-bottom: 1px solid black;
-    }
+    #bodyIndex { background-image: none; }
+    #indexAnonMenu { margin: auto; width: 94vw; text-align: center; }
+    #indexAnonFooter { margin: auto; width: 94vw; text-align: center; }
+    #indexAnonMenu { margin-top: 85%; top: 0; }
+    .indexAnonMenuItem { border-bottom: 1px solid white; }
 
     /* restaurants */
-    .restaurantMenuItemImg
-    {
-        display: block;
-        background-color: orange;
-    }
-
-    .restaurantMenuItemImg
-    {
-        display: none;
-    }
-
-    #searchBoxRestaurants input
-    {
-        display: block;
-        margin: auto;
-        width: 95.5vw;
-        text-align: center;
-    }
-
-    .restaurantMenuItem
-    {   
-        margin-top: 15px;
-        margin-bottom: 15px;
-        width: 97vw;
-    }
-
+    .restaurantMenuItemImg { display: block; background-color: orange; }
+    .restaurantMenuItemImg { display: none; }
+    #searchBoxRestaurants input { display: block; margin: auto; width: 95.5vw; text-align: center; }
+    .restaurantMenuItem { margin-top: 15px; margin-bottom: 15px; width: 97vw; }
     .restaurantMenuItemText
     {
         display: block;
@@ -71,330 +24,96 @@
         border: 0px solid black;
         border-bottom: 4px solid black;
     }
-
-    #body-restaurants
-    {
-        width: 100vw;
-        overflow-y: scroll;
-        overflow-x: none;
-    }
-
-    .restaurantReview
-    {
-        margin-top: 0px;
-        margin-bottom: 5px;
-        width: 90vw;
-    }
-
-    .restaurantReviewModal
-    {
-        margin-top: 3px;
-        overflow-x: hidden;
-        background-color: black;
-    }
-
-    .restaurantReviewModal::-webkit-scrollbar 
-    {
-        display: none;
-    }
-
-    .restaurant-backgroundImage
-    {
-        display: none;
-    }
-
-    .restaurant-backgroundImage-mobile
-    {
-        display: block;
-    }
+    #body-restaurants { width: 100vw; overflow-y: scroll; overflow-x: none; background-color: #3c41d6; }
+    .restaurantReview { margin-top: 0px; margin-bottom: 5px; width: 90vw; }
+    .restaurantReviewModal { margin-top: 3px; overflow-x: hidden; background-color: black; }
+    .restaurantReviewModal::-webkit-scrollbar { display: none; }
+    .restaurant-backgroundImage { display: none; }
+    .restaurant-backgroundImage-mobile { display: block; }
 
     /* restaurant-detail */
-    #testBackground
-    {
-        width: 98vw;
-    }
-
-    #menu
-    {
-        width: 98vw;
-    }
-
-    .menu-item
-    {
-        margin-top: 5px;
-        width: 98vw;
-    }
-
-    .menu-item-texts
-    {
-        width: 70%;
-    }
-
-    #main-menu
-    {
-        margin: 0px;
-        padding: 0px;
-        padding-top: 2.5px;
-        background-color: black;
-    }
-
-    #side-cart
-    {
-        display: none;
-        position: relative;
-        margin-bottom: -2px;
-        margin-left: 1px;
-        padding-bottom: 4px;
-        width: 98vw;
-    }
-
-    #customerComment
-    {
-        min-width: 96.5vw;
-        max-width: 96.5vw;
-    }
-    
-    #order-button-mobile, #total-price-mobile
-    {
-        display: block;
-    }
-
-    #order-button
-    {
-        display: none;
-    }
-
-    #total-price
-    {
-        display: none;
-    }
-
-    .cart-item button
-    {
-        width: 45px;
-    }
-
-    #informAnonModal
-    {
-        width: 84vw;
-    }
-
-    #modalButton
-    {
-        position: absolute;
-        right: -1px;
-        width: 25px;
-        margin-left: 0px;
-    }
-
-    #menu input
-    {
-        width: 98vw;
-    }
+    #testBackground { width: 98vw; }
+    #menu { width: 98vw; }
+    .menu-item { margin-top: 5px; width: 98vw; }
+    .menu-item-texts { width: 70%; }
+    #main-menu { margin: 0px; padding: 0px; padding-top: 2.5px; background-color: black; }
+    #customerComment { min-width: 96.5vw; max-width: 96.5vw; }
+    #order-button-mobile { display: block; }
+    #total-price-mobile { display: block; }
+    #order-button { display: none; }
+    #total-price { display: none; }
+    .cart-item button { width: 45px; }
+    #informAnonModal { width: 84vw; }
+    #modalButton { position: absolute; right: -1px; width: 25px; margin-left: 0px; }
+    #menu input { width: 98vw; }
 
     /* nav */
-    .main-header__nav
-    {
-        overflow-x: scroll;
-    }
-
-    .main-header__nav::-webkit-scrollbar
-    {
-        display: none;
-    }
-
-    #navButtonOrders
-    {
-        margin-right: -1px;
-    }
+    .main-header__nav { overflow-x: scroll; }
+    .main-header__nav::-webkit-scrollbar { display: none; }
+    #navButtonOrders { margin-right: -1px; }
 
     /* button */
-    button:focus, button:hover
-    {
-        background-color: white;
-        color: black;
-    }
-
-    button:active
-    {
-        background-color: #3e00a1;
-    }
+    button:focus, button:hover { background-color: white; color: black; }
 
     /* checkout */
-    #checkoutCartItems, #customerCommentCheckout, #checkoutTotalAmount, #orderFormDiv, #customerName, #searchInput, #customerPhone
-    {
-        margin-left: -1px;
-        width: 98vw;
-    }
-
-    #checkoutCenterDiv
-    {
-        margin-top: 25px;
-        margin-left: 3.5px;
-        width: 95vw;
-    }
-
-    #customerCommentCheckout
-    {
-        max-width: 98vw;
-        min-width: 98vw;
-    }
-
-    #body-checkout
-    {
-        width: 100vw;
-        background-color: lightgray;
-    }
-    
-    #body-checkout iframe
-    {
-        width: 0px;
-    }
-
-    #html-checkout
-    {
-        width: 100vw;
-    }
-
-    #new-list-of-payment-options
-    {
-        width: 98vw;
-    }
-
-    #selected-payment-option
-    {
-        width: 98vw;
-    }
+    #checkoutCartItems { margin-left: -1px; width: 98vw; }
+    #customerCommentCheckout{ margin-left: -1px; width: 98vw; }
+    #checkoutTotalAmount { margin-left: -1px; width: 98vw; }
+    #orderFormDiv { margin-left: -1px; width: 98vw; }
+    #customerName { margin-left: -1px; width: 98vw; }
+    #searchInput { margin-left: -1px; width: 98vw; }
+    #customerPhone { margin-left: -1px; width: 98vw; }
+    #checkoutCenterDiv { width: 95vw; margin-top: 25px; margin-left: 3.5px; }
+    #customerCommentCheckout { max-width: 98vw; min-width: 98vw; }
+    #body-checkout { width: 100vw; background-color: lightgray; }
+    #body-checkout iframe { width: 0px; }
+    #html-checkout { width: 100vw; }
+    #new-list-of-payment-options { width: 98vw; }
+    #selected-payment-option { width: 98vw; }
 
     /* order process */
-    #order-process-content
-    {
-        width: 90vw;
-    }
+    #order-process-content { width: 90vw; }
 
     /* home */
-    #indexHelpButtons
-    {
-        width: 90vw;
-    }
-
-    .admin-card
-    {
-        width: 90vw;
-    }
+    #indexHelpButtons { width: 90vw; }
+    .admin-card { width: 90vw; }
 
     /* orders */
-    .order-item
-    {
-        display: block;
-        margin:  auto;
-        margin-left: -2px;
-        width: 89vw;
-    }
-
-    #grid-orders
-    {
-        width: 95vw;
-    }
-
-    .order-review
-    {
-        margin-left: -2px;
-        padding: 10px;
-        width: 89vw;
-    }
-
-    .textareaReviewComment
-    {
-        min-width: 87vw;
-        max-width: 87vw;
-    }
-
-    #body-orders input
-    {
-        margin-left: -2px;
-        width: 94vw;
-    }
+    .order-item { display: block; margin: auto; margin-left: -2px; width: 89vw; }
+    #grid-orders { width: 95vw; }
+    .order-review { margin-left: -2px; padding: 10px; width: 89vw; }
+    .textareaReviewComment { min-width: 87vw; max-width: 87vw; }
+    #body-orders input { margin-left: -2px; width: 94vw; }
 
     /* order details */
-    #main-order-details
-    {
-        width: 89vw;
-    }
+    #main-order-details { width: 89vw; }
 
     /* profile */
-    #profileCredentials
-    {
-        width: 94vw;
-    }
-
-    .profile-buttons
-    {
-        width: 94vw;
-    }
-
-    .confirm-button
-    {
-        width: 50vw;
-    }
-
-    #editProfileCredentials
-    {
-        width: 93.5vw;
-    }
-
-    #editProfilePassword
-    {
-        width: 93.5vw;
-    }
-
-    #editProfilePassword input
-    {
-        width: 30vw;
-    }
+    #profileCredentials { width: 94vw; }
+    .confirm-button { width: 50vw; }
+    #editProfileCredentials { width: 93.5vw; }
+    #editProfilePassword { width: 93.5vw; }
+    #editProfilePassword input { width: 30vw; }
 
     /* logout */
-    #main-logout
-    {
-        width: 94vw;
-    }
+    #main-logout { width: 94vw; }
 
     /* login */
-    #main-login
-    {
-        width: 94vw;
-    }
+    #main-login { width: 94vw; }
 
     /* register */
-    #main-register
-    {
-        width: 94vw;
-    }
+    #main-register { width: 94vw; }
 
     /* about */
-    #main-about
-    {
-        padding-bottom: 25px;
-        width: 94vw;
-    }
+    #main-about { padding-bottom: 25px; width: 94vw; }
 
     /* contact */
-    #main-contact
-    {
-        width: 71vw;
-    }
+    #main-contact { width: 71vw; }
 
     /* admin home */
-    .admin-edit, .admin-delete
-    {
-        width: 95.5vw;
-    }
-
-    .input-admin
-    {
-        width: 80vw;
-    }
-
+    .admin-edit { width: 95.5vw; }
+    .admin-delete { width: 95.5vw; }
+    .input-admin { width: 80vw; }
     #admin-cancel-button
     {
         display: block;
@@ -404,49 +123,13 @@
         width: 200px;
         text-align: center;
     }
-
-    #adminPostNewsPost
-    {
-        display: block;
-        margin: auto;
-        width: 95vw;
-    }
-
-    #adminPostNews-title-input
-    {
-        padding: 0px;
-        width: 100%;
-    }
-
-    #adminPostNews-textarea
-    {
-        padding: 0px;
-        min-width: 100%;
-        max-width: 100%;       
-    }
-    
-    #adminPostNews-submit-button
-    {
-        padding: 0px;
-        width: 100%;
-    }
-
-    #admin-stats
-    {
-        padding-bottom: 25px;
-        width: 94vw;
-    }
-
-    #navButtonAdminStats
-    {
-        margin-right: -1px;
-    }
-
-    .NavCategory 
-    {
-        width: 99.5vw;
-    }
-
+    #adminPostNewsPost { display: block; margin: auto; width: 95vw; }
+    #adminPostNews-title-input { padding: 0px; width: 100%; }
+    #adminPostNews-textarea { padding: 0px; min-width: 100%; max-width: 100%; }
+    #adminPostNews-submit-button { padding: 0px; width: 100%; }
+    #admin-stats { width: 94vw; padding-bottom: 25px; }
+    #navButtonAdminStats { margin-right: -1px; }
+    .NavCategory { width: 99.5vw; }
     #restaurantPortal-index-title
     {
         visibility: hidden;
@@ -457,17 +140,6 @@
         margin-bottom: 0px; 
         padding: 0px;
     }
-
-    #restaurantPortal-index-body
-    {
-        background-color: black;
-    }
-
-    .customerOrder
-    {
-        width: 94vw;
-    }
-
     #testBackground
     {
         display: block;
@@ -476,67 +148,14 @@
         background-color: #0000009c;
         padding-bottom: 25px;
     }
-
-    #menuEditRestaurantHours
-    {
-        display: block;
-        margin: auto;
-        width: 94vw;
-    }
-
-    .menu-edit-hours
-    {
-        margin: auto; 
-        width: 94vw;
-    }
-
-    .menu-edit-hours input
-    {
-        width: 50vw;
-    }
-    
-    #menuEditRestaurantDescription, #inputDescription, 
-    #menuEditRestaurantType, #inputType,
-    #menuEditRestaurantImageUrl, #inputImg,
-    #menuEditRestaurantPhone, #inputPhone,
-    #menuEditRestaurantAdress, #inputAddress
-    {
-        display: block;
-        margin: auto;
-        width: 89vw;
-    }
-
-    #menu-edit-button-addCategory
-    {
-        width: 94vw;
-    }
-
-    #menuEditRestaurantCategory
-    {
-        width: 94vw;
-    }
-
-    .categoryInput
-    {
-        width: 22vw;
-    }
-
-    .categoryArrowUp
-    {
-        margin: 0px;
-    }
-    
-    .categoryArrows
-    {
-        margin: 0px;
-        width: 50px;
-    }
-
-    .menu-edit-category
-    {
-        width: 90vw;
-    }
-
+    .menu-edit-hours { width: 94vw; margin: auto; }
+    .menu-edit-hours input { width: 50vw; }
+    #menu-edit-button-addCategory { width: 94vw; }
+    #menuEditRestaurantCategory { width: 94vw; }
+    .categoryInput { width: 22vw; }
+    .categoryArrowUp { margin: 0px; }
+    .categoryArrows { margin: 0px; width: 50px; }
+    .menu-edit-category { width: 90vw; }
     #NavBarEdit
     {
         display: block;
@@ -548,60 +167,12 @@
         padding-bottom: 1px;
         width: 100vw;
     }
-
-    #body-menu-edit
-    {
-        margin-bottom: 0;
-    }
-
-    #laskdssassdad div, input
-    {
-        width: 90vw;
-    }
-
-    .itemInput
-    {
-        width: 50vw;
-    }
-
-    .buttonRemoveItem
-    {
-        width: 52vw;
-    }
-
-    .item
-    {
-        width: 100%;
-    }
-
-    #restaurant-statistics
-    {
-        width: 94vw;
-    }
-
-    .customerReview
-    {
-        width: 94vw;
-    }
-
-    #main-profile
-    {
-        width: 94vw;
-    }
-
-    #restaurant-welcomeMessage
-    {
-        width: 94vw;
-    }
-
-    #restaurant-welcomeMessage button
-    {
-        width: 94vw;
-    }
-
-    #RestaurantClosed
-    {
-        width: 100vw;
-    }
-
+    #body-menu-edit { margin-bottom: 0; }
+    .itemInput { width: 50vw; }
+    .buttonRemoveItem { width: 52vw; }
+    .item { width: 100%; }
+    .customerReview { width: 94vw; }
+    #restaurant-welcomeMessage { width: 94vw; }
+    #restaurant-welcomeMessage button { width: 94vw; }
+    #RestaurantClosed { width: 100vw; }
 }

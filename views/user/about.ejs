@@ -1,3 +1,4 @@
+<!-- user/about.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +9,22 @@
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <title>About</title>
 </head>
-<%- include('../snippets/html_nav_menu_anon.ejs') %>
-<body style="background-color: lightgray">
-    <main id="main-about">
+
+<style>
+    body { height: 100vh; background-color: #3c41d6; }
+</style>
+
+<body>
+    <%- include('../snippets/html_nav_menu_anon.ejs') %>
+    <div id="main-about">
+        <!-- phone -->
+        <p><b>Phone: </b>123 4567890</p>
+
+        <!-- email -->
+        <p style="margin-top: 5px;"><b>Email: </b>contact@madeup.com</p>
+
+        <!-- address -->
+        <p style="margin-top: 5px;"><b>Address: </b>MadeUp St 123</p>
 
         <!-- FAQ -->
         <div id="about-FAQ">
@@ -64,6 +78,6 @@
                 eget mattis quam ex eget erat.
             </p>
         </div>
-    </main>
+    </div>
 </body>
 </html>

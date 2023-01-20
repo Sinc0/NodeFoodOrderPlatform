@@ -7,93 +7,97 @@
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/mobile.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
-    <script>       
-        function registerCustomer()
-        {
-            var customerForm = document.getElementById("registerCustomer");
-            var restaurantForm = document.getElementById("registerRestaurant");
-            var customerBtn = document.getElementById("registerCustomerBtn");
-            var restaurantBtn = document.getElementById("registerRestaurantBtn");
-
-            customerForm.style.display = "block";
-            restaurantForm.style.display = "none";
-            restaurantBtn.style.backgroundColor = "#f7f9f9";
-            restaurantBtn.style.color = "black";
-            customerBtn.style.backgroundColor = "#3e00a1";
-            customerBtn.style.color = "#f7f9f9";
-        }
-
-        function registerRestaurant()
-        {
-            var customerForm = document.getElementById("registerCustomer");
-            var restaurantForm = document.getElementById("registerRestaurant");
-            var customerBtn = document.getElementById("registerCustomerBtn");
-            var restaurantBtn = document.getElementById("registerRestaurantBtn");
-            
-            customerForm.style.display = "none";
-            restaurantForm.style.display = "block";
-            customerBtn.style.backgroundColor = "#f7f9f9";
-            customerBtn.style.color = "black";
-            restaurantBtn.style.backgroundColor = "#3e00a1";
-            restaurantBtn.style.color = "#f7f9f9";
-        }
-
-        function checkPassRestaurant()
-        {
-            var password = document.getElementById("passwordRestaurant");
-            var confirmPassword = document.getElementById("confirmPasswordRestaurant");
-            var submitFormButton = document.getElementById("submitFormBtnRegisterRestaurant");
-
-            if(confirmPassword.value == "")
-            {
-                
-            }   
-
-            else if(password.value != confirmPassword.value)
-            {
-                password.style.color = "red";
-                confirmPassword.style.color = "red"
-                submitFormButton.disabled = true;
-            }
-
-            else if(password.value == confirmPassword.value)
-            {
-                password.style.color = "lightgreen";
-                confirmPassword.style.color = "lightgreen";
-                submitFormButton.disabled = false;
-            }
-        }
-
-        function checkPassCustomer()
-        {
-            var password = document.getElementById("passwordCustomer");
-            var confirmPassword = document.getElementById("confirmPasswordCustomer");
-            var submitFormButton = document.getElementById("submitFormBtnRegisterCustomer");
-    
-            if(confirmPassword.value == "")
-            {
-
-            }
-
-            else if(password.value != confirmPassword.value)
-            {
-                password.style.color = "red";
-                confirmPassword.style.color = "red";
-                submitFormButton.disabled = true;
-            }
-
-            else if(password.value == confirmPassword.value)
-            {
-                password.style.color = "lightgreen";
-                confirmPassword.style.color = "lightgreen";
-                submitFormButton.disabled = false;
-            }
-        }
-    </script>
 </head>
-<%- include('../snippets/html_nav_menu_anon.ejs') %>
-<body style="background-color: lightgray">
-    <main id="main-register">
+
+<script>       
+    function registerCustomer()
+    {
+        let customerForm = document.getElementById("registerCustomer");
+        let restaurantForm = document.getElementById("registerRestaurant");
+        let customerBtn = document.getElementById("registerCustomerBtn");
+        let restaurantBtn = document.getElementById("registerRestaurantBtn");
+
+        customerForm.style.display = "block";
+        restaurantForm.style.display = "none";
+        restaurantBtn.style.backgroundColor = "#f7f9f9";
+        restaurantBtn.style.color = "black";
+        customerBtn.style.backgroundColor = "#3e00a1";
+        customerBtn.style.color = "#f7f9f9";
+    }
+
+    function registerRestaurant()
+    {
+        let customerForm = document.getElementById("registerCustomer");
+        let restaurantForm = document.getElementById("registerRestaurant");
+        let customerBtn = document.getElementById("registerCustomerBtn");
+        let restaurantBtn = document.getElementById("registerRestaurantBtn");
+        
+        customerForm.style.display = "none";
+        restaurantForm.style.display = "block";
+        customerBtn.style.backgroundColor = "#f7f9f9";
+        customerBtn.style.color = "black";
+        restaurantBtn.style.backgroundColor = "#3e00a1";
+        restaurantBtn.style.color = "#f7f9f9";
+    }
+
+    function checkPassRestaurant()
+    {
+        let password = document.getElementById("passwordRestaurant");
+        let confirmPassword = document.getElementById("confirmPasswordRestaurant");
+        let submitFormButton = document.getElementById("submitFormBtnRegisterRestaurant");
+
+        if(confirmPassword.value == "")
+        {
+            
+        }   
+        else if(password.value != confirmPassword.value)
+        {
+            password.style.color = "red";
+            confirmPassword.style.color = "red"
+            submitFormButton.disabled = true;
+        }
+        else if(password.value == confirmPassword.value)
+        {
+            password.style.color = "lightgreen";
+            confirmPassword.style.color = "lightgreen";
+            submitFormButton.disabled = false;
+        }
+    }
+
+    function checkPassCustomer()
+    {
+        let password = document.getElementById("passwordCustomer");
+        let confirmPassword = document.getElementById("confirmPasswordCustomer");
+        let submitFormButton = document.getElementById("submitFormBtnRegisterCustomer");
+
+        if(confirmPassword.value == "")
+        {
+
+        }
+        else if(password.value != confirmPassword.value)
+        {
+            password.style.color = "red";
+            confirmPassword.style.color = "red";
+            submitFormButton.disabled = true;
+        }
+        else if(password.value == confirmPassword.value)
+        {
+            password.style.color = "lightgreen";
+            confirmPassword.style.color = "lightgreen";
+            submitFormButton.disabled = false;
+        }
+    }
+</script>
+
+<style>
+    body { height: 100vh; background-color: #3c41d6 }
+</style>
+
+<body>
+    <!-- nav menu -->
+    <%- include('../snippets/html_nav_menu_anon.ejs') %>
+    
+    <div id="main-register">
 
         <h3 style="margin-top: 25px; margin-bottom: 25px;">Register Below</h3>
         
@@ -167,6 +171,6 @@
                 <button id="submitFormBtnRegisterRestaurant" class="btn" type="submit" style="margin-top: 22.5px;"><b>Confirm</b></button>
             </form>
         </div>
-    </main>
+    </div>
 </body>
 </html>

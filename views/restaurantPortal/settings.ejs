@@ -7,204 +7,143 @@
     <link rel="stylesheet" href="/css/portalRestaurant.css">
     <link rel="stylesheet" href="/css/mobile.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
-    <script>
-    //     function GoogleMapsAdressAutocomplete() 
-    //     {
-    //         var map = new google.maps.Map(document.getElementById('map'), {
-    //             //center: {lat: -33.8688, lng: 151.2195},
-    //             //zoom: 13
-    //         });
-            
-    //         var input = document.getElementById('searchInput');
-    //         var autocomplete = new google.maps.places.Autocomplete(input);
-    //         var infowindow = new google.maps.InfoWindow();
-
-    //         autocomplete.addListener('place_changed', function() 
-    //         {
-    //             infowindow.close();
-    //             var place = autocomplete.getPlace();
-                
-    //             if (!place.geometry) 
-    //             {
-    //                 return window.alert("Address not found");
-    //             }
-            
-    //             var address = '';
-                
-    //             if (place.address_components) 
-    //             {
-    //                 address = [
-    //                     (place.address_components[0] && place.address_components[0].short_name || ''),
-    //                     (place.address_components[1] && place.address_components[1].short_name || ''),
-    //                     (place.address_components[2] && place.address_components[2].short_name || '')
-    //                 ].join(' ');
-    //             }
-            
-    //             infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
-                    
-    //             //location details
-    //             for (var i = 0; i < place.address_components.length; i++) 
-    //             {
-    //                 if(place.address_components[i].types[0] == 'country')
-    //                 {
-    //                     if(place.address_components[i].long_name == "Sweden")
-    //                     {
-    //                         //document.getElementById('country').innerHTML = place.address_components[i].long_name;
-    //                         //document.getElementById('location').innerHTML = place.formatted_address;
-    //                         var userAddress = document.getElementById('userAddress')
-    //                         var customerAdress = document.getElementById('customerAddress')
-
-    //                         if(userAddress != null)
-    //                         {
-    //                             userAddress.value = place.formatted_address;
-    //                         }
-
-    //                         if(customerAdress != null)
-    //                         {
-    //                             customerAdress.value = place.formatted_address;
-    //                         }
-
-    //                         /*if(place.address_components[6] != undefined)
-    //                         {
-    //                             document.getElementById('postal_code').innerHTML = place.address_components[6].long_name;
-    //                             //console.log(place.address_components[6].long_name);
-    //                         }*/
-
-    //                     }
-
-    //                     if(place.address_components[i].long_name != "Sweden")
-    //                     {
-    //                         alert("Location restricted to Sweden only");
-    //                     }
-                        
-    //                     //document.getElementById('country').innerHTML = place.address_components[i].long_name;
-    //                 }
-    //             }
-            
-    //         });
-    //     }
-    </script>
-    <!-- <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=GoogleMapsAdressAutocomplete" async defer></script> -->
-    <script>
-        function editProfileCredentials()
-        {
-            var profileCredentials = document.getElementById("profileCredentials");
-            var editProfileCredentials = document.getElementById("editProfileCredentials");
-
-            if(profileCredentials.style.display == "block" || editProfileCredentials == "none")
-            {
-                profileCredentials.style.display = "none";  
-                editProfileCredentials.style.display = "block";  
-            }
-
-            else
-            {
-                profileCredentials.style.display = "block";
-                editProfileCredentials.style.display = "none";
-            }
-        }
-    </script>
 </head>
-<a href="/restaurantPortal"><nav id="NavBar"><p><b>Home</b></p></nav></a>
-<body style="background-color: lightgray;">
-    <main id="main-profile" style="text-align: center">
-        <p style="margin: 0px; margin-bottom: 5px; padding: 0px;"><b>Status</b></p>
-        <% if(restaurant.menuListed == false) { %>
-            <p style="margin: auto; background-color: red; border-bottom: 1px solid black;"><b>restaurant</b> inactive</p>
-        <% } %>
-        
-        <% if(restaurant.menuListed == true) { %>
-            <p style="margin: auto; background-color: green; border-bottom: 1px solid black;"><b>restaurant</b> active</p>
-        <% } %>
 
-        <% if(restaurant.menuOnline == false) { %>
-            <p style="margin: auto; background-color: red;"><b>restaurant</b> closed</p>
-        <% } %>
+<script>
+    function editProfileCredentials()
+    {
+        let profileCredentials = document.getElementById("profileCredentials");
+        let editProfileCredentials = document.getElementById("editProfileCredentials");
+
+        if(profileCredentials.style.display == "block" || editProfileCredentials == "none")
+        {
+            profileCredentials.style.display = "none";  
+            editProfileCredentials.style.display = "block";  
+        }
+        else
+        {
+            profileCredentials.style.display = "block";
+            editProfileCredentials.style.display = "none";
+        }
+    }
+</script>
+
+<style>
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { height: 0px; width: 0px; }
+
+    body { background-color: #3c41d6; }
+
+    .statusItem { margin: 0px; padding: 10px 0px 10px 0px; border-bottom: 1px solid black; }
+    .categoryTitle { margin: 20px 0px 0px 0px; padding: 0px; font-weight: normal; font-size: 20px; text-shadow: 1px 1px black; color: white; }
+    .credential { margin: 0px; padding: 0px; }
+    .optionButton { width: 100%; padding: 10px 0px 10px 0px; font-weight: bold; font-size: 16px; border: 0px solid black; border-bottom: 1px solid black; }
+
+    #NavBar { margin: 0px; padding: 10px 0px 0px 0px; padding-left: 7px; color: white; background-color: #3c41d6; }
+    #categoryStatus { text-align: center; }
+    #settings { margin: auto; width: 400px; }
+
+    @media screen and (max-width: 1000px) {
+        #settings { width: 90vw; }
+    }
+</style>
+
+<body>
+    <a href="/restaurantPortal"><nav id="NavBar"><b>❮</b></nav></a>
+
+    <div id="settings">
+        <!-- status -->
+        <p class="categoryTitle">Status</p>
+        <div id="categoryStatus" class="category">
+            <% if(restaurant.menuOnline == false) { %>
+                <p class="statusItem" style="background-color: red;"><b>restaurant</b> is closed</p>
+            <% } %>
+                
+            <% if(restaurant.menuOnline == true) { %>
+                <p class="statusItem" style="background-color: green;"><b>restaurant</b> is open</p>
+            <% } %>
+
+            <% if(restaurant.menuListed == false) { %>
+                <p class="statusItem" style="background-color: red;"><b>restaurant</b> is inactive</p>
+            <% } %>
             
-        <% if(restaurant.menuOnline == true) { %>
-            <p style="margin: auto; background-color: green;"><b>restaurant</b> open</p>
-        <% } %>
-        <br />
-
-        <div id="profileCredentials" style="display: block;">
-            <p style="margin: 0px; margin-bottom: 5px; padding: 0px;"><b>Credentials</b></p>
-            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black;"><b>email:</b> <%=email %></p>
-            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black;"><b>name:</b> <%=name %></p>
-            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black;"><b>phone:</b> <%=phone %></p>
-            <p style="text-align: left; margin: auto; background-color: orange; border-bottom: 1px solid black;"><b>address:</b> <%=address %></p>
-            <p style="text-align: left; margin: auto; background-color: orange;"><b>city:</b> <%=restaurant.city %></p>
+            <% if(restaurant.menuListed == true) { %>
+                <p class="statusItem" style="background-color: green;"><b>restaurant</b> is active</p>
+            <% } %>
+    
         </div>
 
-        <br />
+        <!-- credentials -->
+        <!-- <p class="categoryTitle">Credentials</p>
+        <div id="profileCredentials" class="category" style="display: block;">
+            <p class="credential">email: <%=email %></p>
+            <p class="credential">name: <%=name %></p>
+            <p class="credential">phone: <%=phone %></p>
+            <p class="credential">address: <%=address %></p>
+            <p class="credential">city: <%=restaurant.city %></p>
+        </div> -->
 
-        <!-- <p style="color: red;"><b>Note: email and password change requires relog</b></p><br /> -->
-        <p style="margin: 0px; margin-bottom: 5px; padding: 0px;"><b>Options</b></p>
+        <!-- options -->
+        <p class="categoryTitle">Options</p>
+        <div id="categoryOptions" class="category">
+            <form action="/restaurantPortal/welcomeMessage" method="POST">
+                <!-- <% if(restaurant.welcomeMessage == false) { %>
+                    <input hidden name="welcomeMessage" value=true></input>
+                    <button class="profile-buttons">show welcome message</button><br />
+                <% } %> -->
+                <!-- <% if(restaurant.welcomeMessage == true) { %>
+                    <input hidden name="welcomeMessage" value=false></input>
+                    <button class="profile-buttons optionButton">dont show welcome message</button><br />
+                <% } %> -->
+            </form>
+        </div>
         
-        <form action="/restaurantPortal/welcomeMessage" method="POST">
-            <% if(restaurant.welcomeMessage == false) { %>
-                <input hidden name="welcomeMessage" value=true></input>
-                <button class="profile-buttons">show welcome message</button><br />
-            <% } %>
-            
-            <% if(restaurant.welcomeMessage == true) { %>
-                <input hidden name="welcomeMessage" value=false></input>
-                <button class="profile-buttons">dont show welcome message</button><br />
-            <% } %>
-        </form>
-        
-        <!-- <button disabled class="profile-buttons">change email</button><br /> -->
-        <!-- <button disabled class="profile-buttons">change password</button><br /> -->
-        <!-- <button disabled class="profile-buttons" onclick="editProfileCredentials()">change credentials</button><br /> -->
-        
+        <!-- open/close restaurant -->        
         <form action="/restaurantPortal/menuOnline" method="POST">
             <% if(restaurant.menuOnline == false) { %>
                 <input hidden name="menuOnline" value="true"></input>
-                <button class="profile-buttons">open restaurant</button><br />
+                <button class="profile-buttons optionButton">open restaurant</button><br />
             <% } %>
                 
             <% if(restaurant.menuOnline == true) { %>
                 <input hidden name="menuOnline" value="false"></input>
-                <button class="profile-buttons">close restaurant</button><br />
+                <button class="profile-buttons optionButton">close restaurant</button><br />
             <% } %>
         </form>
         
+        <!-- activate/deactivate restaurant -->
         <form action="/restaurantPortal/menuListed" method="POST">
             <% if(restaurant.menuListed == false) { %>
                 <input hidden name="menuListed" value=true></input>
-                <button class="profile-buttons" style="border-bottom: 1px solid black;">activate restaurant</button><br />
+                <button class="profile-buttons optionButton">activate restaurant</button><br />
             <% } %>
             
             <% if(restaurant.menuListed == true) { %>
                 <input hidden name="menuListed" value=false></input>
-                <button class="profile-buttons" style="border-bottom: 1px solid black;">deactivate restaurant</button><br />
+                <button class="profile-buttons optionButton">deactivate restaurant</button><br />
             <% } %>
         </form>
 
-        <br />
-        
-        <div id="editProfileCredentials" style="display: none">
+        <!-- edit credentials -->
+        <!-- <div id="editProfileCredentials" style="display: none">
             <form action="" method="POST" onkeydown="return event.key != 'Enter';">
-                <p><b>Credentials</b></p>
                 <input hidden value="<%=email %>" name="oldEmail"></input>
                 <input hidden value="<%=email %>" name="newEmail" placeholder="email"></input>
                 <b>name: </b><input value="<%=name %>" name="name" placeholder="name"></input>
                 <br/>
                 <b>phone: </b><input value="<%=phone %>" name="phone" placeholder="phone"></input>
                 <br/>
-                <!-- Search input -->
-                <b>adress: </b><input id="searchInput" value="<%=address %>" style="width: 350px;">
+                <b>adress: </b><input id="searchInput" value="<%=address %>">
                 <input hidden id="userAddress" value="<%=address %>" name="address" placeholder="address"></input>
                 <br/>
-                <b>city: </b><input id="" value="<%=restaurant.city %>" style="width: 350px;">
+                <b>city: </b><input id="" value="<%=restaurant.city %>">
                 <input hidden id="userCity" value="<%=restaurant.city %>" name="city" placeholder="city"></input>
                 <br/>
                 <button class="profile-buttons" type="submit" onclick="">confirm</button>
             </form>
             
             <button class="profile-buttons"  onclick="editProfileCredentials()">decline</button>
-        </div>
-
-        <div hidden id="map"></div>
-    </main>
+        </div> -->
+    </div>
 </body>
 </html>

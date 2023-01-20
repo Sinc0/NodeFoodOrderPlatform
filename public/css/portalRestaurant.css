@@ -1,353 +1,43 @@
-/*
-:root 
-{
-    --nav-width: 588px;
-}
-  
-
-#PortalNav
-{
-    /* border: 1px solid black; */ /*
-}
-
-.NavCategory
-{
-    margin: auto;
-    width: var(--nav-width);
-    border: 1px solid black;
-}
-
-.NavElement
-{
-    margin: 0px;
-    margin-left: -4px;
-    display: inline-block;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-}
-
-p
-{
-    text-align: center;
-    padding: 10px;
-    min-width: 125px;
-}
-
-.FirstColumnDiv
-{
-    margin-left: 0px;
-}
-*/
-
-p, b, h1, h2, h3, h4, h5, label, input, textarea
-{
-    font-family: Arial, Helvetica, sans-serif;
-}
+p { font-family: Arial, Helvetica, sans-serif; }
+textarea { font-family: Arial, Helvetica, sans-serif; }
+input { font-family: Arial, Helvetica, sans-serif; }
+label { font-family: Arial, Helvetica, sans-serif; }
+h5 { font-family: Arial, Helvetica, sans-serif; }
+h4 { font-family: Arial, Helvetica, sans-serif; }
+h3 { font-family: Arial, Helvetica, sans-serif; }
+h2 { font-family: Arial, Helvetica, sans-serif; }
+h1 { font-family: Arial, Helvetica, sans-serif; }
+b { font-family: Arial, Helvetica, sans-serif; }
 
 #NavBar
 {
     margin: 0px;
     padding: 0px;
-    background-color: #3c41d6;
-}
-
-#NavBar p
-{
-    margin-top: 0px;
+    color: black;
+    background-color: white;
     padding-top: 10px;
     padding-bottom: 10px;
 }
-
-body
-{
-    scroll: auto;
-    padding: 0px;
-    margin: 0px;
-}
-
-#PortalNav
-{
-    /* border: 1px solid black; */
-}
-
-.NavCategory
-{
-    margin: auto;
-    width: 350px;
-}
-
-.NavElement
-{
-    border: 1px solid black;
-}
-
-.NavElement:hover
-{
-    background-color: #fff;
-}
-
-.NavElement:active
-{
-    background-color: #fff;
-}
-
-p
-{
-    font-family: sans-serif;
-    text-align: center;
-    text-decoration: none;
-    padding: 5px;
-    min-width: 125px;
-    /* user-select: none;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none; */
-}
-
-a
-{
-    text-decoration: none;
-    color: black;
-}
-
-.Home
-{
-    background-color: lightgreen;
-}
-
-.Orders
-{
-    background-color: gray;
-}
-
-.Menu
-{
-    background-color: lightblue;
-}
-
-.Customer
-{
-    background-color: lightcoral;
-}
-
-.User
-{
-    background-color: orange;
-}
-
-.menuEditCategoryParagraph
-{
-    margin: 0px;
-}
-
-#menuEditCategoryParagraph
-{
-    margin: 0px;
-}
-
-#menuEditRestaurantImageUrl, #menuEditRestaurantDescription, #menuEditRestaurantHours, #menuEditRestaurantCategory, #menuEditRestaurantPhone, #menuEditRestaurantAdress, #menuEditRestaurantType
-{
-    margin-bottom: 10px;
-}
-
-.itemInput
-{
-    display: block;
-    margin: auto;
-    width: 400px;
-}
-
-input[type=number]::-webkit-inner-spin-button {
-    opacity: 1
-}
-
-.categoryArrows
-{
-    width: 50px;
-}
-
-.categoryArrows:hover
-{
-    background-color: lightslategray;
-}
-
-input
-{
-    width: 392px;
-}
-
-
-/* Width */
-::-webkit-scrollbar 
-{
-    width: 7px;
-}
-  
-/* Track */
-::-webkit-scrollbar-track 
-{
-    background: #f1f1f1;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb 
-{
-    background: #888;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover 
-{
-    background: #555;
-}
-
-/* Hide */
-/* ::-webkit-scrollbar {
-    display: none;
-} */
-
-.item
-{
-    width: 695px;
-    background-color: royalblue;
-}
-
+body { scroll: auto; padding: 0px; margin: 0px; }
+.NavCategory { margin: auto; width: 350px; }
+a { text-decoration: none; color: black; }
+.Home { background-color: lightgreen; }
+.menuEditCategoryParagraph { margin: 0px; }
+#menuEditCategoryParagraph { margin: 0px; }
+input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+input { width: 392px; }
+::-webkit-scrollbar { width: 7px; }
 #restaurantPortal-index-title
 {
     text-align: center;  
-    color: black; 
-    margin: 0px; 
-    margin-top: 50px; 
-    margin-bottom: 25px; 
+    margin: 30px 0px 26px 0px; 
     padding: 0px;
+    text-shadow: 2px 1px black; 
+    color: white; 
 }
-
-#restaurantPortal-index-body
-{
-    background-color: lightgray;
-}
-
-#menu
-{
-    width: 94vw;
-}
-
-.menu-edit-hours
-{
-    margin: auto; 
-    background-color: royalblue; 
-    border-bottom: 1px solid black; 
-    width: 400px;
-}
-
-.menu-edit-hours input
-{
-    width: 225px;
-}
-
-#inputDescription
-{
-    height: 75px;
-    width: 400px;
-}
-
-#inputType, #inputImg, #inputPhone, #inputAddress
-{
-    width: 400px;
-}
-
-#menu-edit-button-addCategory
-{
-    width: 690px;
-}
-
-#menuEditRestaurantCategory
-{
-    width: 690px;
-}
-
-.categoryInput
-{
-    width: 390px;
-}
-
-.menu-edit-category
-{
-    width: 695px;
-}
-
-#NavBarEdit
-{
-    position: fixed; 
-    background-color: red; 
-    bottom: 5px;
-    right: 0px; 
-    margin-right: 5px; 
-    vertical-align: bottom;
-}
-
-#body-menu-edit
-{
-    margin-bottom: 50px; 
-    text-align: center; 
-    background-color: lightgray;
-}
-
-.buttonRemoveItem
-{
-    width: 408px;
-}
-
-#restaurant-statistics
-{
-    width: 450px;
-}
-
-.customerReview
-{
-    width: 398px;
-}
-
-#main-profile
-{
-    display: block;
-    margin: auto;
-    width: 400px;
-}
-
-#restaurant-welcomeMessage
-{
-    display: block;
-    margin: auto;
-    width: 400px;
-}
-
-#restaurant-welcomeMessage button
-{
-    width: 400px;
-}
-
-.profile-buttons
-{
-    height: 30px;
-    width: 400px;
-    border-style: none;
-    background-color: #f7f9f9;
-    border-left: 1px solid black;
-    border-top: 1px solid black;
-    border-right: 1px solid black;
-}
-
-.profile-buttons:active
-{
-    outline: none;
-    border-color: green;
-    border-style: none;
-}
-
-.profile-buttons:focus
-{
-    outline: none;
-}
-
+#menu { width: 94vw; }
+.buttonRemoveItem { width: 408px; }
+.customerReview { width: 398px; }
+#main-profile { display: block; margin: auto; width: 400px; }
+#restaurant-welcomeMessage { display: block; margin: auto; width: 400px; }
+#restaurant-welcomeMessage button { width: 400px; }

@@ -1,3 +1,4 @@
+<!-- user/logout.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,18 @@
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
     <title><%= pageTitle %></title>
 </head>
-<body style="background-color: lightgray">
+
+<style>
+    body { height: 100vh; background-color: #3c41d6 }
+
+    #title { margin-top: 26px; }
+    #main-logout { background-color: #f7f9f9; margin: auto; margin-top: 50px; width: 400px; text-align: center; border: 1px solid black; }
+    #main-logout button { display: inline-block; height: 30px; width: 75px; border-style: none; border: 1px solid black; }
+    #buttonNo { margin-bottom: 25px; }
+    #buttonYes { margin-top: 25px; margin-bottom: -1px; margin-left: -6px; }
+</style>
+
+<body>
     <!-- admin view -->
     <% if(admin != null && admin == true) { %>
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
@@ -18,19 +30,18 @@
         <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
     <% } %>
     
-    <main id="main-logout">
-        <p><%= statusText %></p>
-        <h3 style="margin-top: 25px;">Are you sure you wanna logout?</h3>
+    <div id="main-logout">
+        <p><%=statusText %></p>
+        <h3 id="title">Are you sure you wanna logout?</h3>
         
         <div style="display: inline-block;">
-            <button class="btn" onclick="window.history.back()"  style="margin-bottom: 25px;"><b>No</b></button>            
+            <button id="buttonNo" class="btn" onclick="window.history.back()"><b>No</b></button>            
         </div>
-
         <div style="display: inline-block;">
             <form action="/logout-post" method="POST">
-                <button class="btn" type="submit" style="margin-top: 25px; margin-bottom: -1px; margin-left: -6px;"><b>Yes</b></button>
+                <button id="buttonYes" class="btn" type="submit"><b>Yes</b></button>
             </form>
         </div>
-    </main>
+    </div>
 </body>
 </html>

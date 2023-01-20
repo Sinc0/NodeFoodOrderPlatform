@@ -1,125 +1,82 @@
+//variables
 const Restaurant = require('../models/restaurant');
 const User = require('../models/user');
 const Order = require('../models/order');
 const Review = require('../models/review');
 
-
-
-//******* functions *******
+//functions
 function parseLoginCookie(cookieId)
 {
-    var findLoginCookie = cookieId;
+    //variables
+    let findLoginCookie = cookieId;
+    let regexFindLoginCookieId = /(?!\sloginCookie=id:)\d.\d*(?=email)/g;
+    let loginCookieId = findLoginCookie.match(regexFindLoginCookieId);
+    //let regexFindLoginCookieEmail = /(?!email:)[\w\d]*@.*\.\w*/g;
+    //let loginCookieEmail = findLoginCookie.match(regexFindLoginCookieEmail);
 
-    if(findLoginCookie == null || findLoginCookie == 'loginCookie=')
-    {
-        return null;
-    }
+    if(findLoginCookie == null || findLoginCookie == 'loginCookie=') { return null }
+    if(regexFindLoginCookieId == null) { return null }
     
-    var regexFindLoginCookieId = /(?!\sloginCookie=id:)\d.\d*(?=email)/g;
+    cookieId = parseFloat(loginCookieId);
 
-    if(regexFindLoginCookieId == null)
-    {
-        return null;
-    }
-
-    var loginCookieId = findLoginCookie.match(regexFindLoginCookieId);
-    //var regexFindLoginCookieEmail = /(?!email:)[\w\d]*@.*\.\w*/g;
-    //var loginCookieEmail = findLoginCookie.match(regexFindLoginCookieEmail);
-
-    var cookieId = parseFloat(loginCookieId);
-    //console.log(String(loginCookieId));
-    //console.log(String(loginCookieEmail))
-
-    if(cookieId != null)
-    {
-        return cookieId;
-    }
-
-    else
-    {
-        return null;
-    }
+    if(cookieId != null) { return cookieId }
+    else { return null }
 }
 
-//portal restaurant
+//exports
 exports.getRestaurantIndex = async (req, res, next) => {
     console.log('\ngetRetaurantPortalIndex');
     
-    var userEmail = res.locals.userEmail;
-    var restaurantUrl = res.locals.restaurantUrl;
-
-    var restaurant = await Restaurant.findByUrl(restaurantUrl);
+    //variables
+    let userEmail = res.locals.userEmail;
+    let restaurantUrl = res.locals.restaurantUrl;
+    let restaurant = await Restaurant.findByUrl(restaurantUrl);
     
-    res.render('restaurantPortal/index', 
-    { 
+    //render page
+    res.render('restaurantPortal/index', { 
         restaurant: restaurant,
         restaurantUrl: restaurantUrl
-    });
+    })
 }
 
-exports.getRestaurantOrdersAccept = async (req, res, next) => {
-    console.log('\ngetRestaurantPortalOrdersAccept');
-    var userEmail = res.locals.userEmail;
-    var restaurantUrl = res.locals.restaurantUrl;
+exports.getRestaurantOrdersAccept = async (req, res, next) => { console.log('\ngetRestaurantPortalOrdersAccept') }
+exports.getRestaurantOrdersCompleted = async (req, res, next) => { console.log('\ngetRestaurantPortalOrdersCompleted') }
+exports.getRestaurantOrdersChef = async (req, res, next) => { console.log('\ngetRestaurantPortalOrdersChef') }
 
-    var restaurant = await Restaurant.findByUrl(restaurantUrl);
-    var orders = await Order.fetchAllUnconfirmed(restaurantUrl);
+exports.getRestaurantOrdersHistory = async (req, res, next) => {
+    //debug
+    console.log('\ngetRestaurantPortalOrdersHistory');
+    
+    //variables
+    let userEmail = res.locals.userEmail;
+    let restaurantUrl = res.locals.restaurantUrl;
+    let restaurant = await Restaurant.findByUrl(restaurantUrl);
+    let ordersAccept = await Order.fetchAllUnconfirmed(restaurantUrl);
+    let ordersCook = await Order.fetchAllConfirmed(restaurantUrl);
+    let ordersCompleted = await Order.fetchAllCompleted(restaurantUrl);
+    let ordersDeclined = await Order.fetchAllDeclined(restaurantUrl);
 
-    res.render('restaurantPortal/orders-accept', 
-    { 
-        restaurant: restaurant,
-        orders: orders
-    });
-}
-
-exports.getRestaurantOrdersCompleted = async (req, res, next) => {
-    console.log('\ngetRestaurantPortalOrdersCompleted');
-    var userEmail = res.locals.userEmail;
-    var restaurantUrl = res.locals.restaurantUrl;
-
-    var orders = await Order.fetchAllCompleted(restaurantUrl);
-
-    res.render('restaurantPortal/orders-completed', 
-    {
-        orders: orders
-    });
-}
-
-exports.getRestaurantOrdersDeclined = async (req, res, next) => {
-    console.log('\ngetRestaurantPortalOrdersDeclined');
-    var userEmail = res.locals.userEmail;
-    var restaurantUrl = res.locals.restaurantUrl;
-
-    var orders = await Order.fetchAllDeclined(restaurantUrl);
-
-    res.render('restaurantPortal/orders-declined', 
-    {
-        orders: orders
-    });
-}
-
-exports.getRestaurantOrdersChef = async (req, res, next) => {
-    console.log('\ngetRestaurantPortalOrdersChef');
-    var userEmail = res.locals.userEmail;
-    var restaurantUrl = res.locals.restaurantUrl;
-
-    var orders = await Order.fetchAllConfirmed(restaurantUrl);
-
-    res.render('restaurantPortal/orders-chef', 
-    { 
-        orders: orders
-    });
+    //render page
+    res.render('restaurantPortal/orders-history', {
+        ordersAccept: ordersAccept,
+        ordersCook: ordersCook,
+        ordersCompleted: ordersCompleted,
+        ordersDeclined: ordersDeclined,
+        restaurant: restaurant
+    })
 }
 
 exports.getRestaurantMenuShow = async (req, res, next) => {
+    //debug
     console.log('\ngetRestaurantPortalMenuShow');
-    var userEmail = res.locals.userEmail;
-    var restaurantUrl = res.locals.restaurantUrl;
+    
+    //variables
+    let userEmail = res.locals.userEmail;
+    let restaurantUrl = res.locals.restaurantUrl;
+    let restaurant = await Restaurant.findByUrl(restaurantUrl);
 
-    var restaurant = await Restaurant.findByUrl(restaurantUrl);
-
-    if(restaurant != null)
-    {   
+    //render page
+    if(restaurant != null) {   
         res.render('restaurantPortal/menu-show', {
             admin: false,
             loggedIn: null,
@@ -128,7 +85,7 @@ exports.getRestaurantMenuShow = async (req, res, next) => {
             restaurantImage: "",
             restaurantUrl: restaurantUrl,
             path: '/restaurants'
-        });
+        })
     }
     else
     {
@@ -138,69 +95,78 @@ exports.getRestaurantMenuShow = async (req, res, next) => {
 }
 
 exports.getRestaurantMenuEdit = async (req, res, next) => {
+    //debug
     console.log('\ngetRestaurantPortalMenuEdit');
-    var userEmail = res.locals.userEmail;
-    var restaurantUrl = res.locals.restaurantUrl;
+    
+    //variables
+    let userEmail = res.locals.userEmail;
+    let restaurantUrl = res.locals.restaurantUrl;
+    let restaurant = await Restaurant.findByUrl(restaurantUrl);
 
-    var restaurant = await Restaurant.findByUrl(restaurantUrl);
-
-    res.render('restaurantPortal/menu-edit', 
-    { 
+    //render page
+    res.render('restaurantPortal/menu-edit', { 
         restaurant: restaurant
-    });
+    })
 }
 
 exports.getRestaurantStats = async (req, res, next) => {
-    console.log('\ngetRestaurantPortalStats');
-    var userEmail = res.locals.userEmail;
-    var restaurantUrl = res.locals.restaurantUrl;
+    //debug
+    console.log('\ngetRestaurantPortalStats')
 
-    var orders = await Order.fetchAllCompleted(restaurantUrl);
-
-    res.render('restaurantPortal/statistics', 
-    {
-        orders: orders
-    });
-}
-
-exports.getRestaurantReviews = async (req, res, next) => {
-    console.log('\ngetRestaurantPortalReviews');
-    var userEmail = res.locals.userEmail;
-    var restaurantUrl = res.locals.restaurantUrl;
-
+    //variables
+    let userEmail = res.locals.userEmail;
+    let restaurantUrl = res.locals.restaurantUrl;
+    let orders = await Order.fetchAllCompleted(restaurantUrl);
+    let restaurant = await Restaurant.findByUrl(restaurantUrl);
     var reviews = await Review.fetchAllByRestaurantUrl(restaurantUrl);
 
-    res.render('restaurantPortal/reviews', 
-    { 
+    //render page
+    res.render('restaurantPortal/statistics', {
+        orders: orders,
+        restaurant: restaurant,
         reviews: reviews
     });
 }
 
+exports.getRestaurantReviews = async (req, res, next) => {
+    //debug
+    console.log('\ngetRestaurantPortalReviews')
+
+    //variables
+    let userEmail = res.locals.userEmail;
+    let restaurantUrl = res.locals.restaurantUrl;
+    let reviews = await Review.fetchAllByRestaurantUrl(restaurantUrl);
+
+    //render page
+    res.render('restaurantPortal/reviews', { 
+        reviews: reviews
+    })
+}
+
 exports.getRestaurantSettings = async (req, res, next) => {
-    console.log('\ngetRestaurantPortalSettings');
-    var userEmail = res.locals.userEmail;
-    var restaurantUrl = res.locals.restaurantUrl;
+    //debug
+    console.log('\ngetRestaurantPortalSettings')
+
+    //variables
+    let userEmail = res.locals.userEmail;
+    let restaurantUrl = res.locals.restaurantUrl;
     let loginCookie = req.get('Cookie');
     let cookieId = parseLoginCookie(loginCookie);
+    let restaurant = await Restaurant.findByUrl(restaurantUrl);
+    let user = await User.findByCookieIdReturnUserObject(cookieId);
 
-    var restaurant = await Restaurant.findByUrl(restaurantUrl);
-    var user = await User.findByCookieIdReturnUserObject(cookieId);
-
-    //logged in user
-    if(user != null)
+    //render page
+    if(user != null) //logged in user
     {
-        res.render('restaurantPortal/settings', 
-        {
+        res.render('restaurantPortal/settings', {
             user: user,
             restaurant: restaurant,
-
             name: user.name,
             email: user.email,
             address: user.address,
             phone: user.phone
-        });
+        })
     }
-
     else
     {
         res.redirect('/error');
@@ -208,49 +174,50 @@ exports.getRestaurantSettings = async (req, res, next) => {
 }
 
 exports.getRestaurantLogout = async (req, res, next) => {
+    //debug
     console.log('\ngetRestaurantPortalLogout');
     console.log('postLogout >');
-    var userEmail = res.locals.userEmail;
-    var restaurantUrl = res.locals.restaurantUrl;
 
- 
+    //variables
+    let userEmail = res.locals.userEmail;
+    let restaurantUrl = res.locals.restaurantUrl;
     let logoutSuccessful = 1;
     let logoutFailed = 0;
     let loginCookie = req.get('Cookie');
     let cookieId = parseLoginCookie(loginCookie);
     
-
+    //render page
     User.logout(loginCookie).then(result => {
         if(result == logoutSuccessful)
         {
             console.log('logout succesful')
             res.setHeader('Set-Cookie', 'loginCookie="";expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/');
             res.redirect('/');
-        }
-                        
+        }   
         else
         {
             res.redirect('/restaurantPortal');
         }
 
     })
-    
 }
 
 exports.postRestaurantUpdateMenu = async (req, res, next) => {
-    console.log('postRestaurantPortalUpdateMenu');
+    //debug
+    console.log('postRestaurantPortalUpdateMenu')
 
-    var owner = res.locals.userEmail;
-    var img = JSON.parse(req.body.inputAllImg);
-    var phone = JSON.parse(req.body.inputAllPhone);
-    var address = JSON.parse(req.body.inputAllAddress);
-    var description = JSON.parse(req.body.inputAllDescription);
-    var hours = JSON.parse(req.body.inputAllHours);
-    var types = JSON.parse(req.body.inputAllTypes);
-    var categories = JSON.parse(req.body.inputAllCategories);
-    var items = JSON.parse(req.body.inputAllItems);
+    //variables
+    let owner = res.locals.userEmail;
+    let img = JSON.parse(req.body.inputAllImg);
+    let phone = JSON.parse(req.body.inputAllPhone);
+    let address = JSON.parse(req.body.inputAllAddress);
+    let description = JSON.parse(req.body.inputAllDescription);
+    let hours = JSON.parse(req.body.inputAllHours);
+    let types = JSON.parse(req.body.inputAllTypes);
+    let categories = JSON.parse(req.body.inputAllCategories);
+    let items = JSON.parse(req.body.inputAllItems);
     
-    var updateRestaurant = await Restaurant.updateMenu(
+    let updateRestaurant = await Restaurant.updateMenu(
         owner,
         hours,
         description,
@@ -262,93 +229,88 @@ exports.postRestaurantUpdateMenu = async (req, res, next) => {
         types
     );
 
-    res.redirect("/restaurantPortal/menu/edit");
+    //render page
+    res.redirect("/restaurantPortal/menu/edit")
 }
 
 exports.postRestaurantMenuListed = async (req, res, next) => {
-    console.log('postRestaurantPortalMenuListed');
+    //debug
+    console.log('postRestaurantPortalMenuListed')
     console.log(req.body);
     console.log(res.locals.userEmail);
 
-    var owner = res.locals.userEmail;
-    var value = req.body.menuListed;
+    //variables
+    let owner = res.locals.userEmail;
+    let value = req.body.menuListed;
     
     if(value == "true")
     {
         value = true;
     }
-
     else if(value == "false")
     {
         value = false;
     }
 
-    var updateRestaurant = await Restaurant.menuListed(owner, value);
+    let updateRestaurant = await Restaurant.menuListed(owner, value)
 
+    //render page
     res.redirect('/restaurantPortal/settings');
 }
 
 exports.postRestaurantMenuOnline = async (req, res, next) => {
-    console.log('postRestaurantPortalMenuOnline');
+    //debug
+    console.log('postRestaurantPortalMenuOnline')
 
-    var owner = res.locals.userEmail;
-    var value = req.body.menuOnline;
+    //variables
+    let owner = res.locals.userEmail;
+    let value = req.body.menuOnline;
         
     if(value == "true")
     {
         value = true;
     }
-
     else if(value == "false")
     {
         value = false;
     }
 
-    var updateRestaurant = await Restaurant.menuOnline(owner, value);
+    let updateRestaurant = await Restaurant.menuOnline(owner, value);
 
-    res.redirect('/restaurantPortal/settings');
+    //render page
+    res.redirect('/restaurantPortal/settings')
 }
 
 exports.postRestaurantWelcomeMessage = async (req, res, next) => {
-    console.log('postRestaurantPortalWelcomeMessage');
+    //debug
+    console.log('postRestaurantPortalWelcomeMessage')
 
-    var owner = res.locals.userEmail;
-    var value = req.body.welcomeMessage;
-    var page = req.body.page;
+    //variables
+    let owner = res.locals.userEmail;
+    let value = req.body.welcomeMessage;
+    let page = req.body.page;
         
-    if(value == "true")
-    {
-        value = true;
-    }
+    if(value == "true") { value = true }
+    else if(value == "false") { value = false }
 
-    else if(value == "false")
-    {
-        value = false;
-    }
+    let updateRestaurant = await Restaurant.welcomeMessage(owner, value)
 
-    var updateRestaurant = await Restaurant.welcomeMessage(owner, value);
-
-    if(page == 'home')
-    {
-        res.redirect('/restaurantPortal');
-    }
-
-    else
-    {
-        res.redirect('/restaurantPortal/settings');
-    }
-
+    //render page
+    if(page == 'home') { res.redirect('/restaurantPortal') }
+    else { res.redirect('/restaurantPortal/settings') }
 }
 
-
 exports.postOrderUpdate = async (req, res, next) => {
-    console.log('\npostOrderUpdate');
+    //debug
+    console.log('\npostOrderUpdate')
 
+    //variables
     orderId = req.body.orderId;
     status = req.body.status;
-    estimatedCompletionTime = req.body.estimatedTime;
+    estimatedCompletionTime = req.body.estimatedTime
 
-    var order = await Order.updateOne(orderId, status, estimatedCompletionTime);
+    let order = await Order.updateOne(orderId, status, estimatedCompletionTime)
 
-    res.redirect('back');
+    //render page
+    res.redirect('back')
 }

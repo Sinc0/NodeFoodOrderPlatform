@@ -1,58 +1,39 @@
+//variables
 const Restaurant = require('../models/restaurant');
 const User = require('../models/user');
 const Order = require('../models/order');
 const Review = require('../models/review');
 const Admin = require('../models/admin');
 const stripe = require('stripe')('sk_test_51HEENaLFUjzCbJftCmqLgpLjLGgjY1OOI81cAAzEBmozVIetOISREohGCuuJq55KX3FGhFHvx9FENcU2zRdrIGmn00wIaynLwu');
-const paypal = require('@paypal/checkout-server-sdk');
+// const paypal = require('@paypal/checkout-server-sdk');
 
-
-
-//******* functions *******
+//functions
 function parseLoginCookie(cookieId)
 {
-    var findLoginCookie = cookieId;
-
-    if(findLoginCookie == null || findLoginCookie == 'loginCookie=')
-    {
-        return null;
-    }
+    let findLoginCookie = cookieId;
+    let regexFindLoginCookieId = /(?!\sloginCookie=id:)\d.\d*(?=email)/g;
+    let loginCookieId = findLoginCookie.match(regexFindLoginCookieId);
+    //let regexFindLoginCookieEmail = /(?!email:)[\w\d]*@.*\.\w*/g;
+    //let loginCookieEmail = findLoginCookie.match(regexFindLoginCookieEmail);
     
-    var regexFindLoginCookieId = /(?!\sloginCookie=id:)\d.\d*(?=email)/g;
+    cookieId = parseFloat(loginCookieId);
 
-    if(regexFindLoginCookieId == null)
-    {
-        return null;
-    }
+    if(findLoginCookie == null || findLoginCookie == 'loginCookie=') { return null }
+    if(regexFindLoginCookieId == null) { return null }
 
-    var loginCookieId = findLoginCookie.match(regexFindLoginCookieId);
-    //var regexFindLoginCookieEmail = /(?!email:)[\w\d]*@.*\.\w*/g;
-    //var loginCookieEmail = findLoginCookie.match(regexFindLoginCookieEmail);
-
-    var cookieId = parseFloat(loginCookieId);
-    //console.log(String(loginCookieId));
-    //console.log(String(loginCookieEmail))
-
-    if(cookieId != null)
-    {
-        return cookieId;
-    }
-
-    else
-    {
-        return null;
-    }
+    if(cookieId != null) { return cookieId }
+    else { return null }
 }
 
-
-
-//******* uses login validation *******
+//exports
 exports.getRestaurants = (req, res, next) => {
     console.log('getRestaurants');
+
+    //variables
     let validation = res.locals.validation;
 
-    //logged in user
-    if(validation.status == true)
+    //render page
+    if(validation.status == true) //logged in user
     {
         Restaurant.fetchAll()
         .then(restaurants => {
@@ -63,40 +44,30 @@ exports.getRestaurants = (req, res, next) => {
                 path: '/restaurants',
                 pageTitle: 'All Restaurants'
 
-            });
+            })
         })
         .catch(err => console.log(err));
     }
-
-    //anonymous user
-    else
+    else //anonymous user
     {
-        res.redirect('/');
+        res.redirect('/')
     }
     
 }
 
 exports.getRestaurantDetail = async (req, res, next) => {
-    console.log('getRestaurantDetail >');
-    const restaurantUrl = req.params.restaurantUrl;
-    console.log(restaurantUrl);
+    let restaurantUrl = req.params.restaurantUrl
+    let validation = res.locals.validation
 
-    let validation = res.locals.validation;
+    console.log('getRestaurantDetail >')
+    console.log(restaurantUrl)
     
-    if(validation == undefined)
-    {
-        validationStatus = false;
-    }
+    if(validation == undefined) { validationStatus = false }
+    else { validationStatus = validation.status }
 
-    else
-    {
-        validationStatus = validation.status;
-    }
+    let restaurant = await Restaurant.findByUrl(restaurantUrl);
 
-    var restaurant = await Restaurant.findByUrl(restaurantUrl);
-
-    //logged in user
-    if(validationStatus == true)
+    if(validationStatus == true) //logged in user
     {
         if(restaurant != null)
         {   
@@ -108,18 +79,14 @@ exports.getRestaurantDetail = async (req, res, next) => {
                 restaurantImage: "",
                 restaurantUrl: restaurantUrl,
                 path: '/restaurants'
-            });
+            })
         }
-
         else
         {
-            res.redirect('/');
+            res.redirect('/')
         }
-
     }
-
-    //anonymous user
-    else
+    else //anonymous user
     {
         if(restaurant != null)
         {   
@@ -131,89 +98,69 @@ exports.getRestaurantDetail = async (req, res, next) => {
                 restaurantImage: "",
                 restaurantUrl: restaurantUrl,
                 path: '/restaurants'
-            });
+            })
         }
-        
         else
         {
             res.redirect('/');
         }
-
     }
-
 }
 
 exports.getIndex = async (req, res, next) => {
-    console.log('getIndex\n');
-    console.log(req.ip);
-    console.log(req.connection.remoteAddress);
-    console.log(req.socket.remoteAddress);
-    console.log(req.headers['x-forwarded-for']);
+    console.log('getIndex\n')
+    console.log(req.ip)
+    console.log(req.connection.remoteAddress)
+    console.log(req.socket.remoteAddress)
+    console.log(req.headers['x-forwarded-for'])
 
-    let validation = res.locals.validation;
-    let email = res.locals.userEmail;
+    let validation = res.locals.validation
+    let email = res.locals.userEmail
 
-    //user is admin
-    if(validation.status == true && validation.isAdmin == true)
+    if(validation.status == true && validation.isAdmin == true) //user is admin
     {
-        res.render('user/index', 
-        { 
+        res.render('user/index', { 
             pageTitle: 'Home',
             path: '/',
             admin: validation.isAdmin,
             loggedIn: true,
-        });
+        })
     }
-
-    //logged in user
-    else if(validation.status == true)
+    else if(validation.status == true) //logged in user
     {
-        var adminPosts = await Admin.fetchAllPosts()
+        let adminPosts = await Admin.fetchAllPosts()
 
-        res.render('user/index', 
-        { 
+        res.render('user/index', { 
             pageTitle: 'Home',
             path: '/',
             admin: false,
             loggedIn: true,
             adminPosts: adminPosts
-        });
+        })
     }
-
-    //anonymous user
-    else
+    else //anonymous user
     {
-        res.render('user/index', 
-        { 
+        res.render('user/index', { 
             pageTitle: 'Food Ordering Platform',
             path: '/',
             admin: false,
             loggedIn: false,
-        });
+        })
     }
-    
 }
 
 exports.getRestaurantList = async (req, res, next) => {
-    console.log('getRestaurantList\n');
-    let validation = res.locals.validation;
-    let validationStatus = null;
-    
-    if(validation == undefined)
-    {
-        validationStatus = false;
-    }
+    console.log('getRestaurantList\n')
 
-    else
-    {
-        validationStatus = validation.status;
-    }
+    let validation = res.locals.validation
+    let validationStatus = null
+    let restaurants = await Restaurant.fetchAll()
+    let reviews = await Review.fetchAll()
     
-    var restaurants = await Restaurant.fetchAll();
-    var reviews = await Review.fetchAll();
+    if(validation == undefined) { validationStatus = false }
+    else { validationStatus = validation.status }
     
-    //logged in user
-    if(validationStatus == true)
+    if(validationStatus == true) //logged in user
     {
         res.render('user/restaurants', {
             admin: validation.isAdmin,
@@ -222,11 +169,9 @@ exports.getRestaurantList = async (req, res, next) => {
             restaurants: restaurants,
             reviews: reviews,
             path: '/restaurants'
-        });
+        })
     }
-
-    //anon user
-    else
+    else  //anon user
     {
         res.render('user/restaurants', {
             admin: false,
@@ -235,110 +180,99 @@ exports.getRestaurantList = async (req, res, next) => {
             restaurants: restaurants,
             reviews: reviews,
             path: '/restaurants'
-        });
+        })
     }       
-    
 }
 
 exports.getOrders = (req, res, next) => {
-    console.log('getOrders');
-    let validation = res.locals.validation;
-    let userEmail = res.locals.userEmail;
+    console.log('getOrders')
 
-    //logged in user
-    if(validation.status == true)
+    let validation = res.locals.validation
+    let userEmail = res.locals.userEmail
+
+    if(validation.status == true) //logged in user
     {
         Order.FindByUser(userEmail).then(orders => {
-            res.render('user/orders', 
-            {
+            res.render('user/orders', {
                 admin: validation.isAdmin,
                 loggedIn: true,
                 orders: orders,
                 path: '/orders',
                 pageTitle: 'Orders'
-            });
+            })
         })
-
     }
-
-    //anonymous user
-    else
+    else //anonymous user
     {
-        res.render('user/index', 
-        { 
+        res.render('user/index', { 
             pageTitle: 'Home',
             path: '/',
             admin: false,
             loggedIn: false,
-        });
+        })
     }
 }
 
 exports.postOrder = async (req, res, next) => {
-    console.log('postOrder >');
-    let validation = res.locals.validation;
-    let userEmail = res.locals.userEmail;
-    
-    let cartItems = req.body.cartAllItems;
-    let totalPrice = req.body.cartTotalPrice;
-    let restaurant = req.body.restaurant;
-    let customerName = req.body.customerName;
-    let customerPhone = req.body.customerPhone;
-    let customerAddress = req.body.customerAddress;
-    let customerDelivery = req.body.customerDelivery;
-    let customerComment = req.body.customerComment;
-    let orderProducts = JSON.parse(cartItems);
+    console.log('postOrder >')
 
-    //logged in user
-    if(validation.status == true)
+    let validation = res.locals.validation
+    let userEmail = res.locals.userEmail
+    let cartItems = req.body.cartAllItems
+    let totalPrice = req.body.cartTotalPrice
+    let restaurant = req.body.restaurant
+    let customerName = req.body.customerName
+    let customerPhone = req.body.customerPhone
+    let customerAddress = req.body.customerAddress
+    let customerDelivery = req.body.customerDelivery
+    let customerComment = req.body.customerComment
+    let orderProducts = JSON.parse(cartItems)
+
+    
+    if(validation.status == true) //logged in user
     {
-         var r = await Restaurant.findByUrl(restaurant);
-         var restaurantTitle  = r.title;
-         var createOrder = await Order.createOrder(userEmail, orderProducts, totalPrice, customerComment, restaurant, customerName, customerPhone, customerAddress, customerDelivery, restaurantTitle);
-         var orderId = createOrder.ops[0]._id;
+         let r = await Restaurant.findByUrl(restaurant)
+         let restaurantTitle  = r.title
+         let createOrder = await Order.createOrder(userEmail, orderProducts, totalPrice, customerComment, restaurant, customerName, customerPhone, customerAddress, customerDelivery, restaurantTitle)
+         let orderId = createOrder.ops[0]._id;
 
          if(createOrder.insertedCount != null)
          {
-            console.log('create order: successful');
-            res.redirect("/order-process/" + orderId);
+            console.log('create order: successful')
+            res.redirect("/order-process/" + orderId)
          }
-        
          else
          {
-             console.log('create order: failed');
-             res.redirect('/');
+             console.log('create order: failed')
+             res.redirect('/')
          }
      }
-
-     //anonymous user
-     else
+     else //anonymous user
      {
-         res.redirect('/');
+         res.redirect('/')
      }
 }
 
 exports.getCheckout = async (req, res, next) => {
-    console.log('getCheckout');
-    let validation = res.locals.validation;
-    let email = res.locals.userEmail;    
-    
+    console.log('getCheckout')
+
+    let validation = res.locals.validation
+    let email = res.locals.userEmail
     let cartItems = req.body.cartAllItems;
     let customerComment = req.body.customerComment;
     let cartTotalPrice = req.body.cartTotalPrice;
     let restaurant = req.body.restaurant;
 
-    var user = await User.findByEmail(email);
+    let user = await User.findByEmail(email)
 
     const intent = await stripe.paymentIntents.create({
         amount: 100, //cartTotalPrice 
         currency: 'usd', 
-        
-        // Verify your integration in this guide by including this parameter
-        metadata: {integration_check: 'accept_a_payment'},
-    });
+        metadata: {integration_check: 'accept_a_payment'} // Verify your integration in this guide by including this parameter
+    })
     
-    //logged in user
-    if(validation.status == true && cartItems != null)
+    
+    if(validation.status == true && cartItems != null) //logged in user
     {
         res.render('user/checkout', 
         {
@@ -355,22 +289,20 @@ exports.getCheckout = async (req, res, next) => {
             amount: intent.amount,
             currency: intent.currency,
             client_secret: intent.client_secret 
-        });
+        })
     }
-
-    //anonymous user
-    else
+    else //anonymous user
     {
-        res.redirect('/');
+        res.redirect('/')
     }
 }
 
 exports.getLogout = (req, res, next) => {
-    console.log('getLogout');
-    let validation = res.locals.validation;
-            
-    //logged in user
-    if(validation.status == true)
+    console.log('getLogout')
+
+    let validation = res.locals.validation
+    
+    if(validation.status == true) //logged in user
     {
         res.render('user/logout', {
             admin: validation.isAdmin,
@@ -380,26 +312,24 @@ exports.getLogout = (req, res, next) => {
             statusText: ''
         })
     }
-
-    //anonymous user
-    else
+    else //anonymous user
     {
         res.redirect('/');
     }
 }
 
 exports.postLogout = (req, res, next) => {  
-    console.log('postLogout >');
-    let logoutSuccessful = 1;
-    let logoutFailed = 0;
-    let loginCookie = req.get('Cookie');
-    let cookieId = parseLoginCookie(loginCookie);
-    let validation = res.locals.validation;
+    console.log('postLogout >')
 
-    res.setHeader('Set-Cookie', 'loginCookie="";expires=Thu, 01 Jan 1970 00:00:01 GMT;');
+    let logoutSuccessful = 1
+    let logoutFailed = 0
+    let loginCookie = req.get('Cookie')
+    let cookieId = parseLoginCookie(loginCookie)
+    let validation = res.locals.validation
+
+    res.setHeader('Set-Cookie', 'loginCookie="";expires=Thu, 01 Jan 1970 00:00:01 GMT;')
     
-    //logged in user
-    if(validation.status == true)
+    if(validation.status == true) //logged in user
     {
         User.logout(loginCookie).then(result => {
             if(result == logoutSuccessful)
@@ -407,43 +337,38 @@ exports.postLogout = (req, res, next) => {
                 console.log('logout succesful')
                 res.redirect('/');
             }
-    
             else
             {
                 console.log('logout failed')
-                res.render('user/logout', 
-                { 
+                res.render('user/logout', { 
                     pageTitle: 'Logout',
                     path: '/logout',
                     statusText: 'logout failed, try again in a few minutes'
                 })
             }
-        });
+        })
     }
-
     else
     {
-        res.redirect('/');
+        res.redirect('/')
     }
-
 }
 
 exports.getProfile = async (req, res, next) => {
-    console.log('getProfile');
+    console.log('getProfile')
     
-    let validation = res.locals.validation;
-    let userEmail = res.locals.userEmail;
-    let loginCookie = req.get('Cookie');
-    let cookieId = parseLoginCookie(loginCookie);
-    let update = req.query.update;
+    let validation = res.locals.validation
+    let userEmail = res.locals.userEmail
+    let loginCookie = req.get('Cookie')
+    let cookieId = parseLoginCookie(loginCookie)
+    let update = req.query.update
 
-    var user = await User.findByCookieIdReturnUserObject(cookieId);
+    let user = await User.findByCookieIdReturnUserObject(cookieId)
 
     //logged in user
     if(validation.status == true)
     {
-        res.render('user/profile', 
-        { 
+        res.render('user/profile', { 
             admin: validation.isAdmin,
             loggedIn: true,
             pageTitle: 'Profile',
@@ -453,102 +378,87 @@ exports.getProfile = async (req, res, next) => {
             address: user.address,
             phone: user.phone,
             update: update
-        });
+        })
     }
 
     //anon user
     else
     {
-        res.render('user/index', 
-        { 
+        res.render('user/index', { 
             pageTitle: 'Home',
             path: '/',
             admin: false,
             loggedIn: false,
-        });
+        })
     }
 }
 
-
-
-//******* no validation *******
 exports.postRegister = (req, res, next) => {
-    console.log('\npostRegister >');
+    console.log('\npostRegister >')
     
-    const username = req.body.nameCustomer;
-    const email = req.body.emailCustomer;
-    const password = req.body.passwordCustomer;
+    let username = req.body.nameCustomer
+    let email = req.body.emailCustomer
+    let password = req.body.passwordCustomer
 
     User.register(email, username, password).then(result => {
-
-            if(result == 'registration successful')
-            {
-                res.render('user/login', 
-                { 
-                    pageTitle: 'Login',
-                    path: '/login',
-                    statusText: 'registration successful, login below'
-                });
-            }
-
-            else if(result == 'username is taken')
-            {
-                console.log('result: ' + result + '\n')
-
-                res.render('user/register', 
-                {   
-                    
-                    pageTitle: 'Register',
-                    path: '/register',
-                    statusText: result
-                });
-            }
-
-            else if(result == 'email is taken')
-            {
-                console.log('result: ' + result + '\n')
-
-                res.render('user/register', 
-                { 
-                    pageTitle: 'Register',
-                    path: '/register',
-                    statusText: result
-                });
-            }
-
-            else
-            {
-                console.log('result: ' + 'database error')
-
-                res.render('user/register', 
-                { 
-                    pageTitle: 'Register',
-                    path: '/register',
-                    statusText: 'database error, try again in a few minutes'
-                });   
-            }
-        });
+        if(result == 'registration successful')
+        {
+            console.log('result: ' + result + '\n')
+            res.render('user/login', { 
+                pageTitle: 'Login',
+                path: '/login',
+                statusText: 'registration successful, login below'
+            })
+        }
+        else if(result == 'username is taken')
+        {
+            console.log('result: ' + result + '\n')
+            res.render('user/register', {   
+                
+                pageTitle: 'Register',
+                path: '/register',
+                statusText: result
+            })
+        }
+        else if(result == 'email is taken')
+        {
+            console.log('result: ' + result + '\n')
+            res.render('user/register', { 
+                pageTitle: 'Register',
+                path: '/register',
+                statusText: result
+            })
+        }
+        else
+        {
+            console.log('result: ' + 'database error')
+            res.render('user/register', { 
+                pageTitle: 'Register',
+                path: '/register',
+                statusText: 'database error, try again in a few minutes'
+            })
+        }
+    })
 }
 
 exports.postRegisterRestaurant = async (req, res, next) => {
-    console.log('\npostRegisterRestaurant >');
+    console.log('\npostRegisterRestaurant >')
 
-    var email = req.body.emailRestaurant;
-    var address = req.body.addressRestaurant;
-    var phone = req.body.phoneRestaurant;
-    var owner = req.body.ownerRestaurant;
-    var city = req.body.city;
-    var restaurantName = req.body.nameRestaurant;
-    var companyIdNumber = req.body.companyIdNumberRestaurant;
-    var password = req.body.passwordRestaurant;
+    let email = req.body.emailRestaurant
+    let address = req.body.addressRestaurant
+    let phone = req.body.phoneRestaurant
+    let owner = req.body.ownerRestaurant
+    let city = req.body.city
+    let restaurantName = req.body.nameRestaurant
+    let companyIdNumber = req.body.companyIdNumberRestaurant
+    let password = req.body.passwordRestaurant
     
-    var registerRestaurant = await User.registerRestaurant(email, address, phone, owner, restaurantName, companyIdNumber, password, city);
-    var result = registerRestaurant;
+    let registerRestaurant = await User.registerRestaurant(email, address, phone, owner, restaurantName, companyIdNumber, password, city)
+    let result = registerRestaurant
 
     if(result == 'registration successful')
     {
-        res.render('user/login', 
-        { 
+        res.render('user/login', { 
             pageTitle: 'Login',
             path: '/login',
             statusText: 'registration successful'
@@ -557,29 +467,26 @@ exports.postRegisterRestaurant = async (req, res, next) => {
 
     else if(result == 'email is taken')
     {
-        res.render('user/register', 
-        { 
+        res.render('user/register', { 
             pageTitle: 'Register',
             path: '/register',
             statusText: 'email is taken, try again with another email'
-        });
+        })
     }
 
     else
     {
-        res.render('user/register', 
-        { 
+        res.render('user/register', { 
             pageTitle: 'Register',
             path: '/register',
             statusText: 'database error, try again in a few minutes'
-        });   
+        })   
     }
-        
 }
 
 exports.getRegister = (req, res, next) => {
-    console.log('\nanon user >');
-    console.log('getRegister');
+    console.log('\nanon user >')
+    console.log('getRegister')
 
     res.render('user/register', {
         pageTitle: 'Register',
@@ -589,8 +496,8 @@ exports.getRegister = (req, res, next) => {
 }
 
 exports.getLogin = (req, res, next) => {
-    console.log('\nanon user >');
-    console.log('getLogin');
+    console.log('\nanon user >')
+    console.log('getLogin')
 
     res.render('user/login', {
         pageTitle: 'Login',
@@ -600,298 +507,277 @@ exports.getLogin = (req, res, next) => {
 }
 
 exports.postLogin = async (req, res, next) => {
-    console.log('\npostLogin >');
-    const email = req.body.email;
-    const password = req.body.password;
+    console.log('\npostLogin >')
+
+    let email = req.body.email
+    let password = req.body.password
     
     User.login(email, password).then(result => {
 
         if(result.statusText == 'login successful')
         {
-            console.log('login user: ' + result.email + ' successful');
+            console.log('login user: ' + result.email + ' successful')
 
             Restaurant.findByEmail(result.email).then(restaurantCheck => {
                 if(restaurantCheck != null)
                 {
-                    var cookie = req.get('Cookie');
+                    let cookie = req.get('Cookie')
                     
-                    res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';path=/');
+                    res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';path=/')
                     //res.setHeader('Set-Cookie', 'loginCookie=' + uuidv4() + ';path=/')
-                    res.redirect('/restaurantPortal');
+                    res.redirect('/restaurantPortal')
                 }
     
                 else if(restaurantCheck == null)
                 {        
                     res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';path=/')
-                    res.redirect('/');
+                    res.redirect('/restaurants')
                 }
-            });          
+            })   
         }
 
         else if(result == 'email is invalid')
         {
-            console.log('login user: email is invalid');
-            res.render('user/login', 
-            { 
+            console.log('login user: email is invalid')
+            res.render('user/login', { 
                 pageTitle: 'Login',
                 path: '/login',
                 statusText: result
-            });
+            })
         }
 
         else if(result == 'invalid password')
         {
-            console.log('login user: invalid password');
-            res.render('user/login', 
-            { 
+            console.log('login user: invalid password')
+            res.render('user/login', { 
                 pageTitle: 'Login',
                 path: '/login',
                 statusText: result
-            });
+            })
         }
 
         else if(result == 'database error, try again in a few minutes')
         {
-            console.log('login user: database error');
-            res.render('user/login', 
-            { 
+            console.log('login user: database error')
+            res.render('user/login', { 
                 pageTitle: 'Login',
                 path: '/login',
                 statusText: result
-            });
+            })
         }
     })
-
 }
 
 exports.getStripe = async (req, res, next) => {
-    console.log('\ngetStripe');
+    console.log('\ngetStripe')
 
-    const intent = await stripe.paymentIntents.create({
+    let intent = await stripe.paymentIntents.create({
         amount: 100,
         currency: 'usd',
-        // Verify your integration in this guide by including this parameter
-        metadata: {integration_check: 'accept_a_payment'},
-      });
+        metadata: {integration_check: 'accept_a_payment'}  // Verify your integration in this guide by including this parameter
+    })
     
-    res.render('shop/stripe', 
-    { 
+    res.render('shop/stripe', { 
         amount: intent.amount,
         currency: intent.currency,
         client_secret: intent.client_secret 
-    });
-
+    })
 }
 
 exports.getOrderDetails = async (req, res, next) => {
-    console.log('\ngetOrderDetails');
-    let validation = res.locals.validation;
-    let userEmail = res.locals.userEmail;
+    console.log('\ngetOrderDetails')
 
-    var orderId = req.params.orderId;
+    let validation = res.locals.validation
+    let userEmail = res.locals.userEmail
+    let orderId = req.params.orderId
 
-    var order = await Order.findById(orderId);
+    let order = await Order.findById(orderId)
 
     if(order != null)
     {
         if(validation.status == true)
         {
-            res.render('user/order-details', 
-            { 
+            res.render('user/order-details', { 
                 admin: validation.isAdmin,
                 pageTitle: 'Order Details',
                 path: '/order-details',
                 loggedIn: true,
-                order: order,
-            });
+                order: order
+            })
         }
-
         else
         {
-            res.redirect('/');
+            res.redirect('/')
         }
     }
-
     else
     {
-        res.redirect('/');
+        res.redirect('/')
     }
-
 }
 
 exports.getOrderProcess = async (req, res, next) => {
-    console.log('\ngetOrderProcess');
+    console.log('\ngetOrderProcess')
     
-    var orderId = req.params.orderId;
-    var order = await Order.findById(orderId);
+    let orderId = req.params.orderId
+    let order = await Order.findById(orderId)
 
     if(order != null && order.status == "unconfirmed")
     {
-        res.render('user/order-process', 
-        { 
+        res.render('user/order-process', { 
             order: order
-        });
+        })
     }
-
     else
     {
-        res.redirect('/');
+        res.redirect('/')
     }
-
 }
 
 exports.postWebhook = (req, res, next) => {
-    console.log('\npostWebhook Test');
+    console.log('\npostWebhook Test')
 
-    let event = req.body;
+    let event = req.body
 
     // Handle the event
     if(event.type == 'payment_intent.succeeded') 
     {
-        const paymentIntent = event.data.object;
-        console.log('PaymentIntent was successful!');
+        const paymentIntent = event.data.object
+        console.log('PaymentIntent was successful!')
         // Return a 200 response to acknowledge receipt of the event  
-        res.json({received: true});
+        res.json({received: true})
     }
-
     else if(event.type == 'payment_method.attached')
     {
-        const paymentMethod = event.data.object;
-        console.log('PaymentMethod was attached to a Customer!');
+        const paymentMethod = event.data.object
+        console.log('PaymentMethod was attached to a Customer!')
         // Return a 200 response to acknowledge receipt of the event  
-        res.json({received: true});
+        res.json({received: true})
     }
-
     else
     {
         // Unexpected event type
-        return res.status(400).end();   
+        return res.status(400).end()   
     }
-  
 }
 
 exports.postUserUpdateCredentials = async (req, res, next) => {
-    console.log('\npostUserUpdateCredentials Test');
+    console.log('\npostUserUpdateCredentials Test')
     
-    let loginCookie = req.get('Cookie');
-    let cookieId = parseLoginCookie(loginCookie);
-    var email = req.body.email;
-    var name = req.body.name;
-    var phone = req.body.phone;
-    var address = req.body.address;
+    let loginCookie = req.get('Cookie')
+    let cookieId = parseLoginCookie(loginCookie)
+    let email = req.body.email
+    let name = req.body.name
+    let phone = req.body.phone
+    let address = req.body.address
     
-    var updateUser = await User.updateCredentials(email, name, address, phone);
+    let updateUser = await User.updateCredentials(email, name, address, phone)
 
-    res.redirect('/profile');
+    res.redirect('/profile')
 }
 
 exports.postUserUpdatePassword = async (req, res, next) => {
-    console.log('\npostUserUpdatePassword Test');
+    console.log('\npostUserUpdatePassword Test')
 
-    let loginCookie = req.get('Cookie');
-    let cookieId = parseLoginCookie(loginCookie);
-    var email = req.body.email;
-    var oldPassword = req.body.oldPassword;
-    var newPassword = req.body.newPassword;
+    let loginCookie = req.get('Cookie')
+    let cookieId = parseLoginCookie(loginCookie)
+    let email = req.body.email
+    let oldPassword = req.body.oldPassword
+    let newPassword = req.body.newPassword
 
-    var user = await User.findByEmail(email);
+    let user = await User.findByEmail(email);
     
     //check old password
     if(user.password == oldPassword)
     {
-        var updatePassword = await User.updatePassword(email, newPassword);
-        res.redirect('/profile?update=successful');
+        let updatePassword = await User.updatePassword(email, newPassword)
+        res.redirect('/profile?update=successful')
     }
-
     else
     {
-        res.redirect('/profile?update=oldpasswordincorrect');
+        res.redirect('/profile?update=oldpasswordincorrect')
     }
-
 }
 
 exports.postRestaurantReview = async (req, res, next) => {
-    console.log('postUserRestaurantReview');
+    console.log('postUserRestaurantReview')
 
-    var orderId = req.body.orderId;
-    var restaurant = req.body.restaurant;
-    var user = res.locals.userEmail;
-    var date = new Date();
-    var name = req.body.customerName;
-    var rating = req.body.rating;
-    var items = req.body.items;
-    var comment = req.body.comment.toLowerCase();
-    reviewObject = {date: date, name: name, rating: rating, items: null, comment: comment};
+    let orderId = req.body.orderId
+    let restaurant = req.body.restaurant
+    let user = res.locals.userEmail
+    let date = new Date()
+    let name = req.body.customerName
+    let rating = req.body.rating
+    let items = req.body.items
+    let comment = req.body.comment.toLowerCase()
+    let reviewObject = {date: date, name: name, rating: rating, items: null, comment: comment}
 
-    var checkIfOrderReviewExist = await Review.findByOrderId(orderId);
+    let checkIfOrderReviewExist = await Review.findByOrderId(orderId)
 
     if(checkIfOrderReviewExist == null)
     {
-        var review = await Review.create(user, restaurant, reviewObject, orderId);
-        var update = await Order.updateWithReview(orderId, reviewObject);
+        let review = await Review.create(user, restaurant, reviewObject, orderId)
+        let update = await Order.updateWithReview(orderId, reviewObject)
     }
 
     else if(checkIfOrderReviewExist != null)
     {
-        var review = await Review.update(user, restaurant, reviewObject, orderId);
-        var update = await Order.updateWithReview(orderId, reviewObject);
+        let review = await Review.update(user, restaurant, reviewObject, orderId)
+        let update = await Order.updateWithReview(orderId, reviewObject)
     }
 
     res.redirect("/orders");
-    
 }
 
 exports.getAbout = (req, res, next) => {
-    console.log('\nanon user >');
-    console.log('getAbout');
+    console.log('\nanon user >')
+    console.log('getAbout')
 
     res.render('user/about', {})
 }
 
 exports.getContact = (req, res, next) => {
-    console.log('\nanon user >');
-    console.log('getContact');
+    console.log('\nanon user >')
+    console.log('getContact')
 
     res.render('user/contact', {})
 }
 
+// exports.getTest = async (req, res, next) => {
+//     console.log('getTest')
 
+//     res.render('test/test.ejs', { })
+// }
 
-//tests
-exports.getTest = async (req, res, next) => {
-    console.log('getTest');
+// exports.getGoogleMapsApiTest = async (req, res, next) => {
+//     console.log('getTest')
+//     console.log(req.body)
+//     console.log(res.locals.userEmail)
 
-    res.render('test/test.ejs', { });
-}
+//     res.render('test/googleMapsApi.ejs', 
+//     { 
 
-exports.getGoogleMapsApiTest = async (req, res, next) => {
-    console.log('getTest');
-    console.log(req.body);
-    console.log(res.locals.userEmail);
-
-    res.render('test/googleMapsApi.ejs', 
-    { 
-
-    });
-}
+//     })
+// }
 
 exports.getPayPalCreateOrder = async (req, res, next) => {
-    console.log("getPayPalCreateOrder");
-    console.log(req.body);
+    console.log("getPayPalCreateOrder")
+    console.log(req.body)
 
-    var amount = "temp";
+    let amount = "temp"
 
     //Creating an environment
-    let clientId = "AVm4xAcY_8YjJjr-nN4_YYUrEx5N8K_-gvJP0jtZbFc_aqApF6pmZGs4i4xzbUNp77tsC3NT5zHmtBiP";
-    let clientSecret = "EKV9wYIfLMjnapE4Erg-9Z7AUE-yWmcj2TzcWmbthC8U8_BlyihIFKnMwAX-Ouu46R9nUwYjS2jHw0oz";
+    let clientId = "AVm4xAcY_8YjJjr-nN4_YYUrEx5N8K_-gvJP0jtZbFc_aqApF6pmZGs4i4xzbUNp77tsC3NT5zHmtBiP"
+    let clientSecret = "EKV9wYIfLMjnapE4Erg-9Z7AUE-yWmcj2TzcWmbthC8U8_BlyihIFKnMwAX-Ouu46R9nUwYjS2jHw0oz"
 
     //This sample uses SandboxEnvironment. In production, use LiveEnvironment
-    let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret);
-    let client = new paypal.core.PayPalHttpClient(environment);
+    let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret)
+    let client = new paypal.core.PayPalHttpClient(environment)
 
     //Construct a request object and set desired parameters
     //Here, OrdersCreateRequest() creates a POST request to /v2/checkout/orders
-    let request = new paypal.orders.OrdersCreateRequest();
+    let request = new paypal.orders.OrdersCreateRequest()
+
     request.requestBody(
         {
             "intent": "CAPTURE",
@@ -908,87 +794,75 @@ exports.getPayPalCreateOrder = async (req, res, next) => {
                 }
             ]
         }
-    );
+    )
 
     //Call API with your client and get a response for your call
     let createOrder = async function()
     {
-        let response = await client.execute(request);
-        console.log(`Response: ${JSON.stringify(response)}`);
+        let response = await client.execute(request)
+
+        console.log(`Response: ${JSON.stringify(response)}`)
         
         //If call returns body in response, you can get the deserialized version from the result attribute of the response.
-        console.log(`Order: ${JSON.stringify(response.result)}`);
-        var orderId = response.result.id;
-        var status = response.result.status;
-        var httpAdress = response.result.links[1].href;
-        console.log(response.result.id);
-        console.log(response.result.status);
-        console.log(response.result.links[1].href);
+        console.log(`Order: ${JSON.stringify(response.result)}`)
 
-        if(status === "CREATED")
-        {
-            res.redirect(httpAdress);
-        }
+        let orderId = response.result.id
+        let status = response.result.status
+        let httpAdress = response.result.links[1].href
 
-        else
-        {
-            res.redirect('/temp');
-        }
+        console.log(response.result.id)
+        console.log(response.result.status)
+        console.log(response.result.links[1].href)
+
+        if(status === "CREATED") { res.redirect(httpAdress) }
+        else { res.redirect('/temp') }
     }
 
     //Start
-    createOrder();
+    createOrder()
 }
 
 exports.getPayPalSuccess = async (req, res, next) => {
-    console.log("getPayPalSuccess");
-    console.log(req.query);
+    console.log("getPayPalSuccess")
+    console.log(req.query)
 
-    const payerID = req.query.PayerID;
-    console.log(payerID);
-    const token = req.query.token;
-    console.log(token);
-    var approvedOrderId = token;
+    let payerID = req.query.PayerID
+    let token = req.query.token
+    let approvedOrderId = token
+
+    console.log(payerID)
+    console.log(token)
 
     //Creating an environment
-    let clientId = "AVm4xAcY_8YjJjr-nN4_YYUrEx5N8K_-gvJP0jtZbFc_aqApF6pmZGs4i4xzbUNp77tsC3NT5zHmtBiP";
-    let clientSecret = "EKV9wYIfLMjnapE4Erg-9Z7AUE-yWmcj2TzcWmbthC8U8_BlyihIFKnMwAX-Ouu46R9nUwYjS2jHw0oz";
+    let clientId = "AVm4xAcY_8YjJjr-nN4_YYUrEx5N8K_-gvJP0jtZbFc_aqApF6pmZGs4i4xzbUNp77tsC3NT5zHmtBiP"
+    let clientSecret = "EKV9wYIfLMjnapE4Erg-9Z7AUE-yWmcj2TzcWmbthC8U8_BlyihIFKnMwAX-Ouu46R9nUwYjS2jHw0oz"
 
     //This sample uses SandboxEnvironment. In production, use LiveEnvironment
-    let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret);
-    let client = new paypal.core.PayPalHttpClient(environment);
+    let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret)
+    let client = new paypal.core.PayPalHttpClient(environment)
 
     let processOrder = async function(orderId) 
     {
-        request = new paypal.orders.OrdersCaptureRequest(orderId);
-        request.requestBody({});
+        request = new paypal.orders.OrdersCaptureRequest(orderId)
+        request.requestBody({})
 
         // Call API with your client and get a response for your call
-        let response = await client.execute(request);
-        console.log(`Response: ${JSON.stringify(response)}`);
+        let response = await client.execute(request)
+        console.log(`Response: ${JSON.stringify(response)}`)
 
         // If call returns body in response, you can get the deserialized version from the result attribute of the response.
-        console.log(`Capture: ${JSON.stringify(response.result)}`);
+        console.log(`Capture: ${JSON.stringify(response.result)}`)
         
-        // If payment successful
-        if(response.result.status === "COMPLETED")
-        {
-            res.redirect('/temp');
-        }
-
-        // If payment error
-        else
-        {
-            res.redirect('/temp');
-        }
+        
+        if(response.result.status === "COMPLETED") { res.redirect('/temp') } // If payment successful
+        else { res.redirect('/temp') } // If payment error
     }
 
-    let process = processOrder(token);
-
+    let process = processOrder(token)
 }
 
 exports.getPayPalCancel = async (req, res, next) => {
-    console.log("getPayPalCancel");
+    console.log("getPayPalCancel")
 
-    res.redirect('/');
+    res.redirect('/')
 }

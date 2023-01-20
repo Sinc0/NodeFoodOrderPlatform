@@ -1,3 +1,4 @@
+<!-- user/restuarants.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,103 +8,100 @@
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/mobile.css">
     <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
-    <script>
-        function displayRestaurantReviews(menuItemNumber)
-        {
-            var d = document.getElementById("restaurantsRestaurantReview#" + menuItemNumber);
-            var a = document.getElementById("restaurantMenuItem#" + menuItemNumber);
-            
-            if(d.style.display == "none")
-            {
-                d.style = "height: 250px; overflow-y: auto; border-bottom: 3px solid black; border-left: 3px solid black; border-right: 3px solid black;"
-                d.style.display = "block";
-            }
-
-            else if(d.style.display == "block")
-            {
-                d.style.display = "none";
-                a.style.marginBottom = "0px"
-            }
-
-        }
-
-        function setRestaurantNumberOfReviews(restaurantNumber, value)
-        {
-            var d = document.getElementById("restaurantReviewHeader#" + restaurantNumber);
-            var e = document.getElementById("restaurantReviewHeaderMobile#" + restaurantNumber);
-
-            if(value == 0)
-            {
-                d.innerHTML = "Reviews (0)";
-                d.onclick = "";
-                e.innerHTML = "Reviews (0)";
-                e.onclick = "";
-            }
-            
-            else
-            {
-                d.innerHTML = "Reviews (" + value + ")";
-                e.innerHTML = "Reviews (" + value + ")";
-            }
-        }
-
-        function setRestaurantRating(restaurantNumber, rating)
-        {
-            var checkIfNaN = isNaN(parseFloat(rating));
-            var d = document.getElementById("restaurantRating#" + restaurantNumber);
-
-            if(checkIfNaN == false)
-            {
-                rating = Number(rating).toFixed(1);
-                d.innerHTML = rating + " of 5";
-                d.hidden = false;
-            }
-
-            else
-            {
-                d.innerHTML = "Rating N/A";
-                d.hidden = false;
-            }
-        }
-
-        function searchBoxRestaurants(totalMenuItems)
-        {
-            var searchBoxInput = document.getElementById("searchBoxInput").value
-            var searchString = String(searchBoxInput).toLowerCase();
-            var countItems = 0;
-
-            for(var c = 1; c <= totalMenuItems; c++)
-            {
-                var menuItem = document.getElementById("restaurantMenuItem#" + c)
-                var menuItemSearchText = document.getElementById("restaurantMenuItemSearchText#" + c)
-
-                if(menuItemSearchText.innerHTML.toLowerCase().includes(searchString))
-                {
-                    //menuItem.style.opacity = "100%";
-                    menuItem.style.display = "block";
-                    countItems++;
-                }
-
-                else
-                {
-                    //menuItem.style.opacity = ".25";
-                    menuItem.style.display = "none";
-                }
-            }
-        }
-    </script>
 </head>
+
+<script>
+    function displayRestaurantReviews(menuItemNumber)
+    {
+        let d = document.getElementById("restaurantsRestaurantReview#" + menuItemNumber);
+        let a = document.getElementById("restaurantMenuItem#" + menuItemNumber);
+        
+        if(d.style.display == "none")
+        {
+            d.style = "height: 250px; overflow-y: auto; border-bottom: 3px solid black; border-left: 3px solid black; border-right: 3px solid black;"
+            d.style.display = "block";
+        }
+        else if(d.style.display == "block")
+        {
+            d.style.display = "none";
+            a.style.marginBottom = "0px"
+        }
+    }
+
+    function setRestaurantNumberOfReviews(restaurantNumber, value)
+    {
+        let d = document.getElementById("restaurantReviewHeader#" + restaurantNumber);
+        let e = document.getElementById("restaurantReviewHeaderMobile#" + restaurantNumber);
+
+        if(value == 0)
+        {
+            d.innerHTML = "Reviews (0)";
+            d.onclick = "";
+            e.innerHTML = "Reviews (0)";
+            e.onclick = "";
+        }
+        else
+        {
+            d.innerHTML = "Reviews (" + value + ")";
+            e.innerHTML = "Reviews (" + value + ")";
+        }
+    }
+
+    function setRestaurantRating(restaurantNumber, rating)
+    {
+        let checkIfNaN = isNaN(parseFloat(rating));
+        let d = document.getElementById("restaurantRating#" + restaurantNumber);
+
+        if(checkIfNaN == false)
+        {
+            rating = Number(rating).toFixed(1);
+            d.innerHTML = rating + " of 5";
+            d.hidden = false;
+        }
+        else
+        {
+            d.innerHTML = "Rating N/A";
+            d.hidden = false;
+        }
+    }
+
+    function searchBoxRestaurants(totalMenuItems)
+    {
+        let searchBoxInput = document.getElementById("searchBoxInput").value
+        let searchString = String(searchBoxInput).toLowerCase();
+        let countItems = 0;
+
+        for(let c = 1; c <= totalMenuItems; c++)
+        {
+            let menuItem = document.getElementById("restaurantMenuItem#" + c)
+            let menuItemSearchText = document.getElementById("restaurantMenuItemSearchText#" + c)
+
+            if(menuItemSearchText.innerHTML.toLowerCase().includes(searchString))
+            {
+                //menuItem.style.opacity = "100%";
+                menuItem.style.display = "block";
+                countItems++;
+            }
+            else
+            {
+                //menuItem.style.opacity = ".25";
+                menuItem.style.display = "none";
+            }
+        }
+    }
+</script>
+
+<style>
+    body { height: 100vh; background-color: #3c41d6; }    
+</style>
+
 <body id="body-restaurants">
-    <!-- admin view -->
-    <% if(admin != null && admin == true) { %>
+    <!-- nav menu -->
+    <% if(admin != null && admin == true) { %> <!-- admin view -->
         <%- include('../snippets/html_nav_menu_admin.ejs') %>
-    
-    <!-- logged in user view -->
-    <% } else if(loggedIn == true) { %>
+    <% } else if(loggedIn == true) { %> <!-- logged in user view -->
         <%- include('../snippets/html_nav_menu_logged_in.ejs') %>
-    
-    <!-- anon view -->
-    <% } else { %>
+    <% } else { %> <!-- anon view -->
         <%- include('../snippets/html_nav_menu_anon.ejs') %>
     <% } %>
 
