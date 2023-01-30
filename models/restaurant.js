@@ -44,7 +44,7 @@ class Restaurant
                     location: location
                 }
             }  )
-            .then(result => { return result /* console.log(result) */ })
+            .then(result => { return result })
             .catch(err => console.log(err));
     }
 
@@ -104,7 +104,7 @@ class Restaurant
                     type: types
                 }
             }  )
-            .then(result => { return result /* console.log(result) */ })
+            .then(result => { return result })
             .catch(err => console.log(err));
     }
 
@@ -118,7 +118,7 @@ class Restaurant
                     menuListed: value
                 }
             })
-            .then(result => { return result /* console.log(result) */ })
+            .then(result => { return result })
             .catch(err => console.log(err));
     }
 
@@ -133,7 +133,7 @@ class Restaurant
                     menuOnline: value
                 }
             })
-            .then(result => { return result /* console.log(result) */ })
+            .then(result => { return result })
             .catch(err => console.log(err));
     }
 
@@ -147,7 +147,7 @@ class Restaurant
                     welcomeMessage: value
                 }
             })
-            .then(result => { return result /* console.log(result) */ })
+            .then(result => { return result })
             .catch(err => console.log(err));
     }
 
@@ -157,7 +157,7 @@ class Restaurant
 
         return db.collection('restaurants')
         .deleteOne({_id: ObjectId(restaurantId)})
-        .then(result => {/* console.log(result); */ return result.deletedCount })
+        .then(result => { return result.deletedCount })
         .catch(err => console.log(err));
     }
 
@@ -169,7 +169,7 @@ class Restaurant
             .collection('restaurants')
             .find()
             .toArray()
-            .then(restaurants => {/* console.log(products) */; return restaurants;})
+            .then(restaurants => { return restaurants;})
             .catch(err => console.log(err));
     }
 
@@ -183,7 +183,6 @@ class Restaurant
             .then(product => {
                 if(product != null)
                 {
-                    console.log(product);
                     return product;
                 }
 

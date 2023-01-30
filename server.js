@@ -1,49 +1,43 @@
-//env
-const dotenv = require('dotenv')
-dotenv.config();
-
 //imports
-const path = require('path');
-const express = require('express');
-const bodyParser = require('body-parser');
-const helmet = require('helmet');
-const ws = require('ws').Server;
+const path = require('path')
+const express = require('express')
+const bodyParser = require('body-parser')
+const helmet = require('helmet')
+const ws = require('ws').Server
+const dotenv = require('dotenv')
+const app = express()
+const errorController = require('./controllers/error')
+const mongoConnect = require('./controllers/database').mongoConnect
+const routes = require("./routes.js")
+// const adminRoutes = require('./routes/admin.js');
+// const userRoutes = require('./routes/user.js');
+// const restaurantPortalRoutes = require('./routes/restaurantPortal.js');
 
-//internal
-const adminRoutes = require('./routes/admin.js');
-const userRoutes = require('./routes/user.js');
-const restaurantPortalRoutes = require('./routes/restaurantPortal.js');
-const errorController = require('./controllers/error');
-const mongoConnect = require('./controllers/database').mongoConnect;
-const app = express();
-
-//use
-app.use(helmet()); //secure http headers
-app.set('view engine', 'ejs'); //set templating engine
-app.set('views', 'views'); //set views folder
-app.use(express.static(path.join(__dirname, 'public'))); //makes public folder able to serve static files   
+//set
+dotenv.config()
+app.use(helmet()) //secure http headers
+app.set('view engine', 'ejs') //set templating engine
+app.set('views', 'views') //set views folder
+app.use(express.static(path.join(__dirname, 'public'))) //makes public folder able to serve static files   
+app.use(bodyParser.json()) //parsing
+app.use(bodyParser.raw()) //parsing
+app.use(bodyParser.text()) //parsing
+app.use(bodyParser.urlencoded({extended: false})) //parsing
 //app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use(bodyParser.json()); //parsing
-app.use(bodyParser.raw()); //parsing
-app.use(bodyParser.text()); //parsing
-app.use(bodyParser.urlencoded({extended: false})); //parsing
 
 //routes
+app.use(routes)
+app.use(errorController.get404ErrorPage)
 // app.use('/', (req, res, next) => { next(); });
-app.use(adminRoutes);
-app.use(userRoutes);
-app.use(restaurantPortalRoutes);
-
-//controllers
-app.use(errorController.get404ErrorPage);
-
-//******* start *******
+// app.use(adminRoutes);
+// app.use(userRoutes);
+// app.use(restaurantPortalRoutes);
 
 //connect db
-mongoConnect(() => {});
+mongoConnect(() => {})
 
 //connect websocket
-var webSocket = new ws({port: 65535});
+var webSocket = new ws({port: 65535})
 
 webSocket.on('connection', function(ws, req)
 {
@@ -55,13 +49,14 @@ webSocket.on('connection', function(ws, req)
     {
         webSocket.clients.forEach(function event(client)
         {
-            client.send(message);
+            client.send(message)
             //client.close();
-        });
-    });
-
-});
+        })
+    })
+})
 
 //start app
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000)
+
+//debugging
 //console.log(process.env);

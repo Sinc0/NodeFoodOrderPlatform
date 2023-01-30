@@ -23,7 +23,7 @@ function parseLoginCookie(cookieId)
     else { return null }
 }
 
-//exports
+//get
 exports.getRestaurantIndex = async (req, res, next) => {
     console.log('\ngetRetaurantPortalIndex');
     
@@ -33,7 +33,7 @@ exports.getRestaurantIndex = async (req, res, next) => {
     let restaurant = await Restaurant.findByUrl(restaurantUrl);
     
     //render page
-    res.render('restaurantPortal/index', { 
+    res.render('restaurant-index.ejs', { 
         restaurant: restaurant,
         restaurantUrl: restaurantUrl
     })
@@ -57,7 +57,7 @@ exports.getRestaurantOrdersHistory = async (req, res, next) => {
     let ordersDeclined = await Order.fetchAllDeclined(restaurantUrl);
 
     //render page
-    res.render('restaurantPortal/orders-history', {
+    res.render('restaurant-orders-history.ejs', {
         ordersAccept: ordersAccept,
         ordersCook: ordersCook,
         ordersCompleted: ordersCompleted,
@@ -77,7 +77,7 @@ exports.getRestaurantMenuShow = async (req, res, next) => {
 
     //render page
     if(restaurant != null) {   
-        res.render('restaurantPortal/menu-show', {
+        res.render('restaurant-menu-show.ejs', {
             admin: false,
             loggedIn: null,
             IsOpen: restaurant.open,
@@ -104,7 +104,7 @@ exports.getRestaurantMenuEdit = async (req, res, next) => {
     let restaurant = await Restaurant.findByUrl(restaurantUrl);
 
     //render page
-    res.render('restaurantPortal/menu-edit', { 
+    res.render('restaurant-menu-edit.ejs', { 
         restaurant: restaurant
     })
 }
@@ -121,7 +121,7 @@ exports.getRestaurantStats = async (req, res, next) => {
     var reviews = await Review.fetchAllByRestaurantUrl(restaurantUrl);
 
     //render page
-    res.render('restaurantPortal/statistics', {
+    res.render('restaurant-statistics.ejs', {
         orders: orders,
         restaurant: restaurant,
         reviews: reviews
@@ -138,7 +138,7 @@ exports.getRestaurantReviews = async (req, res, next) => {
     let reviews = await Review.fetchAllByRestaurantUrl(restaurantUrl);
 
     //render page
-    res.render('restaurantPortal/reviews', { 
+    res.render('restaurant-reviews.ejs', { 
         reviews: reviews
     })
 }
@@ -158,7 +158,7 @@ exports.getRestaurantSettings = async (req, res, next) => {
     //render page
     if(user != null) //logged in user
     {
-        res.render('restaurantPortal/settings', {
+        res.render('restaurant-settings.ejs', {
             user: user,
             restaurant: restaurant,
             name: user.name,
@@ -202,6 +202,8 @@ exports.getRestaurantLogout = async (req, res, next) => {
     })
 }
 
+
+//post
 exports.postRestaurantUpdateMenu = async (req, res, next) => {
     //debug
     console.log('postRestaurantPortalUpdateMenu')

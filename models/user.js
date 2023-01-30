@@ -257,7 +257,7 @@ class User
             .collection('users')
             .find()
             .toArray()
-            .then(users => {console.log(users); return users;})
+            .then(users => { return users; })
             .catch(err => console.log(err));
     }
 

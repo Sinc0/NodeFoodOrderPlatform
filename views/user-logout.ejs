@@ -1,0 +1,54 @@
+<!-- user/logout.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/mobile.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
+    <title><%= pageTitle %></title>
+</head>
+
+<style>
+    /*** elements ***/
+    body { height: 100vh; background-color: #3c41d6 }
+
+    /*** ids ***/
+    #title { margin-top: 26px; }
+    #main-logout { background-color: #f7f9f9; margin: auto; margin-top: 50px; width: 400px; text-align: center; border: 1px solid black; }
+    #main-logout button { display: inline-block; height: 30px; width: 75px; border-style: none; border: 1px solid black; }
+    #buttonNo { margin-bottom: 25px; }
+    #buttonYes { margin-top: 25px; margin-bottom: -1px; margin-left: -6px; }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        #main-logout { width: 90vw; margin-top: 10px; }
+    }
+</style>
+
+<body>
+    <!-- admin view -->
+    <% if(admin != null && admin == true) { %>
+        <%- include('nav-menu-admin.ejs') %>
+    
+    <!-- logged in user view -->
+    <% } else if(loggedIn == true) { %>
+        <%- include('nav-menu-user.ejs') %>
+    <% } %>
+    
+    <div id="main-logout">
+        <p><%=statusText %></p>
+        <h3 id="title">Are you sure you wanna logout?</h3>
+        
+        <div style="display: inline-block;">
+            <button id="buttonNo" class="btn" onclick="window.history.back()"><b>No</b></button>            
+        </div>
+        <div style="display: inline-block;">
+            <form action="/logout-post" method="POST">
+                <button id="buttonYes" class="btn" type="submit"><b>Yes</b></button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/mobile.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
+</head>
+
+<style>
+    /*** elements ***/
+    body { height: 100vh; background-color: #3c41d6 }
+    input 
+    { 
+        width: 382px;
+        margin: 0px;
+        padding: 7px 0px 7px 10px; 
+        font-size: 20px; 
+        font-weight: bold; 
+        text-align: left; 
+        color: white; 
+        border: 0px solid black;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.9);
+        background-color: black; 
+    }
+    input::placeholder { color: white; }
+    button 
+    { 
+        width: 392px; 
+        margin: 0px; 
+        padding: 10px; 
+        font-size: 16px; 
+        border-radius: 0%; 
+        border: 1px solid black;
+        background-color: white;
+    }
+
+    /*** ids ***/
+    #main-login {  margin: auto; width: 400px; text-align: center; }
+    #title { margin: 0px; margin-bottom: 20px; text-shadow: 1px 1px black; color: white; }
+    #buttonLogin { margin-top: -1px; }
+    #statusText { margin: 20px 0px 20px 0px; font-size: 20px; font-weight: bold; text-shadow: 1px 1px black; color: white; }
+    
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        input { width: 90vw; }
+        button { width: 100%; }
+
+        #main-login { width: 93vw; }
+    }
+</style>
+
+<body>
+    <%- include('nav-menu-anon.ejs') %>
+
+    <!-- login input -->
+    <div id="main-login">
+        <!-- <h3 id="title">Login Below</h3> -->
+
+        <p id="statusText"><%=statusText %></p>
+        
+        <form action="/login-post" method="POST">
+            <input required type="email" id="email" name="email" placeholder="Email" value="">
+            <input required type="password" id="password" name="password" placeholder="Password" value="">
+            <button id="buttonLogin" class="btn" type="submit"><b>Login</b></button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,3 +1,4 @@
+//imports
 const getDb = require('../controllers/database').getDb;
 const mongodb = require('mongodb');
 const ObjectId = mongodb.ObjectId;
@@ -201,7 +202,7 @@ class Order
             .collection("orders")
             .find()
             .toArray()
-            .then(orders => { /* { console.log(orders) */ return orders })
+            .then(orders => { return orders })
             .catch(err => console.log(err));
     }
 
@@ -213,7 +214,7 @@ class Order
             .collection("orders")
             .find({restaurantUrl: restaurantUrl})
             .toArray()
-            .then(orders => { /* { console.log(orders) */ return orders })
+            .then(orders => { return orders })
             .catch(err => console.log(err));
     }
 
@@ -225,7 +226,7 @@ class Order
             .collection("orders")
             .find({status: "unconfirmed", restaurantUrl: restaurantUrl})
             .toArray()
-            .then(orders => { /* { console.log(orders) */ return orders })
+            .then(orders => { return orders })
             .catch(err => console.log(err));
     }
 
@@ -237,7 +238,7 @@ class Order
             .collection("orders")
             .find({status: "confirmed", restaurantUrl: restaurantUrl})
             .toArray()
-            .then(orders => { /* { console.log(orders) */ return orders })
+            .then(orders => { return orders })
             .catch(err => console.log(err));
     }
 
@@ -249,7 +250,7 @@ class Order
             .collection("orders")
             .find({status: "declined", restaurantUrl: restaurantUrl})
             .toArray()
-            .then(orders => { /* { console.log(orders) */ return orders })
+            .then(orders => { return orders })
             .catch(err => console.log(err));
     }
 
@@ -261,7 +262,7 @@ class Order
             .collection("orders")
             .find({status: "completed", restaurantUrl: restaurantUrl})
             .toArray()
-            .then(orders => { /* { console.log(orders) */ return orders })
+            .then(orders => { return orders })
             .catch(err => console.log(err));
     }
 }

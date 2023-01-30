@@ -1,0 +1,671 @@
+<!-- user/restaurant-detail.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/restaurant.css">
+    <link rel="stylesheet" href="/css/mobile.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
+</head>
+
+<script src="/js/shortcuts.js"></script>
+<script>
+    //modals
+    function InformAnonOpen()
+    {
+        let modalBox = document.getElementById("informAnonModal");
+
+        modalBox.style.display = "block";
+    }
+
+    function InformAnonClose()
+    {
+        let modalBox = document.getElementById("informAnonModal");
+
+        modalBox.style.display = "none";
+    }
+
+    //cart
+    function clearCart()
+    {
+        localStorage.removeItem("cartItems");
+    }
+
+    function cartAllItems()
+    {
+        let cartItems = localStorage.getItem("cartItems");
+        let p = "";
+
+        cartItems = JSON.parse(cartItems);
+        
+        if(cartItems != null)
+        {
+            for(let c = cartItems.items.length - 1; c >= 0; c--)
+            {
+                p = "<p>" + "(" + cartItems.items[c].quantity + ") " + cartItems.items[c].name + " - " + "$" + (cartItems.items[c].quantity * cartItems.items[c].price); + "</p>"
+                let text = document.createElement("div");
+                text.innerHTML = p;
+                document.getElementById("checkoutCartItems").append(text);  
+            }
+
+            fillCartFormData();
+        }
+
+    }
+
+    function fillCartFormData()
+    {
+        let cartItems = localStorage.getItem("cartItems");
+        document.getElementById("cartAllItems").value = cartItems;
+
+        cartItems = localStorage.getItem("cartItems");
+        cartItems = JSON.parse(cartItems);
+
+        let cartItem = cartItems.items;
+        let totalPrice = null;
+
+        for(let c = 0; c < cartItems.items.length; c++)
+        {
+            totalPrice += (cartItem[c].quantity * cartItem[c].price);
+        }
+
+        document.getElementById("cartTotalPrice").value = totalPrice;
+    }
+
+    function cartTotalPrice()
+    {
+        let cartItems = localStorage.getItem("cartItems");
+        cartItems = JSON.parse(cartItems);
+
+        let cartItem = cartItems.items;
+        let totalPrice = null;
+
+        for(let c = 0; c < cartItems.items.length; c++)
+        {
+            totalPrice += (cartItem[c].quantity * cartItem[c].price);
+        }
+
+        return totalPrice;
+    }
+
+    function cartItemPlus(item)
+    {
+        let itemsArray = [];
+        cart = JSON.parse(localStorage.getItem("cartItems"));
+            
+        //populate itemsArray with items from cart
+        for(let c = 0; c < cart.items.length; c++)
+        {
+            itemsArray.push(cart.items[c]);
+        }
+        
+        //check if item already exists in cart
+        for(let c = 0; c < itemsArray.length; c++)
+        {
+            if(itemsArray[c].id === item)
+            {
+                duplicateCheck = true;
+                let itemQuantity = itemsArray[c].quantity;
+                itemsArray[c].quantity = ++itemQuantity;
+            }
+        }
+
+        if(duplicateCheck)
+        {
+            localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
+        }
+
+        loadSideCart();
+    }
+
+    function cartItemMinus(item)
+    {
+        let itemsArray = [];
+        cart = JSON.parse(localStorage.getItem("cartItems"));
+            
+        //populate itemsArray with items from cart
+        for(let c = 0; c < cart.items.length; c++)
+        {
+            itemsArray.push(cart.items[c]);
+        }
+        
+        //check if item already exists in cart
+        for(let c = 0; c < itemsArray.length; c++)
+        {
+            if(itemsArray[c].id === item)
+            {
+                duplicateCheck = true;
+                let itemQuantity = itemsArray[c].quantity;
+                itemsArray[c].quantity = --itemQuantity;
+            }
+            if(itemsArray[c].quantity == 0)
+            {
+                document.getElementById("cart-item-" + itemsArray[c].id).remove();
+                itemsArray.splice(c, 1);
+            }
+        }
+
+        if(duplicateCheck)
+        {
+            localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
+        }
+
+        loadSideCart();
+    }
+
+    function loadSideCart()
+    {
+        let cartItems = localStorage.getItem("cartItems");
+        cartItems = JSON.parse(cartItems);
+        
+        if(cartItems == null || cartItems.items.length == 0)
+        {
+            var d = document.getElementById("side-cart");
+
+            if(d != undefined ||d != null)
+            {
+                d.style.visibility = "hidden";
+                d.style.display = "none";
+            }
+        }
+        else
+        {
+            cartItems = localStorage.getItem("cartItems");
+            cartItems = JSON.parse(cartItems);
+
+            let cartItem = cartItems.items;
+            let cartItemsDiv = document.getElementById("cart-items").innerHTML = "";
+        
+            for(let c = 0; c < cartItems.items.length; c++)
+            {
+                //divs
+                let cartItemHolderDiv = document.createElement("div");
+                cartItemHolderDiv.id ="cart-item-" + cartItem[c].id;
+                cartItemHolderDiv.className = "cart-item";
+                
+                let cartItemX = document.createElement("div");
+                cartItemX.id = "cart-item";
+                cartItemX.innerHTML = cartItem[c].quantity + " · " + cartItem[c].name + " · " + "$" + (cartItem[c].quantity * cartItem[c].price);
+                
+                //buttons
+                let buttonAdd = document.createElement("button");
+                buttonAdd.className = "cart-item-add-one-button";
+                buttonAdd.value = cartItem[c].id;
+                buttonAdd.onclick = function(){cartItemPlus(cartItem[c].id)};
+                buttonAdd.innerHTML = " + ";
+                
+                let buttonRemove = document.createElement("button");
+                buttonRemove.className = "cart-item-remove-one-button";
+                buttonRemove.value = cartItem[c].id;
+                buttonRemove.onclick = function(){cartItemMinus(cartItem[c].id)};
+                buttonRemove.innerHTML = " - ";
+                
+                //prepends
+                document.getElementById("cart-items").prepend(cartItemHolderDiv);
+                document.getElementById("cart-item-" + cartItem[c].id).prepend(buttonAdd);
+                document.getElementById("cart-item-" + cartItem[c].id).prepend(cartItemX);
+                document.getElementById("cart-item-" + cartItem[c].id).prepend(buttonRemove);
+            }
+            
+            //side cart
+            let totalPrice = document.getElementById("total-price").innerHTML = "Total: " + "$" + cartTotalPrice();
+            let sideCartVisibility = document.getElementById("side-cart").style.visibility = "visible";
+            let sideCartDisplay = document.getElementById("side-cart").style.display = "inline-block";
+
+            fillCartFormData();
+        }
+    }
+
+    function updateCart(buttonNumber, itemName, itemPrice)
+    {
+        let itemsArray = [];
+        let duplicateCheck = false;
+        let cart = localStorage.getItem("cartItems");
+                
+        if(cart == null)
+        {
+            itemsArray.push({id: buttonNumber, name: itemName, price: itemPrice, quantity: 1});
+            localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
+        }
+
+        else
+        {
+            cart = JSON.parse(localStorage.getItem("cartItems"));
+            
+            //populate itemsArray with items from cart
+            for(let c = 0; c < cart.items.length; c++)
+            {
+                itemsArray.push(cart.items[c]);
+            }
+            
+            //check if item already exists in cart
+            for(let c = 0; c < itemsArray.length; c++)
+            {
+                if(itemsArray[c].id === buttonNumber)
+                {
+                    duplicateCheck = true;
+                    let itemQuantity = itemsArray[c].quantity;
+                    itemsArray[c].quantity = ++itemQuantity;
+                }
+            }
+
+            if(duplicateCheck)
+            {
+                localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
+            }
+
+            else
+            {
+                itemsArray.push({id: buttonNumber, name: itemName, price: itemPrice, quantity: 1});
+                localStorage.setItem("cartItems", JSON.stringify({items: itemsArray}));
+            }
+            
+        }
+
+        loadSideCart();
+    }
+
+    function setRestaurantLocalStorage(restaurant)
+    {
+        let r = localStorage.getItem("restaurant");
+        
+        //clears cart if select new restaurant
+        if(r != restaurant)
+        {
+            clearCart();
+        }
+
+        localStorage.setItem("restaurant", restaurant);
+    }
+
+    function searchBoxRestaurantMenu(totalMenuItems)
+    {
+        let searchBoxInput = document.getElementById("searchBoxInput").value
+        let searchString = String(searchBoxInput).toLowerCase();
+        let menuItemCategories = [];
+
+        for(let c = 1; c <= totalMenuItems; c++)
+        {
+            let menuItem = document.getElementById("menu-item#" + c)
+            let menuItemCategory = document.getElementById("menu-item#" + c + "-category")
+            
+            if(menuItem.innerHTML.toLowerCase().includes(searchString))
+            {
+                menuItemCategories.push(menuItemCategory.innerHTML.toLowerCase());
+                menuItem.style.opacity = "100%";
+                menuItem.style.display = "block";
+                menuItem.parentNode.style.display = "block";
+            }
+            else
+            {
+                menuItem.style.opacity = "25%";
+                menuItem.style.display = "none";
+                menuItem.parentNode.style.display = "none";
+            }
+
+        }
+
+        for(let c = 0; c < menuItemCategories.length; c++)
+        {
+            let menuCategory = menuItemCategories[c];
+            let category = document.getElementById("menu-category-" + menuCategory)
+
+            category.style.display = "block";      
+        }
+    }
+
+    function setBackgroundGif()
+    {
+        let html = document.querySelector("html")
+        let randomNumber = Math.floor(Math.random() * 20) + 1
+
+        if(randomNumber > 20) { randomNumber = 20 }
+        else if(randomNumber == 0) { randomNumber = 1 }
+
+        html.style.backgroundImage = "url(/gifs/" + randomNumber + ".gif)"
+    }
+
+    shortcut.add("escape", function() {document.getElementById("modalButton").click()});
+</script>
+
+<style>
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { height: 0px; width: 0px; }
+
+
+    /*** elements ***/
+    body { height: 100vh; /* background-color: #3c41d6 */ }
+
+
+    /*** classes ***/
+    .menu-category { border-top: 0px solid black; }
+    .menu-item
+    {
+        /* display: inline-block; */  
+        max-width: 520px;
+        padding: 10px 0px 0px 0px;
+        margin: auto;
+        border: 0px solid black;
+        box-shadow: -1px 0px black;
+        color: black;
+        border-bottom: 1px solid black;
+        border-right: 1px solid black;
+        background-color: white; /* #f7f9f9 */
+    }
+    .restaurantInfoText { margin: auto; max-width: 250px; font-size: 16px; user-select: none; text-align: center; color: black; }
+    .menuCategoryTitle 
+    { 
+        max-width: 520px; 
+        margin: auto; 
+        margin-top: 30px;
+        user-select: none; 
+        /* text-shadow: 1px 0px white;  */
+        text-align: left;
+        color: black; 
+        border-bottom: 1px solid black;
+    }
+    .menu-item-texts { user-select: none; }
+    .cart-item { font-weight: bold; color: white; border-bottom: 1px solid white; background-color: black; }
+    .cart-item div { display: inline-block; width: 70%; padding: 0px; margin: 0px; }
+    .cart-item button
+    {
+        display: inline-block;
+        height: 50px;
+        margin: 0px;
+        padding: 0px;
+        width: 52.5px;
+        border-style: none;
+        border-radius: 0px; 
+        outline: none;
+        font-size: 20px;
+        font-weight: bold;
+        color: white; 
+        background-color: black;
+    }
+    .cart-add-to-cart-button
+    {
+        margin: 15px;
+        padding: 10px 15px 10px 15px;
+        border-style: none;
+        border-radius: 0px;
+        outline: none;
+        font-size: 20px;
+        /* font-weight: bold; */
+        color: black;
+    }
+    .modalText { margin: 20px 0px 12px 0px; font-weight: bold; }
+    .modalButton { height: 30px; width: 100px; font-weight: bold; border-radius: 0%; border: 0px solid black; background-color: white; }
+
+    /*** ids ***/
+    #menu 
+    {
+        display: inline-block;
+        /* height: 100%; */
+        /* height: 86vh; */
+        width: 730px;
+        padding: 0px;
+        margin: 0px;
+        color: #f7f9f9;
+        /* box-shadow: 1px 1px black; */
+        /* background-image: url('/pics/cardboard.jpeg'); */
+        /* background-color: white; */
+        /* border: 1px solid black; */
+    }
+    #main-menu { display: block; height: 64vh; margin: 0px; padding: 0px; overflow-y: scroll; }
+    #side-cart
+    {
+        display: block;
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        max-height: 98vh;
+        width: 360px;
+        padding: 0px;
+        margin: 0px;
+        margin-left: -80px;
+        overflow-y: scroll;
+        visibility: hidden;
+        vertical-align: top;
+        border: 1px solid white;
+    }
+    #restaurantTitle { margin: auto; font-size: 36px; text-align: center; user-select: none; }
+    #restaurantDetailRestaurantIsClosed { margin: 0px; margin: auto; padding: 20px 0px 0px 0px; color: red; }
+    #buttonAddToCart { border: 1px solid black; }
+    #order-button
+    {
+        display: block;
+        height: 50px;
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+        font-size: 18px;
+        background-color: #f7f9f9;
+        border-style: none;
+        border-radius: 0px;
+    }
+    #order-button-mobile
+    {
+        display: none;
+        margin: 0px;
+        margin-bottom: 2px;
+        padding: 0px;
+        height: 50px;
+        width: 100%;
+        background-color: #f7f9f9;
+        border-style: none;
+        border-radius: 0px;
+    }
+    #total-price
+    {
+        display: block;
+        height: 100%;
+        width: 100%;
+        margin-left: 0px;
+        padding: 16px 0px 16px 0px;
+        font-size: 18px;
+        font-weight: bold;
+        border-bottom: 1px solid white;
+        color: black;
+        background-color: white;
+    }
+    #restaurantInfoHeader { position: relative; width: 520px; margin: auto; margin-top: -10px; }
+    #searchBox
+    {
+        width: 520px;
+        margin: auto;
+        margin-top: 20px;
+        padding: 0px;
+        /* box-shadow: 2px 1px black; */
+        border: 0px solid black;
+        /* background-color: royalblue; */
+    }
+    #restaurantInfo { }
+    #searchBoxInput { height: 40px; font-weight: normal; color: white; background-color: black; }
+    #informAnonModal { padding: 0px 20px 20px 20px; }
+    #informAnonModal a { text-decoration: none; color: black; }
+    #modalButton { position: absolute; right: -1px; top: -1px; border-radius: 0%; border: 0px solid black; background-color: white; }
+    #modalButtonRegister { margin-left: -4px; border-left: 1px solid black; }
+    #informAnonModal
+    {
+        position: fixed;
+        margin: 0px;
+        padding: 0px 10px 20px 10px;
+        width: 400px;
+        left: 50%;
+        top: 10%;
+        margin: auto;
+        text-align: center;
+        user-select: none;
+        z-index: 1;
+        transform: translate(-50%, -25%);
+        color: white;
+        border: 2px solid white;
+        background-color: black;
+    }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        .menu-item p 
+        {
+            text-align: left;
+            margin-left: -10px;
+        }
+        .menu-item { width: 93vw; }
+        .cart-item { width: 93vw; overflow-x: scroll; white-space: nowrap; }
+        .cart-item div { vertical-align: middle; overflow-x: scroll; white-space: nowrap; }
+        
+        #main-menu { height: 67vh; margin-left: 0px; }
+        #searchBox { width: 93vw; margin-top: 10px; }
+        #menu { height: 67vh; width: 93vw; }
+        #restaurantInfoHeader { width: 93vw; margin-top: 0px; }
+        #restaurantInfo { max-height: 10vh; overflow-y: scroll; }
+        #side-cart{ position: relative; display: block; bottom: initial; right: initial; width: 92vw; margin: 40px 0px 0px 0px; }
+        #informAnonModal { width: 80vw; }
+    }
+</style>
+
+
+<body onload="loadSideCart(), setBackgroundGif()">
+    <script> setRestaurantLocalStorage('<%=restaurant.title %>'); </script>
+
+    <!-- admin nav menu -->
+    <% if(admin != null && admin == true) { %> 
+        <%- include('nav_menu_admin.ejs') %>
+
+    <!-- user nav menu -->
+    <% } else if(loggedIn == true) { %>
+        <%- include('nav-menu-user.ejs') %>
+
+    <!-- anon nav menu -->
+    <% } else { %> 
+        <%- include('nav-menu-anon.ejs') %>
+    <% } %>
+
+    <!-- modal -->
+    <div hidden id="informAnonModal">
+        <button id="modalButton" onclick="InformAnonClose()">X</button>
+        <p class="modalText">You need to register or login to order</p>
+        <button class="modalButton"><a href="/login">Login</a></button>     
+        <button class="modalButton" id="modalButtonRegister"><a href="/register">Register</a></button>
+    </div>
+
+    <!-- menu -->
+    <div id="restaurantInfoHeader">
+        <% var date = new Date().getDay() %>
+        <% if (date == 0) { %>
+            <% date = 7; %>
+        <% } %>
+        
+        <h1 id="restaurantTitle"><%=restaurant.title %></h1>
+
+        <div id="restaurantInfo">
+            <p class="restaurantInfoText">Type: <%=restaurant.type %></p>
+            <p class="restaurantInfoText">Phone: <%=restaurant.phone %></p>
+            <p class="restaurantInfoText">Address: <%=restaurant.address %></p>
+            <!-- <p class="restaurantInfoText"><%= restaurant.description %></p> -->
+
+            <!-- hours -->
+            <% for(let c = 0; c < restaurant.hours.length; c++) { %>
+                <% if(restaurant.hours[c].time == "Closed") { %>
+                    <p class="restaurantInfoText" style="color: red;"><%=restaurant.hours[c].day.substr(0, 3) %>: <%=restaurant.hours[c].time %></p>
+                <% } else if(date == c + 1) { %>
+                    <p class="restaurantInfoText" style="color: green;"><%=restaurant.hours[c].day.substr(0, 3) %>: <%=restaurant.hours[c].time %></p>
+                <% } else { %>
+                <p class="restaurantInfoText"><%=restaurant.hours[c].day.substr(0, 3) %>: <%=restaurant.hours[c].time %></p>
+                <% } %>
+            <% } %>
+        </div>
+        
+
+        <!-- search -->
+        <% var restaurantMenuItemsLength = null %>
+
+        <% if(restaurant.menuItems == null) { %>
+            <% restaurantMenuItemsLength = 0; %>
+        <% } else { %>
+            <% restaurantMenuItemsLength = restaurant.menuItems.length %>
+        <% } %>
+
+        <% if(restaurantMenuItemsLength != 0) { %>
+            <div id="searchBox" onkeyup="searchBoxRestaurantMenu('<%=restaurantMenuItemsLength %>')">
+                <input class="search-restaurant-detail" id="searchBoxInput" placeholder="Search..."></input>
+            </div>
+        <% } %>
+    </div>
+
+    <main id="main-menu" class="centered">
+        <div id="menu">
+            <% var restaurantMenuItemsLength = null %>
+
+            <% if(restaurant.menuItems == null) { %>
+                <% restaurantMenuItemsLength = 0; %>
+            <% } else { %>
+                <% restaurantMenuItemsLength = restaurant.menuItems.length %>
+            <% } %>
+
+            
+            <!-- populate menu -->
+            <% for(let c = 0; c < restaurant.menuCategories.length; c++) { %>
+                <% let restaurantCategory = restaurant.menuCategories[c].categoryName %>
+                <div id="menu-category-<%=restaurantCategory.charAt(0).toLowerCase() + restaurantCategory.slice(1) %>" class="menu-category">
+                    <h2 class="menuCategoryTitle"><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></h2>
+                    
+                    <% for(let c = 0; c < restaurantMenuItemsLength; c++) { %>
+                        
+                        <% if(restaurant.menuItems[c].category == restaurantCategory) { %>
+                            <div id="menu-item#<%=c + 1 %>" class="menu-item">
+                                <div class="menu-item-texts">
+                                    <p><b><%=restaurant.menuItems[c].title %></b></p>
+                                    <p><%=restaurant.menuItems[c].description %></p>
+                                    <p>$<%=restaurant.menuItems[c].price %></p>
+                                </div>
+
+                                <p hidden id="menu-item#<%=c + 1 %>-category"><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></p>
+
+                                <% if(loggedIn == true && restaurant.open == true) { %>
+                                    <div class="menu-item-add-to-cart-button">
+                                        <% let buttonNumber = c %>
+                                        <button id="buttonAddToCart" onclick="updateCart('<%=buttonNumber %>', '<%=restaurant.menuItems[c].title %>', '<%=restaurant.menuItems[c].price %>')" class="cart-add-to-cart-button">+</button></a>
+                                    </div>
+                                <% } else if(loggedIn != true && restaurant.open == true) { %>
+                                    <div class="menu-item-add-to-cart-button">
+                                        <button onclick="InformAnonOpen()" class="cart-add-to-cart-button">+</button></a>
+                                    </div>
+                                <% } else if(restaurant.open != true) { %>
+                                    <div class="menu-item-add-to-cart-button">
+                                        <button hidden onclick="" class="cart-add-to-cart-button">+</button></a>
+                                    </div>
+                                <% } %>                          
+                            </div>        
+                        <% } %>
+                    <% } %>
+                </div>
+            <% } %>
+
+            <!-- side cart mobile -->
+            <% if(loggedIn == true && restaurant.open == true) { %>
+                <div id="side-cart">
+                    <form action="/checkout" method="POST">
+                        <h3 id="total-price"></h3>
+        
+                        <div id="cart-items"></div> 
+                        
+                        <input hidden id="cartAllItems" name="cartAllItems"></input>
+                        <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
+                        <input hidden name="restaurant" value='<%=restaurantUrl %>'></input>
+                        <!-- <textarea id="customerComment" name="customerComment" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></textarea> -->                        
+                        
+                        <button id="order-button" type="submit"><b>Checkout</b></button>
+                    </form>
+                </div>
+                <% } %>
+        </div>
+         
+        </div>
+ 
+    </main>
+</body>
+</html>

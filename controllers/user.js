@@ -25,7 +25,7 @@ function parseLoginCookie(cookieId)
     else { return null }
 }
 
-//exports
+//get
 exports.getRestaurants = (req, res, next) => {
     console.log('getRestaurants');
 
@@ -37,7 +37,7 @@ exports.getRestaurants = (req, res, next) => {
     {
         Restaurant.fetchAll()
         .then(restaurants => {
-            res.render('user/restaurants', {
+            res.render('user-restaurants.ejs', {
                 admin: validation.isAdmin,
                 loggedIn: true,
                 prods: restaurants,
@@ -71,7 +71,7 @@ exports.getRestaurantDetail = async (req, res, next) => {
     {
         if(restaurant != null)
         {   
-            res.render('user/restaurant-detail', {
+            res.render('user-restaurant-detail.ejs', {
                 admin: validation.isAdmin,
                 loggedIn: true,
                 IsOpen: restaurant.open,
@@ -90,7 +90,7 @@ exports.getRestaurantDetail = async (req, res, next) => {
     {
         if(restaurant != null)
         {   
-            res.render('user/restaurant-detail', {
+            res.render('user-restaurant-detail.ejs', {
                 admin: false,
                 loggedIn: false,
                 IsOpen: restaurant.open,
@@ -119,7 +119,7 @@ exports.getIndex = async (req, res, next) => {
 
     if(validation.status == true && validation.isAdmin == true) //user is admin
     {
-        res.render('user/index', { 
+        res.render('user-index.ejs', { 
             pageTitle: 'Home',
             path: '/',
             admin: validation.isAdmin,
@@ -130,7 +130,7 @@ exports.getIndex = async (req, res, next) => {
     {
         let adminPosts = await Admin.fetchAllPosts()
 
-        res.render('user/index', { 
+        res.render('user-index.ejs', { 
             pageTitle: 'Home',
             path: '/',
             admin: false,
@@ -140,7 +140,7 @@ exports.getIndex = async (req, res, next) => {
     }
     else //anonymous user
     {
-        res.render('user/index', { 
+        res.render('user-index.ejs', { 
             pageTitle: 'Food Ordering Platform',
             path: '/',
             admin: false,
@@ -162,7 +162,7 @@ exports.getRestaurantList = async (req, res, next) => {
     
     if(validationStatus == true) //logged in user
     {
-        res.render('user/restaurants', {
+        res.render('user-restaurants.ejs', {
             admin: validation.isAdmin,
             loggedIn: true,
             restaurantImage: "",
@@ -173,7 +173,7 @@ exports.getRestaurantList = async (req, res, next) => {
     }
     else  //anon user
     {
-        res.render('user/restaurants', {
+        res.render('user-restaurants.ejs', {
             admin: false,
             loggedIn: false,
             restaurantImage: "",
@@ -193,7 +193,7 @@ exports.getOrders = (req, res, next) => {
     if(validation.status == true) //logged in user
     {
         Order.FindByUser(userEmail).then(orders => {
-            res.render('user/orders', {
+            res.render('user-orders.ejs', {
                 admin: validation.isAdmin,
                 loggedIn: true,
                 orders: orders,
@@ -204,7 +204,7 @@ exports.getOrders = (req, res, next) => {
     }
     else //anonymous user
     {
-        res.render('user/index', { 
+        res.render('user-index.ejs', { 
             pageTitle: 'Home',
             path: '/',
             admin: false,
@@ -213,6 +213,337 @@ exports.getOrders = (req, res, next) => {
     }
 }
 
+exports.getCheckout = async (req, res, next) => {
+    console.log('getCheckout')
+
+    let validation = res.locals.validation
+    let email = res.locals.userEmail
+    let cartItems = req.body.cartAllItems;
+    let customerComment = req.body.customerComment;
+    let cartTotalPrice = req.body.cartTotalPrice;
+    let restaurant = req.body.restaurant;
+
+    let user = await User.findByEmail(email)
+
+    const intent = await stripe.paymentIntents.create({
+        amount: 100, //cartTotalPrice 
+        currency: 'usd', 
+        metadata: {integration_check: 'accept_a_payment'} // Verify your integration in this guide by including this parameter
+    })
+    
+    
+    if(validation.status == true && cartItems != null) //logged in user
+    {
+        res.render('user-checkout.ejs', 
+        {
+            path: '/checkout',
+            pageTitle: 'Checkout',
+            customerName: user.email,
+            customerAddress: user.address,
+            customerPhone: user.phone,
+            customerComment: customerComment,
+            cartItems: cartItems,
+            cartItemsParsed: JSON.parse(cartItems),
+            cartTotalPrice: cartTotalPrice,
+            restaurant: restaurant,
+            amount: intent.amount,
+            currency: intent.currency,
+            client_secret: intent.client_secret 
+        })
+    }
+    else //anonymous user
+    {
+        res.redirect('/')
+    }
+}
+
+exports.getLogout = (req, res, next) => {
+    console.log('getLogout')
+
+    let validation = res.locals.validation
+    
+    if(validation.status == true) //logged in user
+    {
+        res.render('user-logout.ejs', {
+            admin: validation.isAdmin,
+            loggedIn: true,
+            pageTitle: 'Logout',
+            path: '/logout',
+            statusText: ''
+        })
+    }
+    else //anonymous user
+    {
+        res.redirect('/');
+    }
+}
+
+exports.getProfile = async (req, res, next) => {
+    console.log('getProfile')
+    
+    let validation = res.locals.validation
+    let userEmail = res.locals.userEmail
+    let loginCookie = req.get('Cookie')
+    let cookieId = parseLoginCookie(loginCookie)
+    let update = req.query.update
+
+    let user = await User.findByCookieIdReturnUserObject(cookieId)
+
+    //logged in user
+    if(validation.status == true)
+    {
+        res.render('user-profile.ejs', { 
+            admin: validation.isAdmin,
+            loggedIn: true,
+            pageTitle: 'Profile',
+            path: '/profile',
+            name: user.name,
+            email: user.email,
+            address: user.address,
+            phone: user.phone,
+            update: update
+        })
+    }
+
+    //anon user
+    else
+    {
+        res.render('user-index.ejs', { 
+            pageTitle: 'Home',
+            path: '/',
+            admin: false,
+            loggedIn: false,
+        })
+    }
+}
+
+exports.getRegister = (req, res, next) => {
+    console.log('\nanon user >')
+    console.log('getRegister')
+
+    res.render('user-register.ejs', {
+        pageTitle: 'Register',
+        path: '/register',
+        statusText: ''
+    })
+}
+
+exports.getLogin = (req, res, next) => {
+    console.log('\nanon user >')
+    console.log('getLogin')
+
+    res.render('user-login.ejs', {
+        pageTitle: 'Login',
+        path: '/login',
+        statusText: ''
+    })
+}
+
+exports.getStripe = async (req, res, next) => {
+    console.log('\ngetStripe')
+
+    let intent = await stripe.paymentIntents.create({
+        amount: 100,
+        currency: 'usd',
+        metadata: {integration_check: 'accept_a_payment'}  // Verify your integration in this guide by including this parameter
+    })
+    
+    res.render('shop/stripe', { 
+        amount: intent.amount,
+        currency: intent.currency,
+        client_secret: intent.client_secret 
+    })
+}
+
+exports.getOrderDetails = async (req, res, next) => {
+    console.log('\ngetOrderDetails')
+
+    let validation = res.locals.validation
+    let userEmail = res.locals.userEmail
+    let orderId = req.params.orderId
+
+    let order = await Order.findById(orderId)
+
+    if(order != null)
+    {
+        if(validation.status == true)
+        {
+            res.render('user-order-details.ejs', { 
+                admin: validation.isAdmin,
+                pageTitle: 'Order Details',
+                path: '/order-details',
+                loggedIn: true,
+                order: order
+            })
+        }
+        else
+        {
+            res.redirect('/')
+        }
+    }
+    else
+    {
+        res.redirect('/')
+    }
+}
+
+exports.getOrderProcess = async (req, res, next) => {
+    console.log('\ngetOrderProcess')
+    
+    let orderId = req.params.orderId
+    let order = await Order.findById(orderId)
+
+    if(order != null && order.status == "unconfirmed")
+    {
+        res.render('user-order-process.ejs', { 
+            order: order
+        })
+    }
+    else
+    {
+        res.redirect('/')
+    }
+}
+
+exports.getAbout = (req, res, next) => {
+    console.log('\nanon user >')
+    console.log('getAbout')
+
+    res.render('user-about.ejs', {})
+}
+
+exports.getContact = (req, res, next) => {
+    console.log('\nanon user >')
+    console.log('getContact')
+
+    res.render('user-contact.ejs', {})
+}
+
+// exports.getTest = async (req, res, next) => {
+//     console.log('getTest')
+
+//     res.render('test/test.ejs', { })
+// }
+
+// exports.getGoogleMapsApiTest = async (req, res, next) => {
+//     console.log('getTest')
+//     console.log(req.body)
+//     console.log(res.locals.userEmail)
+
+//     res.render('test/googleMapsApi.ejs', 
+//     { 
+
+//     })
+// }
+
+// exports.getPayPalCreateOrder = async (req, res, next) => {
+//     console.log("getPayPalCreateOrder")
+//     console.log(req.body)
+
+//     let amount = "temp"
+
+//     //Creating an environment
+//     let clientId = "AVm4xAcY_8YjJjr-nN4_YYUrEx5N8K_-gvJP0jtZbFc_aqApF6pmZGs4i4xzbUNp77tsC3NT5zHmtBiP"
+//     let clientSecret = "EKV9wYIfLMjnapE4Erg-9Z7AUE-yWmcj2TzcWmbthC8U8_BlyihIFKnMwAX-Ouu46R9nUwYjS2jHw0oz"
+
+//     //This sample uses SandboxEnvironment. In production, use LiveEnvironment
+//     let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret)
+//     let client = new paypal.core.PayPalHttpClient(environment)
+
+//     //Construct a request object and set desired parameters
+//     //Here, OrdersCreateRequest() creates a POST request to /v2/checkout/orders
+//     let request = new paypal.orders.OrdersCreateRequest()
+
+//     request.requestBody(
+//         {
+//             "intent": "CAPTURE",
+//             "application_context": {
+//                 "return_url": "http://localhost:3000/paypalSuccess",
+//                 "cancel_url": "http://localhost:3000/paypalCancel"
+//             },
+//             "purchase_units": [
+//                 {
+//                     "amount": {
+//                         "currency_code": "USD",
+//                         "value": "1.00"
+//                     }
+//                 }
+//             ]
+//         }
+//     )
+
+//     //Call API with your client and get a response for your call
+//     let createOrder = async function()
+//     {
+//         let response = await client.execute(request)
+
+//         console.log(`Response: ${JSON.stringify(response)}`)
+        
+//         //If call returns body in response, you can get the deserialized version from the result attribute of the response.
+//         console.log(`Order: ${JSON.stringify(response.result)}`)
+
+//         let orderId = response.result.id
+//         let status = response.result.status
+//         let httpAdress = response.result.links[1].href
+
+//         console.log(response.result.id)
+//         console.log(response.result.status)
+//         console.log(response.result.links[1].href)
+
+//         if(status === "CREATED") { res.redirect(httpAdress) }
+//         else { res.redirect('/temp') }
+//     }
+
+//     //Start
+//     createOrder()
+// }
+
+// exports.getPayPalSuccess = async (req, res, next) => {
+//     console.log("getPayPalSuccess")
+//     console.log(req.query)
+
+//     let payerID = req.query.PayerID
+//     let token = req.query.token
+//     let approvedOrderId = token
+
+//     console.log(payerID)
+//     console.log(token)
+
+//     //Creating an environment
+//     let clientId = "AVm4xAcY_8YjJjr-nN4_YYUrEx5N8K_-gvJP0jtZbFc_aqApF6pmZGs4i4xzbUNp77tsC3NT5zHmtBiP"
+//     let clientSecret = "EKV9wYIfLMjnapE4Erg-9Z7AUE-yWmcj2TzcWmbthC8U8_BlyihIFKnMwAX-Ouu46R9nUwYjS2jHw0oz"
+
+//     //This sample uses SandboxEnvironment. In production, use LiveEnvironment
+//     let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret)
+//     let client = new paypal.core.PayPalHttpClient(environment)
+
+//     let processOrder = async function(orderId) 
+//     {
+//         request = new paypal.orders.OrdersCaptureRequest(orderId)
+//         request.requestBody({})
+
+//         // Call API with your client and get a response for your call
+//         let response = await client.execute(request)
+//         console.log(`Response: ${JSON.stringify(response)}`)
+
+//         // If call returns body in response, you can get the deserialized version from the result attribute of the response.
+//         console.log(`Capture: ${JSON.stringify(response.result)}`)
+        
+        
+//         if(response.result.status === "COMPLETED") { res.redirect('/temp') } // If payment successful
+//         else { res.redirect('/temp') } // If payment error
+//     }
+
+//     let process = processOrder(token)
+// }
+
+// exports.getPayPalCancel = async (req, res, next) => {
+//     console.log("getPayPalCancel")
+
+//     res.redirect('/')
+// }
+
+//post
 exports.postOrder = async (req, res, next) => {
     console.log('postOrder >')
 
@@ -253,71 +584,6 @@ exports.postOrder = async (req, res, next) => {
      }
 }
 
-exports.getCheckout = async (req, res, next) => {
-    console.log('getCheckout')
-
-    let validation = res.locals.validation
-    let email = res.locals.userEmail
-    let cartItems = req.body.cartAllItems;
-    let customerComment = req.body.customerComment;
-    let cartTotalPrice = req.body.cartTotalPrice;
-    let restaurant = req.body.restaurant;
-
-    let user = await User.findByEmail(email)
-
-    const intent = await stripe.paymentIntents.create({
-        amount: 100, //cartTotalPrice 
-        currency: 'usd', 
-        metadata: {integration_check: 'accept_a_payment'} // Verify your integration in this guide by including this parameter
-    })
-    
-    
-    if(validation.status == true && cartItems != null) //logged in user
-    {
-        res.render('user/checkout', 
-        {
-            path: '/checkout',
-            pageTitle: 'Checkout',
-            customerName: user.email,
-            customerAddress: user.address,
-            customerPhone: user.phone,
-            customerComment: customerComment,
-            cartItems: cartItems,
-            cartItemsParsed: JSON.parse(cartItems),
-            cartTotalPrice: cartTotalPrice,
-            restaurant: restaurant,
-            amount: intent.amount,
-            currency: intent.currency,
-            client_secret: intent.client_secret 
-        })
-    }
-    else //anonymous user
-    {
-        res.redirect('/')
-    }
-}
-
-exports.getLogout = (req, res, next) => {
-    console.log('getLogout')
-
-    let validation = res.locals.validation
-    
-    if(validation.status == true) //logged in user
-    {
-        res.render('user/logout', {
-            admin: validation.isAdmin,
-            loggedIn: true,
-            pageTitle: 'Logout',
-            path: '/logout',
-            statusText: ''
-        })
-    }
-    else //anonymous user
-    {
-        res.redirect('/');
-    }
-}
-
 exports.postLogout = (req, res, next) => {  
     console.log('postLogout >')
 
@@ -340,7 +606,7 @@ exports.postLogout = (req, res, next) => {
             else
             {
                 console.log('logout failed')
-                res.render('user/logout', { 
+                res.render('user-logout.ejs', { 
                     pageTitle: 'Logout',
                     path: '/logout',
                     statusText: 'logout failed, try again in a few minutes'
@@ -351,45 +617,6 @@ exports.postLogout = (req, res, next) => {
     else
     {
         res.redirect('/')
-    }
-}
-
-exports.getProfile = async (req, res, next) => {
-    console.log('getProfile')
-    
-    let validation = res.locals.validation
-    let userEmail = res.locals.userEmail
-    let loginCookie = req.get('Cookie')
-    let cookieId = parseLoginCookie(loginCookie)
-    let update = req.query.update
-
-    let user = await User.findByCookieIdReturnUserObject(cookieId)
-
-    //logged in user
-    if(validation.status == true)
-    {
-        res.render('user/profile', { 
-            admin: validation.isAdmin,
-            loggedIn: true,
-            pageTitle: 'Profile',
-            path: '/profile',
-            name: user.name,
-            email: user.email,
-            address: user.address,
-            phone: user.phone,
-            update: update
-        })
-    }
-
-    //anon user
-    else
-    {
-        res.render('user/index', { 
-            pageTitle: 'Home',
-            path: '/',
-            admin: false,
-            loggedIn: false,
-        })
     }
 }
 
@@ -404,7 +631,7 @@ exports.postRegister = (req, res, next) => {
         if(result == 'registration successful')
         {
             console.log('result: ' + result + '\n')
-            res.render('user/login', { 
+            res.render('user-login.ejs', { 
                 pageTitle: 'Login',
                 path: '/login',
                 statusText: 'registration successful, login below'
@@ -413,7 +640,7 @@ exports.postRegister = (req, res, next) => {
         else if(result == 'username is taken')
         {
             console.log('result: ' + result + '\n')
-            res.render('user/register', {   
+            res.render('user-register.ejs', {   
                 
                 pageTitle: 'Register',
                 path: '/register',
@@ -423,7 +650,7 @@ exports.postRegister = (req, res, next) => {
         else if(result == 'email is taken')
         {
             console.log('result: ' + result + '\n')
-            res.render('user/register', { 
+            res.render('user-register.ejs', { 
                 pageTitle: 'Register',
                 path: '/register',
                 statusText: result
@@ -432,7 +659,7 @@ exports.postRegister = (req, res, next) => {
         else
         {
             console.log('result: ' + 'database error')
-            res.render('user/register', { 
+            res.render('user-register.ejs', { 
                 pageTitle: 'Register',
                 path: '/register',
                 statusText: 'database error, try again in a few minutes'
@@ -458,52 +685,28 @@ exports.postRegisterRestaurant = async (req, res, next) => {
 
     if(result == 'registration successful')
     {
-        res.render('user/login', { 
+        res.render('user-login.ejs', { 
             pageTitle: 'Login',
             path: '/login',
             statusText: 'registration successful'
         });
     }
-
     else if(result == 'email is taken')
     {
-        res.render('user/register', { 
+        res.render('user-register.ejs', { 
             pageTitle: 'Register',
             path: '/register',
             statusText: 'email is taken, try again with another email'
         })
     }
-
     else
     {
-        res.render('user/register', { 
+        res.render('user-register.ejs', { 
             pageTitle: 'Register',
             path: '/register',
             statusText: 'database error, try again in a few minutes'
         })   
     }
-}
-
-exports.getRegister = (req, res, next) => {
-    console.log('\nanon user >')
-    console.log('getRegister')
-
-    res.render('user/register', {
-        pageTitle: 'Register',
-        path: '/register',
-        statusText: ''
-    })
-}
-
-exports.getLogin = (req, res, next) => {
-    console.log('\nanon user >')
-    console.log('getLogin')
-
-    res.render('user/login', {
-        pageTitle: 'Login',
-        path: '/login',
-        statusText: ''
-    })
 }
 
 exports.postLogin = async (req, res, next) => {
@@ -539,99 +742,31 @@ exports.postLogin = async (req, res, next) => {
         else if(result == 'email is invalid')
         {
             console.log('login user: email is invalid')
-            res.render('user/login', { 
+            res.render('user-login.ejs', { 
                 pageTitle: 'Login',
                 path: '/login',
                 statusText: result
             })
         }
-
         else if(result == 'invalid password')
         {
             console.log('login user: invalid password')
-            res.render('user/login', { 
+            res.render('user-login.ejs', { 
                 pageTitle: 'Login',
                 path: '/login',
                 statusText: result
             })
         }
-
         else if(result == 'database error, try again in a few minutes')
         {
             console.log('login user: database error')
-            res.render('user/login', { 
+            res.render('user-login.ejs', { 
                 pageTitle: 'Login',
                 path: '/login',
                 statusText: result
             })
         }
     })
-}
-
-exports.getStripe = async (req, res, next) => {
-    console.log('\ngetStripe')
-
-    let intent = await stripe.paymentIntents.create({
-        amount: 100,
-        currency: 'usd',
-        metadata: {integration_check: 'accept_a_payment'}  // Verify your integration in this guide by including this parameter
-    })
-    
-    res.render('shop/stripe', { 
-        amount: intent.amount,
-        currency: intent.currency,
-        client_secret: intent.client_secret 
-    })
-}
-
-exports.getOrderDetails = async (req, res, next) => {
-    console.log('\ngetOrderDetails')
-
-    let validation = res.locals.validation
-    let userEmail = res.locals.userEmail
-    let orderId = req.params.orderId
-
-    let order = await Order.findById(orderId)
-
-    if(order != null)
-    {
-        if(validation.status == true)
-        {
-            res.render('user/order-details', { 
-                admin: validation.isAdmin,
-                pageTitle: 'Order Details',
-                path: '/order-details',
-                loggedIn: true,
-                order: order
-            })
-        }
-        else
-        {
-            res.redirect('/')
-        }
-    }
-    else
-    {
-        res.redirect('/')
-    }
-}
-
-exports.getOrderProcess = async (req, res, next) => {
-    console.log('\ngetOrderProcess')
-    
-    let orderId = req.params.orderId
-    let order = await Order.findById(orderId)
-
-    if(order != null && order.status == "unconfirmed")
-    {
-        res.render('user/order-process', { 
-            order: order
-        })
-    }
-    else
-    {
-        res.redirect('/')
-    }
 }
 
 exports.postWebhook = (req, res, next) => {
@@ -727,142 +862,4 @@ exports.postRestaurantReview = async (req, res, next) => {
     }
 
     res.redirect("/orders");
-}
-
-exports.getAbout = (req, res, next) => {
-    console.log('\nanon user >')
-    console.log('getAbout')
-
-    res.render('user/about', {})
-}
-
-exports.getContact = (req, res, next) => {
-    console.log('\nanon user >')
-    console.log('getContact')
-
-    res.render('user/contact', {})
-}
-
-// exports.getTest = async (req, res, next) => {
-//     console.log('getTest')
-
-//     res.render('test/test.ejs', { })
-// }
-
-// exports.getGoogleMapsApiTest = async (req, res, next) => {
-//     console.log('getTest')
-//     console.log(req.body)
-//     console.log(res.locals.userEmail)
-
-//     res.render('test/googleMapsApi.ejs', 
-//     { 
-
-//     })
-// }
-
-exports.getPayPalCreateOrder = async (req, res, next) => {
-    console.log("getPayPalCreateOrder")
-    console.log(req.body)
-
-    let amount = "temp"
-
-    //Creating an environment
-    let clientId = "AVm4xAcY_8YjJjr-nN4_YYUrEx5N8K_-gvJP0jtZbFc_aqApF6pmZGs4i4xzbUNp77tsC3NT5zHmtBiP"
-    let clientSecret = "EKV9wYIfLMjnapE4Erg-9Z7AUE-yWmcj2TzcWmbthC8U8_BlyihIFKnMwAX-Ouu46R9nUwYjS2jHw0oz"
-
-    //This sample uses SandboxEnvironment. In production, use LiveEnvironment
-    let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret)
-    let client = new paypal.core.PayPalHttpClient(environment)
-
-    //Construct a request object and set desired parameters
-    //Here, OrdersCreateRequest() creates a POST request to /v2/checkout/orders
-    let request = new paypal.orders.OrdersCreateRequest()
-
-    request.requestBody(
-        {
-            "intent": "CAPTURE",
-            "application_context": {
-                "return_url": "http://localhost:3000/paypalSuccess",
-                "cancel_url": "http://localhost:3000/paypalCancel"
-            },
-            "purchase_units": [
-                {
-                    "amount": {
-                        "currency_code": "USD",
-                        "value": "1.00"
-                    }
-                }
-            ]
-        }
-    )
-
-    //Call API with your client and get a response for your call
-    let createOrder = async function()
-    {
-        let response = await client.execute(request)
-
-        console.log(`Response: ${JSON.stringify(response)}`)
-        
-        //If call returns body in response, you can get the deserialized version from the result attribute of the response.
-        console.log(`Order: ${JSON.stringify(response.result)}`)
-
-        let orderId = response.result.id
-        let status = response.result.status
-        let httpAdress = response.result.links[1].href
-
-        console.log(response.result.id)
-        console.log(response.result.status)
-        console.log(response.result.links[1].href)
-
-        if(status === "CREATED") { res.redirect(httpAdress) }
-        else { res.redirect('/temp') }
-    }
-
-    //Start
-    createOrder()
-}
-
-exports.getPayPalSuccess = async (req, res, next) => {
-    console.log("getPayPalSuccess")
-    console.log(req.query)
-
-    let payerID = req.query.PayerID
-    let token = req.query.token
-    let approvedOrderId = token
-
-    console.log(payerID)
-    console.log(token)
-
-    //Creating an environment
-    let clientId = "AVm4xAcY_8YjJjr-nN4_YYUrEx5N8K_-gvJP0jtZbFc_aqApF6pmZGs4i4xzbUNp77tsC3NT5zHmtBiP"
-    let clientSecret = "EKV9wYIfLMjnapE4Erg-9Z7AUE-yWmcj2TzcWmbthC8U8_BlyihIFKnMwAX-Ouu46R9nUwYjS2jHw0oz"
-
-    //This sample uses SandboxEnvironment. In production, use LiveEnvironment
-    let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret)
-    let client = new paypal.core.PayPalHttpClient(environment)
-
-    let processOrder = async function(orderId) 
-    {
-        request = new paypal.orders.OrdersCaptureRequest(orderId)
-        request.requestBody({})
-
-        // Call API with your client and get a response for your call
-        let response = await client.execute(request)
-        console.log(`Response: ${JSON.stringify(response)}`)
-
-        // If call returns body in response, you can get the deserialized version from the result attribute of the response.
-        console.log(`Capture: ${JSON.stringify(response.result)}`)
-        
-        
-        if(response.result.status === "COMPLETED") { res.redirect('/temp') } // If payment successful
-        else { res.redirect('/temp') } // If payment error
-    }
-
-    let process = processOrder(token)
-}
-
-exports.getPayPalCancel = async (req, res, next) => {
-    console.log("getPayPalCancel")
-
-    res.redirect('/')
 }

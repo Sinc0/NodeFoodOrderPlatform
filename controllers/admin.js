@@ -1,38 +1,41 @@
+//imports
 const Restaurant = require('../models/restaurant');
 const User = require('../models/user');
 const Order = require('../models/order');
 const Review = require('../models/review');
 const Admin = require('../models/admin');
 
+
 //get
-exports.getHome = (req, res, next) => {
-    console.log('getHome');
+exports.getHome = (req, res) => {
+    //debugging
+    console.log('admin-home.ejs');
+
+    //variables
     let validation = res.locals.validation;
     
-    //user is admin
-    if(validation.status == true && validation.isAdmin == true)
+    //render page
+    if(validation.status == true && validation.isAdmin == true) //user is admin
     {
         Admin.fetchAllPosts()
         .then(adminPosts => {
-            res.render('admin/home', { 
+            res.render('admin-home.ejs', { 
                 admin: validation.isAdmin,
                 loggedIn: true,
                 path: '/home',
                 adminPosts: adminPosts
-            });
+            })
         })
         .catch(err => console.log(err));
     }
-
-    //anon user 
-    else
+    else //anon user 
     {
         res.redirect('/');
     }
 }
 
 exports.getOrders = (req, res, next) => {
-    console.log('getOrders');
+    console.log('admin-orders.ejs');
     let validation = res.locals.validation;
     
     //user is admin
@@ -40,7 +43,7 @@ exports.getOrders = (req, res, next) => {
     {
         Order.fetchAll()
         .then(orders => {
-            res.render('admin/orders', { 
+            res.render('admin-orders.ejs', { 
                 admin: validation.isAdmin,
                 loggedIn: true,
                 orders: orders,
@@ -59,7 +62,7 @@ exports.getOrders = (req, res, next) => {
 }
 
 exports.getRestaurants = (req, res, next) => {
-    console.log('getAdminRestaurantList');
+    console.log('admin-restaurants.ejs');
     let validation = res.locals.validation;
 
     //user is admin
@@ -67,7 +70,7 @@ exports.getRestaurants = (req, res, next) => {
     {
         Restaurant.fetchAll()
         .then(restaurants => {
-            res.render('admin/restaurants', { 
+            res.render('admin-restaurants.ejs', { 
                 admin: validation.isAdmin,
                 loggedIn: true,
                 restaurants: restaurants,
@@ -88,7 +91,7 @@ exports.getRestaurants = (req, res, next) => {
 
 exports.getUsers = (req, res, next) => {
     
-    console.log('getAdminUsers');
+    console.log('admin-users.ejs');
     let validation = res.locals.validation;
     
     //user is admin
@@ -96,7 +99,7 @@ exports.getUsers = (req, res, next) => {
     {
         User.fetchAll()
         .then(users => {
-            res.render('admin/users', { 
+            res.render('admin-users.ejs', { 
                 admin: validation.isAdmin,
                 loggedIn: true,
                 users: users,
@@ -116,7 +119,7 @@ exports.getUsers = (req, res, next) => {
 }
 
 exports.getReviews = (req, res, next) => {
-    console.log('getAdminReviews');
+    console.log('admin-reviews.ejs');
     let validation = res.locals.validation;
 
     //user is admin
@@ -124,7 +127,7 @@ exports.getReviews = (req, res, next) => {
     {
         Review.fetchAll()
         .then(reviews => {
-            res.render('admin/reviews', { 
+            res.render('admin-reviews.ejs', { 
                 admin: validation.isAdmin,
                 loggedIn: true,
                 reviews: reviews,
@@ -145,7 +148,7 @@ exports.getReviews = (req, res, next) => {
 
 exports.getStats = async (req, res, next) => {
     
-    console.log('getAdminReviews');
+    console.log('admin-stats.ejs');
     let validation = res.locals.validation;
 
     
@@ -157,7 +160,7 @@ exports.getStats = async (req, res, next) => {
         var users = await User.fetchAll();
         var reviews = await Review.fetchAll();
 
-        res.render('admin/stats', { 
+        res.render('admin-stats.ejs', { 
             admin: validation.isAdmin,
             loggedIn: true,
             orders: orders,
@@ -177,7 +180,8 @@ exports.getStats = async (req, res, next) => {
 
 }
 
-//edit
+
+//post
 exports.postEditOrder = async (req, res, next) => {
     console.log('postEditOrders');
     let validation = res.locals.validation;
@@ -300,7 +304,6 @@ exports.postEditNewsPost = async (req, res, next) => {
     }
 }
 
-//delete
 exports.postDeleteOrder = async (req, res, next) => {
     console.log('postDeleteOrder');
     let validation = res.locals.validation;
@@ -402,8 +405,6 @@ exports.postDeleteNewsPost = async (req, res, next) => {
     }
 }
 
-
-//other
 exports.postNewsPost = async (req, res, next) => {
     console.log('postNewsPost');
     let validation = res.locals.validation;

@@ -1,0 +1,52 @@
+<!-- user/about.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/mobile.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
+    <title>About</title>
+</head>
+
+<style>
+    /*** elements ***/
+    body { height: 100vh; background-color: #3c41d6; text-align: center; text-shadow: 2px 1px black; color: white; }
+
+    /*** classes ***/
+    .category { margin-top: 20px; font-weight: bold; font-size: 20px; }
+
+    /*** ids ***/
+    #main-about { margin-top: 0px; }
+    #categoryAbout { margin-top: 0px; }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        
+    }
+</style>
+
+<body>
+    <!-- nav menu -->
+    <%- include('nav-menu-anon.ejs') %>
+
+    <div id="main-about">
+        <!-- about -->
+        <p id="categoryAbout" class="category">About</p>
+        <p>This is a restaurant portal demo</p>
+
+        <!-- phone -->
+        <p class="category">Phone</p>
+        <p>0123456789</p>
+        
+        <!-- email -->
+        <p class="category">Email</p>
+        <p>Contact@MadeUp.com</p>
+        
+        <!-- address -->
+        <p class="category">Address</p>
+        <p>MadeUp St 123</p>
+    </div>
+</body>
+</html>

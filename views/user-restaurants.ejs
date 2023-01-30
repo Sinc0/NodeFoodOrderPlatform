@@ -1,0 +1,424 @@
+<!-- user/restuarants.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurants</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/mobile.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
+</head>
+
+<script>
+    function displayRestaurantReviews(menuItemNumber)
+    {
+        let d = document.getElementById("restaurantsRestaurantReview#" + menuItemNumber);
+        let a = document.getElementById("restaurantMenuItem#" + menuItemNumber);
+        
+        if(d.style.display == "none")
+        {
+            d.style = "overflow-y: auto;"
+            d.style.display = "block";
+        }
+        else if(d.style.display == "block")
+        {
+            d.style.display = "none";
+            a.style.marginBottom = "0px"
+        }
+    }
+
+    function setRestaurantNumberOfReviews(restaurantNumber, value)
+    {
+        let d = document.getElementById("restaurantReviewHeader#" + restaurantNumber);
+        let e = document.getElementById("restaurantReviewHeaderMobile#" + restaurantNumber);
+
+        if(value == 0)
+        {
+            d.innerHTML = "Reviews (0)";
+            d.onclick = "";
+            e.innerHTML = "Reviews (0)";
+            e.onclick = "";
+        }
+        else
+        {
+            d.innerHTML = value + " Reviews";
+            e.innerHTML = value + " Reviews";
+        }
+    }
+
+    function setRestaurantRating(restaurantNumber, rating)
+    {
+        let checkIfNaN = isNaN(parseFloat(rating));
+        let d = document.getElementById("restaurantRating#" + restaurantNumber);
+
+        if(checkIfNaN == false)
+        {
+            rating = Number(rating).toFixed(1);
+            d.innerHTML = rating + " ★";
+            d.hidden = false;
+        }
+        else
+        {
+            d.innerHTML = "Rating N/A";
+            d.hidden = false;
+        }
+    }
+
+    function searchBoxRestaurants(totalMenuItems)
+    {
+        let searchBoxInput = document.getElementById("searchBoxInput").value
+        let searchString = String(searchBoxInput).toLowerCase();
+        let countItems = 0;
+
+        for(let c = 1; c <= totalMenuItems; c++)
+        {
+            let menuItem = document.getElementById("restaurantMenuItem#" + c)
+            let menuItemSearchText = document.getElementById("restaurantMenuItemSearchText#" + c)
+
+            if(menuItemSearchText.innerHTML.toLowerCase().includes(searchString))
+            {
+                //menuItem.style.opacity = "100%";
+                menuItem.style.display = "block";
+                countItems++;
+            }
+            else
+            {
+                //menuItem.style.opacity = ".25";
+                menuItem.style.display = "none";
+            }
+        }
+    }
+
+    function setBackgroundGif()
+    {
+        let html = document.querySelector("html")
+        let randomNumber = Math.floor(Math.random() * 20) + 1
+
+        if(randomNumber > 20) { randomNumber = 20 }
+        else if(randomNumber == 0) { randomNumber = 1 }
+
+        html.style.backgroundImage = "url(/gifs/" + randomNumber + ".gif)"
+    }
+</script>
+
+<style>
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { height: 0px; width: 0px; }
+
+    /*** elements ***/
+    body { height: 100vh; }
+    p { margin: 0px; }
+
+    /*** classes ***/
+    .restaurantMenuItemText { width: 64%; margin: 0px; padding: 3px 7px 0px 7px; }
+    .restaurantMenuItem img { height: 100%; width: inherit; margin: 0px; }
+    .restaurantMenuItem { margin-top: 30px; border: 1px solid black; background-color: #f7f9f9; }
+    .restaurantMenuItemImg { border-right: 1px solid black; background-color: transparent; }
+    .restaurantReview 
+    { 
+        width: auto; 
+        margin: 0px; 
+        padding: 10px; 
+        text-align: left; 
+        overflow-x: scroll; 
+        white-space: nowrap;
+        user-select: none;
+        border-bottom: 2px solid black; 
+        background-color: lightgray; 
+    }
+    .restaurantReviewModal 
+    { 
+        max-height: 300px; 
+        width: 700px; 
+        margin: auto; 
+        border: 0px solid black; 
+        border-left: 1px solid black; 
+        border-right: 1px solid black; 
+    }
+    .restaurantReviewHeader { width: max-content; margin: -43px 0px 0px 236px; padding: 10px; user-select: none; }
+    .restaurantMenuItem img { margin: 0xp; padding: 0px; height: 196px; width: 100%; }
+    .restaurantCity { margin: 0px; padding: 0px; }
+    .restaurantTitle { margin: 0px; padding: 0px; }
+    .restaurantType { margin: 0px; padding: 0px; }
+    .restaurantRating { margin: 0px; padding: 0px; }
+    
+    /*** ids ***/
+    #searchBoxInput { height: 40px; font-weight: normal; color: white; background-color: black; }
+    #grid-restaurants { height: 88vh; overflow-y: scroll; }
+    #searchBoxRestaurants input { display: block; margin: auto; width: 698px; text-align: center; }
+    #titleClosedRestaurants { margin-top: 24px; font-size: 26px; text-shadow: 1px 1px black; opacity: 40%; color: red; }
+    #body-restaurants { width: 100vw; overflow-y: scroll; overflow-x: none; }
+    
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        .restaurantMenuItemText { width: 90%; padding: 0px; }
+        .restaurantMenuItem { margin: 24px 0px 0px 0px; width: 100%; border: 0px solid black; }
+        .restaurantMenuItemText
+        {
+            display: block;
+            height: 130px;
+            width: 100%;
+            min-height: 136px;
+            max-height: 136px;
+            margin: 0px;
+            padding: 0px;
+            text-align: center;
+            text-shadow: 1px 1px white;
+            color: black;
+            border: 0px solid black;
+            background-color: transparent;
+        }
+        .restaurantReviewHeaderMobile { margin: 0px; padding: 10px 0px 10px 0px; background-color: transparent; }
+        .restaurantReviewModal { width: 100%; background-color: black; }
+        .restaurant-backgroundImage-mobile { border: 1px solid black; }
+        .restaurantTitle { margin: 10px 0px 0px 0px; }
+        
+
+        #searchBoxRestaurants input { width: 89vw; margin-top: 10px; }
+        #grid-restaurants { height: 82vh; width: 90vw; margin: auto; }
+    }
+</style>
+
+<body id="body-restaurants" onload="setBackgroundGif()">
+    <!-- admin nav menu -->
+    <% if(admin != null && admin == true) { %> 
+        <%- include('nav_menu_admin.ejs') %>
+
+    <!-- user nav menu -->
+    <% } else if(loggedIn == true) { %>
+        <%- include('nav-menu-user.ejs') %>
+
+    <!-- anon nav menu -->
+    <% } else { %> 
+        <%- include('nav-menu-anon.ejs') %>
+    <% } %>
+
+    <!-- arrays -->
+    <% var restaurantsOpen = [] %>
+    <% var restaurantsClosed = [] %>
+    <% var restaurantCities = [] %>
+
+    <!-- add open restaurants to array -->
+    <% for (let restaurant of restaurants) { %>
+        <% if(restaurant.menuListed == true && restaurant.open == true) { %>
+            <% restaurantsOpen.push(restaurant); %>
+        <% } %>
+    <% } %>
+
+    <!-- add closed restaurants to array -->
+    <% for (let restaurant of restaurants) { %>
+        <% if(restaurant.menuListed == true && restaurant.open == false) { %>
+            <% restaurantsClosed.push(restaurant); %>
+        <% } %>
+    <% } %>
+
+    <!-- search box -->
+    <div id="searchBoxRestaurants" onkeyup="searchBoxRestaurants('<%=restaurants.length - 1 %>')">
+        <input id="searchBoxInput" placeholder="Search..."></input>
+    </div>
+
+    <div id="grid-restaurants" class="grid">
+        <% counter = 0 %>
+        
+        <!-- open restaurants -->
+        <div id="openRestaurants">
+            <% if (restaurantsOpen.length > 0) { %>
+                <% for (let restaurant of restaurantsOpen) { %>
+                    <% counter++ %>
+    
+                    <!-- restaurant -->
+                    <div id="restaurantMenuItem#<%=counter %>" class="restaurantMenuItem">
+                        <!-- restaurant profile image -->
+                        <div id="restaurant-backgroundImage#<%=counter %>" class="restaurant-backgroundImage">
+                            <a style="text-decoration: none; color: black;" href="/restaurant/<%= restaurant.url %>">
+                                <div class="restaurantMenuItemImg">
+                                    <img src="<%=restaurant.imageUrl %>" alt="<%=restaurant.title %>">
+                                </div>                  
+                                
+                                <!-- restaurant info -->
+                                <div class="restaurantMenuItemText" style="display: inline-block;">
+                                    <h1 class="restaurantTitle" style="margin-top: 0px;"><%=restaurant.title %></h1> <!-- title -->
+                                    <h3 class="restaurantCity"><%=restaurant.city %></h3> <!-- location -->
+                                    <h3 class="restaurantRating" hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
+                                    <h3 class="restaurantType"><%=restaurant.type %></h3> <!-- type -->
+                                </div>
+                            </a>
+                                
+                                <h3 id="restaurantReviewHeader#<%=counter %>" class="restaurantReviewHeader" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
+                            </div>
+                        </div>
+                                    
+                         <!-- restaurant profile image mobile -->
+                         <div id="restaurant-backgroundImage-mobile<%=counter %>" class="restaurant-backgroundImage-mobile" style="background-image: url('<%=restaurant.imageUrl %>');">
+                            <a style="text-decoration: none; color: black;" href="/restaurant/<%= restaurant.url %>">
+                                <div class="restaurantMenuItemImg">
+                                    <img src="<%=restaurant.imageUrl %>" alt="<%=restaurant.title %>">
+                                </div>                  
+                                
+                                <!-- restaurant info -->
+                                <div class="restaurantMenuItemText">
+                                    <h1 class="restaurantTitle"><%=restaurant.title %></h1> <!-- title -->
+                                    <h3 class="restaurantCity"><%=restaurant.city %></h3> <!-- location -->
+                                    <h3 class="restaurantRating" hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
+                                    <h3 class="restaurantType"><%=restaurant.type %></h3> <!-- type -->
+                                </div>
+                            </a>
+                                
+                            <h3 id="restaurantReviewHeaderMobile#<%=counter %>" class="restaurantReviewHeaderMobile" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
+                        </div>
+                    
+                        <!-- reviews -->
+                        <div id="restaurantsRestaurantReview#<%=counter %>" class="restaurantReviewModal" style="display: none;">
+                            <% var sortArray = [] %>
+                            <% var restaurantRating = null %>
+                            
+                            <% for(var i = 0; i < reviews.length; i++) { %>
+                                <% if(reviews[i].restaurant == restaurant.url) { %>
+                                    <% sortArray.push(reviews[i]); %>
+                                    <% restaurantRating += parseInt(reviews[i].reviewObject.rating) %>
+                                <% } %>
+                            <% } %>
+    
+                            <% var rating = restaurantRating / parseInt(sortArray.length); %>                 
+    
+                            <script>
+                                setRestaurantRating('<%=counter %>', '<%=rating %>');
+                                setRestaurantNumberOfReviews('<%=counter %>', '<%=parseInt(sortArray.length) %>');
+                            </script>
+                                    
+                            <% if(sortArray.length != 0) { %>
+                                
+                                <% for(var i = 0; i < sortArray.length; i++) { %>
+                                    <div class="restaurantReview">
+                                        <% var dateFormatted = sortArray[i].reviewObject.date %>
+                                        <% var dateFormatted = dateFormatted.toString().split(" ") %>
+                                        <% var dateFormatted = dateFormatted[1] + "-" + dateFormatted[2] + "-" + dateFormatted[3] %>
+                     
+                                        <p><b><%=sortArray[i].reviewObject.rating %> ★ </b> · <%=dateFormatted %> · <%=sortArray[i].reviewObject.name %> · <b><%=sortArray[i].reviewObject.comment %></b><span> &nbsp; </span></p>
+                                    </div>                                
+                                <% } %> 
+                            
+                            <% } else { %>
+                                <div class="restaurantReview" style="text-align: center;"> 
+                                    <h3>No reviews exist</h3>
+                                </div>
+                            <% } %>
+                        </div>
+    
+                        <!-- search object -->
+                        <p hidden id="restaurantMenuItemSearchText#<%=counter %>">
+                            <%=restaurant.title %>
+                            <%=restaurant.status %>
+                            <%=restaurant.rating %>
+                            <%=restaurant.type %>
+                            <%=restaurant.city %>
+                            <%=restaurant.description %>
+                        </p>
+                <% } %>
+                <% } else { %>
+                <% } %>
+        </div>
+
+        <!-- closed restaurants -->
+        <h3 id="titleClosedRestaurants">Closed</h3>
+        <div id="closedRestaurants">
+            <% if (restaurantsClosed.length > 0) { %>
+                <% for (let restaurant of restaurantsClosed) { %>
+                    <% counter++ %>
+    
+                    <div id="restaurantMenuItem#<%=counter %>" class="restaurantMenuItem" style="opacity: 40%;">
+                        <!-- restaurant profile image -->
+                        <div id="restaurant-backgroundImage#<%=counter %>" class="restaurant-backgroundImage">
+                            <a style="text-decoration: none; color: black" href="/restaurant/<%= restaurant.url %>">
+                                <div class="restaurantMenuItemImg">
+                                    <img src="<%= restaurant.imageUrl %>" alt="<%=restaurant.title %>">
+                                </div>
+                        
+                                <!-- restaurant info -->
+                                <div class="restaurantMenuItemText" style="display: inline-block;">
+                                    <h1 class="restaurantTitle"><%=restaurant.title %></h1> <!-- title -->
+                                    <h3 class="restaurantCity"><%=restaurant.city %></h3> <!-- location -->
+                                    <h3 class="restaurantRating" hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
+                                    <h3 class="restaurantType"><%=restaurant.type %></h3> <!-- type -->
+                                </div>
+                             </a>
+    
+                            <h3 id="restaurantReviewHeader#<%=counter %>" class="restaurantReviewHeader" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
+                        </div>
+                        
+                         <!-- restaurant profile image mobile -->
+                         <div id="restaurant-backgroundImage-mobile<%=counter %>" class="restaurant-backgroundImage-mobile" style="background-image: url('<%=restaurant.imageUrl %>');">
+                            <a style="text-decoration: none; color: black;" href="/restaurant/<%= restaurant.url %>">
+                               <div class="restaurantMenuItemImg">
+                                   <img src="<%=restaurant.imageUrl %>" alt="<%=restaurant.title %>">
+                               </div>                  
+                               
+                               <!-- restaurant info -->
+                               <div class="restaurantMenuItemText">
+                                    <!-- <h3 style="color: rgb(214, 14, 14)">Closed</h3> -->
+                                    <h1 class="restaurantTitle"><%=restaurant.title %></h1> <!-- title -->
+                                    <h3 class="restaurantCity"><%=restaurant.city %></h3> <!-- location -->
+                                    <h3 class="restaurantRating" hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
+                                    <h3 class="restaurantType"><%=restaurant.type %></h3> <!-- type -->
+                                </div>
+                            </a>
+                                
+                            <h3 id="restaurantReviewHeaderMobile#<%=counter %>" class="restaurantReviewHeaderMobile" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
+                        </div>
+    
+                        <!-- reviews -->
+                        <div id="restaurantsRestaurantReview#<%=counter %>" class="restaurantReviewModal" style="display: none;">
+                            <% var sortArray = [] %>
+                            <% var restaurantRating = null %>
+                            
+                            <% for(var i = 0; i < reviews.length; i++) { %>
+                                <% if(reviews[i].restaurant == restaurant.url) { %>
+                                    <% sortArray.push(reviews[i]); %>
+                                    <% restaurantRating += parseInt(reviews[i].reviewObject.rating) %>
+                                <% } %>
+                            <% } %>
+    
+                            <% var rating = restaurantRating / parseInt(sortArray.length); %>                 
+    
+                            <script>
+                                setRestaurantRating('<%=counter %>', '<%=rating %>');
+                                setRestaurantNumberOfReviews('<%=counter %>', '<%=parseInt(sortArray.length) %>');
+                            </script>
+                                    
+                            <% if(sortArray.length != 0) { %>
+                                
+                                <% for(var i = 0; i < sortArray.length; i++) { %>
+                                    <div class="restaurantReview">
+                                        <% var dateFormatted = sortArray[i].reviewObject.date %>
+                                        <% var dateFormatted = dateFormatted.toString().split(" ") %>
+                                        <% var dateFormatted = dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] %>
+    
+                                        <p><%=sortArray[i].reviewObject.rating %><b> ★ </b> · <%=dateFormatted %> by <%=sortArray[i].reviewObject.name %> <b><%=sortArray[i].reviewObject.comment %></b></p>
+                                    </div>                                
+                                <% } %> 
+                            
+                            <% } else { %>
+                                <div class="restaurantReview" style="text-align: center;"> 
+                                    <h3>No reviews exist</h3>
+                                </div>
+                            <% } %>
+                        </div>
+    
+                        <!-- search object -->
+                        <p hidden id="restaurantMenuItemSearchText#<%=counter %>">
+                            <%=restaurant.status %>
+                            <%=restaurant.title %>
+                            <%=restaurant.rating %>
+                            <%=restaurant.type %>
+                            <%=restaurant.location %>
+                            <%=restaurant.description %>
+                        </p>
+                    </div>
+            <% } %>
+            <% } else { %>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

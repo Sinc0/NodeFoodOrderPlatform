@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Menu</title>
+    <link rel="stylesheet" href="/css/portalRestaurant.css">
+    <link rel="stylesheet" href="/css/mobile.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
+</head>
+
+<script>
+    function collapseMenuEditCategory(id)
+    {
+        let categoryDiv = document.getElementById(id);
+    }
+    
+    function deleteItem(item, category, itemNumber)
+    {              
+        //elements  
+        let itemsElementCounter = document.getElementsByClassName("item");
+        let itemCounterParagraph = document.getElementById("itemCounterParagraph");
+
+        //variables
+        let getLocalStorage = localStorage.getItem("items");
+        let a = [];
+        let i = JSON.parse(getLocalStorage);
+        let itemToLookFor = String(category).toLowerCase() + itemNumber;
+        
+        //push local storage items to array
+        for(let c = 0; c < i.length; c++)
+        {
+            a.push(i[c]);
+        }
+
+        //look for item
+        if(getLocalStorage.includes(itemToLookFor))
+        {
+            for(let c = 0; c < i.length; c++)
+            {            
+                    
+                if(a[c].id.includes(itemToLookFor))
+                {
+                    a.splice(c, 1); //remove item from localstorage    
+                    localStorage.setItem("items", JSON.stringify(a));
+                    break;
+                }
+
+            }
+            
+        }                
+        
+        //remove div
+        document.getElementById(item).remove();
+        
+        //recount categories
+        countCategories(category);
+        
+        //update items count
+        // itemCounterParagraph.innerHTML = "Items " + "(" + (itemsElementCounter.length) + ")";
+
+        //update items input form
+        setFormWithCorrectData();
+
+    }
+
+    function addItem(itemCategory)
+    {
+        let itemsInCategoryCount = countCategories(itemCategory);
+        let itemName = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1);
+
+        //expand category if collapsed
+        let expand = document.getElementById("category" + itemCategory + "Body");
+        expand.style.display = "block";
+        // expand.style.paddingTop = "25px";
+        // expand.style.paddingBottom = "50px";
+        // expand.style.backgroundColor = "royalblue";
+    
+        //create item div
+        let div = document.createElement("div");
+        div.id = itemName;
+        div.className = "item " + String(itemCategory).toLowerCase();
+        // div.style.backgroundColor = "royalblue";
+        // div.style.paddingTop = "20px";
+
+        //update items and category count
+        let itemsElementCounter = document.getElementsByClassName("item");
+        let categoryElementCounter = document.getElementsByClassName(String(itemCategory).toLowerCase());
+        let categoryCounterParagraph = document.getElementById("categoryCounterParagraph" + itemCategory);
+        // let itemCounterParagraph = document.getElementById("itemCounterParagraph");
+        // itemCounterParagraph.innerHTML = "Items " + "(" + (itemsElementCounter.length + 1) + ")";
+        categoryCounterParagraph.innerHTML = "<b>" + itemCategory.toLowerCase() + " (" + (categoryElementCounter.length + 1) + ")</b>";
+
+        //create elements
+        let inputPosition = document.createElement("input");
+        let inputId = document.createElement("input");
+        let inputCategory = document.createElement("input");
+        let inputTitle = document.createElement("input");
+        let inputPrice = document.createElement("input");
+        let inputDescription = document.createElement("input");
+        let buttonRemove = document.createElement("div");
+        
+        //position
+        inputPosition.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-position";
+        inputPosition.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-position";
+        inputPosition.placeholder = "position";
+        inputPosition.value = (itemsInCategoryCount + 1);
+        inputPosition.className = "itemInput";
+        inputPosition.onkeyup = function() {setItemLocalStorage("item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1))};
+        inputPosition.style.display = "none";
+        
+        //id
+        inputId.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-id";
+        inputId.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-id";
+        inputId.placeholder = "id";
+        inputId.value = String(itemCategory).toLowerCase() + (itemsInCategoryCount + 1);
+        inputId.className = "itemInput";
+
+        //category
+        inputCategory.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-category";
+        inputCategory.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-category";
+        inputCategory.placeholder = "category";
+        inputCategory.value = String(itemCategory).toLowerCase();
+        inputCategory.className = "itemInput";
+
+        //title
+        inputTitle.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-title";
+        inputTitle.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-title";
+        inputTitle.placeholder = "title";
+        inputTitle.value = String(itemCategory).toLowerCase() + " item " + (itemsInCategoryCount + 1);;
+        inputTitle.className = "itemInput";
+        inputTitle.onkeyup = function() {setItemLocalStorage("item-" + itemCategory + "#" + (itemsInCategoryCount + 1))};
+        
+        //price
+        inputPrice.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-price";
+        inputPrice.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-price";
+        inputPrice.placeholder = "price";
+        inputPrice.value = 10;
+        inputPrice.className = "itemInput";
+        inputPrice.onkeyup = function() {setItemLocalStorage("item-" +  itemCategory + "#" + (itemsInCategoryCount + 1))};
+        
+        //description
+        inputDescription.id = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-input-description";    
+        inputDescription.name = "item-" + String(itemCategory).toLowerCase() + "#" + (itemsInCategoryCount + 1) + "-description";    
+        inputDescription.placeholder = "description";
+        inputDescription.className = "itemInput";
+        inputDescription.onkeyup = function() {setItemLocalStorage("item-" + itemCategory + "#" + (itemsInCategoryCount + 1))};
+        
+        //values
+        let sliceThis = itemCategory.toString();
+        let slicedCategory = sliceThis.slice(0, (sliceThis.length - 1));
+        if(sliceThis[(sliceThis.length - 1)] == "s")
+        {
+            inputDescription.value = "description of " + slicedCategory.toLowerCase() + " " + (itemsInCategoryCount + 1);;
+        }
+
+        else
+        {
+            inputDescription.value = "description of " + itemCategory.toLowerCase() + " " + (itemsInCategoryCount + 1);;
+        }
+                
+        //disabled
+        inputId.disabled = true;
+        inputCategory.disabled = true;
+
+        //hidden
+        inputId.style.display = "none";
+        inputCategory.style.display = "none";
+                        
+        //remove item on click text
+        buttonRemove.innerHTML = "-";
+        buttonRemove.onclick = function() {deleteItem(itemName, itemCategory, (itemsInCategoryCount + 1))};
+        buttonRemove.className = "itemInput buttonRemoveItem"
+
+        //appends
+        document.getElementById("category" + itemCategory + "Body").appendChild(div)
+        div.appendChild(inputPosition);
+        div.appendChild(inputId);
+        div.appendChild(inputCategory);
+        div.appendChild(inputTitle);
+        div.appendChild(inputPrice);
+        div.appendChild(inputDescription);
+        div.appendChild(buttonRemove);
+
+        //set item to local storage
+        setItemLocalStorage("item-" + itemCategory.toLowerCase() + "#" + (itemsInCategoryCount + 1));
+
+        //update items input form
+        setFormWithCorrectData();
+    }
+
+    function addCategory()
+    {
+        let promptAnswer = prompt("type desired name for category");
+
+        //validation
+        if(promptAnswer == null || promptAnswer == "" || promptAnswer == " ")
+        {
+            //do nothing
+        }
+
+        if(promptAnswer.includes(" "))
+        {
+            //do nothing
+        }
+
+        else
+        {
+            let categories = document.getElementById("menuEditRestaurantCategory");
+            let menuItemsDiv = document.getElementById("menuEditRestaurantItems");
+            let formTest = document.getElementById("formMenuItems");
+            let getTotalNumberOfCategories = countCategoriesInCategories();
+            let promptAnswerUnformatted = promptAnswer.toLowerCase();
+            
+            //make sure white spaced is handled
+            let promptAnswerWhiteSpaceHandled = "";
+            let t = promptAnswer.split(" ");
+
+            for(let c = 0; c < t.length; c++)
+            {
+                if(c != t.length - 1)
+                {
+                    promptAnswerWhiteSpaceHandled += (t[c].toString().charAt(0).toUpperCase() + t[c].toString().slice(1)) + "-";
+                }
+
+                else
+                {
+                    promptAnswerWhiteSpaceHandled += (t[c].toString().charAt(0).toUpperCase() + t[c].toString().slice(1));
+                }
+
+            }
+
+            //further handling of white space
+            t = t.toString().replace(/,/g, "")
+            promptAnswer = promptAnswerWhiteSpaceHandled;
+            let promptAnswerFormatted = promptAnswer.toLowerCase();
+            let promptAnswerFirstLetterUpperCase = promptAnswer.charAt(0).toUpperCase() + promptAnswer.slice(1);
+
+            //create div
+            let div = document.createElement("div");
+            div.id="category#" + (getTotalNumberOfCategories + 1);
+
+            //create input
+            let input = document.createElement("input");
+            input.id = "categoryInput#" + (getTotalNumberOfCategories + 1);
+            input.className = "categoryInput";
+            input.value = promptAnswerUnformatted.toLowerCase();
+            input.onkeyup = function() {
+                setCategoryToLocalStorage(input.value)
+                renameCategoryEverywhere((getTotalNumberOfCategories + 1));
+            };
+            input.disabled = true;
+
+            //create bold
+            let bold1 = document.createElement("b");
+            bold1.innerHTML = (getTotalNumberOfCategories + 1);
+            // bold1.style = "margin-left: 4px;";
+            
+            let bold3 = document.createElement("b");
+            bold3.id = "categoryInput#" + (getTotalNumberOfCategories + 1) + "-position";
+            bold3.name = promptAnswer;
+            bold3.value = (getTotalNumberOfCategories + 1);
+            bold3.className = "categoryArrows categoryUp categoryArrowsUp"
+            bold3.innerHTML = "▲";
+            // bold3.style = "margin-left: 4px;";
+            bold3.onclick = function() {changePositionCategories(this.value, (this.value - 1), this.name)};
+
+            let bold4 = document.createElement("b");
+            bold4.id = "categoryInput#" + (getTotalNumberOfCategories + 1) + "-position";
+            bold4.name = promptAnswer;
+            bold4.value = (getTotalNumberOfCategories + 1);
+            bold4.className = "categoryArrows categoryDown categoryArrowsDown"
+            bold4.innerHTML = "▼";
+            // bold4.style = "margin-left: 4px;";
+            bold4.onclick = function() {changePositionCategories(this.value, (this.value - 1), this.name)};
+
+            //create category div
+            let categoryDiv = document.createElement("div");
+            let split = promptAnswer.split(" ");
+            
+            for(let c = 0; c < split.length; c++)
+            {
+                split[c] = split[c].charAt(0).toUpperCase() + split[c].slice(1);
+            }
+
+            let formattedString = split.toString().replace(/,/g, '');
+
+            categoryDiv.id = "category" + formattedString;
+            categoryDiv.className = "menu-edit-category";
+            categoryDiv.style.display = "block";
+            categoryDiv.style.margin = "auto";
+            // categoryDiv.style.border = "2px solid black";
+
+            //categoryHeader
+            let categoryHeaderBold = document.createElement("b");   
+            let categoryHeaderLabel1 = document.createElement("label");
+            let categoryHeaderLabel2 = document.createElement("label");
+            let categoryHeaderLabel3 = document.createElement("label");
+            let categoryHeaderLabel4 = document.createElement("label");
+            categoryHeaderBold.innerHTML = (getTotalNumberOfCategories + 1) + " ";
+            // categoryHeaderLabel1.innerHTML = "[Collapse] ";
+            categoryHeaderLabel3.innerHTML = promptAnswer.toString().toLowerCase()
+            categoryHeaderLabel3.id = "categoryCounterParagraph" + promptAnswerFirstLetterUpperCase;
+            categoryHeaderLabel3.className = "menuCategoryName"
+            categoryHeaderLabel4.innerHTML = " + ";
+            categoryHeaderLabel4.onclick = function() {addItem(promptAnswerFirstLetterUpperCase)};
+
+            //categoryHeaderInput
+            let categoryHeaderInput1 = document.createElement("input");
+            categoryHeaderInput1.id = "categoryInput#" + (getTotalNumberOfCategories + 1) + "-disabled";
+            categoryHeaderInput1.disabled = true;
+            categoryHeaderInput1.hidden = true;
+
+            //categoryHeaderDiv
+            let categoryHeaderDiv = document.createElement("div");
+            categoryHeaderDiv.id = "category" + promptAnswerFirstLetterUpperCase + "Header";
+            categoryHeaderDiv.className = "menu-edit-category";
+            // categoryHeaderDiv.style = "margin: auto; padding-top: 5px; padding-bottom: 5px; background-color: royalblue;";
+
+            //categoryBody
+            let categoryBodyDiv = document.createElement("div");
+            categoryBodyDiv.id = "category" + promptAnswerFirstLetterUpperCase + "Body";
+            categoryBodyDiv.className = "item";
+            categoryBodyDiv.style.display = "block";
+            categoryBodyDiv.style.margin = "auto";
+
+            //label
+            let label = document.createElement("label");
+            label.innerHTML = " X ";
+            label.style = "margin-left: 0px;";
+            label.onclick = function() {deleteCategory((getTotalNumberOfCategories + 1), formattedString)};
+                
+            //appends
+            categoryHeaderDiv.appendChild(categoryHeaderLabel1);
+            categoryHeaderDiv.appendChild(categoryHeaderInput1);
+            categoryHeaderDiv.appendChild(categoryHeaderLabel3);
+            categoryHeaderDiv.appendChild(categoryHeaderLabel4);
+            div.appendChild(label);    
+            div.appendChild(input);
+            div.appendChild(bold1);
+            div.appendChild(bold3);
+            div.appendChild(bold4);
+            categories.appendChild(div);
+            categoryDiv.appendChild(categoryHeaderDiv);
+            categoryDiv.appendChild(categoryBodyDiv);
+            formTest.append(categoryDiv);
+
+            //bug fix
+            document.getElementById(categoryHeaderInput1.id).value = promptAnswerUnformatted.toLowerCase();
+            
+            //set category to local storage
+            setCategoryToLocalStorage(promptAnswer.toLowerCase());
+
+            //update categories input form
+            setFormWithCorrectData();
+
+            //refresh categories list to load all arrows
+            changePositionCategories(null, null, null);
+
+            //update categoriesCount
+            // document.getElementById("menuEditCategories").innerHTML = "Categories (" + (getTotalNumberOfCategories + 1) + ")";
+        }
+    }
+
+    function countCategories(c)
+    {
+        var category = document.getElementById("categoryCounterParagraph" + c.charAt(0).toUpperCase() + c.slice(1));
+        var count = document.getElementsByClassName(String(c).toLowerCase()).length;
+        var categoryFirstLetterUpperCase = c.charAt(0).toUpperCase() + c.slice(1);
+
+        if(count != null && count != 0)
+        {
+            category.innerHTML = "<b>" + categoryFirstLetterUpperCase + " (" + count + ")" + "</b>";
+            return count;
+        }
+        
+        else
+        {
+            category.innerHTML = "<b>" + categoryFirstLetterUpperCase + " (" + 0 + ")" + "</b>";
+            return 0;
+        }
+
+    }
+
+    function countCategoriesForSpecificItem(position, id, category)
+    {
+        var inputPosition = document.getElementById(position);
+        var inputId = document.getElementById(id);
+        var count = document.getElementsByClassName(String(category).toLowerCase()).length;
+        
+        inputPosition.value = count;
+        inputPosition.name = "item-" + category + "#" + count + "-position";
+        inputId.value = category + count;
+    }
+
+    function countCategoriesInCategories()
+    {
+        var count = document.getElementsByClassName("categoryInput");
+
+        return count.length;
+    }
+
+    function collapseDiv(id)
+    {
+        var div = document.getElementById(id);
+        
+        if(div.style.display == "block")
+        {
+            div.style.display = "none";
+        }
+
+        else if(div.style.display = "none")
+        {
+            div.style.display = "block";
+            div.style.margin = "auto";
+            // div.style.paddingTop = "30px";
+            // div.style.paddingBottom = "50px";
+            // div.style.backgroundColor = "royalblue";
+        }
+    }
+
+    function deleteCategory(number, id)
+    {
+        id = String(id);
+        var formattedString = "category" + (id.charAt(0).toUpperCase() + id.slice(1));
+        
+        //ask user
+        var p = prompt("This will delete the category " + id + " and all it's items, type Remove " + String(id) + " if you wanna proceed");
+        
+        if(p == "Remove " + String(id))
+        {
+            document.getElementById("category#" + number).remove();
+            document.getElementById(formattedString).remove();
+
+            //remove category from local storage
+            var getLocalStorageCategories = localStorage.getItem("categories");
+            var a = [];
+            var i = JSON.parse(getLocalStorageCategories);
+            var itemToLookFor = id.toLowerCase();
+            
+            for(var c = 0; c < i.length; c++)
+            {
+                a.push(i[c]);
+            }
+
+            if(getLocalStorageCategories.includes(itemToLookFor))
+            {
+                //check what item
+                for(var c = 0; c < i.length; c++)
+                {            
+                    //remove item from localstorage        
+                    if(a[c].categoryName.includes(itemToLookFor))
+                    {
+                        a.splice(c, 1);
+                        localStorage.setItem("categories", JSON.stringify(a));
+                        break;
+                    }
+
+                }
+                
+            }
+
+            //remove items with the category
+            var getLocalStorageItems = localStorage.getItem("items");
+            var a = [];
+            var b = [];
+            var i = JSON.parse(getLocalStorageItems);
+            var itemToLookFor = id.toLowerCase();
+            
+            for(var c = 0; c < i.length; c++)
+            {
+                a.push(i[c]);
+            }
+
+            if(getLocalStorageItems.includes(itemToLookFor))
+            {
+                //check what item                   
+                for(var counter = 0; counter <= a.length - 1; counter++)
+                {            
+                    //remove item from localstorage
+                    if(a[counter].category == itemToLookFor)
+                    {
+                        //do nothing
+                    }
+
+                    else
+                    {
+                        b.push(a[counter]);
+                    }
+                    
+                }
+
+            }  
+            
+            localStorage.setItem("items", JSON.stringify(b));
+        }
+
+        else
+        {
+            return
+            //do nothing
+        }
+        
+        //update category count
+        // var c = countCategoriesInCategories();
+        // document.getElementById("menuEditCategories").innerHTML = "Categories (" + c + ")";
+        
+        //update item count
+        // var i = document.getElementsByClassName("item");
+        // document.getElementById("itemCounterParagraph").innerHTML = "Items (" + c + ")"
+        
+        //update categories input form
+        setFormWithCorrectData();
+
+        //submit form
+        var form = document.getElementById("formMenuEditData")
+        // function handleForm(event) { event.preventDefault(); }
+        // form.addEventListener('submit', handleForm); 
+        form.submit();
+    }
+
+    function clearLocalStorage()
+    {
+        localStorage.setItem("categories", null);
+        localStorage.setItem("items", null);
+    }
+
+    function clearLocalStorageCategories()
+    {
+        localStorage.setItem("categories", null);
+    }
+
+    function clearLocalStorageItems()
+    {
+        localStorage.setItem("items", null);
+    }
+
+    function setImgToLocalStorage()
+    {
+        var d = document.getElementById("inputImg");
+
+        localStorage.setItem("img", JSON.stringify(d.value));
+
+        setFormWithCorrectData();
+    }
+
+    function setPhoneToLocalStorage()
+    {
+        var d = document.getElementById("inputPhone");
+
+        localStorage.setItem("phone", JSON.stringify(d.value));
+
+        setFormWithCorrectData();
+    }
+
+    function setAddressToLocalStorage()
+    {
+        var d = document.getElementById("inputAddress");
+
+        localStorage.setItem("address", JSON.stringify(d.value));
+
+        setFormWithCorrectData();
+    }
+
+    function setDescriptionToLocalStorage()
+    {
+        var d = document.getElementById("inputDescription");
+
+        localStorage.setItem("description", JSON.stringify(d.value));
+
+        setFormWithCorrectData();
+    }
+
+    function setHoursToLocalStorage()
+    {
+        var monday = document.getElementById("inputHoursMonday");
+        var tuesday = document.getElementById("inputHoursTuesday");
+        var wednesday = document.getElementById("inputHoursWednesday");
+        var thursday = document.getElementById("inputHoursThursday");
+        var friday = document.getElementById("inputHoursFriday");
+        var saturday = document.getElementById("inputHoursSaturday");
+        var sunday = document.getElementById("inputHoursSunday");
+
+        var arrayHours = [];
+        arrayHours.push({day: "Monday", time: monday.value});
+        arrayHours.push({day: "Tuesday", time: tuesday.value});
+        arrayHours.push({day: "Wednesday", time: wednesday.value});
+        arrayHours.push({day: "Thursday", time: thursday.value});
+        arrayHours.push({day: "Friday", time: friday.value});
+        arrayHours.push({day: "Saturday", time: saturday.value});
+        arrayHours.push({day: "Sunday", time: sunday.value});
+
+        localStorage.setItem("hours", JSON.stringify(arrayHours));
+        
+        setFormWithCorrectData();
+    }
+
+    function setTypesToLocalStorage()
+    {
+        var d = document.getElementById("inputType");
+
+        localStorage.setItem("types", JSON.stringify(d.value));
+        
+        setFormWithCorrectData();
+    }
+
+    function setCategoryToLocalStorage(category)
+    {
+        var getLocalStorage = localStorage.getItem("categories");
+        var a = [];
+        
+        if(getLocalStorage != "null")
+        {
+            var i = JSON.parse(getLocalStorage);
+
+            for(var c = 0; c < i.length; c++)
+            {
+                a.push(i[c]);
+            }
+
+            a.push({position: (c + 1), categoryName: category});
+
+            localStorage.setItem("categories", JSON.stringify(a));
+        }
+        
+        if(getLocalStorage == "null")
+        {
+            a.push({position: 1, categoryName: category});
+            localStorage.setItem("categories", JSON.stringify(a));
+        }
+
+    }
+
+    function setItemLocalStorage(id)
+    {
+        id = id.toLowerCase();
+        var positionInputValue = document.getElementById(id + "-input-position").value;
+        var idInputValue = document.getElementById(id + "-input-id").value;
+        var categoryInputValue = document.getElementById(id + "-input-category").value;
+        var titleInputValue = document.getElementById(id + "-input-title").value;
+        var priceInputValue = document.getElementById(id + "-input-price").value;
+        var descriptionInputValue = document.getElementById(id + "-input-description").value;
+        
+        //get items from local storage
+        var getLocalStorage = localStorage.getItem("items");
+        var object = {
+            position: positionInputValue,
+            id: idInputValue,
+            category: categoryInputValue,
+            title: titleInputValue,
+            price: priceInputValue,
+            description: descriptionInputValue
+        }
+        var a = [];
+        
+        //fill array
+        if(getLocalStorage != "null")
+        {
+            var i = JSON.parse(getLocalStorage);
+            
+            for(var c = 0; c < i.length; c++)
+            {
+                a.push(i[c]);
+            }
+
+            if(getLocalStorage.includes(idInputValue))
+            {
+                //check what item
+                for(var c = 0; c < i.length; c++)
+                {                    
+                    if(a[c].id.includes(idInputValue))
+                    {
+                        console.log("item " + c + " contains id");
+                        a[c] = object;
+                    }
+                }
+            }
+                
+            else
+            {
+                a.push(object);
+            }
+            
+            localStorage.setItem("items", JSON.stringify(a));
+        }
+        
+        if(getLocalStorage == "null")
+        {
+            a.push(object);
+            localStorage.setItem("items", JSON.stringify(a));
+        }
+
+        //update categories input form
+        setFormWithCorrectData()
+
+    }
+
+    function renameCategoryEverywhere(categoryIdNumber)
+    {                
+        var d = document.getElementById("categoryInput#" + categoryIdNumber);
+        var k = document.getElementsByClassName(d.value);
+        var getTotalNumberOfCategories = countCategoriesInCategories();
+        var c = document.getElementById("categoryInput#" + categoryIdNumber);
+        var i = document.getElementById("categoryInput#" + categoryIdNumber + "-disabled");
+        
+        i.value = c.value;
+    }
+
+    function setFormWithCorrectData()
+    {
+        //local storage
+        var img = localStorage.getItem("img");
+        var phone = localStorage.getItem("phone");
+        var address = localStorage.getItem("address");
+        var description = localStorage.getItem("description");
+        var hours = localStorage.getItem("hours");
+        var types = localStorage.getItem("types");
+        var categories = localStorage.getItem("categories");
+        var items = localStorage.getItem("items");
+
+        //form inputs
+        var inputFormImg = document.getElementById("inputAllImg");
+        var inputFormPhone = document.getElementById("inputAllPhone");
+        var inputFormAddress = document.getElementById("inputAllAddress");
+        var inputFormDescription = document.getElementById("inputAllDescription");
+        var inputFormHours = document.getElementById("inputAllHours");
+        var inputFormTypes = document.getElementById("inputAllTypes");
+        var inputFormCategories = document.getElementById("inputAllCategories");
+        var inputFormItems = document.getElementById("inputAllItems");
+
+        if(inputFormImg != null)
+        {
+            document.getElementById("inputAllImg").value = img;
+        }
+
+        if(inputFormPhone != null)
+        {
+            document.getElementById("inputAllPhone").value = phone;
+        }
+
+        if(inputFormAddress != null)
+        {
+            document.getElementById("inputAllAddress").value = address;
+        }
+
+        if(inputFormDescription != null)
+        {
+            document.getElementById("inputAllDescription").value = description;
+        }
+
+        if(inputFormHours != null)
+        {
+            document.getElementById("inputAllHours").value = hours;
+        }
+
+        if(inputFormTypes != null)
+        {
+            document.getElementById("inputAllTypes").value = types;
+        }
+        
+        if(inputFormCategories != null)
+        {
+            document.getElementById("inputAllCategories").value = categories;
+        }
+
+        if(inputFormItems != null)
+        {
+            document.getElementById("inputAllItems").value = items;
+        }
+
+    }
+
+    function changePositionCategories(startPos, newPos, cName)
+    {
+        clearLocalStorageCategories();
+
+        newPos = parseInt(newPos);
+        var categories = document.getElementsByClassName("categoryInput");
+        var categoriesLength = categories.length;
+        var categoriesArray = [];
+        var categoriesDiv = document.getElementById("menuEditRestaurantCategory");
+        var itemsDiv = document.getElementById("menuEditRestaurantItems");
+
+        if(startPos == categories.length)
+        {
+            console.log("c");
+        }
+
+        for(var c = 1; c <= categoriesLength; c++)
+        {
+            var position = document.getElementById("categoryInput#" + (c) + "-position");
+            categoriesArray[c] = {categoryName: (categories[c - 1].value), position: (c)};
+        }
+
+        for(var i = 1; i <= categoriesLength; i++)
+        {
+            if(categoriesArray[i].categoryName == cName)
+            {
+                categoriesArray[i] = categoriesArray[newPos];
+                categoriesArray[i].position = (i);
+                categoriesArray[newPos] = {categoryName: cName, position: newPos};
+            }
+        }
+    
+        for(var s = 1; s <= categoriesLength; s++)
+        {
+            var category = document.getElementById("category#" + s);
+            category.remove();
+        }
+        
+        for(var p = 1; p <= categoriesLength; p++)
+        {
+            var categoryName = categoriesArray[p].categoryName;
+            var categoryPosition = categoriesArray[p].position;
+
+            //create elements
+            var div = document.createElement("div");    
+            div.id = "category#" + p;
+            div.className = "menuCategoryHolder"
+            // div.style.backgroundColor = "royalblue";
+            // div.style.paddingTop = "10px";
+            // div.style.paddingBottom = "10px";
+            // div.style.border = "1px solid black";
+            
+            //create label
+            var label = document.createElement("label");
+            label.id = "categoryInput#" + p + "-delete";
+            label.className = "menuCategoryRemoveButton"
+            // label.style.marginLeft = "7px";
+            label.innerHTML = "-";
+
+            //create input
+            var input1 = document.createElement("input");
+            input1.id = "categoryInput#" + p;
+            input1.className = "categoryInput";
+            input1.value = categoryName;
+            input1.disabled = true;
+
+            var input2 = document.createElement("input");
+            input2.id = "categoryInput#" + p + "-position";
+            input2.type = "number";
+            input2.value = "";
+            input2.min = 1;
+            input2.max = categoriesLength;
+            // input2.style = "margin-left: 4px; width: 15px;";
+            
+            var bold1 = document.createElement("b")
+            bold1.className = "categoryNumber"
+            bold1.innerHTML = p.toString() + "."
+
+            var bold2 = document.createElement("b");
+            bold2.id = "categoryInput#" + p + "-position";
+            bold2.name = categoryName;
+            bold2.value = p;
+            bold2.className = "categoryArrows categoryDown categoryArrowDown"
+            bold2.innerHTML = "▼";
+            // bold2.style = "width: 50px; margin-left: 4px;";
+            bold2.onclick = function() {changePositionCategories(this.value, (this.value + 1), this.name)};
+
+            var bold3 = document.createElement("b");
+            bold3.id = "categoryInput#" + p + "-position";
+            bold3.name = categoryName;
+            bold3.value = p;
+            bold3.className = "categoryArrows categoryUp categoryArrowUp"
+            bold3.innerHTML = "▲";
+            // bold3.style = "";
+            bold3.onclick = function() {changePositionCategories(this.value, (this.value - 1), this.name)};
+            
+            //create br
+            // var br = document.createElement("br");
+            
+            //apppends
+            div.appendChild(bold1);
+            div.appendChild(input1);
+            // if(p == 1)
+            // {
+            //     div.appendChild(bold2);
+            // }
+            // else if(p == categoriesLength)
+            // {
+            //     div.appendChild(bold3);
+            // }
+            // else
+            // {
+            //     bold2.className = "categoryArrows categoryArrowUp";
+            //     bold3.className = "categoryArrows categoryArrowDown";
+
+            //     div.appendChild(bold2);
+            //     div.appendChild(bold3);
+            // }
+            bold2.className = "categoryArrows categoryArrowDown";
+                bold3.className = "categoryArrows categoryArrowUp";
+
+                div.appendChild(bold2);
+                div.appendChild(bold3);
+            div.appendChild(label);
+
+
+            // div.appendChild(br);
+            categoriesDiv.appendChild(div);
+            // categoriesDiv.style.display = "block";
+            // categoriesDiv.style.margin = "auto";
+
+            //bugfix
+            var d = document.getElementById("categoryInput#" + p + "-position");
+            d.value = p;
+            d.name = categoryName; //using d.name is a work around to set categoryName
+            d.onchange = function() {changePositionCategories(newPos, this.value, this.name)};                  
+
+            var d = document.getElementById("categoryInput#" + p + "-delete");
+            d.value = p;                  
+            d.name = categoryName; //using x.name is a work around to set categoryName
+            d.onclick = function() {deleteCategory(this.value, this.name)};
+
+            //update items array
+            var categoryNameWithFirstLetterUpperCase = (categoryName.charAt(0).toUpperCase() + categoryName.slice(1));
+            var d = document.getElementById("category" + categoryNameWithFirstLetterUpperCase);
+            
+            if(d != null)
+            {
+                d.remove();
+            }
+
+            //append category
+            var h = document.getElementById("menuEditRestaurantItems");
+            h.appendChild(d);
+
+            //set to local storage
+            setCategoryToLocalStorage(categoryName);
+        }
+
+        setFormWithCorrectData();                
+    }
+
+    function editMenuSubmitChanges()
+    {
+        if (confirm("Press OK to confirm changes")) 
+        {
+            txt = "You pressed OK!";
+            document.getElementById("formMenuEditData").submit();
+        } 
+
+        else 
+        {
+            txt = "You pressed Cancel!";
+        }
+
+    }
+
+    function saveScrollPosition()
+    {
+        var y = window.scrollY;
+        localStorage.setItem("scrollPositionY", y);
+    }
+
+    function loadSavedScrollPosition()
+    {
+        var positionY = localStorage.getItem("scrollPositionY");
+        window.scrollTo(0, positionY)
+    }
+
+    clearLocalStorage()
+</script>
+
+<style>
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { height: 0px; width: 0px; }
+
+    /*** elements ***/
+    body { background-color: #3c41d6; }
+    input 
+    { 
+        padding: 10px 4px 10px 8px; 
+        outline: none; 
+        font-weight: bold;
+        font-size: 20px; 
+        text-align: left;
+        color: white; 
+        border: 0px solid black; 
+        border-bottom: 1px solid black; 
+        background-color: black; 
+    }
+    textarea { font-size: 20px; outline: none; color: white; border: 0px solid black; background-color: black; }
+    label { overflow-x: scroll; white-space: nowrap; max-width: 80%;}
+
+    /*** classes ***/
+    .menuEditCategory { width: 400px; margin: auto; padding: 0px; text-align: center; border: 0px solid black; }
+    .categoryTitle 
+    { 
+        display: block; 
+        width: 400px; 
+        margin: auto; 
+        margin-top: 30px; 
+        padding: 0px; 
+        text-align: left;
+        font-weight: normal;
+        font-size: 20px;
+        text-shadow: 1px 1px black; 
+        color: white;
+    }
+    .menu-edit-hours 
+    { 
+        margin: 20px 0px 0px 0px; 
+        padding: 0px; 
+        font-weight: bold; 
+        font-size: 20px; 
+        text-shadow: 1px 1px black; 
+        color: white;
+    }
+    .menuCategory { margin: 0px; border-bottom: 0px solid white; background-color: black; }
+    .menuCategoryRemoveButton 
+    { 
+        width: auto;
+        padding: 0px 26px 0px 18px;
+        font-size: 30px;
+        font-weight: bold;
+        text-align: center;
+        color: white;
+        border: 0px solid black;
+        background-color: black; 
+    }
+    .categoryInput { width: 60%; text-align: left; }
+    .categoryArrows { font-size: 30px; color: white; border: 0px solid white; background-color: black; }
+    .menuCategoryHolder 
+    { 
+        display: flex; 
+        padding: 4px 0px 2px 0px; 
+        user-select: none; 
+        border-top: 1px solid white; 
+        background-color: black; 
+    }
+    .categoryArrowDown { margin: 0px; padding: 0px; margin-top: 1px; }
+    .categoryArrowUp { margin: 0px; padding: 0px; }
+    .menu-edit-category 
+    { 
+        padding: 0px; 
+        font-size: 20px; 
+        user-select: none; 
+        text-align: left;
+        font-weight: bold;
+        color: white; 
+        border-bottom: 1px solid white; 
+        background-color: black; 
+    }
+    .itemInput { width: 393px; padding: 7px 0px 7px 7px; font-weight: normal; text-align: left; border: 0px solid black; }
+    .buttonRemoveItem { width: auto; text-align: center; background-color: red; }
+    .menuCategoryName { display: inline-flex; margin: 12px 0px 12px 0px; }
+    .categoryNumber { padding: 13px 0px 0px 16px; color: white; }
+    .inputHours { border-bottom: 1px solid white; }
+    .addCategoryItemBtn { margin: 0px 16px 0px 21px; }
+
+    /*** ids ***/
+    #NavBar { padding-left: 7px; text-align: left; color: white; text-shadow: 1px 1px black; background-color: #3c41d6; }
+    #editMenu { height: 86vh; margin: auto; margin: 0px; overflow-y: scroll; }
+    #inputDescription { }
+    #inputType { }
+    #inputPhone { }
+    #inputAdress { }
+    #menuEditRestaurantHours { width: 400px; margin-bottom: 20px; text-align: left; }
+    #menuEditCategories { width: 400px; margin: auto; }
+    #menuEditRestaurantItems { width: 400px; margin: auto; }
+    #NavBarEdit 
+    { 
+        width: 400px; 
+        margin: auto;
+        margin-top: 40px;
+        padding: 12px 0px 12px 0px; 
+        text-align: center; 
+        font-weight: bold;
+        font-size: 17px;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: lightgreen; 
+    }
+    #categoryTitleCuisine { margin-top: 10px; }
+    #menu-edit-button-addCategory 
+    { 
+        display: block; 
+        width: 100%; 
+        padding: 10px 0px 10px 0px; 
+        font-weight: bold; 
+        font-size: 17px; 
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+        background-color: white; 
+    }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        input { width: 87vw; margin: auto; padding-right: 10px; }
+
+        .menu-edit-hours { display: block; margin: auto; width: 90vw;}
+        .menuEditCategory { width: 90vw; }
+        .menuCategoryHolder { width: 90vw; }
+        .categoryTitle { width: 90vw; }
+
+        #editMenu { height: 93vh; width: 90vw; margin: auto; }
+        #menuEditCategories { width: 90vw; }
+        #menuEditRestaurantHours { width: 90vw; }
+        #NavBarEdit { width: 100%; margin-bottom: 30px; }
+        #menuEditRestaurantItems { width: 90vw; }
+        #menuEditRestaurantCategory { width: 90vw; }
+    }
+</style>
+
+<body onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
+    <a href="/restaurantPortal">
+        <nav id="NavBar">
+            <b>❮</b>
+        </nav>
+    </a>
+        
+    <div id="editMenu">
+        <!-- Type -->
+        <div id="menuEditRestaurantType" class="menuEditCategory" onclick="collapseMenuEditCategory(this.id)">
+            <b id="categoryTitleCuisine" class="categoryTitle">Cuisine</b>
+            <input id="inputType" value="<%=restaurant.type %>" placeholder="..." onkeyup="setTypesToLocalStorage()" maxlength="100" />
+            <!-- <script>setTypesToLocalStorage()</script> -->
+        </div>
+        
+        <!-- Image -->
+        <!-- <div id="menuEditRestaurantImageUrl" class="menuEditCategory" onclick="collapseMenuEditCategory(this.id)">
+            <p class="categoryTitle"><b>Img Url</b></p>
+            <input id="inputImg" value="<%=restaurant.imageUrl %>" onkeyup="setImgToLocalStorage()"></input>
+            <script>setImgToLocalStorage()</script>
+        </div> -->
+        
+        <!-- Phone -->
+        <div id="menuEditRestaurantPhone" class="menuEditCategory" onclick="collapseMenuEditCategory(this.id)">
+            <b class="categoryTitle">Phone</b>
+            <% pn = restaurant.phone.toString().replaceAll("-", "") %>
+            <input id="inputPhone" value="<%=pn %>" placeholder="..." onkeyup="setPhoneToLocalStorage()" maxlength="24" />
+            <!-- <script>setPhoneToLocalStorage()</script> -->
+        </div>
+        
+        <!-- Adress -->
+        <div id="menuEditRestaurantAdress" class="menuEditCategory" onclick="collapseMenuEditCategory(this.id)">
+            <b class="categoryTitle">Address</b>
+            <input id="inputAddress" value="<%=restaurant.address %>" placeholder="..." onkeyup="setAddressToLocalStorage()" maxlength="50" />
+            <!-- <script>setAddressToLocalStorage()</script> -->
+        </div>
+
+        <!-- Description -->
+        <div id="menuEditRestaurantDescription" class="menuEditCategory" onclick="collapseMenuEditCategory(this.id)">
+            <p class="categoryTitle">Description</p>
+            <input id="inputDescription" value="<%=restaurant.description %>" placeholder="..." onkeyup="setDescriptionToLocalStorage()" maxlength="200" />
+            <!-- <script>setDescriptionToLocalStorage()</script> -->
+        </div>
+
+        <!-- hours -->
+        <div id="menuEditRestaurantHours" class="menuEditCategory" onclick="collapseMenuEditCategory(this.id)">
+            <p class="categoryTitle">Hours</p>
+            <% for(var c = 0; c < restaurant.hours.length; c++) { %>
+                <!-- monday -->
+                <% if(c == 0) { %>
+                    <input id="inputHoursMonday" class="inputHours" maxlength="30" placeholder="Monday" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" />
+                <% } %>
+                <!-- tuesday -->
+                <% if(c == 1) { %>
+                    <input id="inputHoursTuesday" class="inputHours" maxlength="30" placeholder="Tuesday" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" />
+                <% } %>
+                <!-- wednesday -->
+                <% if(c == 2) { %>
+                    <input id="inputHoursWednesday" class="inputHours" maxlength="30" placeholder="Wednesday" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" />
+                <% } %>
+                <!-- thursday -->
+                <% if(c == 3) { %>
+                    <input id="inputHoursThursday" class="inputHours" maxlength="30" placeholder="Thursday" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" />
+                <% } %>
+                <!-- friday -->
+                <% if(c == 4) { %>
+                    <input id="inputHoursFriday" class="inputHours" maxlength="30" placeholder="Friday" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" />
+                <% } %>
+                <!-- saturday -->
+                <% if(c == 5) { %><div>
+                    <input id="inputHoursSaturday" class="inputHours" maxlength="30" placeholder="Saturday" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" />
+                <% } %>
+                <!-- sunday -->
+                <% if(c == 6) { %>
+                    <input id="inputHoursSunday" class="inputHours" maxlength="30" placeholder="Sunday" value="<%=restaurant.hours[c].time %>" onkeyup="setHoursToLocalStorage()" />
+                </div> 
+                <% } %>
+            <% } %>
+            <!-- <script>setHoursToLocalStorage()</script> -->
+        </div>
+
+        <!-- Menu Categories -->
+        <div id="menuEditCategories">
+            <b><p class="categoryTitle">Categories</p></b> <!-- <%=restaurant.menuCategories.length %> -->
+            
+            <div id="menu-edit-button-addCategory" onclick="addCategory()">Add Category</div>
+
+            <div id="menuEditRestaurantCategory" onclick="collapseMenuEditCategory(this.id)">
+                <% for(var c = 0; c < restaurant.menuCategories.length; c++) { %>
+                    <div id="category#<%=c + 1 %>" class="menuCategoryHolder menuCategory">
+                        <!-- <div id="category#<%=c + 1 %>" class="menuCategory"> -->
+                            <b class="categoryNumber"><%=c + 1 %>.</b>
+                            <input disabled id="categoryInput#<%=c + 1 %>" class="categoryInput" value="<%=restaurant.menuCategories[c].categoryName %>"></input>
+                            <script>setCategoryToLocalStorage('<%=restaurant.menuCategories[c].categoryName %>')</script>
+                        <!-- </div> -->
+                        
+                        <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrows categoryArrowDown" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 2 %>', '<%=restaurant.menuCategories[c].categoryName %>')">▼</button>
+                        <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrows categoryArrowUp" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 0 %>', '<%=restaurant.menuCategories[c].categoryName %>')">▲</button>
+                        <!-- <% if(c == 0) { %>
+                            <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrowDown categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 2 %>', '<%=restaurant.menuCategories[c].categoryName %>')">▼</button>
+                        <% } else if(c == restaurant.menuCategories.length - 1) { %>
+                            <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrowUp categoryArrows" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 0 %>', '<%=restaurant.menuCategories[c].categoryName %>')">▲</button>
+                            <% } else { %>
+                                <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrows categoryArrowDownMobile" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 2 %>', '<%=restaurant.menuCategories[c].categoryName %>')">▼</button>
+                            <button id="categoryInput#<%=c + 1 %>-position" class="categoryArrows categoryArrowUpMobile" value="<%=restaurant.menuCategories[c].position %>" onclick="changePositionCategories('<%=c + 1 %>', '<%=c + 0 %>', '<%=restaurant.menuCategories[c].categoryName %>')">▲</button>
+                            <% } %> -->
+                            
+                            <% if(c != restaurant.menuCategories.length - 1 && c != 0) { %>
+                                <button id="categoryInput#<%=c + 1%>-delete" class="menuCategoryRemoveButton" onclick="deleteCategory('<%=c + 1 %>', '<%=restaurant.menuCategories[c].categoryName %>')">-</button>
+                                <% } else if(c == restaurant.menuCategories.length - 1) { %>
+                                <button id="categoryInput#<%=c + 1%>-delete" class="menuCategoryRemoveButton" onclick="deleteCategory('<%=c + 1 %>', '<%=restaurant.menuCategories[c].categoryName %>')">-</button>
+                                <% } else { %>
+                                <button id="categoryInput#<%=c + 1%>-delete" class="menuCategoryRemoveButton" onclick="deleteCategory('<%=c + 1 %>', '<%=restaurant.menuCategories[c].categoryName %>')">-</button>
+                            <% } %>
+                            
+                    </div>
+                <% } %>
+            </div>
+
+            <% var restaurantMenuItemsLength = null %>
+            
+            <% if(restaurant.menuItems == null) { %>
+                <% restaurantMenuItemsLength = 0; %>
+            <% } else { %>
+                <% restaurantMenuItemsLength = restaurant.menuItems.length %>
+            <% } %>
+        </div>
+
+        <!-- Items -->
+        <div id="menuEditRestaurantItems" onclick="collapseMenuEditCategory(this.id)">
+            <!-- form start -->
+            <form id="formMenuItems">
+                <% var itemsCount = restaurantMenuItemsLength %>
+                <% var categoryCount = restaurant.menuCategories[c] %>
+                    <p class="categoryTitle">Items by Category</p> <!-- <%=itemsCount %>  -->
+                    
+                    <% for(var c = 0; c < restaurant.menuCategories.length; c++) { %>
+                        <% var category = restaurant.menuCategories[c].categoryName %>
+                        <% var categoryFirstLetterUpperCase = category.charAt(0).toUpperCase() + category.slice(1); %>
+                        
+                        <div id="category<%=categoryFirstLetterUpperCase %>" class="menu-edit-category">
+                            
+                            <div id="category<%=categoryFirstLetterUpperCase %>Header">
+                                <!-- <label onclick="collapseDiv('category<%=categoryFirstLetterUpperCase %>Body')">Collapse</label> -->
+                                <!-- <span> - </span> -->
+                                <!-- <span> - </span> -->
+                                <label class="addCategoryItemBtn" onclick="addItem('<%=categoryFirstLetterUpperCase %>')">+</label>
+                                <input hidden id="categoryInput#<%=c + 1 %>-disabled" disabled value="<%=restaurant.menuCategories[c].categoryName %>"></input>
+                                <label id="categoryCounterParagraph<%=categoryFirstLetterUpperCase %>" class="menuCategoryName" value="<%=c + 1%>" onclick="collapseDiv('category<%=categoryFirstLetterUpperCase %>Body')"><%=restaurant.menuCategories[c].categoryName %></label>
+                            </div>
+                            
+                            <div id="category<%=categoryFirstLetterUpperCase %>Body" style="display: none;">
+                                <% for(var x = 0; x < restaurantMenuItemsLength; x++) { %>
+                                
+                                <% if(restaurant.menuCategories[c].categoryName == restaurant.menuItems[x].category)  { %>
+                                    <div id="item-<%=restaurant.menuCategories[c].categoryName %>#<%=restaurant.menuItems[x].position %>" class="item <%=restaurant.menuCategories[c].categoryName %>">
+    
+                                        <% var item = "item-" + restaurant.menuItems[x].category + "#" + restaurant.menuItems[x].position %>
+                                        <% var itemId = restaurant.menuItems[x].category %>
+                                        <% var itemCategory = restaurant.menuItems[x].category %>
+                                        <% var itemInputPosition = "item-" + restaurant.menuCategories[c].categoryName + "#" + restaurant.menuItems[x].position + "-input-position" %>
+                                        <% var itemInputId = "item-" + restaurant.menuCategories[c].categoryName + "#" + restaurant.menuItems[x].position + "-input-id" %>
+                                        <% var itemInputCategory = "item-" + restaurant.menuCategories[c].categoryName + "#" + restaurant.menuItems[x].position + "-input-category" %>
+                                        <% var itemInputTitle = "item-" + restaurant.menuCategories[c].categoryName + "#" + restaurant.menuItems[x].position + "-input-title" %>
+                                        <% var itemInputPrice = "item-" + restaurant.menuCategories[c].categoryName + "#" + restaurant.menuItems[x].position + "-input-price" %>
+                                        <% var itemInputDescription = "item-" + restaurant.menuCategories[c].categoryName + "#" + restaurant.menuItems[x].position + "-input-description" %>
+                                        
+                                        <input id="<%=itemInputId %>" name="" disabled value="<%=itemId %>" placeholder="id" class="itemInput" style="display: none;"></input>
+                                        <input id="<%=itemInputCategory %>" name="" disabled value="<%=itemCategory %>" class="itemInput" style="display: none;"></input>
+                                        <input id="<%=itemInputPosition %>" name="" disabled onkeyup="setItemLocalStorage('<%=item %>')" placeholder="position" class="itemInput" style="display: none;"></input>
+                                        
+                                        <input id="<%=itemInputTitle %>" name="" placeholder="name" onkeyup="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].title %>" class="itemInput" maxlength="25"></input>
+                                        <input id="<%=itemInputPrice %>" name="" placeholder="price" onchange="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].price %>" class="itemInput" maxlength="10"></input>
+                                        <input id="<%=itemInputDescription %>" name="" placeholder="description" onkeyup="setItemLocalStorage('<%=item %>')" value="<%=restaurant.menuItems[x].description %>" class="itemInput" maxlength="255"></input>
+    
+                                        <div onclick="deleteItem('<%=item  %>', '<%=restaurant.menuCategories[c].categoryName %>', '<%=restaurant.menuItems[x].position %>')" class="itemInput buttonRemoveItem">-</div>
+                                        
+                                        <script>
+                                            countCategoriesForSpecificItem('item-<%=restaurant.menuCategories[c].categoryName %>#<%=restaurant.menuItems[x].position %>-input-position', 'item-<%=restaurant.menuCategories[c].categoryName %>#<%=restaurant.menuItems[x].position %>-input-id', '<%=restaurant.menuCategories[c].categoryName %>');
+                                            setItemLocalStorage('<%=item %>');
+                                        </script>
+                                    </div>
+                                <% } else { %>
+                                    
+                                <% } %>
+                                <% } %>
+                            </div>
+    
+                            <!-- <script>countCategories("<%=categoryFirstLetterUpperCase %>");</script> -->
+                                
+                        </div>
+                    <% } %>
+                </form>
+            </div>
+
+            <div id="NavBarEdit" onclick="editMenuSubmitChanges()">Confirm Changes</div>
+    </div>
+
+        <!-- hidden -->
+        <form hidden id="formMenuEditData" action="/restaurantPortal/updateMenu" method="POST">
+            <input id="inputAllImg" name="inputAllImg" value="img"></input><br />
+            <input id="inputAllPhone" name="inputAllPhone" value="phone"></input><br />
+            <input id="inputAllAddress" name="inputAllAddress" value="address"></input><br />
+            <input id="inputAllDescription" name="inputAllDescription" value="description"></input><br />
+            <input id="inputAllHours" name="inputAllHours" value="hours"></input><br />
+            <input id="inputAllTypes" name="inputAllTypes" value="types"></input><br />
+            <input id="inputAllCategories" name="inputAllCategories" value=""></input><br />   
+            <input id="inputAllItems" name="inputAllItems" value=""></input><br />
+            <button>Button</button>   
+        </form>
+
+        <script>setFormWithCorrectData();</script>
+    </body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Process</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/mobile.css">
+    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
+</head>
+
+<script>
+    function orderProcessOrderConfirmed(estimatedTime, type)
+    {
+        //elements
+        document.getElementById("orderProcessImgLoadingGif").remove();
+        document.getElementById("orderProcessImgCheckmarkPng").hidden = false;
+        document.getElementById("skipWaitingGoToStart").hidden = true;
+        document.getElementById("orderProcessPaymentInfoText").hidden = true;
+        document.getElementById("orderIdInfoText").hidden = true;
+        // document.getElementById("OrderProcessWhenConfirmedDetailsLink").hidden = false;
+
+        //variables
+        let date = new Date();
+        let hours = date.getHours();
+        let minutes = date.getMinutes(); + estimatedTime;
+        let seconds = date.getSeconds();
+        
+        if(minutes + estimatedTime > 60)
+        {
+            hours++;
+            minutes = parseInt(minutes) + parseInt(estimatedTime) - 60;
+
+            if(minutes < 10)
+            {
+                minutes = "0" + minutes;
+            }
+        }
+
+        date = hours + ":" + minutes;
+        
+        if(type == "delivery")
+        {
+            document.getElementById("orderProcessEstimatedTime").innerHTML = "Time Given " + estimatedTime + " Mins <br /> Delivered @" + date;
+        }
+        else if(type == "pick up")
+        {
+            document.getElementById("orderProcessEstimatedTime").innerHTML = "Time Given " + estimatedTime + " Mins <br /> Pick Up @" + date;
+        }
+        
+        //update elements
+        document.getElementById("orderProcessEstimatedTime").hidden = false;
+        document.getElementById("orderProcessInfoText").innerHTML = "Order Confirmed";
+        // document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false;
+    }
+
+    function orderProcessOrderDeclined(estimatedTime, delivery, pickUp)
+    {
+        //update lements
+        document.getElementById("orderProcessImgLoadingGif").remove();
+        document.getElementById("orderProcessImgDeclineCrossPng").hidden = false;
+        document.getElementById("orderProcessInfoText").innerHTML = "Order Declined";
+        document.getElementById("orderProcessPaymentInfoText").hidden = true;
+        document.getElementById("orderIdInfoText").hidden = true;
+        // document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false;
+    }
+
+    //websocket
+    var socket = new WebSocket("ws://localhost:65535");
+
+    //send socket message
+    socket.onmessage = function(message) {
+        let regex = new RegExp("^order:<%=order._id %>:accepted:time=\\d\\d$");
+        let str = message.data;
+        let regexMatch = regex.test(str);
+        let substringTime = str.substring(str.length - 2, str.length);
+        
+        if(regexMatch == true)
+        {
+            orderProcessOrderConfirmed(substringTime, '<%=order.type %>');
+            socket.close();
+        }
+        else if(message.data == "order:<%=order._id %>:declined")
+        {
+            orderProcessOrderDeclined();
+            socket.close();
+        }
+    };
+</script>
+
+<style>
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { width: 0px; }
+
+    /*** elements ***/
+    body { height: 100vh; background-color: #3c41d6 }
+    img { height: 70px; width: 70px; }
+
+    /*** ids ***/
+    #order-process-content 
+    { 
+        width: 400px; 
+        margin: auto; 
+        margin-top: 100px; 
+        padding: 10px 0px 0px 0px; 
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        user-select: none;
+        background-color: white;
+    }
+    #skipWaitingGoToStart 
+    { 
+        display: block; 
+        margin-top: 24px; 
+        padding: 12px; 
+        text-decoration: none;
+        color: white;
+        background-color: black;
+    }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        #order-process-content { width: 90vw; }
+    }
+</style>
+
+<body onload="">
+    <div id="order-process-content">
+        <!-- images -->
+        <img id="orderProcessImgLoadingGif" src="/pics/loadingSpinner.gif"></img>
+        <img hidden id="orderProcessImgCheckmarkPng" src="/pics/checkmark.png"></img>
+        <img hidden id="orderProcessImgDeclineCrossPng" src="/pics/crossmark.png"></img>
+
+        <!-- text -->
+        <p id="orderProcessPaymentInfoText">Payment Successful</p>
+        <p id="orderIdInfoText">Order <%=order._id %></p>
+        <p id="orderProcessInfoText">Awaiting Restaurant Response...</p>
+        <p hidden id="orderProcessEstimatedTime"></p>
+
+        <!-- links -->
+        <!-- <a href="/order-details/<%=order._id %>" hidden id="OrderProcessWhenConfirmedDetailsLink">Details</a> -->
+        <!-- <a href="/" hidden id="OrderProcessWhenConfirmedStartLink">Start</a> -->
+        <a href="/restaurants" id="skipWaitingGoToStart">Skip</a>
+    </div>
+</body>
+</html>

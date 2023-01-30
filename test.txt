@@ -2,10 +2,8 @@ stripe test card
 4242424242424242
 11/24 123 12345
 
-customer singed out
+user
 - login
-
-customer signed in
 - order food
 
 restaurant

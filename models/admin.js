@@ -1,3 +1,4 @@
+//imports
 const getDb = require('../controllers/database').getDb;
 const mongodb = require('mongodb');
 const ObjectId = mongodb.ObjectId;
@@ -17,7 +18,7 @@ class Admin
                 title: title,
                 text: text
             })
-            .then(review => {/* console.log(review); */ return review;})
+            .then(review => { return review;})
             .catch(err => console.log(err));
     }
 
@@ -63,7 +64,7 @@ class Admin
 
         return db.collection('admin')
         .deleteOne({_id: ObjectId(id)})
-        .then(result => { /* console.log(result); */ return result.deletedCount })
+        .then(result => { return result.deletedCount })
         .catch(err => console.log(err));
     }
 
@@ -75,7 +76,7 @@ class Admin
         .collection("admin")
         .find({type: "post"})
         .toArray()
-        .then(posts => { /* { console.log(orders) */ return posts })
+        .then(posts => { return posts })
         .catch(err => console.log(err));
     }
 

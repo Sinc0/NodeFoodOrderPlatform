@@ -15,7 +15,7 @@ class Review
                 user: user,
                 reviewObject: reviewObject
             })
-            .then(review => {/* console.log(review); */ return review;})
+            .then(review => { return review;})
             .catch(err => console.log(err));
     }
 
@@ -82,7 +82,7 @@ class Review
 
         return db.collection('reviews')
             .deleteOne({_id: ObjectId(reviewId)})
-            .then(result => {/* console.log(result); */ return result.deletedCount })
+            .then(result => { return result.deletedCount })
             .catch(err => console.log(err));
     }
 
@@ -93,7 +93,7 @@ class Review
             .collection('reviews')
             .find()
             .toArray()
-            .then(reviews => {console.log(reviews); return reviews;})
+            .then(reviews => { return reviews;})
             .catch(err => console.log(err));
     }
 
@@ -104,7 +104,7 @@ class Review
             .collection('reviews')
             .find({restaurant: restaurantUrl})
             .toArray()
-            .then(reviews => {console.log(reviews); return reviews;})
+            .then(reviews => { return reviews;})
             .catch(err => console.log(err));
     }
 
@@ -131,7 +131,6 @@ class Review
             .find({orderId: orderId})
             .next()
             .then(review => {
-                //console.log(review); 
                 return review;
             })
             .catch(err => console.log(err))
