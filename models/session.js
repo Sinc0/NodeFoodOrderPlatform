@@ -1,6 +1,7 @@
 //imports
 const getDb = require('../controllers/database').getDb
 
+
 class Session
 {
     constructor(email, password, loginCookie, isLoggedIn)
@@ -75,4 +76,5 @@ class Session
     }
 }
 
+//exports
 module.exports = Session

@@ -132,5 +132,5 @@ class Review
     }
 }
 
-//export
+//exports
 module.exports = Review

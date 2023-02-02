@@ -4,6 +4,7 @@ const User = require('../models/user');
 const Order = require('../models/order');
 const Review = require('../models/review');
 
+
 //functions
 function parseLoginCookie(cookieId)
 {
@@ -22,6 +23,7 @@ function parseLoginCookie(cookieId)
     if(cookieId != null) { return cookieId }
     else { return null }
 }
+
 
 //get
 exports.getRestaurantIndex = async (req, res, next) => {
@@ -66,34 +68,6 @@ exports.getRestaurantOrdersHistory = async (req, res, next) => {
         restaurant: restaurant
     })
 }
-
-// exports.getRestaurantMenuShow = async (req, res, next) => {
-//     //log
-//     process.stdout.write('portal > show-menu');
-    
-//     //variables
-//     let userEmail = res.locals.userEmail;
-//     let restaurantUrl = res.locals.restaurantUrl;
-//     let restaurant = await Restaurant.findByUrl(restaurantUrl);
-
-//     //render page
-//     if(restaurant != null) {   
-//         res.render('portal-menu-show.ejs', {
-//             admin: false,
-//             loggedIn: null,
-//             IsOpen: restaurant.open,
-//             restaurant: restaurant,
-//             restaurantImage: "",
-//             restaurantUrl: restaurantUrl,
-//             path: '/restaurants'
-//         })
-//     }
-//     else
-//     {
-//         res.redirect('/error');
-//     }
-    
-// }
 
 exports.getRestaurantMenuEdit = async (req, res, next) => {
     //log

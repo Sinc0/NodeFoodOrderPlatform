@@ -3,9 +3,8 @@ const Restaurant = require('../models/restaurant');
 const User = require('../models/user');
 const Order = require('../models/order');
 const Review = require('../models/review');
-const Admin = require('../models/admin');
 const stripe = require('stripe')('sk_test_51HEENaLFUjzCbJftCmqLgpLjLGgjY1OOI81cAAzEBmozVIetOISREohGCuuJq55KX3FGhFHvx9FENcU2zRdrIGmn00wIaynLwu');
-// const paypal = require('@paypal/checkout-server-sdk');
+
 
 //functions
 function parseLoginCookie(cookieId)
@@ -24,6 +23,7 @@ function parseLoginCookie(cookieId)
     if(cookieId != null) { return cookieId }
     else { return null }
 }
+
 
 //get
 exports.getRestaurantDetail = async (req, res, next) => {
@@ -327,38 +327,6 @@ exports.getStripe = async (req, res, next) => {
     })
 }
 
-// exports.getOrderDetails = async (req, res, next) => {
-//     process.stdout.write('order-details')
-
-//     let validation = res.locals.validation
-//     let userEmail = res.locals.userEmail
-//     let orderId = req.params.orderId
-
-//     let order = await Order.findById(orderId)
-
-//     if(order != null)
-//     {
-//         if(validation.status == true)
-//         {
-//             res.render('user-order-details.ejs', { 
-//                 admin: validation.isAdmin,
-//                 pageTitle: 'Order Details',
-//                 path: '/order-details',
-//                 loggedIn: true,
-//                 order: order
-//             })
-//         }
-//         else
-//         {
-//             res.redirect('/')
-//         }
-//     }
-//     else
-//     {
-//         res.redirect('/')
-//     }
-// }
-
 exports.getOrderProcess = async (req, res, next) => {
     process.stdout.write('order-process')
     
@@ -383,135 +351,6 @@ exports.getAbout = (req, res, next) => {
     res.render('user-about.ejs', {})
 }
 
-// exports.getContact = (req, res, next) => {
-//     process.stdout.write('contact')
-
-//     res.render('user-contact.ejs', {})
-// }
-
-// exports.getTest = async (req, res, next) => {
-//     process.stdout.write('getTest')
-
-//     res.render('test/test.ejs', { })
-// }
-
-// exports.getGoogleMapsApiTest = async (req, res, next) => {
-//     process.stdout.write('getTest')
-//     console.log(req.body)
-//     console.log(res.locals.userEmail)
-
-//     res.render('test/googleMapsApi.ejs', 
-//     { 
-
-//     })
-// }
-
-// exports.getPayPalCreateOrder = async (req, res, next) => {
-//     console.log("getPayPalCreateOrder")
-//     console.log(req.body)
-
-//     let amount = "temp"
-
-//     //Creating an environment
-//     let clientId = "AVm4xAcY_8YjJjr-nN4_YYUrEx5N8K_-gvJP0jtZbFc_aqApF6pmZGs4i4xzbUNp77tsC3NT5zHmtBiP"
-//     let clientSecret = "EKV9wYIfLMjnapE4Erg-9Z7AUE-yWmcj2TzcWmbthC8U8_BlyihIFKnMwAX-Ouu46R9nUwYjS2jHw0oz"
-
-//     //This sample uses SandboxEnvironment. In production, use LiveEnvironment
-//     let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret)
-//     let client = new paypal.core.PayPalHttpClient(environment)
-
-//     //Construct a request object and set desired parameters
-//     //Here, OrdersCreateRequest() creates a POST request to /v2/checkout/orders
-//     let request = new paypal.orders.OrdersCreateRequest()
-
-//     request.requestBody(
-//         {
-//             "intent": "CAPTURE",
-//             "application_context": {
-//                 "return_url": "http://localhost:3000/paypalSuccess",
-//                 "cancel_url": "http://localhost:3000/paypalCancel"
-//             },
-//             "purchase_units": [
-//                 {
-//                     "amount": {
-//                         "currency_code": "USD",
-//                         "value": "1.00"
-//                     }
-//                 }
-//             ]
-//         }
-//     )
-
-//     //Call API with your client and get a response for your call
-//     let createOrder = async function()
-//     {
-//         let response = await client.execute(request)
-
-//         console.log(`Response: ${JSON.stringify(response)}`)
-        
-//         //If call returns body in response, you can get the deserialized version from the result attribute of the response.
-//         console.log(`Order: ${JSON.stringify(response.result)}`)
-
-//         let orderId = response.result.id
-//         let status = response.result.status
-//         let httpAdress = response.result.links[1].href
-
-//         console.log(response.result.id)
-//         console.log(response.result.status)
-//         console.log(response.result.links[1].href)
-
-//         if(status === "CREATED") { res.redirect(httpAdress) }
-//         else { res.redirect('/temp') }
-//     }
-
-//     //Start
-//     createOrder()
-// }
-
-// exports.getPayPalSuccess = async (req, res, next) => {
-//     console.log("getPayPalSuccess")
-//     console.log(req.query)
-
-//     let payerID = req.query.PayerID
-//     let token = req.query.token
-//     let approvedOrderId = token
-
-//     console.log(payerID)
-//     console.log(token)
-
-//     //Creating an environment
-//     let clientId = "AVm4xAcY_8YjJjr-nN4_YYUrEx5N8K_-gvJP0jtZbFc_aqApF6pmZGs4i4xzbUNp77tsC3NT5zHmtBiP"
-//     let clientSecret = "EKV9wYIfLMjnapE4Erg-9Z7AUE-yWmcj2TzcWmbthC8U8_BlyihIFKnMwAX-Ouu46R9nUwYjS2jHw0oz"
-
-//     //This sample uses SandboxEnvironment. In production, use LiveEnvironment
-//     let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret)
-//     let client = new paypal.core.PayPalHttpClient(environment)
-
-//     let processOrder = async function(orderId) 
-//     {
-//         request = new paypal.orders.OrdersCaptureRequest(orderId)
-//         request.requestBody({})
-
-//         // Call API with your client and get a response for your call
-//         let response = await client.execute(request)
-//         console.log(`Response: ${JSON.stringify(response)}`)
-
-//         // If call returns body in response, you can get the deserialized version from the result attribute of the response.
-//         console.log(`Capture: ${JSON.stringify(response.result)}`)
-        
-        
-//         if(response.result.status === "COMPLETED") { res.redirect('/temp') } // If payment successful
-//         else { res.redirect('/temp') } // If payment error
-//     }
-
-//     let process = processOrder(token)
-// }
-
-// exports.getPayPalCancel = async (req, res, next) => {
-//     console.log("getPayPalCancel")
-
-//     res.redirect('/')
-// }
 
 //post
 exports.postOrder = async (req, res, next) => {

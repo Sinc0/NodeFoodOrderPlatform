@@ -3,6 +3,7 @@ const getDb = require('../controllers/database').getDb;
 const mongodb = require('mongodb');
 const ObjectId = mongodb.ObjectId;
 
+
 class Order 
 {
     static createOrder(userEmail, productArray, totalPrice, customerComment, restaurant, customerName, customerPhone, customerAddress, customerDelivery, restaurantTitle)
@@ -286,4 +287,6 @@ class Order
     }
 }
 
+
+//exports
 module.exports = Order;

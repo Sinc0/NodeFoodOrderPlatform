@@ -3,6 +3,7 @@ const getDb = require('../controllers/database').getDb
 const mongodb = require('mongodb')
 const ObjectId = mongodb.ObjectId
 
+
 class Restaurant 
 {
     constructor(title, price, description, imageUrl, owner) 
@@ -235,6 +236,7 @@ class Restaurant
                 .catch(err => console.log(err))
     }
 }
+
 
 //exports
 module.exports = Restaurant

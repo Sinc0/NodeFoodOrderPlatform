@@ -4,6 +4,7 @@ const mongodb = require('mongodb')
 const Session = require('./session')
 const ObjectId = mongodb.ObjectId
 
+
 class User
 {
     constructor(email, name, password, admin, cart, isLoggedIn, loginCookie, orders)
@@ -17,7 +18,8 @@ class User
         this.cart = cart
         this.orders = orders
     }
-               
+     
+    
     save() 
     {
         //get db
@@ -30,6 +32,7 @@ class User
                 .then()
                 .catch(err => {console.log(err); return "error"})
     }
+
 
     static validateLogin(cookieId)
     {   
@@ -66,6 +69,7 @@ class User
         
     }
 
+
     static deleteOne(email)
     {
         //get db
@@ -84,6 +88,7 @@ class User
                     else { return deleteFailed }})
                 .catch(err => console.log(err))
     }
+
 
     static updateOne(email, cookieId, isLoggedIn)
     {
@@ -104,7 +109,8 @@ class User
                     else { return updateFailed }})
                 .catch(err => console.log(err))
     }
-        
+       
+    
     static updateAdmin(userId, name, address, phone, isLoggedIn)
     {       
         //get db
@@ -129,6 +135,7 @@ class User
                 .catch(err => console.log(err))
     }
 
+
     static updateCredentials(email, name, address, phone)
     {
         //get db
@@ -148,6 +155,7 @@ class User
                     else { return updateFailed }})
                 .catch(err => console.log(err))
     }
+
 
     static updateEmail(oldEmail, newEmail)
     {
@@ -169,6 +177,7 @@ class User
                 .catch(err => console.log(err))
     }
 
+
     static updatePassword(email, newPassword)
     {
         //get db
@@ -189,6 +198,7 @@ class User
                 .catch(err => console.log(err))
     }
 
+
     static fetchAll()
     {
         //get db
@@ -202,6 +212,7 @@ class User
                 .then(users => { return users })
                 .catch(err => console.log(err))
     }
+
 
     static findById(userId)
     {
@@ -217,6 +228,7 @@ class User
                 })
                 .catch(err => {console.log(err)})
     }
+
 
     static findByCookieId(cookie)
     {
@@ -241,6 +253,7 @@ class User
         }
     }
 
+
     static findByCookieIdReturnUserObject(cookie)
     {
         //get db
@@ -258,6 +271,7 @@ class User
                 .catch(err => console.log(err))
     }
     
+
     static findByUsername(username)
     {
         //get db
@@ -271,6 +285,7 @@ class User
                 .then(user => { return user })
                 .catch(err => console.log(err))
     }
+
 
     static findByEmail(email)
     {
@@ -286,6 +301,7 @@ class User
                 .catch(err => console.log(err))
     }
     
+
     static login(email, password)
     {
         //get db
@@ -353,6 +369,7 @@ class User
                 .catch(err => console.log(err))
     }
 
+
     static logout(reqCookie)
     {
         //variables
@@ -397,6 +414,7 @@ class User
                         }
                     })
     }
+
 
     static register(email, name, password)
     {
@@ -460,6 +478,7 @@ class User
             }
         }
     }
+
 
     static async registerRestaurant(email, address, phone, owner, restaurantName, companyIdNumber, password, city)
     {
@@ -587,4 +606,5 @@ class User
     }
 }
 
+//exports
 module.exports = User

@@ -18,13 +18,6 @@ router.post('/admin/delete-restaurant', validation, admin.postDeleteRestaurant)
 router.post('/admin/delete-review', validation, admin.postDeleteReview)
 router.post('/admin/edit-review', validation, admin.postEditReview)
 router.post('/admin/delete-user', validation, admin.postDeleteUser)
-// router.get('/admin/home', validation, admin.getHome)
-// router.get('/admin/orders', validation, admin.getOrders)
-// router.post('/admin/edit-order', validation, admin.postEditOrder)
-// router.post('/admin/delete-newsPost', validation, admin.postDeleteNewsPost)
-// router.post('/admin/delete-order', validation, admin.postDeleteOrder)
-// router.post('/admin/post-newsPost', validation, admin.postNewsPost)
-// router.post('/admin/edit-newsPost', validation, adminController.postEditNewsPost)
 
 //restaurant
 router.get('/portal', validation, restaurant.getRestaurantIndex)
@@ -41,8 +34,6 @@ router.post('/portal/updateMenu', validation, restaurant.postRestaurantUpdateMen
 router.post('/portal/menuListed', validation, restaurant.postRestaurantMenuListed)
 router.post('/portal/menuOnline', validation, restaurant.postRestaurantMenuOnline)
 router.post('/portal/welcomeMessage', validation, restaurant.postRestaurantWelcomeMessage)
-// router.get('/portal/orders/completed', validation, restaurant.getRestaurantOrdersCompleted)
-// router.get('/portal/menu/show', validation, restaurant.getRestaurantMenuShow)
 
 //user
 router.get('/login', user.getLogin)
@@ -65,15 +56,6 @@ router.post('/webhook', validation, user.postWebhook)
 router.post('/review-post', validation, user.postRestaurantReview)
 router.all('/order-process/:orderId', validation, user.getOrderProcess)
 router.all('/checkout', validation, user.getCheckout)
-// router.get('/order-details/:orderId', validation, user.getOrderDetails)
-
-//tests
-//router.get('/googleMapsApiTest', validation, user.getGoogleMapsApiTest)
-//router.get('/stripe', validation, user.getStripe)
-//router.get('/paypalTest', user.getTest)
-// router.post('/paypalCreateOrder', validation, user.getPayPalCreateOrder)
-// router.get('/paypalSuccess', validation, user.getPayPalSuccess)
-// router.get('/paypalCancel', validation, user.getPayPalCancel)
 
 //exports
 module.exports = router
