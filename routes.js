@@ -19,7 +19,7 @@ router.post('/admin/delete-review', validation, admin.postDeleteReview)
 router.post('/admin/edit-review', validation, admin.postEditReview)
 router.post('/admin/delete-user', validation, admin.postDeleteUser)
 
-//restaurant
+//portal
 router.get('/portal', validation, restaurant.getRestaurantIndex)
 router.get('/portal/orders/accept', validation, restaurant.getRestaurantOrdersAccept)
 router.get('/portal/orders/history', validation, restaurant.getRestaurantOrdersHistory)

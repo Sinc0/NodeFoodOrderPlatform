@@ -65,7 +65,8 @@ class Review
         const db = getDb()
         
         //update db
-        return db.collection('reviews')
+        return db
+                .collection('reviews')
                 .deleteOne({_id: ObjectId(reviewId) })
                 .then(result => { return result.deletedCount })
                 .catch(err => console.log(err))

@@ -1,0 +1,34 @@
+stripe test card 
+4242424242424242
+11/24 123 12345
+
+anon
+- register customer
+- register restaurant
+- restaurants
+- restaurant details
+- about
+
+user
+- login
+- order food
+- update credentials
+- logout
+
+restaurant
+- login
+- open/close restaurant
+- activate/deactivate restaurant
+- stop showing welcome message
+- accept order
+- decline order
+- complete order
+- edit menu
+- logout
+
+admin
+- login
+- update/delete user
+- update/delete restaurant
+- update/delete review
+- logout

@@ -392,20 +392,19 @@ class User
                         if(result == deleteSuccessful)
                         {
                             return User
-                            .updateOne(email, 'expired:' + cookieId, false)
-                            .then(result => {
-                                if(result == updateSuccessful)
-                                {
-                                    process.stdout.write('logout user: ' + email + ' successful')
-                                    return updateSuccessful
-                                }
-                                else
-                                {
-                                    process.stdout.write('logout user: ' + email + ' failed')
-                                    return updateFailed
-                                }
-                
-                            })
+                                      .updateOne(email, 'expired:' + cookieId, false)
+                                      .then(result => {
+                                          if(result == updateSuccessful)
+                                          {
+                                              process.stdout.write('logout user: ' + email + ' successful')
+                                              return updateSuccessful
+                                          }
+                                          else
+                                          {
+                                              process.stdout.write('logout user: ' + email + ' failed')
+                                              return updateFailed
+                                          }
+                                      })
                         }
                         else
                         {

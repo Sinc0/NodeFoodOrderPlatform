@@ -1,44 +1,52 @@
 //imports
-const User = require('./models/user');
-const Restaurant = require('./models/restaurant');
+const User = require('./models/user')
+const Restaurant = require('./models/restaurant')
+
 
 //functions
 function parseLoginCookie(cookieId)
 {
-    let findLoginCookie = cookieId;
-    let regexFindLoginCookieId = /(?!\sloginCookie=id:)\d.\d*(?=email)/g;
-    let loginCookieId = null
-    //let regexFindLoginCookieEmail = /(?!email:)[\w\d]*@.*\.\w*/g;
-    //let loginCookieEmail = findLoginCookie.match(regexFindLoginCookieEmail);
+    //variables
+    let findLoginCookie = cookieId
+    let regexFindLoginCookieId = /(?!\sloginCookie=id:)\d.\d*(?=email)/g
+    let loginCookieId = findLoginCookie.match(regexFindLoginCookieId)
+    //let regexFindLoginCookieEmail = /(?!email:)[\w\d]*@.*\.\w*/g
+    //let loginCookieEmail = findLoginCookie.match(regexFindLoginCookieEmail)
 
+    //null check
     if(findLoginCookie == null || findLoginCookie == 'loginCookie=') { return null }
     if(regexFindLoginCookieId == null) { return null }
+    
+    //set cookieId
+    cookieId = parseFloat(loginCookieId)
 
-    loginCookieId = findLoginCookie.match(regexFindLoginCookieId);
-    cookieId = parseFloat(loginCookieId); 
-
+    //null check
     if(cookieId != null) { return cookieId }
     else { return null }
 }
 
+//exports
 module.exports = (req, res, next) => {
     //variables
-    let loginCookie = req.get('Cookie');
-    let cookieId = parseLoginCookie(loginCookie);
+    let loginCookie = req.get('Cookie')
+    let cookieId = parseLoginCookie(loginCookie)
 
-    if(cookieId == null) //user is anon
+    //user is anon
+    if(cookieId == null) 
     {
-        res.locals.validation = false;
         process.stdout.write("\n" + "anon > ")
-        next();
+        res.locals.validation = false
+        next()
     }
-    else //user is signed in
+
+    //user is signed ins
+    else 
     {
         User
             .validateLogin(cookieId)
             .then(validation => {
-                res.locals.validation = validation;
-                res.locals.userEmail = validation.userEmail;
+                res.locals.validation = validation
+                res.locals.userEmail = validation.userEmail
                 
                 if(validation.status == true)
                 {
@@ -51,22 +59,14 @@ module.exports = (req, res, next) => {
                         Restaurant
                                 .findByEmail(res.locals.userEmail)
                                 .then(restaurantCheck => {
-                                    if(restaurantCheck != null) { 
-                                        res.locals.restaurantUrl = restaurantCheck.url;
-                                        next() 
-                                    }
-                                    else
-                                    {
-                                        next();
-                                    }
+                                    if(restaurantCheck != null) { res.locals.restaurantUrl = restaurantCheck.url; next() }
+                                    else { next() }
                                 })
                     }
                 }
-
-                //error
-                else
+                else //error
                 {
-                    next();
+                    next()
                 }
         })
         .catch(err => {console.log(err)})

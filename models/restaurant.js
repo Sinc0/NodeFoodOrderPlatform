@@ -153,10 +153,11 @@ class Restaurant
         const db = getDb()   
 
         //update db
-        return db.collection('restaurants')
-            .updateOne({email: owner},{$set: { welcomeMessage: value }})
-            .then(result => { return result })
-            .catch(err => console.log(err))
+        return db
+                .collection('restaurants')
+                .updateOne({email: owner},{$set: { welcomeMessage: value }})
+                .then(result => { return result })
+                .catch(err => console.log(err))
     }
 
 
@@ -196,12 +197,12 @@ class Restaurant
 
         //update db
         return db
-            .collection('products')
-            .findOne({_id: ObjectId(prodId)})
-            .then(product => {
-                if(product != null) { return product }
-                else { return null }})
-            .catch(err => console.log(err))
+                .collection('products')
+                .findOne({_id: ObjectId(prodId)})
+                .then(product => {
+                    if(product != null) { return product }
+                    else { return null }})
+                .catch(err => console.log(err))
     }
 
 
