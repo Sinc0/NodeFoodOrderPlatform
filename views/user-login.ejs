@@ -53,14 +53,14 @@
 </style>
 
 <body>
+    <!-- nav menu -->
     <%- include('nav-menu-anon.ejs') %>
 
-    <!-- login input -->
     <div id="main-login">
-        <!-- <h3 id="title">Login Below</h3> -->
-
+        <!-- login error message -->
         <p id="statusText"><%=statusText %></p>
         
+        <!-- login form -->
         <form action="/login-post" method="POST">
             <input required type="email" id="email" name="email" placeholder="Email" value="">
             <input required type="password" id="password" name="password" placeholder="Password" value="">

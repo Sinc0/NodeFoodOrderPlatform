@@ -156,10 +156,13 @@
     <%- include('nav-menu-anon.ejs') %>
     
     <div id="main-register">
+        <!-- title -->
         <h3 id="title">Register</h3>
         
+        <!-- register error message -->
         <p id="statusText"><%=statusText %></p>
         
+        <!-- select register type buttons -->
         <div id="selectRegisterType">
             <button id="registerCustomerBtn" onclick="registerCustomer()"><b>Customer</b></button>
             <button id="registerRestaurantBtn" onclick="registerRestaurant()"><b>Restaurant</b></button>

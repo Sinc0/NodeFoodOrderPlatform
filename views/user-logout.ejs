@@ -28,22 +28,22 @@
 </style>
 
 <body>
-    <!-- admin view -->
-    <% if(admin != null && admin == true) { %>
+    <!-- nav menu -->
+    <% if(admin != null && admin == true) { %>  <!-- admin view -->
         <%- include('nav-menu-admin.ejs') %>
-    
-    <!-- logged in user view -->
-    <% } else if(loggedIn == true) { %>
+    <% } else if(loggedIn == true) { %> <!-- logged in user view -->
         <%- include('nav-menu-user.ejs') %>
     <% } %>
     
     <div id="main-logout">
+        <!-- logout error message-->
         <p><%=statusText %></p>
+
+        <!-- logout confirm text -->
         <h3 id="title">Are you sure you wanna logout?</h3>
         
-        <div style="display: inline-block;">
-            <button id="buttonNo" class="btn" onclick="window.history.back()"><b>No</b></button>            
-        </div>
+        <!-- logout buttons -->
+        <div style="display: inline-block;"><button id="buttonNo" class="btn" onclick="window.history.back()"><b>No</b></button></div>
         <div style="display: inline-block;">
             <form action="/logout-post" method="POST">
                 <button id="buttonYes" class="btn" type="submit"><b>Yes</b></button>

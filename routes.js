@@ -38,6 +38,7 @@ router.post('/portal/welcomeMessage', validation, restaurant.postRestaurantWelco
 //user
 router.get('/login', user.getLogin)
 router.get('/about', user.getAbout)
+router.get('/privacy', user.getAbout)
 router.get('/register', user.getRegister)
 router.get('/', validation, user.getIndex)
 router.get('/restaurants', validation, user.getRestaurantList)

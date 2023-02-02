@@ -162,15 +162,15 @@
     <!-- reviews -->
     <div id="reviews">
         <% for(var i = 0; i < reviews.length; i++) { %>
+            <!-- review card -->
             <div id="review#<%=i + 1%>" class="admin-card" onclick="displayEditReview('<%=i + 1%>')">      
                 <p class="cardText"><%=reviews[i].user %></p>
                 <p class="cardText"><%=reviews[i].restaurant %></p>
                 <p class="cardText"><%=reviews[i].reviewObject.comment %></p>
             </div>
     
-            <!-- edit card -->
+            <!-- edit modal -->
             <div class="admin-edit" hidden id="edit-review#<%=i + 1%>">
-                <!-- edit -->
                 <form id="formEdit" action="/admin/edit-review" method="POST">
                     <input class="input-admin" hidden name="id" value="<%=reviews[i]._id %>"></input>
                     <input class="input-admin" hidden name="date" value="<%=reviews[i].reviewObject.date %> %>"></input>
@@ -183,9 +183,11 @@
                     <input class="input-admin" name="rating" value="<%=reviews[i].reviewObject.rating %>" maxlength="1"></input>
                     <label class="label-admin">Comments</label>
                     <input class="input-admin" name="comment" value="<%=reviews[i].reviewObject.comment %>" maxlength="100"></input>
-                    <button id="editButton" class="admin-card-button">Confirm</button>
+                    <!-- edit -->
+                    <button id="editButton" class="admin-card-button">Update</button>
                 </form>
-                
+
+                <!-- cancel -->
                 <button id="cancelButton" class="admin-card-button" onclick="undisplayEditReview('<%=i + 1%>')">Cancel</button>
     
                 <!-- delete -->

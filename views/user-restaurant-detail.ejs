@@ -514,19 +514,15 @@
 
 
 <body onload="loadSideCart()">
-    <script> setRestaurantLocalStorage('<%=restaurant.title %>'); </script>
+    <script> setRestaurantLocalStorage('<%=restaurant.title %>')</script>
 
-    <!-- admin nav menu -->
-    <% if(admin != null && admin == true) { %> 
+    <!-- nav menu -->
+    <% if(admin != null && admin == true) { %>  <!-- admin -->
         <%- include('nav-menu-admin.ejs') %>
-
-    <!-- user nav menu -->
-    <% } else if(loggedIn == true) { %>
+    <% } else if(loggedIn == true) { %>  <!-- user -->
         <%- include('nav-menu-user.ejs') %>
-
-    <!-- anon nav menu -->
     <% } else { %> 
-        <%- include('nav-menu-anon.ejs') %>
+        <%- include('nav-menu-anon.ejs') %>  <!-- anon -->
     <% } %>
 
     <!-- modal -->
@@ -635,18 +631,15 @@
                 <div id="side-cart">
                     <form action="/checkout" method="POST">
                         <h3 id="total-price"></h3>
-        
                         <div id="cart-items"></div> 
-                        
                         <input hidden id="cartAllItems" name="cartAllItems"></input>
                         <input hidden id="cartTotalPrice" name="cartTotalPrice"></input>
                         <input hidden name="restaurant" value='<%=restaurantUrl %>'></input>
                         <!-- <textarea id="customerComment" name="customerComment" value="" maxlength="255" placeholder="Comment to Restaurant" onfocus="this.placeholder=''" onblur="this.placeholder='Comment to Restaurant'"></textarea> -->                        
-                        
                         <button id="order-button" type="submit"><b>Checkout</b></button>
                     </form>
                 </div>
-                <% } %>
+            <% } %>
         </div>
          
         </div>

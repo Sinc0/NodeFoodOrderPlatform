@@ -162,14 +162,13 @@
     <!-- restaurants -->
     <div id="restaurants">
         <% for(var i = 0; i < restaurants.length; i++) { %>
+            <!-- restaurant email -->
             <div id="restaurant#<%=i + 1%>" class="admin-card" onclick="displayEditRestaurant('<%=i + 1%>')">      
                 <p class="cardText"><%=restaurants[i].email %></p>
             </div>
     
-            <!-- edit card -->
+            <!-- edit modal -->
             <div class="admin-edit" hidden id="edit-restaurant#<%=i + 1%>">
-                
-                <!-- edit -->
                 <form id="formEdit" action="/admin/edit-restaurant" method="POST">
                     <input hidden class="input-admin" name="id" value="<%=restaurants[i]._id %>"></input>
                     <label class="label-admin">Email</label>
@@ -180,6 +179,7 @@
                     <input class="input-admin" name="owner" value="<%=restaurants[i].owner %>"></input>
                     <label class="label-admin">Address</label>
                     <input class="input-admin" name="address" value="<%=restaurants[i].address %>"></input>
+                    <!-- edit -->
                     <button id="editButton" class="admin-card-button">Update</button>
                 </form>
 

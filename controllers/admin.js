@@ -3,7 +3,6 @@ const Restaurant = require('../models/restaurant');
 const User = require('../models/user');
 const Order = require('../models/order');
 const Review = require('../models/review');
-const Admin = require('../models/admin');
 
 //get
 exports.getHome = (req, res) => {
