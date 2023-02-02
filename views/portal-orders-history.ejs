@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/portal.css">
+    <link rel="stylesheet" href="/mobile.css">
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title>Order History</title>
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/portalRestaurant.css">
-    <link rel="stylesheet" href="/css/mobile.css">
-    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
 </head>
 
 <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=initMap" async defer></script>
@@ -391,7 +391,7 @@
 </style>
 
 <body onload="loadSavedScrollPosition(), selectOrderType(), googleMapsCalculate()" onscroll="saveScrollPosition()">
-    <a href="/restaurantPortal">
+    <a href="/portal">
         <nav id="NavBar">
             <p><b>❮</b></p>
         </nav>
@@ -464,7 +464,7 @@
                 
                 <!-- accept or decline order -->
                 <div id="acceptOrDeclineButtons">
-                    <form id="updateOrderWithTime#<%=c %>" action="/restaurantPortal/order-update" method="POST">
+                    <form id="updateOrderWithTime#<%=c %>" action="/portal/order-update" method="POST">
                         <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
                         <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="60"></input>
                         <input hidden id="inputOrderStatus#<%=c %>" name="status" value="confirmed"></input>
@@ -512,7 +512,7 @@
                     <!-- <p><%=ordersCook[c].customerName %></p> -->
                         
                     <!-- mark order as completed -->
-                    <form id="updateOrderCompletionTime#<%=c %>" action="/restaurantPortal/order-update" method="POST">
+                    <form id="updateOrderCompletionTime#<%=c %>" action="/portal/order-update" method="POST">
                         <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=ordersCook[c]._id %>'></input>
                         <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="<%=ordersCook[c].estimatedCompletionTime %>"></input>
                         <input hidden id="inputOrderStatus#<%=c %>" name="status" value="completed"></input>

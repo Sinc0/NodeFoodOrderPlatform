@@ -28,15 +28,14 @@ option { font-weight: bold; }
 
 /*** classes ***/
 .confirm-button { width: 200px; }
-.input-admin { margin-left: 10px; margin-right: 10px; font-size: 16px; width: 372px; background-color: #EFEFEF; }
 .restaurantMenuItem { 
     display: block; 
-    width: 700px; 
+    width: 697px; 
     margin: auto; 
     margin-top: 20px; 
     padding: 0px;
-    border-bottom: 4px solid black; 
-    background-color: black; 
+    border: 2px solid black; 
+    background-color: white; 
 }
 .restaurantMenuItemText
 {
@@ -111,25 +110,7 @@ option { font-weight: bold; }
 .help-links { background-color: #3c41d6; color: black; }
 .orders-show-review p:hover { color: white; }
 .indexAnonMenuItem { border-bottom: 1px solid white; }
-.admin-edit { margin: auto; margin-bottom: 25px; border: 1px solid black; background-color: #f7f9f9; width: 398px; }
-.admin-delete { margin: auto; margin-bottom: 25px; border: 1px solid black; background-color: #f7f9f9; width: 398px; }
-.admin-card
-{
-    margin: auto; 
-    width: 400px;
-    margin-bottom: 25px; 
-    padding: 10px; 
-    border: 1px solid black; 
-    background-color: #f7f9f9;
-}
-.admin-card-button
-{
-    display: inline-block; 
-    height: 21px; 
-    width: 75px; 
-    border: 0.1px solid lightgray;
-    border-radius: 1%;
-}
+
 .searchBoxInput
 {
     height: 48px;
@@ -224,9 +205,8 @@ option { font-weight: bold; }
 #indexAnonMenuContactButton { border-bottom: 0; }
 #indexHelpButtons { width: 400px; }
 #admin-cancel-button { margin-bottom: 10px; margin-top: 10px; }
-#adminPostNewsPost { display: block; margin: auto; width: 394px; }
+/* #adminPostNewsPost { display: block; margin: auto; width: 394px; }
 #adminPostNews-title-input { margin-left: -3px; width: 100%; }
 #adminPostNews-textarea { margin-left: -3px; width: 100%; }
 #adminPostNews-submit-button { margin-left: -3px; width: 100%; }
-#adminPostNews-submit-button { width: 400px; }
-#admin-stats { display: block; margin: auto; width: 450px; }
+#adminPostNews-submit-button { width: 400px; } */

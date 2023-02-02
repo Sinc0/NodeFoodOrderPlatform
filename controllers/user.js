@@ -26,41 +26,13 @@ function parseLoginCookie(cookieId)
 }
 
 //get
-exports.getRestaurants = (req, res, next) => {
-    console.log('getRestaurants');
-
-    //variables
-    let validation = res.locals.validation;
-
-    //render page
-    if(validation.status == true) //logged in user
-    {
-        Restaurant.fetchAll()
-        .then(restaurants => {
-            res.render('user-restaurants.ejs', {
-                admin: validation.isAdmin,
-                loggedIn: true,
-                prods: restaurants,
-                path: '/restaurants',
-                pageTitle: 'All Restaurants'
-
-            })
-        })
-        .catch(err => console.log(err));
-    }
-    else //anonymous user
-    {
-        res.redirect('/')
-    }
-    
-}
-
 exports.getRestaurantDetail = async (req, res, next) => {
+    //variables
     let restaurantUrl = req.params.restaurantUrl
     let validation = res.locals.validation
 
-    console.log('getRestaurantDetail >')
-    console.log(restaurantUrl)
+    //log
+    process.stdout.write('restaurant > ' + restaurantUrl)
     
     if(validation == undefined) { validationStatus = false }
     else { validationStatus = validation.status }
@@ -78,6 +50,7 @@ exports.getRestaurantDetail = async (req, res, next) => {
                 restaurant: restaurant,
                 restaurantImage: "",
                 restaurantUrl: restaurantUrl,
+                pageTitle: restaurant.title,
                 path: '/restaurants'
             })
         }
@@ -97,6 +70,7 @@ exports.getRestaurantDetail = async (req, res, next) => {
                 restaurant: restaurant,
                 restaurantImage: "",
                 restaurantUrl: restaurantUrl,
+                pageTitle: restaurant.title,
                 path: '/restaurants'
             })
         }
@@ -108,11 +82,11 @@ exports.getRestaurantDetail = async (req, res, next) => {
 }
 
 exports.getIndex = async (req, res, next) => {
-    console.log('getIndex\n')
-    console.log(req.ip)
-    console.log(req.connection.remoteAddress)
-    console.log(req.socket.remoteAddress)
-    console.log(req.headers['x-forwarded-for'])
+    process.stdout.write('index')
+    // console.log(req.ip)
+    // console.log(req.connection.remoteAddress)
+    // console.log(req.socket.remoteAddress)
+    // console.log(req.headers['x-forwarded-for'])
 
     let validation = res.locals.validation
     let email = res.locals.userEmail
@@ -128,14 +102,14 @@ exports.getIndex = async (req, res, next) => {
     }
     else if(validation.status == true) //logged in user
     {
-        let adminPosts = await Admin.fetchAllPosts()
+        // let adminPosts = await Admin.fetchAllPosts()
 
         res.render('user-index.ejs', { 
             pageTitle: 'Home',
             path: '/',
             admin: false,
             loggedIn: true,
-            adminPosts: adminPosts
+            adminPosts: null
         })
     }
     else //anonymous user
@@ -150,7 +124,7 @@ exports.getIndex = async (req, res, next) => {
 }
 
 exports.getRestaurantList = async (req, res, next) => {
-    console.log('getRestaurantList\n')
+    process.stdout.write('restaurants')
 
     let validation = res.locals.validation
     let validationStatus = null
@@ -185,7 +159,7 @@ exports.getRestaurantList = async (req, res, next) => {
 }
 
 exports.getOrders = (req, res, next) => {
-    console.log('getOrders')
+    process.stdout.write('orders')
 
     let validation = res.locals.validation
     let userEmail = res.locals.userEmail
@@ -214,7 +188,7 @@ exports.getOrders = (req, res, next) => {
 }
 
 exports.getCheckout = async (req, res, next) => {
-    console.log('getCheckout')
+    process.stdout.write('checkout')
 
     let validation = res.locals.validation
     let email = res.locals.userEmail
@@ -258,7 +232,7 @@ exports.getCheckout = async (req, res, next) => {
 }
 
 exports.getLogout = (req, res, next) => {
-    console.log('getLogout')
+    process.stdout.write('logout')
 
     let validation = res.locals.validation
     
@@ -279,7 +253,7 @@ exports.getLogout = (req, res, next) => {
 }
 
 exports.getProfile = async (req, res, next) => {
-    console.log('getProfile')
+    process.stdout.write('account')
     
     let validation = res.locals.validation
     let userEmail = res.locals.userEmail
@@ -318,8 +292,7 @@ exports.getProfile = async (req, res, next) => {
 }
 
 exports.getRegister = (req, res, next) => {
-    console.log('\nanon user >')
-    console.log('getRegister')
+    process.stdout.write("\n" + "anon > register")
 
     res.render('user-register.ejs', {
         pageTitle: 'Register',
@@ -329,8 +302,7 @@ exports.getRegister = (req, res, next) => {
 }
 
 exports.getLogin = (req, res, next) => {
-    console.log('\nanon user >')
-    console.log('getLogin')
+    process.stdout.write("\n" + "anon > login")
 
     res.render('user-login.ejs', {
         pageTitle: 'Login',
@@ -340,7 +312,7 @@ exports.getLogin = (req, res, next) => {
 }
 
 exports.getStripe = async (req, res, next) => {
-    console.log('\ngetStripe')
+    process.stdout.write('stripe')
 
     let intent = await stripe.paymentIntents.create({
         amount: 100,
@@ -355,40 +327,40 @@ exports.getStripe = async (req, res, next) => {
     })
 }
 
-exports.getOrderDetails = async (req, res, next) => {
-    console.log('\ngetOrderDetails')
+// exports.getOrderDetails = async (req, res, next) => {
+//     process.stdout.write('order-details')
 
-    let validation = res.locals.validation
-    let userEmail = res.locals.userEmail
-    let orderId = req.params.orderId
+//     let validation = res.locals.validation
+//     let userEmail = res.locals.userEmail
+//     let orderId = req.params.orderId
 
-    let order = await Order.findById(orderId)
+//     let order = await Order.findById(orderId)
 
-    if(order != null)
-    {
-        if(validation.status == true)
-        {
-            res.render('user-order-details.ejs', { 
-                admin: validation.isAdmin,
-                pageTitle: 'Order Details',
-                path: '/order-details',
-                loggedIn: true,
-                order: order
-            })
-        }
-        else
-        {
-            res.redirect('/')
-        }
-    }
-    else
-    {
-        res.redirect('/')
-    }
-}
+//     if(order != null)
+//     {
+//         if(validation.status == true)
+//         {
+//             res.render('user-order-details.ejs', { 
+//                 admin: validation.isAdmin,
+//                 pageTitle: 'Order Details',
+//                 path: '/order-details',
+//                 loggedIn: true,
+//                 order: order
+//             })
+//         }
+//         else
+//         {
+//             res.redirect('/')
+//         }
+//     }
+//     else
+//     {
+//         res.redirect('/')
+//     }
+// }
 
 exports.getOrderProcess = async (req, res, next) => {
-    console.log('\ngetOrderProcess')
+    process.stdout.write('order-process')
     
     let orderId = req.params.orderId
     let order = await Order.findById(orderId)
@@ -406,27 +378,25 @@ exports.getOrderProcess = async (req, res, next) => {
 }
 
 exports.getAbout = (req, res, next) => {
-    console.log('\nanon user >')
-    console.log('getAbout')
+    process.stdout.write("\n" + "anon > about")
 
     res.render('user-about.ejs', {})
 }
 
-exports.getContact = (req, res, next) => {
-    console.log('\nanon user >')
-    console.log('getContact')
+// exports.getContact = (req, res, next) => {
+//     process.stdout.write('contact')
 
-    res.render('user-contact.ejs', {})
-}
+//     res.render('user-contact.ejs', {})
+// }
 
 // exports.getTest = async (req, res, next) => {
-//     console.log('getTest')
+//     process.stdout.write('getTest')
 
 //     res.render('test/test.ejs', { })
 // }
 
 // exports.getGoogleMapsApiTest = async (req, res, next) => {
-//     console.log('getTest')
+//     process.stdout.write('getTest')
 //     console.log(req.body)
 //     console.log(res.locals.userEmail)
 
@@ -545,7 +515,7 @@ exports.getContact = (req, res, next) => {
 
 //post
 exports.postOrder = async (req, res, next) => {
-    console.log('postOrder >')
+    process.stdout.write('post-order > ')
 
     let validation = res.locals.validation
     let userEmail = res.locals.userEmail
@@ -569,12 +539,12 @@ exports.postOrder = async (req, res, next) => {
 
          if(createOrder.insertedCount != null)
          {
-            console.log('create order: successful')
+            process.stdout.write('create order: successful')
             res.redirect("/order-process/" + orderId)
          }
          else
          {
-             console.log('create order: failed')
+            process.stdout.write('create order: failed')
              res.redirect('/')
          }
      }
@@ -585,7 +555,7 @@ exports.postOrder = async (req, res, next) => {
 }
 
 exports.postLogout = (req, res, next) => {  
-    console.log('postLogout >')
+    process.stdout.write('post-logout > ')
 
     let logoutSuccessful = 1
     let logoutFailed = 0
@@ -600,12 +570,11 @@ exports.postLogout = (req, res, next) => {
         User.logout(loginCookie).then(result => {
             if(result == logoutSuccessful)
             {
-                console.log('logout succesful')
                 res.redirect('/');
             }
             else
             {
-                console.log('logout failed')
+                process.stdout.write('logout failed')
                 res.render('user-logout.ejs', { 
                     pageTitle: 'Logout',
                     path: '/logout',
@@ -621,7 +590,7 @@ exports.postLogout = (req, res, next) => {
 }
 
 exports.postRegister = (req, res, next) => {
-    console.log('\npostRegister >')
+    process.stdout.write('post-register > ')
     
     let username = req.body.nameCustomer
     let email = req.body.emailCustomer
@@ -630,7 +599,7 @@ exports.postRegister = (req, res, next) => {
     User.register(email, username, password).then(result => {
         if(result == 'registration successful')
         {
-            console.log('result: ' + result + '\n')
+            process.stdout.write('result: ' + result + ' ')
             res.render('user-login.ejs', { 
                 pageTitle: 'Login',
                 path: '/login',
@@ -639,7 +608,7 @@ exports.postRegister = (req, res, next) => {
         }
         else if(result == 'username is taken')
         {
-            console.log('result: ' + result + '\n')
+            process.stdout.write('result: ' + result + ' ')
             res.render('user-register.ejs', {   
                 
                 pageTitle: 'Register',
@@ -649,7 +618,7 @@ exports.postRegister = (req, res, next) => {
         }
         else if(result == 'email is taken')
         {
-            console.log('result: ' + result + '\n')
+            process.stdout.write('result: ' + result + ' ')
             res.render('user-register.ejs', { 
                 pageTitle: 'Register',
                 path: '/register',
@@ -658,7 +627,7 @@ exports.postRegister = (req, res, next) => {
         }
         else
         {
-            console.log('result: ' + 'database error')
+            process.stdout.write('result: ' + 'database error')
             res.render('user-register.ejs', { 
                 pageTitle: 'Register',
                 path: '/register',
@@ -669,7 +638,7 @@ exports.postRegister = (req, res, next) => {
 }
 
 exports.postRegisterRestaurant = async (req, res, next) => {
-    console.log('\npostRegisterRestaurant >')
+    process.stdout.write('post-register-restaurant > ')
 
     let email = req.body.emailRestaurant
     let address = req.body.addressRestaurant
@@ -710,7 +679,7 @@ exports.postRegisterRestaurant = async (req, res, next) => {
 }
 
 exports.postLogin = async (req, res, next) => {
-    console.log('\npostLogin >')
+    process.stdout.write('post-login > ')
 
     let email = req.body.email
     let password = req.body.password
@@ -719,18 +688,19 @@ exports.postLogin = async (req, res, next) => {
 
         if(result.statusText == 'login successful')
         {
-            console.log('login user: ' + result.email + ' successful')
+            process.stdout.write('login user: ' + result.email + ' successful')
 
             Restaurant.findByEmail(result.email).then(restaurantCheck => {
-                if(restaurantCheck != null)
+                if(result.email == "admin@mail.com")
                 {
-                    let cookie = req.get('Cookie')
-                    
                     res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';path=/')
-                    //res.setHeader('Set-Cookie', 'loginCookie=' + uuidv4() + ';path=/')
-                    res.redirect('/restaurantPortal')
+                    res.redirect('/admin')
                 }
-    
+                else if(restaurantCheck != null)
+                {
+                    res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';path=/')
+                    res.redirect('/portal')
+                }
                 else if(restaurantCheck == null)
                 {        
                     res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';path=/')
@@ -741,7 +711,7 @@ exports.postLogin = async (req, res, next) => {
 
         else if(result == 'email is invalid')
         {
-            console.log('login user: email is invalid')
+            process.stdout.write('login user: email is invalid')
             res.render('user-login.ejs', { 
                 pageTitle: 'Login',
                 path: '/login',
@@ -750,7 +720,7 @@ exports.postLogin = async (req, res, next) => {
         }
         else if(result == 'invalid password')
         {
-            console.log('login user: invalid password')
+            process.stdout.write('login user: invalid password')
             res.render('user-login.ejs', { 
                 pageTitle: 'Login',
                 path: '/login',
@@ -759,7 +729,7 @@ exports.postLogin = async (req, res, next) => {
         }
         else if(result == 'database error, try again in a few minutes')
         {
-            console.log('login user: database error')
+            process.stdout.write('login user: database error')
             res.render('user-login.ejs', { 
                 pageTitle: 'Login',
                 path: '/login',
@@ -770,7 +740,7 @@ exports.postLogin = async (req, res, next) => {
 }
 
 exports.postWebhook = (req, res, next) => {
-    console.log('\npostWebhook Test')
+    process.stdout.write('post-payment-webhook')
 
     let event = req.body
 
@@ -778,14 +748,14 @@ exports.postWebhook = (req, res, next) => {
     if(event.type == 'payment_intent.succeeded') 
     {
         const paymentIntent = event.data.object
-        console.log('PaymentIntent was successful!')
+        process.stdout.write('PaymentIntent was successful!')
         // Return a 200 response to acknowledge receipt of the event  
         res.json({received: true})
     }
     else if(event.type == 'payment_method.attached')
     {
         const paymentMethod = event.data.object
-        console.log('PaymentMethod was attached to a Customer!')
+        process.stdout.write('PaymentMethod was attached to a Customer!')
         // Return a 200 response to acknowledge receipt of the event  
         res.json({received: true})
     }
@@ -797,7 +767,7 @@ exports.postWebhook = (req, res, next) => {
 }
 
 exports.postUserUpdateCredentials = async (req, res, next) => {
-    console.log('\npostUserUpdateCredentials Test')
+    process.stdout.write('post-update-credentials')
     
     let loginCookie = req.get('Cookie')
     let cookieId = parseLoginCookie(loginCookie)
@@ -808,11 +778,11 @@ exports.postUserUpdateCredentials = async (req, res, next) => {
     
     let updateUser = await User.updateCredentials(email, name, address, phone)
 
-    res.redirect('/profile')
+    res.redirect('/account')
 }
 
 exports.postUserUpdatePassword = async (req, res, next) => {
-    console.log('\npostUserUpdatePassword Test')
+    process.stdout.write('post-update-password')
 
     let loginCookie = req.get('Cookie')
     let cookieId = parseLoginCookie(loginCookie)
@@ -826,16 +796,16 @@ exports.postUserUpdatePassword = async (req, res, next) => {
     if(user.password == oldPassword)
     {
         let updatePassword = await User.updatePassword(email, newPassword)
-        res.redirect('/profile?update=successful')
+        res.redirect('/account?update=successful')
     }
     else
     {
-        res.redirect('/profile?update=oldpasswordincorrect')
+        res.redirect('/account?update=oldpasswordincorrect')
     }
 }
 
 exports.postRestaurantReview = async (req, res, next) => {
-    console.log('postUserRestaurantReview')
+    process.stdout.write('post-restaurant-review')
 
     let orderId = req.body.orderId
     let restaurant = req.body.restaurant

@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= pageTitle %></title>
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/mobile.css">
-    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/mobile.css">
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
+    <!-- <title><%= pageTitle %></title> -->
+    <title>Food Ordering Platform</title>
 </head>
 
 <script>
@@ -19,9 +20,9 @@
     function setBackgroundGif()
     {
         let html = document.querySelector("html")
-        let randomNumber = Math.floor(Math.random() * 20) + 1
+        let randomNumber = Math.floor(Math.random() * 16) + 1
 
-        if(randomNumber > 20) { randomNumber = 20 }
+        if(randomNumber > 16) { randomNumber = 16 }
         else if(randomNumber == 0) { randomNumber = 1 }
 
         html.style.backgroundImage = "url(/gifs/" + randomNumber + ".gif)"
@@ -46,12 +47,12 @@
 <body id="bodyIndex" onload="setBackgroundGif()">
     <!-- admin view -->
     <% if(admin != null && admin == true) { %>
-        <%- include('nav_menu_admin.ejs') %>
+        <%- include('nav-menu-admin.ejs') %>
         <h2 style="text-align: center;">Admin Portal</h2>
 
     <!-- user view -->
     <% } else if(loggedIn == true) { %>
-        <%- include('nav_menu_user.ejs') %>
+        <%- include('nav-menu-user.ejs') %>
 
     <!-- anon view -->
     <% } else { %> 

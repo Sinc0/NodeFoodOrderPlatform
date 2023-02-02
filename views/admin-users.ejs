@@ -3,191 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/mobile.css">
-    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
-    <title>Admin Users</title>
-    <script>
-        function displayEditUser(number)
-        {
-            console.log(number);
-
-            var d = document.getElementById("user#" + number);
-            var edit = document.getElementById("edit-user#" + number);
-          
-            d.hidden = true;
-            edit.hidden = false;
-
-        }
-
-        function undisplayEditUser(number)
-        {
-            console.log(number);
-
-            var d = document.getElementById("user#" + number);
-            var edit = document.getElementById("edit-user#" + number);
-          
-            d.hidden = false;
-            edit.hidden = true;
-
-        }
-
-        function displayDeleteUser(number)
-        {
-            console.log(number);
-
-            var d = document.getElementById("user#" + number);
-            var edit = document.getElementById("delete-user#" + number);
-          
-            d.hidden = true;
-            edit.hidden = false;
-
-        }
-
-        function undisplayDeleteUser(number)
-        {
-            console.log(number);
-
-            var d = document.getElementById("user#" + number);
-            var edit = document.getElementById("delete-user#" + number);
-          
-            d.hidden = false;
-            edit.hidden = true;
-
-        }
-
-        function search(totalUsers)
-        {
-            var searchBoxInput = document.getElementById("searchBoxInput").value
-            var totalUsersText = document.getElementById("totalUsersText");
-            var searchString = String(searchBoxInput).toLowerCase();
-            var usersArray = [];
-            var searchFoundCount = 0;
-
-            if(searchBoxInput != "")
-            {
-                for(var c = 1; c <= totalUsers; c++)
-                {
-                    var user = document.getElementById("user#" + c)
-    
-                    if(user.innerHTML.toLowerCase().includes(searchString))
-                    {
-                        usersArray.push(user);
-                        searchFoundCount++;
-                        user.hidden = false;
-                        user.style.opacity = "100%";
-                    }
-                    
-                    else
-                    {
-                        user.hidden = true;
-                    }        
-                    
-                    if(searchFoundCount == 1)
-                    {
-                        totalUsersText.innerHTML = "Found: " + searchFoundCount + " User";
-                    }
-
-                    else
-                    {
-                        totalUsersText.innerHTML = "Found: " + searchFoundCount + " Users";
-                    }
-                }
-            }
-
-            else
-            {
-                for(var c = 1; c <= totalUsers; c++)
-                {
-                    var user = document.getElementById("user#" + c)
-                    
-                    usersArray.push(user);
-                    user.hidden = false;
-                    user.style.opacity = "100%";
-                }
-
-                totalUsersText.innerHTML = "Total Users: " + totalUsers;
-            }
-        }
-
-        function saveScrollPosition()
-        {
-            var y = window.scrollY;
-            localStorage.setItem("scrollPositionY", y);
-        }
-
-        function loadSavedScrollPosition()
-        {
-            var positionY = localStorage.getItem("scrollPositionY");
-            window.scrollTo(0, positionY)
-        }
-    </script>
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/mobile.css">
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
+    <title>Users</title>
 </head>
-<body style="background-color: lightgray;" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
+
+<script>
+    function displayEditUser(number)
+    {
+        //elements
+        let userCard = document.getElementById("user#" + number);
+        let editCard = document.getElementById("edit-user#" + number);
+        let cards = document.getElementsByClassName("admin-card")
+        
+        //undisplay all cards
+        for(let i = 0; i < cards.length; i++)
+        {
+            cards[i].style.display = "none"
+        }
+        
+        //update elements
+        userCard.hidden = true;
+        editCard.hidden = false;
+    }
+    
+    function undisplayEditUser(number)
+    {
+        //elements
+        let userCard = document.getElementById("user#" + number);
+        let editCard = document.getElementById("edit-user#" + number);
+        let cards = document.getElementsByClassName("admin-card")
+        let searchBoxInput = document.getElementById("searchBoxInput").value
+
+        //update cards
+        if(searchBoxInput == "")
+        {
+            //display all cards
+            for(let i = 0; i < cards.length; i++)
+            {
+                cards[i].style.display = "block"
+            }
+        }
+        else if(searchBoxInput != "")
+        {
+            //undisplay all cards
+            for(let i = 0; i < cards.length; i++)
+            {
+                cards[i].style.display = "none"
+            }
+
+            //display search hit cards
+            for(let i = 0; i < cards.length; i++)
+            {
+                if(cards[i].innerText.includes(searchBoxInput))
+                {
+                    cards[i].style.display = "block"
+                }
+            }
+        }
+
+        //update elements
+        userCard.hidden = false;
+        editCard.hidden = true;
+    }
+
+    function search(totalUsers)
+    {
+        //elements
+        let searchBoxInput = document.getElementById("searchBoxInput").value
+        let totalText = document.getElementById("totalText");
+        let cards = document.getElementsByClassName("admin-card")
+        let searchHits = 0
+
+        //search box
+        if(searchBoxInput == "")
+        {
+            //display all cards
+            for(let i = 0; i < cards.length; i++)
+            {
+                cards[i].style.display = "block"
+            }
+
+            //set total users
+            totalText.innerText = totalUsers.toString() + " Users"
+        }
+        else if(searchBoxInput != "")
+        {
+            //undisplay all cards
+            for(let i = 0; i < cards.length; i++)
+            {
+                cards[i].style.display = "none"
+            }
+
+            //display search hit cards
+            for(let i = 0; i < cards.length; i++)
+            {
+                if(cards[i].innerText.includes(searchBoxInput))
+                {
+                    cards[i].style.display = "block"
+                    searchHits++
+                }
+            }
+
+            //set total users
+            totalText.innerText = searchHits.toString() + " Users"
+        }
+    }
+</script>
+
+<style>
+    /*** elements ***/
+    body { background-color: #3c41d6; }
+    input { color: white; border: 0px solid black; background-color: black; }
+
+    /*** classes ***/
+    .admin-edit { width: auto; padding: 0px 10px 0px 10px; margin: auto; user-select: none; border: 1px solid black; background-color: white; }
+    .admin-card
+    {
+        margin: auto; 
+        padding: 10px; 
+        user-select: none;
+        font-weight: bold;
+        border-bottom: 1px solid black; 
+        background-color: white;
+    }
+    .admin-card-button
+    {
+        display: inline-block;
+        width: 119px;
+        margin: 30px 0px 30px 0px;
+        padding: 12px 0px 12px 0px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        border: 0px solid black;
+        background-color: transparent; 
+    }
+    .cardText { margin: 0px; }
+    .input-admin { width: 360px; margin-left: 7px; padding: 10px 0px 10px 7px; font-weight: bold; font-size: 16px; }
+    .label-admin { display: block; padding: 20px 0px 0px 7px; }
+    
+    /*** ids ***/
+    #searchBox { width: 400px; margin: auto; border: 0px solid black; }
+    #searchBoxInput { height: 40px; font-weight: normal; color: white; background-color: black; }
+    #totalText { margin: 20px 0px 20px 0px; font-size: 20px; text-align: center; text-shadow: 1px 1px black; user-select: none; color: white; }
+    #orders { width: 400px; margin: auto; }
+    #cardButtons { margin: 20px 0px 0px 0px;}
+    #restaurantTitle { margin: 0px 0px 10px 0px; font-size: 20px; font-weight: bold; }
+    #users { height: 80vh; width: 400px; margin: auto; overflow-y: scroll; }
+    #formDelete { display: inline; }
+    #formEdit { display: inline; }
+    #cancelButton { }
+    #editButton { margin-left: 7px; background-color: lightgreen; }
+    #deleteButton { background-color: red; }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        .input-admin { width: 90%; }
+        .input-label { width: 90%; }
+        .admin-card-button { width: 30%; }
+
+        #searchBox { display: block; width: 90vw; margin: auto; margin-top: 10px; }
+        #users { height: 70vh; width: 90vw; }
+    }
+</style>
+
+<body>
     <!-- nav menu -->
     <%- include('nav-menu-admin.ejs') %>
-
-    <!-- search box -->
-    <div id="searchBox" style="margin: 0px; margin-top: 25px; padding: 0px; text-align: center;">
-        <input id="searchBoxInput" class="search-admin" style="margin-bottom: 25px; height: 38px;" placeholder="Search..." onkeyup="search('<%=users.length - 1 %>')"></input>
-    </div>
     
-    <% var totalUsersCount = users.length %>
-    
-    <!-- remove admins from totalUsersCount -->
+    <!-- count total users -->
+    <% var totalUsersCount = 0 %>
     <% for(var i = 0; i < users.length; i++) { %>
-        <% if(users[i].admin == true) { %>
-            <% totalUsersCount-- %>
+        <% if(users[i].admin != true && users[i].restaurantName == null) { %>
+            <% totalUsersCount++ %>
         <% } %>
     <% } %>
             
+    <!-- search box -->
+    <div id="searchBox">
+        <input id="searchBoxInput" placeholder="Search..." onkeyup="search('<%=totalUsersCount %>')"></input>
+    </div>
+
     <!-- total users -->
-    <h3 id="totalUsersText" style="margin-top: 25px; margin-bottom: 15px; text-align: center;">Total Users: <%=totalUsersCount %></h3>
+    <h3 id="totalText"><%=totalUsersCount %> Users</h3>
 
     <!-- users -->
-    <% for(var i = 0; i < users.length; i++) { %>
-
-        <% if(users[i].admin != true) { %>
-            <div id="user#<%=i + 1%>" class="admin-card">      
-                <p style="margin-bottom: 4px; margin-left: 2px; margin-top: 9px;"><%=users[i]._id %></p>
-                <p style="margin-bottom: 4px; margin-left: 2px;"><%=users[i].email %></p> 
-                <p style="margin-bottom: 4px; margin-left: 2px;"><%=users[i].name %></p>
-                <p style="margin-bottom: 4px; margin-left: 2px;"><%=users[i].address %></p>
-                <p style="margin-bottom: -2px; margin-left: 2px;"><%=users[i].phone %></p>
-                <p style="margin-bottom: -2px; margin-left: 2px;"><%=users[i].isLoggedIn %></p>
-                
-                <div style="text-align: right;">
-                    <button class="admin-card-button" onclick="displayEditUser('<%=i + 1%>')" style="margin-top: 10px; margin-right: -5.5px;"><b>Edit</b></button>
-                    <button class="admin-card-button" onclick="displayDeleteUser('<%=i + 1%>')" style="background-color: red;"><b>Delete</b></button><br />
+    <div id="users">
+        <% for(var i = 0; i < users.length; i++) { %>
+            <% if(users[i].admin != true && users[i].restaurantName == null) { %>
+                <!-- user card -->
+                <div id="user#<%=i + 1%>" class="admin-card" onclick="displayEditUser('<%=i + 1%>')">      
+                    <p class="cardText"><%=users[i].email %></p> 
                 </div>
-            </div>
+                
+                <!-- edit card -->
+                <div class="admin-edit" hidden id="edit-user#<%=i + 1%>">
+                    <!-- edit -->
+                    <form id="formEdit" action="/admin/edit-user" method="POST">
+                        <input hidden class="input-admin" name="id" value="<%=users[i]._id %>"></input>
+                        <label class="label-admin">Email</label>
+                        <input class="input-admin" name="email" value="<%=users[i].email %>"></input>
+                        <label class="label-admin">Name</label>
+                        <input class="input-admin" name="name" value="<%=users[i].name %>"></input>
+                        <label class="label-admin">Address</label>
+                        <input class="input-admin" name="address" value="<%=users[i].address %>"></input>
+                        <label class="label-admin">Phone</label>
+                        <input class="input-admin" name="phone" value="<%=users[i].phone %>"></input>
+                        <button id="editButton" class="admin-card-button"><b>Update</b></button>
+                    </form>
 
-            <!-- edit -->
-            <div class="admin-edit" hidden id="edit-user#<%=i + 1%>">
-                <button class="admin-card-button" style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px; margin-right: 303px;" onclick="undisplayEditUser('<%=i + 1%>')"><b>Cancel</b></button><br />
+                    <!-- cancel -->
+                    <button id="cancelButton" class="admin-card-button" onclick="undisplayEditUser('<%=i + 1%>')"><b>Cancel</b></button>
 
-                <form action="/admin/edit-user" method="POST">
-                    <input class="input-admin" name="id" value="<%=users[i]._id %>"></input><br />
-                    <input  class="input-admin"name="email" value="<%=users[i].email %>"></input><br />
-                    <input class="input-admin" name="name" value="<%=users[i].name %>"></input><br />
-                    <input class="input-admin" name="address" value="<%=users[i].address %>"></input><br />
-                    <input class="input-admin" name="phone" value="<%=users[i].phone %>"></input><br />
-                    <input class="input-admin" name="isLoggedIn" value="<%=users[i].isLoggedIn %>"></input><br />
-                    <button class="admin-card-button" style="display: block; margin: auto; margin-top: 11px; margin-bottom: 11px; width: 200px;"><b>Confirm Edit</b></button>
-                </form>
-            </div>
-
-            <!-- delete -->
-            <div class="admin-delete" hidden id="delete-user#<%=i + 1%>">
-                <button class="admin-card-button" style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px;" onclick="undisplayDeleteUser('<%=i + 1%>')"><b>Cancel</b></button><br />
-
-                <form action="/admin/delete-user" method="POST">
-                    <input hidden name="email" value="<%=users[i].email %>"></input>
-                    <button class="admin-card-button" style="display: block; margin: auto; margin-top: 124px; margin-bottom: 11px; width: 200px; background-color: red;"><b>Confirm Delete</b></button>
-                </form>
-            </div>
+                    <!-- delete -->
+                    <form id="formDelete" action="/admin/delete-user" method="POST">
+                        <input hidden name="email" value="<%=users[i].email %>"></input>
+                        <button id="deleteButton" class="admin-card-button"><b>Delete</b></button>
+                    </form>
+                </div>
+            <% } %>
         <% } %>
-
-    <% } %>
+    </div>
 </body>
 </html>

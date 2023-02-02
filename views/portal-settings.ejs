@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/portal.css">
+    <link rel="stylesheet" href="/mobile.css">
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title>Settings</title>
-    <link rel="stylesheet" href="/css/portalRestaurant.css">
-    <link rel="stylesheet" href="/css/mobile.css">
-    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
 </head>
 
 <script>
@@ -53,20 +53,12 @@
 </style>
 
 <body>
-    <a href="/restaurantPortal"><nav id="NavBar"><b>❮</b></nav></a>
+    <a href="/portal"><nav id="NavBar"><b>❮</b></nav></a>
 
     <div id="settings">
         <!-- status -->
         <p class="categoryTitle">Status</p>
         <div id="categoryStatus" class="category">
-            <% if(restaurant.menuOnline == false) { %>
-                <p class="statusItem" style="background-color: red;"><b>restaurant</b> is closed</p>
-            <% } %>
-                
-            <% if(restaurant.menuOnline == true) { %>
-                <p class="statusItem" style="background-color: green;"><b>restaurant</b> is open</p>
-            <% } %>
-
             <% if(restaurant.menuListed == false) { %>
                 <p class="statusItem" style="background-color: red;"><b>restaurant</b> is inactive</p>
             <% } %>
@@ -74,7 +66,14 @@
             <% if(restaurant.menuListed == true) { %>
                 <p class="statusItem" style="background-color: green;"><b>restaurant</b> is active</p>
             <% } %>
-    
+
+            <% if(restaurant.menuOnline == false) { %>
+                <p class="statusItem" style="background-color: red;"><b>restaurant</b> is closed</p>
+            <% } %>
+                
+            <% if(restaurant.menuOnline == true) { %>
+                <p class="statusItem" style="background-color: green;"><b>restaurant</b> is open</p>
+            <% } %>
         </div>
 
         <!-- credentials -->
@@ -90,7 +89,7 @@
         <!-- options -->
         <p class="categoryTitle">Options</p>
         <div id="categoryOptions" class="category">
-            <form action="/restaurantPortal/welcomeMessage" method="POST">
+            <form action="/portal/welcomeMessage" method="POST">
                 <!-- <% if(restaurant.welcomeMessage == false) { %>
                     <input hidden name="welcomeMessage" value=true></input>
                     <button class="profile-buttons">show welcome message</button><br />
@@ -102,21 +101,8 @@
             </form>
         </div>
         
-        <!-- open/close restaurant -->        
-        <form action="/restaurantPortal/menuOnline" method="POST">
-            <% if(restaurant.menuOnline == false) { %>
-                <input hidden name="menuOnline" value="true"></input>
-                <button class="profile-buttons optionButton">open restaurant</button><br />
-            <% } %>
-                
-            <% if(restaurant.menuOnline == true) { %>
-                <input hidden name="menuOnline" value="false"></input>
-                <button class="profile-buttons optionButton">close restaurant</button><br />
-            <% } %>
-        </form>
-        
         <!-- activate/deactivate restaurant -->
-        <form action="/restaurantPortal/menuListed" method="POST">
+        <form action="/portal/menuListed" method="POST">
             <% if(restaurant.menuListed == false) { %>
                 <input hidden name="menuListed" value=true></input>
                 <button class="profile-buttons optionButton">activate restaurant</button><br />
@@ -125,6 +111,19 @@
             <% if(restaurant.menuListed == true) { %>
                 <input hidden name="menuListed" value=false></input>
                 <button class="profile-buttons optionButton">deactivate restaurant</button><br />
+            <% } %>
+        </form>
+
+        <!-- open/close restaurant -->        
+        <form action="/portal/menuOnline" method="POST">
+            <% if(restaurant.menuOnline == false) { %>
+                <input hidden name="menuOnline" value="true"></input>
+                <button class="profile-buttons optionButton">open restaurant</button><br />
+            <% } %>
+                
+            <% if(restaurant.menuOnline == true) { %>
+                <input hidden name="menuOnline" value="false"></input>
+                <button class="profile-buttons optionButton">close restaurant</button><br />
             <% } %>
         </form>
 

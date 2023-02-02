@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/mobile.css">
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title><%= pageTitle %></title>
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/mobile.css">
-    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
 </head>
 
 <script>    
@@ -99,7 +99,7 @@
 
     /*** ids ***/
     #searchBox { margin: 0px 0px 24px 0px; text-align: center; border: 0px solid black; }
-    #searchBoxInput { height: 40px; color: white; background-color: black; }
+    #searchBoxInput { height: 40px; font-weight: normal; color: white; background-color: black; }
     #searchBox::-webkit-input-placeholder { color: white; }
     #orders { height: 80vh; overflow-y: scroll; overflow-x: hidden; }
     #orderReviewButtons { margin: 10px 0px 0px 0px; padding: 3px; border: 1px solid black; }
@@ -164,7 +164,7 @@
 <body id="orders" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
     <!-- admin nav menu -->
     <% if(admin != null && admin == true) { %> 
-        <%- include('nav_menu_admin.ejs') %>
+        <%- include('nav-menu-admin.ejs') %>
 
     <!-- user nav menu -->
     <% } else if(loggedIn == true) { %>

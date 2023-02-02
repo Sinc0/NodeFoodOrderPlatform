@@ -3,183 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/mobile.css">
-    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
-    <title>Admin Reviews</title>
-    <script>
-        function displayEditReview(number)
-        {
-            console.log(number);
-
-            var d = document.getElementById("review#" + number);
-            var edit = document.getElementById("edit-review#" + number);
-          
-            d.hidden = true;
-            edit.hidden = false;
-
-        }
-
-        function undisplayEditReview(number)
-        {
-            console.log(number);
-
-            var d = document.getElementById("review#" + number);
-            var edit = document.getElementById("edit-review#" + number);
-          
-            d.hidden = false;
-            edit.hidden = true;
-
-        }
-
-        function displayDeleteReview(number)
-        {
-            console.log(number);
-
-            var d = document.getElementById("review#" + number);
-            var edit = document.getElementById("delete-review#" + number);
-          
-            d.hidden = true;
-            edit.hidden = false;
-
-        }
-
-        function undisplayDeleteReview(number)
-        {
-            console.log(number);
-
-            var d = document.getElementById("review#" + number);
-            var edit = document.getElementById("delete-review#" + number);
-          
-            d.hidden = false;
-            edit.hidden = true;
-
-        }
-
-        function search(totalReviews)
-        {
-            var searchBoxInput = document.getElementById("searchBoxInput").value
-            var totalReviewsText = document.getElementById("totalReviewsText");
-            var searchString = String(searchBoxInput).toLowerCase();
-            var reviewsArray = [];
-            var searchFoundCount = 0;
-
-            if(searchBoxInput != "")
-            {
-                for(var c = 1; c <= totalReviews; c++)
-                {
-                    var review = document.getElementById("review#" + c)
-                    //console.log(menuItem);
-                    //console.log(menuItem.parentNode);
-                    //console.log(menuItemCategory);
-    
-                    if(review.innerHTML.toLowerCase().includes(searchString))
-                    {
-                        reviewsArray.push(review);
-                        searchFoundCount++;
-                        review.hidden = false;
-                        review.style.opacity = "100%";
-                    }
-                    
-                    else
-                    {
-                        review.hidden = true;
-                    }        
-                    
-                    if(searchFoundCount == 1)
-                    {
-                        totalReviewsText.innerHTML = "Found: " + searchFoundCount + " Review";
-                    }
-
-                    else
-                    {
-                        totalReviewsText.innerHTML = "Found: " + searchFoundCount + " Reviews";
-                    }
-                }
-            }
-
-            else
-            {
-                for(var c = 1; c <= totalReviews; c++)
-                {
-                    var review = document.getElementById("review#" + c)
-                    
-                    reviewsArray.push(review);
-                    review.hidden = false;
-                    review.style.opacity = "100%";
-                }
-
-                totalReviewsText.innerHTML = "Total Reviews: " + totalReviews;
-            }
-        }
-
-        function saveScrollPosition()
-        {
-            var y = window.scrollY;
-            localStorage.setItem("scrollPositionY", y);
-        }
-
-        function loadSavedScrollPosition()
-        {
-            var positionY = localStorage.getItem("scrollPositionY");
-            window.scrollTo(0, positionY)
-        }
-    </script>
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/mobile.css">
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
+    <title>Reviews</title>
 </head>
-<body style="background-color: lightgray;" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
+
+<script>
+    function displayEditReview(number)
+    {
+        //elements
+        let reviewCard = document.getElementById("review#" + number);
+        let editCard = document.getElementById("edit-review#" + number);
+        let cards = document.getElementsByClassName("admin-card")
+        
+        //undisplay all cards
+        for(let i = 0; i < cards.length; i++)
+        {
+            cards[i].style.display = "none"
+        }
+        
+        //update elements
+        reviewCard.hidden = true;
+        editCard.hidden = false;
+    }
+
+    function undisplayEditReview(number)
+    {
+        //elements
+        let reviewCard = document.getElementById("review#" + number);
+        let editCard = document.getElementById("edit-review#" + number);
+        let cards = document.getElementsByClassName("admin-card")
+        
+        //undisplay all cards
+        for(let i = 0; i < cards.length; i++)
+        {
+            cards[i].style.display = "block"
+        }
+        
+        //update elements
+        reviewCard.hidden = false;
+        editCard.hidden = true;
+    }
+
+    function search(totalReviews)
+    {
+        //elements
+        let searchBoxInput = document.getElementById("searchBoxInput").value
+        let totalText = document.getElementById("totalText");
+        let cards = document.getElementsByClassName("admin-card")
+        let searchHits = 0
+
+        //search box
+        if(searchBoxInput == "")
+        {
+            //display all cards
+            for(let i = 0; i < cards.length; i++)
+            {
+                cards[i].style.display = "block"
+            }
+
+            //set total reviews
+            totalText.innerText = totalReviews.toString() + " Reviews"
+        }
+        else if(searchBoxInput != "")
+        {
+            //undisplay all cards
+            for(let i = 0; i < cards.length; i++)
+            {
+                cards[i].style.display = "none"
+            }
+
+            //display search hit cards
+            for(let i = 0; i < cards.length; i++)
+            {
+                if(cards[i].innerText.includes(searchBoxInput))
+                {
+                    cards[i].style.display = "block"
+                    searchHits++
+                }
+            }
+
+            //set total reviews
+            totalText.innerText = searchHits.toString() + " Reviews"
+        }
+    }
+</script>
+
+<style>
+    /*** elements ***/
+    body { background-color: #3c41d6; }
+    input { color: white; border: 0px solid black; background-color: black; }
+
+    /*** classes ***/
+    .admin-edit { width: auto; padding: 0px 10px 0px 10px; margin: auto; user-select: none; border: 1px solid black; background-color: white; }
+    .admin-card
+    {
+        margin: auto; 
+        padding: 10px; 
+        user-select: none;
+        font-weight: bold;
+        border-bottom: 1px solid black; 
+        background-color: white;
+    }
+    .admin-card-button
+    {
+        display: inline-block;
+        width: 119px;
+        margin: 30px 0px 30px 0px;
+        padding: 12px 0px 12px 0px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        border: 0px solid black;
+        background-color: transparent; 
+    }
+    .cardText { margin: 0px; }
+    .input-admin { width: 360px; margin-left: 7px; padding: 10px 0px 10px 7px; font-weight: bold; font-size: 16px; }
+    .label-admin { display: block; padding: 20px 0px 0px 7px; }
+    
+    /*** ids ***/
+    #searchBox { width: 400px; margin: auto; border: 0px solid black; }
+    #searchBoxInput { height: 40px; font-weight: normal; color: white; background-color: black; }
+    #totalText { margin: 20px 0px 20px 0px; font-size: 20px; text-align: center; text-shadow: 1px 1px black; user-select: none; color: white; }
+    #orders { width: 400px; margin: auto; }
+    #cardButtons { margin: 20px 0px 0px 0px;}
+    #restaurantTitle { margin: 0px 0px 10px 0px; font-size: 20px; font-weight: bold; }
+    #reviews { height: 80vh; width: 400px; margin: auto; overflow-y: scroll; }
+    #formDelete { display: inline; }
+    #formEdit { display: inline; }
+    #cancelButton { }
+    #editButton { margin-left: 7px; background-color: lightgreen; }
+    #deleteButton { background-color: red; }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        .input-admin { width: 90%; }
+        .input-label { width: 90%; }
+        .admin-card-button { width: 30%; }
+
+        #searchBox { display: block; width: 90vw; margin: auto; margin-top: 10px; }
+        #reviews { height: 70vh; width: 90vw; }
+    }
+</style>
+
+<body>
     <!-- nav menu -->
     <%- include('nav-menu-admin.ejs') %>
     
     <!-- search box -->
-    <div id="searchBox" style="margin: 0px; margin-top: 25px; padding: 0px; text-align: center;">
-        <input id="searchBoxInput" class="search-admin" style="margin-bottom: 25px; height: 38px;" placeholder="Search..." onkeyup="search('<%=reviews.length %>')"></input>
+    <div id="searchBox">
+        <input id="searchBoxInput" placeholder="Search..." onkeyup="search('<%=reviews.length %>')"></input>
     </div>
 
     <!-- total reviews -->
-    <h3 id="totalReviewsText" style="margin-top: 25px; margin-bottom: 15px; text-align: center;">Total Reviews: <%=reviews.length %></h3>
+    <h3 id="totalText"><%=reviews.length %> Reviews</h3>
 
     <!-- reviews -->
-    <% for(var i = 0; i < reviews.length; i++) { %>
-        <div id="review#<%=i + 1%>" class="admin-card">      
-            <p style="margin-bottom: 4px; margin-left: 2px; margin-top: 9px;"><%=reviews[i]._id %></p>
-            <p style="margin-bottom: 4px; margin-left: 2px;"><%=reviews[i].reviewObject.date %></p> 
-            <p style="margin-bottom: 4px; margin-left: 2px;"><%=reviews[i].restaurant %></p>
-            <p style="margin-bottom: 4px; margin-left: 2px;"><%=reviews[i].reviewObject.rating %></p>
-            <p style="margin-bottom: -2px; margin-left: 2px;"><%=reviews[i].user %></p>
-            <p style="margin-bottom: -2px; margin-left: 2px;"><%=reviews[i].reviewObject.items %></p>
-            <p style="margin-bottom: -2px; margin-left: 2px;"><%=reviews[i].reviewObject.comment %></p>
-            
-            <div style="text-align: right;">
-                <button class="admin-card-button" onclick="displayEditReview('<%=i + 1%>')" style="margin-top: 10px; margin-right: -5.5px;"><b>Edit</b></button>
-                <button class="admin-card-button" onclick="displayDeleteReview('<%=i + 1%>')" style="background-color: red;"><b>Delete</b></button><br />
+    <div id="reviews">
+        <% for(var i = 0; i < reviews.length; i++) { %>
+            <div id="review#<%=i + 1%>" class="admin-card" onclick="displayEditReview('<%=i + 1%>')">      
+                <p class="cardText"><%=reviews[i].user %></p>
+                <p class="cardText"><%=reviews[i].restaurant %></p>
+                <p class="cardText"><%=reviews[i].reviewObject.comment %></p>
             </div>
-        </div>
-
-        <!-- edit -->
-        <div class="admin-edit" hidden id="edit-review#<%=i + 1%>">
-            <button class="admin-card-button" style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px; margin-right: 303px;" onclick="undisplayEditReview('<%=i + 1%>')"><b>Cancel</b></button><br />
-
-            <form action="/admin/edit-review" method="POST">
-                <input class="input-admin" name="id" value="<%=reviews[i]._id %>"></input><br />
-                <input  class="input-admin"name="date" value="<%=reviews[i].reviewObject.date %> %>"></input><br />
-                <input class="input-admin" name="restaurant" value="<%=reviews[i].restaurant %>"></input><br />
-                <input class="input-admin" name="rating" value="<%=reviews[i].reviewObject.rating %>"></input><br />
-                <input class="input-admin" name="user" value="<%=reviews[i].user %>"></input><br />
-                <input class="input-admin" name="items" value="<%=reviews[i].reviewObject.items %>"></input><br />
-                <input class="input-admin" name="comment" value="<%=reviews[i].reviewObject.comment %>"></input><br />
-                <button class="admin-card-button" style="display: block; margin: auto; margin-top: 11px; margin-bottom: 11px; width: 200px;"><b>Confirm Edit</b></button>
-            </form>
-        </div>
-
-        <!-- delete -->
-        <div class="admin-delete" hidden id="delete-review#<%=i + 1%>">
-            <button class="admin-card-button" style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px;" onclick="undisplayDeleteReview('<%=i + 1%>')"><b>Cancel</b></button><br />
-
-            <form action="/admin/delete-review" method="POST">
-                <input hidden name="id" value="<%=reviews[i]._id %>"></input>
-                <button class="admin-card-button" style="display: block; margin: auto; margin-top: 124px; margin-bottom: 11px; width: 200px; background-color: red;"><b>Confirm Delete</b></button>
-            </form>
-        </div>
-    <% } %>
+    
+            <!-- edit card -->
+            <div class="admin-edit" hidden id="edit-review#<%=i + 1%>">
+                <!-- edit -->
+                <form id="formEdit" action="/admin/edit-review" method="POST">
+                    <input class="input-admin" hidden name="id" value="<%=reviews[i]._id %>"></input>
+                    <input class="input-admin" hidden name="date" value="<%=reviews[i].reviewObject.date %> %>"></input>
+                    <input class="input-admin" hidden name="items" value="<%=reviews[i].reviewObject.items %>"></input>
+                    <label class="label-admin">User</label>
+                    <input class="input-admin" name="user" value="<%=reviews[i].user %>" maxlength="100"></input>
+                    <label class="label-admin">Restaurant</label>
+                    <input class="input-admin" name="restaurant" value="<%=reviews[i].restaurant %>" maxlength="100"></input>
+                    <label class="label-admin">Rating</label>
+                    <input class="input-admin" name="rating" value="<%=reviews[i].reviewObject.rating %>" maxlength="1"></input>
+                    <label class="label-admin">Comments</label>
+                    <input class="input-admin" name="comment" value="<%=reviews[i].reviewObject.comment %>" maxlength="100"></input>
+                    <button id="editButton" class="admin-card-button">Confirm</button>
+                </form>
+                
+                <button id="cancelButton" class="admin-card-button" onclick="undisplayEditReview('<%=i + 1%>')">Cancel</button>
+    
+                <!-- delete -->
+                <form id="formDelete" action="/admin/delete-review" method="POST">
+                    <input hidden name="id" value="<%=reviews[i]._id %>"></input>
+                    <button id="deleteButton" class="admin-card-button"><b>Delete</b></button>
+                </form>
+            </div>
+        <% } %>
+    </div>
 </body>
 </html>

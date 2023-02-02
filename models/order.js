@@ -7,64 +7,63 @@ class Order
 {
     static createOrder(userEmail, productArray, totalPrice, customerComment, restaurant, customerName, customerPhone, customerAddress, customerDelivery, restaurantTitle)
     {
+        //get db
         const db = getDb();
 
-        var dateObject = new Date().toString();
-        var sub1 = dateObject.substring(16, 24);
-        var sub2 = dateObject.substring(0, 15);
-        var dateFormatted = sub1 + " - " + sub2;
+        //variables
+        let dateObject = new Date().toString();
+        let dateFormatted = dateObject.substring(16, 24) + " - " + dateObject.substring(0, 15)
+        let type = null
         
-        if(customerDelivery == "delivery")
-        {
-            var type = "delivery";
-        }
-
-        if(customerDelivery == "pickUp")
-        {
-            var type = "pick up"
-        }
+        //check type
+        if(customerDelivery == "delivery") { type = "delivery" }
+        else if(customerDelivery == "pickUp") { type = "pick up" }
    
+        //update db
         return db.collection('orders')
-            .insertOne({
-                user: userEmail,
-                date: new Date(),
-                placedAt: dateFormatted,
-                confirmedAt: null,
-                completedAt: null,
-                estimatedCompletionTime: null,
-                status: "unconfirmed",
-                restaurant: restaurantTitle,
-                restaurantUrl: restaurant,
-                totalPrice: "$" + totalPrice,
-                customerName: customerName,
-                customerPhone: customerPhone,
-                customerAddress: customerAddress,
-                customerComment: customerComment,
-                type: type,
-                products: productArray,
-                rating: null,
-            })  
-            .catch(err => {
-                console.log(err); 
-                return null;
-            });
+                .insertOne({
+                    user: userEmail,
+                    date: new Date(),
+                    placedAt: dateFormatted,
+                    confirmedAt: null,
+                    completedAt: null,
+                    estimatedCompletionTime: null,
+                    status: "unconfirmed",
+                    restaurant: restaurantTitle,
+                    restaurantUrl: restaurant,
+                    totalPrice: "$" + totalPrice,
+                    customerName: customerName,
+                    customerPhone: customerPhone,
+                    customerAddress: customerAddress,
+                    customerComment: customerComment,
+                    type: type,
+                    products: productArray,
+                    rating: null,
+                })  
+                .catch(err => {
+                    console.log(err) 
+                    return null
+                })
     }
+
 
     static findById(orderId)
     {
+        //get db
         const db = getDb();
 
+        //update db
         return db
-            .collection("orders")
-            .findOne({_id: ObjectId(orderId)})
-            .then(order => {
-                return order;
-            })
-            .catch(err => {console.log(err)})
+                .collection("orders")
+                .findOne({_id: ObjectId(orderId)})
+                .then(order => { return order })
+                .catch(err => {console.log(err)})
     }
+
 
     static FindByUser(userEmail)
     {
+        //get db
         const db = getDb();
 
         return db
@@ -85,8 +84,10 @@ class Order
             .catch(err => console.log(err))
     }
 
+
     static async updateWithReview(orderId, reviewObject)
     {
+        //get db
         const db = getDb();
    
         var updateWithReview = await db.collection('orders').updateOne({_id: ObjectId(orderId)},
@@ -97,8 +98,10 @@ class Order
         })
     }
 
+
     static updateOne(orderId, status, estimatedCompletionTime, completedAt)
     {
+        //get db
         const db = getDb();
 
         let updateSuccessful = 1;
@@ -131,8 +134,10 @@ class Order
             .catch(err => console.log(err));
     }
 
+
     static updateAdmin(orderId, date, user, status, restaurant)
-    {       
+    {      
+        //get db 
         const db = getDb();
 
         let updateSuccessful = 1;
@@ -170,8 +175,10 @@ class Order
             .catch(err => console.log(err));
     }
 
+
     static deleteOne(orderId)
     {
+        //get db
         const db = getDb();
 
         let deleteSuccessful = 1;
@@ -194,8 +201,10 @@ class Order
             .catch(err => console.log(err));
     }
 
+
     static fetchAll()
     {
+        //get db
         const db = getDb();
 
         return db
@@ -206,8 +215,10 @@ class Order
             .catch(err => console.log(err));
     }
 
+
     static fetchAllByRestaurantUrl(restaurantUrl)
     {
+        //get db
         const db = getDb();
 
         return db
@@ -218,8 +229,10 @@ class Order
             .catch(err => console.log(err));
     }
 
+
     static fetchAllUnconfirmed(restaurantUrl)
     {
+        //get db
         const db = getDb();
 
         return db
@@ -230,8 +243,10 @@ class Order
             .catch(err => console.log(err));
     }
 
+
     static fetchAllConfirmed(restaurantUrl)
     {
+        //get db
         const db = getDb();
 
         return db
@@ -242,8 +257,10 @@ class Order
             .catch(err => console.log(err));
     }
 
+
     static fetchAllDeclined(restaurantUrl)
     {
+        //get db
         const db = getDb();
 
         return db
@@ -254,8 +271,10 @@ class Order
             .catch(err => console.log(err));
     }
 
+    
     static fetchAllCompleted(restaurantUrl)
     {
+        //get db
         const db = getDb();
 
         return db

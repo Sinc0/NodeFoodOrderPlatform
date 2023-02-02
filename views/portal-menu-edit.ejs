@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Menu</title>
-    <link rel="stylesheet" href="/css/portalRestaurant.css">
-    <link rel="stylesheet" href="/css/mobile.css">
-    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
+    <link rel="stylesheet" href="/portal.css">
+    <link rel="stylesheet" href="/mobile.css">
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
 </head>
 
 <script>
@@ -604,6 +604,15 @@
         setFormWithCorrectData();
     }
 
+    function setCityToLocalStorage()
+    {
+        var d = document.getElementById("inputCity");
+
+        localStorage.setItem("city", JSON.stringify(d.value));
+        
+        setFormWithCorrectData();
+    }
+
     function setCategoryToLocalStorage(category)
     {
         var getLocalStorage = localStorage.getItem("categories");
@@ -717,6 +726,7 @@
         var types = localStorage.getItem("types");
         var categories = localStorage.getItem("categories");
         var items = localStorage.getItem("items");
+        var city = localStorage.getItem("city");
 
         //form inputs
         var inputFormImg = document.getElementById("inputAllImg");
@@ -727,6 +737,7 @@
         var inputFormTypes = document.getElementById("inputAllTypes");
         var inputFormCategories = document.getElementById("inputAllCategories");
         var inputFormItems = document.getElementById("inputAllItems");
+        var inputFormCity = document.getElementById("inputAllCity");
 
         if(inputFormImg != null)
         {
@@ -766,6 +777,11 @@
         if(inputFormItems != null)
         {
             document.getElementById("inputAllItems").value = items;
+        }
+
+        if(inputFormCity != null)
+        {
+            document.getElementById("inputAllCity").value = city;
         }
 
     }
@@ -1103,7 +1119,7 @@
 </style>
 
 <body onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
-    <a href="/restaurantPortal">
+    <a href="/portal">
         <nav id="NavBar">
             <b>❮</b>
         </nav>
@@ -1114,36 +1130,43 @@
         <div id="menuEditRestaurantType" class="menuEditCategory" onclick="collapseMenuEditCategory(this.id)">
             <b id="categoryTitleCuisine" class="categoryTitle">Cuisine</b>
             <input id="inputType" value="<%=restaurant.type %>" placeholder="..." onkeyup="setTypesToLocalStorage()" maxlength="100" />
-            <!-- <script>setTypesToLocalStorage()</script> -->
+            <script>setTypesToLocalStorage()</script>
         </div>
         
         <!-- Image -->
-        <!-- <div id="menuEditRestaurantImageUrl" class="menuEditCategory" onclick="collapseMenuEditCategory(this.id)">
-            <p class="categoryTitle"><b>Img Url</b></p>
+        <div id="menuEditRestaurantImageUrl" class="menuEditCategory" onclick="collapseMenuEditCategory(this.id)">
+            <p class="categoryTitle">Profile Img URL</p>
             <input id="inputImg" value="<%=restaurant.imageUrl %>" onkeyup="setImgToLocalStorage()"></input>
             <script>setImgToLocalStorage()</script>
-        </div> -->
+        </div>
         
         <!-- Phone -->
         <div id="menuEditRestaurantPhone" class="menuEditCategory" onclick="collapseMenuEditCategory(this.id)">
             <b class="categoryTitle">Phone</b>
             <% pn = restaurant.phone.toString().replaceAll("-", "") %>
             <input id="inputPhone" value="<%=pn %>" placeholder="..." onkeyup="setPhoneToLocalStorage()" maxlength="24" />
-            <!-- <script>setPhoneToLocalStorage()</script> -->
+            <script>setPhoneToLocalStorage()</script>
         </div>
         
         <!-- Adress -->
         <div id="menuEditRestaurantAdress" class="menuEditCategory" onclick="collapseMenuEditCategory(this.id)">
+            <b class="categoryTitle">City</b>
+            <input id="inputCity" value="<%=restaurant.city %>" placeholder="..." onkeyup="setCityToLocalStorage()" maxlength="50" />
+            <script>setCityToLocalStorage()</script>
+        </div>
+
+        <!-- Adress -->
+        <div id="menuEditRestaurantAdress" class="menuEditCategory" onclick="collapseMenuEditCategory(this.id)">
             <b class="categoryTitle">Address</b>
             <input id="inputAddress" value="<%=restaurant.address %>" placeholder="..." onkeyup="setAddressToLocalStorage()" maxlength="50" />
-            <!-- <script>setAddressToLocalStorage()</script> -->
+            <script>setAddressToLocalStorage()</script>
         </div>
 
         <!-- Description -->
         <div id="menuEditRestaurantDescription" class="menuEditCategory" onclick="collapseMenuEditCategory(this.id)">
             <p class="categoryTitle">Description</p>
             <input id="inputDescription" value="<%=restaurant.description %>" placeholder="..." onkeyup="setDescriptionToLocalStorage()" maxlength="200" />
-            <!-- <script>setDescriptionToLocalStorage()</script> -->
+            <script>setDescriptionToLocalStorage()</script>
         </div>
 
         <!-- hours -->
@@ -1180,10 +1203,11 @@
                 </div> 
                 <% } %>
             <% } %>
-            <!-- <script>setHoursToLocalStorage()</script> -->
+            <script>setHoursToLocalStorage()</script>
         </div>
 
         <!-- Menu Categories -->
+        <% if(restaurant.menuCategories.length != 0 && restaurant.menuCategories != null) { %>
         <div id="menuEditCategories">
             <b><p class="categoryTitle">Categories</p></b> <!-- <%=restaurant.menuCategories.length %> -->
             
@@ -1229,6 +1253,7 @@
                 <% restaurantMenuItemsLength = restaurant.menuItems.length %>
             <% } %>
         </div>
+        <% } %>
 
         <!-- Items -->
         <div id="menuEditRestaurantItems" onclick="collapseMenuEditCategory(this.id)">
@@ -1301,15 +1326,16 @@
     </div>
 
         <!-- hidden -->
-        <form hidden id="formMenuEditData" action="/restaurantPortal/updateMenu" method="POST">
-            <input id="inputAllImg" name="inputAllImg" value="img"></input><br />
-            <input id="inputAllPhone" name="inputAllPhone" value="phone"></input><br />
-            <input id="inputAllAddress" name="inputAllAddress" value="address"></input><br />
-            <input id="inputAllDescription" name="inputAllDescription" value="description"></input><br />
-            <input id="inputAllHours" name="inputAllHours" value="hours"></input><br />
-            <input id="inputAllTypes" name="inputAllTypes" value="types"></input><br />
-            <input id="inputAllCategories" name="inputAllCategories" value=""></input><br />   
-            <input id="inputAllItems" name="inputAllItems" value=""></input><br />
+        <form hidden id="formMenuEditData" action="/portal/updateMenu" method="POST">
+            <input id="inputAllImg" name="inputAllImg" value="img"></input>
+            <input id="inputAllPhone" name="inputAllPhone" value="phone"></input>
+            <input id="inputAllAddress" name="inputAllAddress" value="address"></input>
+            <input id="inputAllDescription" name="inputAllDescription" value="description"></input>
+            <input id="inputAllHours" name="inputAllHours" value="hours"></input>
+            <input id="inputAllTypes" name="inputAllTypes" value="types"></input>
+            <input id="inputAllCategories" name="inputAllCategories" value=""></input>  
+            <input id="inputAllItems" name="inputAllItems" value=""></input>
+            <input id="inputAllCity" name="inputAllCity" value=""></input>
             <button>Button</button>   
         </form>
 

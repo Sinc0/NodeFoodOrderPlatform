@@ -1,90 +1,78 @@
-const getDb = require('../controllers/database').getDb;
+//imports
+const getDb = require('../controllers/database').getDb
 
 class Session
 {
     constructor(email, password, loginCookie, isLoggedIn)
     {
-        this.email = email;
-        this.password = password;
-        this.loginCookie = loginCookie;
-        this.isLoggedIn = isLoggedIn;
+        this.email = email
+        this.password = password
+        this.loginCookie = loginCookie
+        this.isLoggedIn = isLoggedIn
     }
+
 
     static createSession(email, loginCookie)
     {
+        //get db
         const db = getDb()
 
-        let insertSuccessful = 1;
-        let insertFailed = 0;
+        //variables
+        let insertSuccessful = 1
+        let insertFailed = 0
 
-        //let session = new Session(email, password, loginCookie, isLoggedIn);
-
-        return db.collection('sessions')
-        .insertOne({
-            createdAt: new Date(),
-            email: email,
-            loginCookie: loginCookie,
-        })
-        .then(result => {
-            if(result.insertedCount == insertSuccessful)
-            {
-                //console.log('insert of session document successful');
-                return insertSuccessful;
-            }
-        })
-        .catch(err => {
-            console.log(err); 
-            //console.log('insert of session document failed'); 
-            return insertFailed
-        });
+        //let session = new Session(email, password, loginCookie, isLoggedIn)
+        
+        //update db
+        return db
+                .collection('sessions')
+                .insertOne({
+                    createdAt: new Date(),
+                    email: email,
+                    loginCookie: loginCookie,
+                })
+                .then(result => {
+                    if(result.insertedCount == insertSuccessful) { return insertSuccessful }
+                })
+                .catch(err => { return insertFailed })
     }
+
 
     static deleteOne(cookieId)
     {
-        const db = getDb();
+        //get db
+        const db = getDb()
 
-        let deleteSuccessful = 1;
-        let deleteFailed = 0;
+        //variables
+        let deleteSuccessful = 1
+        let deleteFailed = 0
 
-        return db.collection('sessions')
-            .deleteOne({loginCookie: cookieId})
-            .then(result => {
-                if(result.deletedCount == deleteSuccessful)
-                {
-                    //console.log('delete session document successful');
-                    return deleteSuccessful;
-                } 
-                else
-                {
-                    //console.log('delete session document failed');
-                    return deleteFailed;
-                } })
-            .catch(err => console.log(err));
+        //update db
+        return db
+                .collection('sessions')
+                .deleteOne({loginCookie: cookieId})
+                .then(result => {
+                    if(result.deletedCount == deleteSuccessful) { return deleteSuccessful } 
+                    else { return deleteFailed }})
+                .catch(err => console.log(err))
     }
+
 
     static findByCookieId(cookie)
     {
-        const db = getDb();
+        //update db
+        const db = getDb()
         
+        //update db
         return db
-            .collection('sessions')
-            .find({loginCookie: cookie})
-            .next()
-            .then(user => {
-                if(user != null)
-                {
-                    console.log('');
-                    console.log(user.email + ' >'); 
-                    return user;
-                }
-                else
-                {
-                    console.log("anon user >")
-                }
-            })
-            .catch(err => console.log(err))
+                .collection('sessions')
+                .find({loginCookie: cookie})
+                .next()
+                .then(user => {
+                    if(user != null) { process.stdout.write("\n" + user.email + " > "); return user }
+                    else { process.stdout.write("anon > ") }})
+                .catch(err => console.log(err))
     }
-
 }
 
-module.exports = Session;
+module.exports = Session

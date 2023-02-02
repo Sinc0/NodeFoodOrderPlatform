@@ -1,140 +1,136 @@
-const getDb = require('../controllers/database').getDb;
-const mongodb = require('mongodb');
-const ObjectId = mongodb.ObjectId;
+
+//imports
+const getDb = require('../controllers/database').getDb
+const mongodb = require('mongodb')
+const ObjectId = mongodb.ObjectId
 
 class Review
 {
     static create(user, restaurant, reviewObject, orderId)
     {
-        const db = getDb();
+        //get db
+        const db = getDb()
+
+        //update db
         return db
-            .collection('reviews')
-            .insertOne({
-                orderId, orderId,
-                restaurant: restaurant,
-                user: user,
-                reviewObject: reviewObject
-            })
-            .then(review => { return review;})
-            .catch(err => console.log(err));
+                .collection('reviews')
+                .insertOne({ orderId, orderId, restaurant: restaurant, user: user, reviewObject: reviewObject })
+                .then(review => { return review })
+                .catch(err => console.log(err))
     }
+
 
     static async update(user, restaurant, reviewObject, orderId)
     {
-        const db = getDb();
+        //get db
+        const db = getDb()
    
-        var updateWithReview = await db.collection('reviews').updateOne({orderId: orderId},
-        {$set: 
-            {
-                restaurant: restaurant,
-                user: user,
-                reviewObject: reviewObject
-            }
-        })
+        //update db
+        await db
+               .collection('reviews')
+               .updateOne({orderId: orderId}, {$set: { restaurant: restaurant, user: user, reviewObject: reviewObject }})
     }
 
-            
+    
     static updateAdmin(reviewId, date, restaurant, rating, user, items, comment)
     {       
-        const db = getDb();
+        //get db
+        const db = getDb()
 
-        let updateSuccessful = 1;
-        let updateFailed = 0;
-        
-        var dateObject = new Date().toString();
-        var sub1 = dateObject.substring(16, 24);
-        var sub2 = dateObject.substring(0, 15);
-        var dateFormatted = sub1 + " - " + sub2;
+        //variables
+        let updateSuccessful = 1
+        let updateFailed = 0
+        let dateObject = new Date().toString()
+        let dateFormatted = dateObject.substring(16, 24) + " - " + dateObject.substring(0, 15)
 
-        return db.collection("reviews")
-            .updateOne({_id: ObjectId(reviewId)},         
-                {$set: 
-                {
+        //update db
+        return db
+                .collection("reviews")
+                .updateOne({_id: ObjectId(reviewId)}, {$set: {
                     restaurant: restaurant,
-                    reviewObject: {
-                        date: date,
-                        rating: rating,
-                        user: user,
-                        items: items,
-                        comment: comment
-                    },
+                    reviewObject: { date: date, rating: rating, user: user, items: items, comment: comment },
                     updatedAt: dateFormatted
-                }
-            } )
-            .then(result => {
-                if(result.modifiedCount == updateSuccessful)
-                {
-                    //console.log('update ' + email + ' document successful');
-                    return updateSuccessful;
-                } 
-                else
-                {
-                    //console.log('update ' + email + ' document failed');
-                    return updateFailed;
-                }
-            })
-            .catch(err => console.log(err));
+                }})
+                .then(result => {
+                    if(result.modifiedCount == updateSuccessful) { return updateSuccessful } 
+                    else { return updateFailed }
+                })
+                .catch(err => console.log(err))
     }
+
 
     static deleteOne(reviewId)
     {
-        const db = getDb();
-
+        //get db
+        const db = getDb()
+        
+        //update db
         return db.collection('reviews')
-            .deleteOne({_id: ObjectId(reviewId)})
-            .then(result => { return result.deletedCount })
-            .catch(err => console.log(err));
+                .deleteOne({_id: ObjectId(reviewId) })
+                .then(result => { return result.deletedCount })
+                .catch(err => console.log(err))
     }
+
 
     static fetchAll()
     {
-        const db = getDb();
+        //get db
+        const db = getDb()
+
+        //fetch all
         return db
-            .collection('reviews')
-            .find()
-            .toArray()
-            .then(reviews => { return reviews;})
-            .catch(err => console.log(err));
+                .collection('reviews')
+                .find()
+                .toArray()
+                .then(reviews => { return reviews })
+                .catch(err => console.log(err))
     }
+
 
     static fetchAllByRestaurantUrl(restaurantUrl)
     {
-        const db = getDb();
+        //get db
+        const db = getDb()
+
+        //fetch restaurant
         return db
-            .collection('reviews')
-            .find({restaurant: restaurantUrl})
-            .toArray()
-            .then(reviews => { return reviews;})
-            .catch(err => console.log(err));
+                .collection('reviews')
+                .find({restaurant: restaurantUrl})
+                .toArray()
+                .then(reviews => { return reviews })
+                .catch(err => console.log(err))
     }
+
 
     static findById(cartId)
     {
-        const db = getDb();
+        //get db
+        const db = getDb()
+        
+        //fetch cart
         return db
-            .collection('carts')
-            .find({_id: ObjectId(cartId)})
-            .next()
-            .then(cart => {
-                console.log(cart); 
-                return cart;
-            })
-            .catch(err => console.log(err))
+                .collection('carts')
+                .find({_id: ObjectId(cartId)})
+                .next()
+                .then(cart => { return cart })
+                .catch(err => console.log(err))
     }
     
-    
+
     static findByOrderId(orderId)
     {
-        const db = getDb();
+        //get db
+        const db = getDb()
+
+        //fetch review
         return db
-            .collection('reviews')
-            .find({orderId: orderId})
-            .next()
-            .then(review => {
-                return review;
-            })
-            .catch(err => console.log(err))
+                .collection('reviews')
+                .find({orderId: orderId})
+                .next()
+                .then(review => { return review })
+                .catch(err => console.log(err))
     }
 }
 
-module.exports = Review;
+//export
+module.exports = Review

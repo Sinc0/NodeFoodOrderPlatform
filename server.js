@@ -11,7 +11,7 @@ const mongoConnect = require('./controllers/database').mongoConnect
 const routes = require("./routes.js")
 // const adminRoutes = require('./routes/admin.js');
 // const userRoutes = require('./routes/user.js');
-// const restaurantPortalRoutes = require('./routes/restaurantPortal.js');
+// const portalRoutes = require('./routes/portal.js');
 
 //set
 dotenv.config()
@@ -31,7 +31,7 @@ app.use(errorController.get404ErrorPage)
 // app.use('/', (req, res, next) => { next(); });
 // app.use(adminRoutes);
 // app.use(userRoutes);
-// app.use(restaurantPortalRoutes);
+// app.use(portalRoutes);
 
 //connect db
 mongoConnect(() => {})

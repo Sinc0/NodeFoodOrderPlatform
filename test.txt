@@ -5,10 +5,18 @@ stripe test card
 user
 - login
 - order food
+- update credentials
+- logout
 
 restaurant
+- login
 - accept order
 - decline order
+- complete order
+- edit menu
+- open/close restaurant
+- activate/deactivate restaurant
+- logout
 
 admin
-- orders
+- update/delete user

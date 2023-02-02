@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/mobile.css">
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title><%=pageTitle %></title>
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/mobile.css">
-    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
 </head>
 
 <script>
@@ -231,7 +231,7 @@
 <body onload="checkQueryParams()">
     <!-- admin nav menu -->
     <% if(admin != null && admin == true) { %> 
-        <%- include('nav_menu_admin.ejs') %>
+        <%- include('nav-menu-admin.ejs') %>
 
     <!-- user nav menu -->
     <% } else if(loggedIn == true) { %>

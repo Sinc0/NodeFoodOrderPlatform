@@ -4,73 +4,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/mobile.css">
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title>Restaurants</title>
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/mobile.css">
-    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
 </head>
 
 <script>
     function displayRestaurantReviews(menuItemNumber)
     {
-        let d = document.getElementById("restaurantsRestaurantReview#" + menuItemNumber);
-        let a = document.getElementById("restaurantMenuItem#" + menuItemNumber);
+        //elements
+        let review = document.getElementById("restaurantsRestaurantReview#" + menuItemNumber);
+        let item = document.getElementById("restaurantMenuItem#" + menuItemNumber);
         
-        if(d.style.display == "none")
+        //update elements
+        if(review.style.display == "none")
         {
-            d.style = "overflow-y: auto;"
-            d.style.display = "block";
+            review.style = "overflow-y: auto;"
+            review.style.display = "block";
         }
-        else if(d.style.display == "block")
+        else if(review.style.display == "block")
         {
-            d.style.display = "none";
-            a.style.marginBottom = "0px"
+            review.style.display = "none";
+            item.style.marginBottom = "0px"
         }
     }
 
     function setRestaurantNumberOfReviews(restaurantNumber, value)
     {
-        let d = document.getElementById("restaurantReviewHeader#" + restaurantNumber);
-        let e = document.getElementById("restaurantReviewHeaderMobile#" + restaurantNumber);
+        //elements
+        let restaurantReviewHeader = document.getElementById("restaurantReviewHeader#" + restaurantNumber);
+        let restaurantReviewHeaderMobile = document.getElementById("restaurantReviewHeaderMobile#" + restaurantNumber);
 
+        //update elements
         if(value == 0)
         {
-            d.innerHTML = "Reviews (0)";
-            d.onclick = "";
-            e.innerHTML = "Reviews (0)";
-            e.onclick = "";
+            restaurantReviewHeader.innerHTML = "0 Reviews";
+            restaurantReviewHeader.onclick = "";
+            restaurantReviewHeaderMobile.innerHTML = "0 Reviews";
+            restaurantReviewHeaderMobile.onclick = "";
         }
         else
         {
-            d.innerHTML = value + " Reviews";
-            e.innerHTML = value + " Reviews";
+            restaurantReviewHeader.innerHTML = value + " Reviews";
+            restaurantReviewHeaderMobile.innerHTML = value + " Reviews";
         }
     }
 
     function setRestaurantRating(restaurantNumber, rating)
     {
+        //elements
         let checkIfNaN = isNaN(parseFloat(rating));
-        let d = document.getElementById("restaurantRating#" + restaurantNumber);
+        let restaurantRating = document.getElementById("restaurantRating#" + restaurantNumber);
 
+        //update elements
         if(checkIfNaN == false)
         {
             rating = Number(rating).toFixed(1);
-            d.innerHTML = rating + " ★";
-            d.hidden = false;
+            restaurantRating.innerHTML = rating + " ★";
+            restaurantRating.hidden = false;
         }
         else
         {
-            d.innerHTML = "Rating N/A";
-            d.hidden = false;
+            restaurantRating.innerHTML = "";
+            restaurantRating.hidden = false;
         }
     }
 
     function searchBoxRestaurants(totalMenuItems)
     {
+        //variables
         let searchBoxInput = document.getElementById("searchBoxInput").value
         let searchString = String(searchBoxInput).toLowerCase();
         let countItems = 0;
 
+        //update elements
         for(let c = 1; c <= totalMenuItems; c++)
         {
             let menuItem = document.getElementById("restaurantMenuItem#" + c)
@@ -78,27 +86,14 @@
 
             if(menuItemSearchText.innerHTML.toLowerCase().includes(searchString))
             {
-                //menuItem.style.opacity = "100%";
                 menuItem.style.display = "block";
                 countItems++;
             }
             else
             {
-                //menuItem.style.opacity = ".25";
                 menuItem.style.display = "none";
             }
         }
-    }
-
-    function setBackgroundGif()
-    {
-        let html = document.querySelector("html")
-        let randomNumber = Math.floor(Math.random() * 20) + 1
-
-        if(randomNumber > 20) { randomNumber = 20 }
-        else if(randomNumber == 0) { randomNumber = 1 }
-
-        html.style.backgroundImage = "url(/gifs/" + randomNumber + ".gif)"
     }
 </script>
 
@@ -107,13 +102,13 @@
     ::-webkit-scrollbar { height: 0px; width: 0px; }
 
     /*** elements ***/
-    body { height: 100vh; }
+    body { height: 100vh; background-color: #3c41d6; }
     p { margin: 0px; }
 
     /*** classes ***/
     .restaurantMenuItemText { width: 64%; margin: 0px; padding: 3px 7px 0px 7px; }
     .restaurantMenuItem img { height: 100%; width: inherit; margin: 0px; }
-    .restaurantMenuItem { margin-top: 30px; border: 1px solid black; background-color: #f7f9f9; }
+    .restaurantMenuItem { margin-top: 30px; background-color: #f7f9f9; }
     .restaurantMenuItemImg { border-right: 1px solid black; background-color: transparent; }
     .restaurantReview 
     { 
@@ -124,13 +119,13 @@
         overflow-x: scroll; 
         white-space: nowrap;
         user-select: none;
-        border-bottom: 2px solid black; 
+        border-bottom: 1px solid black; 
         background-color: lightgray; 
     }
     .restaurantReviewModal 
     { 
         max-height: 300px; 
-        width: 700px; 
+        width: 699px; 
         margin: auto; 
         border: 0px solid black; 
         border-left: 1px solid black; 
@@ -164,14 +159,13 @@
             margin: 0px;
             padding: 0px;
             text-align: center;
-            text-shadow: 1px 1px white;
             color: black;
             border: 0px solid black;
             background-color: transparent;
         }
         .restaurantReviewHeaderMobile { margin: 0px; padding: 10px 0px 10px 0px; background-color: transparent; }
         .restaurantReviewModal { width: 100%; background-color: black; }
-        .restaurant-backgroundImage-mobile { border: 1px solid black; }
+        .restaurant-backgroundImage-mobile { display: block; border: 1px solid black; background-size: cover;}
         .restaurantTitle { margin: 10px 0px 0px 0px; }
         
 
@@ -180,10 +174,10 @@
     }
 </style>
 
-<body id="body-restaurants" onload="setBackgroundGif()">
+<body id="body-restaurants">
     <!-- admin nav menu -->
     <% if(admin != null && admin == true) { %> 
-        <%- include('nav_menu_admin.ejs') %>
+        <%- include('nav-menu-admin.ejs') %>
 
     <!-- user nav menu -->
     <% } else if(loggedIn == true) { %>
@@ -233,12 +227,12 @@
                         <div id="restaurant-backgroundImage#<%=counter %>" class="restaurant-backgroundImage">
                             <a style="text-decoration: none; color: black;" href="/restaurant/<%= restaurant.url %>">
                                 <div class="restaurantMenuItemImg">
-                                    <img src="<%=restaurant.imageUrl %>" alt="<%=restaurant.title %>">
+                                    <img src="<%=restaurant.imageUrl %>">
                                 </div>                  
                                 
                                 <!-- restaurant info -->
                                 <div class="restaurantMenuItemText" style="display: inline-block;">
-                                    <h1 class="restaurantTitle" style="margin-top: 0px;"><%=restaurant.title %></h1> <!-- title -->
+                                    <h1 class="restaurantTitle"><%=restaurant.title %></h1> <!-- title -->
                                     <h3 class="restaurantCity"><%=restaurant.city %></h3> <!-- location -->
                                     <h3 class="restaurantRating" hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
                                     <h3 class="restaurantType"><%=restaurant.type %></h3> <!-- type -->
@@ -253,7 +247,7 @@
                          <div id="restaurant-backgroundImage-mobile<%=counter %>" class="restaurant-backgroundImage-mobile" style="background-image: url('<%=restaurant.imageUrl %>');">
                             <a style="text-decoration: none; color: black;" href="/restaurant/<%= restaurant.url %>">
                                 <div class="restaurantMenuItemImg">
-                                    <img src="<%=restaurant.imageUrl %>" alt="<%=restaurant.title %>">
+                                    <img src="<%=restaurant.imageUrl %>">
                                 </div>                  
                                 
                                 <!-- restaurant info -->
@@ -332,7 +326,7 @@
                         <div id="restaurant-backgroundImage#<%=counter %>" class="restaurant-backgroundImage">
                             <a style="text-decoration: none; color: black" href="/restaurant/<%= restaurant.url %>">
                                 <div class="restaurantMenuItemImg">
-                                    <img src="<%= restaurant.imageUrl %>" alt="<%=restaurant.title %>">
+                                    <img src="<%= restaurant.imageUrl %>">
                                 </div>
                         
                                 <!-- restaurant info -->
@@ -351,7 +345,7 @@
                          <div id="restaurant-backgroundImage-mobile<%=counter %>" class="restaurant-backgroundImage-mobile" style="background-image: url('<%=restaurant.imageUrl %>');">
                             <a style="text-decoration: none; color: black;" href="/restaurant/<%= restaurant.url %>">
                                <div class="restaurantMenuItemImg">
-                                   <img src="<%=restaurant.imageUrl %>" alt="<%=restaurant.title %>">
+                                   <img src="<%=restaurant.imageUrl %>">
                                </div>                  
                                
                                <!-- restaurant info -->

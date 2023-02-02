@@ -10,7 +10,6 @@
     .restaurantReview { margin-top: 0px; margin-bottom: 5px; width: 90vw; }
     .restaurantReviewModal::-webkit-scrollbar { display: none; }
     .restaurant-backgroundImage { display: none; }
-    .restaurant-backgroundImage-mobile { display: block; }
     .menu-item { margin-top: 5px; width: 98vw; }
     .menu-item-texts { width: 70%; }
     .cart-item button { width: 45px; }
@@ -75,7 +74,7 @@
     #adminPostNews-submit-button { padding: 0px; width: 100%; }
     #admin-stats { width: 94vw; padding-bottom: 25px; }
     #navButtonAdminStats { margin-right: -1px; }
-    #restaurantPortal-index-title
+    #portal-index-title
     {
         visibility: hidden;
         text-align: center;  

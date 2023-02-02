@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/portalRestaurant.css">
-    <link rel="stylesheet" href="/css/mobile.css">
-    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
+    <link rel="stylesheet" href="/portal.css">
+    <link rel="stylesheet" href="/mobile.css">
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title>Home</title>
 </head>
 
-<script src="/js/shortcuts.js"></script>
+<script src="/shortcuts.js"></script>
 <script>
         shortcut.add("1", function() {document.getElementById("NavElementLink#1").click()});   
         shortcut.add("2", function() {document.getElementById("NavElementLink#2").click()});     
@@ -75,9 +75,9 @@
     }
 </style>
 
-<body id="restaurantPortal-index-body">
+<body id="portal-index-body">
     <!-- title -->
-    <!-- <h1 id="restaurantPortal-index-title"><%=restaurant.title %></h1> -->
+    <!-- <h1 id="portal-index-title"><%=restaurant.title %></h1> -->
 
     <!-- welcome message -->
     <% if(restaurant.welcomeMessage == true) { %>
@@ -87,30 +87,30 @@
             
             <br />
             
-            <a href="/restaurantPortal/menu/edit"><p class="welcomeMessageStep"><b>1 · </b> edit your menu </p></a>
-            <a href="/restaurantPortal/settings"><p class="welcomeMessageStep"><b>2 · </b> activate restaurant</p></a>
-            <a href="/restaurantPortal/settings"><p class="welcomeMessageStep"><b>3 · </b> open restaurant</p></a>
+            <a href="/portal/menu/edit"><p class="welcomeMessageStep"><b>1 · </b> edit your menu </p></a>
+            <a href="/portal/settings"><p class="welcomeMessageStep"><b>2 · </b> activate restaurant</p></a>
+            <a href="/portal/settings"><p class="welcomeMessageStep"><b>3 · </b> open restaurant</p></a>
             
             <br />
 
             <!-- <p class="welcomeMessageText"><b>Options</b></p> -->
-            <form action="/restaurantPortal/welcomeMessage" method="POST">
+            <form action="/portal/welcomeMessage" method="POST">
                 <input hidden name="welcomeMessage" value=false></input>
                 <input hidden name="page" value="home"></input>
                 <button class="welcomeMessageButton">Stop Showing This Message</button>
             </form>
             
-            <button class="welcomeMessageButton"><a href="/restaurantPortal/logout">Logout</a></button>
+            <button class="welcomeMessageButton"><a href="/portal/logout">Logout</a></button>
         </div>
 
     <!-- nav menu -->
     <% } else { %>
         <nav id="PortalNav">
-            <a id="NavElementLink#1" href="/restaurantPortal/orders/history"><div class="NavElement"><p>Orders</p></div></a>
-            <a id="NavElementLink#2" href="/restaurantPortal/menu/edit"><div class="NavElement"><p>Menu</p></div></a>
-            <a id="NavElementLink#3" href="/restaurantPortal/stats"><div class="NavElement"><p>Statistics</p></div></a>
-            <a id="NavElementLink#4" href="/restaurantPortal/settings"><div class="NavElement"><p>Settings</p></div></a>
-            <a id="" href="/restaurantPortal/logout"><div id="buttonLogout" class="NavElement"><p>Logout</p></div></a>    
+            <a id="NavElementLink#1" href="/portal/orders/history"><div class="NavElement"><p>Orders</p></div></a>
+            <a id="NavElementLink#2" href="/portal/menu/edit"><div class="NavElement"><p>Menu</p></div></a>
+            <a id="NavElementLink#3" href="/portal/stats"><div class="NavElement"><p>Statistics</p></div></a>
+            <a id="NavElementLink#4" href="/portal/settings"><div class="NavElement"><p>Settings</p></div></a>
+            <a id="" href="/portal/logout"><div id="buttonLogout" class="NavElement"><p>Logout</p></div></a>    
         </nav>   
     <% } %>
 </body>

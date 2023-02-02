@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/mobile.css">
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title><%= pageTitle %></title>
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/mobile.css">
-    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
 </head>
 
 <script>       
     function registerCustomer()
     {
+        //elements
         let customerForm = document.getElementById("registerCustomer");
         let restaurantForm = document.getElementById("registerRestaurant");
         let customerBtn = document.getElementById("registerCustomerBtn");
@@ -27,11 +28,13 @@
 
     function registerRestaurant()
     {
+        //elements
         let customerForm = document.getElementById("registerCustomer");
         let restaurantForm = document.getElementById("registerRestaurant");
         let customerBtn = document.getElementById("registerCustomerBtn");
         let restaurantBtn = document.getElementById("registerRestaurantBtn");
         
+        //update elements
         customerForm.style.display = "none";
         restaurantForm.style.display = "block";
         customerBtn.style.backgroundColor = "#f7f9f9";
@@ -42,10 +45,12 @@
 
     function checkPassRestaurant()
     {
+        //elements
         let password = document.getElementById("passwordRestaurant");
         let confirmPassword = document.getElementById("confirmPasswordRestaurant");
         let submitFormButton = document.getElementById("submitFormBtnRegisterRestaurant");
 
+        //update elements
         if(confirmPassword.value == "")
         {
             
@@ -66,10 +71,12 @@
 
     function checkPassCustomer()
     {
+        //elements
         let password = document.getElementById("passwordCustomer");
         let confirmPassword = document.getElementById("confirmPasswordCustomer");
         let submitFormButton = document.getElementById("submitFormBtnRegisterCustomer");
 
+        //update elements
         if(confirmPassword.value == "")
         {
 

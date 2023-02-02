@@ -3,175 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/mobile.css">
-    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
-    <title>Admin Restaurants</title>
-    <script>
-        function displayEditRestaurant(number)
-        {
-            console.log(number);
-
-            var d = document.getElementById("restaurant#" + number);
-            var edit = document.getElementById("edit-restaurant#" + number);
-          
-            d.hidden = true;
-            edit.hidden = false;
-
-        }
-
-        function undisplayEditRestaurant(number)
-        {
-            console.log(number);
-
-            var d = document.getElementById("restaurant#" + number);
-            var edit = document.getElementById("edit-restaurant#" + number);
-          
-            d.hidden = false;
-            edit.hidden = true;
-
-        }
-
-        function displayDeleteRestaurant(number)
-        {
-            console.log(number);
-
-            var d = document.getElementById("restaurant#" + number);
-            var edit = document.getElementById("delete-restaurant#" + number);
-          
-            d.hidden = true;
-            edit.hidden = false;
-
-        }
-
-        function undisplayDeleteRestaurant(number)
-        {
-            console.log(number);
-
-            var d = document.getElementById("restaurant#" + number);
-            var edit = document.getElementById("delete-restaurant#" + number);
-          
-            d.hidden = false;
-            edit.hidden = true;
-
-        }
-
-        function search(totalRestaurants)
-        {
-            var searchBoxInput = document.getElementById("searchBoxInput").value
-            var totalRestaurantsText = document.getElementById("totalRestaurantsText");
-            var searchString = String(searchBoxInput).toLowerCase();
-            var restaurantsArray = [];
-            var searchFoundCount = 0;
-
-            if(searchBoxInput != "")
-            {
-                for(var c = 1; c <= totalRestaurants; c++)
-                {
-                    var restaurant = document.getElementById("restaurant#" + c)
-    
-                    if(restaurant.innerHTML.toLowerCase().includes(searchString))
-                    {
-                        restaurantsArray.push(restaurant);
-                        searchFoundCount++;
-                        restaurant.hidden = false;
-                        restaurant.style.opacity = "100%";
-                    }
-                    
-                    else
-                    {
-                        restaurant.hidden = true;
-                    }        
-                    
-                    if(searchFoundCount == 1)
-                    {
-                        totalRestaurantsText.innerHTML = "Found: " + searchFoundCount + " Restaurant";
-                    }
-
-                    else
-                    {
-                        totalRestaurantsText.innerHTML = "Found: " + searchFoundCount + " Restaurants";
-                    }
-                }
-            }
-
-            else
-            {
-                for(var c = 1; c <= totalRestaurants; c++)
-                {
-                    var restaurant = document.getElementById("restaurant#" + c)
-                    
-                    restaurantsArray.push(restaurant);
-                    restaurant.hidden = false;
-                    restaurant.style.opacity = "100%";
-                }
-
-                totalRestaurantsText.innerHTML = "Total Restaurants: " + totalRestaurants;
-            }
-        }
-
-        function saveScrollPosition()
-        {
-            var y = window.scrollY;
-            localStorage.setItem("scrollPositionY", y);
-        }
-
-        function loadSavedScrollPosition()
-        {
-            var positionY = localStorage.getItem("scrollPositionY");
-            window.scrollTo(0, positionY)
-        }
-    </script>
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/mobile.css">
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
+    <title>Restaurants</title>
 </head>
-<body style="background-color: lightgray;" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
-    <%- include('./snippets/html_nav_menu_admin.ejs') %>
+
+<script>
+    function displayEditRestaurant(number)
+    {
+        //elements
+        let restaurantCard = document.getElementById("restaurant#" + number);
+        let editCard = document.getElementById("edit-restaurant#" + number);
+        let cards = document.getElementsByClassName("admin-card")
+        
+        //undisplay all cards
+        for(let i = 0; i < cards.length; i++)
+        {
+            cards[i].style.display = "none"
+        }
+        
+        //update elements
+        restaurantCard.hidden = true;
+        editCard.hidden = false;
+    }
+
+    function undisplayEditRestaurant(number)
+    {
+        //elements
+        let restaurantCard = document.getElementById("restaurant#" + number);
+        let editCard = document.getElementById("edit-restaurant#" + number);
+        let cards = document.getElementsByClassName("admin-card")
+        
+        //undisplay all cards
+        for(let i = 0; i < cards.length; i++)
+        {
+            cards[i].style.display = "block"
+        }
+        
+        //update elements
+        restaurantCard.hidden = false;
+        editCard.hidden = true;
+    }
+
+    function search(totalRestaurants)
+    {
+        //elements
+        let searchBoxInput = document.getElementById("searchBoxInput").value
+        let totalText = document.getElementById("totalText");
+        let cards = document.getElementsByClassName("admin-card")
+        let searchHits = 0
+
+        //search box
+        if(searchBoxInput == "")
+        {
+            //display all cards
+            for(let i = 0; i < cards.length; i++)
+            {
+                cards[i].style.display = "block"
+            }
+
+            //set total restaurants
+            totalText.innerText = totalRestaurants.toString() + " Restaurants"
+        }
+        else if(searchBoxInput != "")
+        {
+            //undisplay all cards
+            for(let i = 0; i < cards.length; i++)
+            {
+                cards[i].style.display = "none"
+            }
+
+            //display search hit cards
+            for(let i = 0; i < cards.length; i++)
+            {
+                if(cards[i].innerText.includes(searchBoxInput))
+                {
+                    cards[i].style.display = "block"
+                    searchHits++
+                }
+            }
+
+            //set total restaurants
+            totalText.innerText = searchHits.toString() + " Restaurants"
+        }
+    }
+</script>
+
+<style>
+    /*** elements ***/
+    body { background-color: #3c41d6; }
+    input { color: white; border: 0px solid black; background-color: black; }
+
+    /*** classes ***/
+    .admin-edit { width: auto; padding: 0px 10px 0px 10px; margin: auto; user-select: none; border: 1px solid black; background-color: white; }
+    .admin-card
+    {
+        margin: auto; 
+        padding: 10px; 
+        user-select: none;
+        font-weight: bold;
+        border-bottom: 1px solid black; 
+        background-color: white;
+    }
+    .admin-card-button
+    {
+        display: inline-block;
+        width: 119px;
+        margin: 30px 0px 30px 0px;
+        padding: 12px 0px 12px 0px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        border: 0px solid black;
+        background-color: transparent; 
+    }
+    .cardText { margin: 0px; }
+    .input-admin { width: 360px; margin-left: 7px; padding: 10px 0px 10px 7px; font-weight: bold; font-size: 16px; }
+    .label-admin { display: block; padding: 20px 0px 0px 7px; }
+    
+    /*** ids ***/
+    #searchBox { width: 400px; margin: auto; border: 0px solid black; }
+    #searchBoxInput { height: 40px; font-weight: normal; color: white; background-color: black; }
+    #totalText { margin: 20px 0px 20px 0px; font-size: 20px; text-align: center; text-shadow: 1px 1px black; user-select: none; color: white; }
+    #orders { width: 400px; margin: auto; }
+    #cardButtons { margin: 20px 0px 0px 0px;}
+    #restaurantTitle { margin: 0px 0px 10px 0px; font-size: 20px; font-weight: bold; }
+    #restaurants { height: 80vh; width: 400px; margin: auto; overflow-y: scroll; }
+    #formDelete { display: inline; }
+    #formEdit { display: inline; }
+    #cancelButton { }
+    #editButton { margin-left: 7px; background-color: lightgreen; }
+    #deleteButton { background-color: red; }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        .input-admin { width: 90%; }
+        .input-label { width: 90%; }
+        .admin-card-button { width: 30%; }
+
+        #searchBox { display: block; width: 90vw; margin: auto; margin-top: 10px; }
+        #restaurants { height: 70vh; width: 90vw; }
+    }
+</style>
+
+<body>
+    <!-- nav menu -->
+    <%- include('nav-menu-admin.ejs') %>
     
     <!-- search box -->
-    <div id="searchBox" style="margin: 0px; margin-top: 25px; padding: 0px; text-align: center;">
-        <input id="searchBoxInput" class="search-admin" style="margin-bottom: 25px; height: 38px;" placeholder="Search..." onkeyup="search('<%=restaurants.length %>')"></input>
+    <div id="searchBox">
+        <input id="searchBoxInput" placeholder="Search..." onkeyup="search('<%=restaurants.length %>')"></input>
     </div>
     
     <!-- total restaurants -->
-    <h3 id="totalRestaurantsText" style="margin-top: 25px; margin-bottom: 15px; text-align: center;">Total Restaurants: <%=restaurants.length %></h3>
+    <h3 id="totalText"><%=restaurants.length %> Restaurants</h3>
 
     <!-- restaurants -->
-    <% for(var i = 0; i < restaurants.length; i++) { %>
-        <div id="restaurant#<%=i + 1%>" class="admin-card">      
-            <p style="margin-bottom: 4px; margin-left: 2px; margin-top: 9px;"><%=restaurants[i]._id %></p>
-            <p style="margin-bottom: 4px; margin-left: 2px;"><%=restaurants[i].title %></p> 
-            <p style="margin-bottom: 4px; margin-left: 2px;"><%=restaurants[i].email %></p>
-            <p style="margin-bottom: 4px; margin-left: 2px;"><%=restaurants[i].owner %></p>
-            <p style="margin-bottom: -2px; margin-left: 2px;"><%=restaurants[i].address %></p>
-            
-            <div style="text-align: right;">
-                <button class="admin-card-button" onclick="displayEditRestaurant('<%=i + 1%>')" style="margin-top: 10px; margin-right: -5.5px;"><b>Edit</b></button>
-                <button class="admin-card-button" onclick="displayDeleteRestaurant('<%=i + 1%>')" style="background-color: red;"><b>Delete</b></button><br />
+    <div id="restaurants">
+        <% for(var i = 0; i < restaurants.length; i++) { %>
+            <div id="restaurant#<%=i + 1%>" class="admin-card" onclick="displayEditRestaurant('<%=i + 1%>')">      
+                <p class="cardText"><%=restaurants[i].email %></p>
             </div>
-        </div>
+    
+            <!-- edit card -->
+            <div class="admin-edit" hidden id="edit-restaurant#<%=i + 1%>">
+                
+                <!-- edit -->
+                <form id="formEdit" action="/admin/edit-restaurant" method="POST">
+                    <input hidden class="input-admin" name="id" value="<%=restaurants[i]._id %>"></input>
+                    <label class="label-admin">Email</label>
+                    <input class="input-admin" name="email" value="<%=restaurants[i].email %>"></input>
+                    <label class="label-admin">Title</label>
+                    <input class="input-admin" name="title" value="<%=restaurants[i].title %>"></input>
+                    <label class="label-admin">Owner</label>
+                    <input class="input-admin" name="owner" value="<%=restaurants[i].owner %>"></input>
+                    <label class="label-admin">Address</label>
+                    <input class="input-admin" name="address" value="<%=restaurants[i].address %>"></input>
+                    <button id="editButton" class="admin-card-button">Update</button>
+                </form>
 
-        <!-- edit -->
-        <div class="admin-edit" hidden id="edit-restaurant#<%=i + 1%>">
-            <button class="admin-card-button" style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px; margin-right: 303px;" onclick="undisplayEditRestaurant('<%=i + 1%>')"><b>Cancel</b></button><br />
+                <!-- cancel -->
+                <button id="cancelButton" class="admin-card-button" onclick="undisplayEditRestaurant('<%=i + 1%>')">Cancel</button>
 
-            <form action="/admin/edit-restaurant" method="POST">
-                <input class="input-admin" name="id" value="<%=restaurants[i]._id %>"></input><br />
-                <input  class="input-admin"name="title" value="<%=restaurants[i].title %>"></input><br />
-                <input class="input-admin" name="email" value="<%=restaurants[i].email %>"></input><br />
-                <input class="input-admin" name="owner" value="<%=restaurants[i].owner %>"></input><br />
-                <input class="input-admin" name="address" value="<%=restaurants[i].address %>"></input><br />
-                <button class="admin-card-button" style="display: block; margin: auto; margin-top: 11px; margin-bottom: 11px; width: 200px;"><b>Confirm Edit</b></button>
-            </form>
-        </div>
-
-        <!-- delete -->
-        <div class="admin-delete" hidden id="delete-restaurant#<%=i + 1%>">
-            <button class="admin-card-button" style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px;" onclick="undisplayDeleteRestaurant('<%=i + 1%>')"><b>Cancel</b></button><br />
-
-            <form action="/admin/delete-restaurant" method="POST">
-                <input hidden name="restaurantId" value="<%=restaurants[i]._id %>"></input>
-                <button class="admin-card-button" style="display: block; margin: auto; margin-top: 124px; margin-bottom: 11px; width: 200px; background-color: red;"><b>Confirm Delete</b></button>
-            </form>
-        </div>
-    <% } %>
+                <!-- delete -->
+                <form id="formDelete" action="/admin/delete-restaurant" method="POST">
+                    <input hidden name="restaurantId" value="<%=restaurants[i]._id %>"></input>
+                    <button id="deleteButton"  class="admin-card-button">Delete</button>
+                </form>
+            </div>
+        <% } %>
+    </div>
 </body>
 </html>

@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/restaurant.css">
-    <link rel="stylesheet" href="/css/mobile.css">
-    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/mobile.css">
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
+    <title><%= pageTitle %></title>
 </head>
 
-<script src="/js/shortcuts.js"></script>
+<script src="/shortcuts.js"></script>
 <script>
     //modals
     function InformAnonOpen()
@@ -317,17 +316,6 @@
         }
     }
 
-    function setBackgroundGif()
-    {
-        let html = document.querySelector("html")
-        let randomNumber = Math.floor(Math.random() * 20) + 1
-
-        if(randomNumber > 20) { randomNumber = 20 }
-        else if(randomNumber == 0) { randomNumber = 1 }
-
-        html.style.backgroundImage = "url(/gifs/" + randomNumber + ".gif)"
-    }
-
     shortcut.add("escape", function() {document.getElementById("modalButton").click()});
 </script>
 
@@ -337,7 +325,7 @@
 
 
     /*** elements ***/
-    body { height: 100vh; /* background-color: #3c41d6 */ }
+    body { height: 100vh; background-color: #3c41d6 }
 
 
     /*** classes ***/
@@ -349,23 +337,20 @@
         padding: 10px 0px 0px 0px;
         margin: auto;
         border: 0px solid black;
-        box-shadow: -1px 0px black;
-        color: black;
         border-bottom: 1px solid black;
-        border-right: 1px solid black;
+        color: black;
         background-color: white; /* #f7f9f9 */
     }
-    .restaurantInfoText { margin: auto; max-width: 250px; font-size: 16px; user-select: none; text-align: center; color: black; }
+    .restaurantInfoText { margin: auto; max-width: 250px; font-size: 16px; user-select: none; text-align: center; color: white; }
     .menuCategoryTitle 
     { 
         max-width: 520px; 
         margin: auto; 
         margin-top: 30px;
         user-select: none; 
-        /* text-shadow: 1px 0px white;  */
+        text-shadow: 1px 1px black; 
         text-align: left;
-        color: black; 
-        border-bottom: 1px solid black;
+        color: white; 
     }
     .menu-item-texts { user-select: none; }
     .cart-item { font-weight: bold; color: white; border-bottom: 1px solid white; background-color: black; }
@@ -414,7 +399,7 @@
         /* background-color: white; */
         /* border: 1px solid black; */
     }
-    #main-menu { display: block; height: 64vh; margin: 0px; padding: 0px; overflow-y: scroll; }
+    #main-menu { display: block; height: 63vh; margin: 0px; padding: 0px; overflow-y: scroll; }
     #side-cart
     {
         display: block;
@@ -431,7 +416,7 @@
         vertical-align: top;
         border: 1px solid white;
     }
-    #restaurantTitle { margin: auto; font-size: 36px; text-align: center; user-select: none; }
+    #restaurantTitle { margin: auto; font-size: 36px; text-align: center; text-shadow: 1px 1px black; user-select: none; color: white; }
     #restaurantDetailRestaurantIsClosed { margin: 0px; margin: auto; padding: 20px 0px 0px 0px; color: red; }
     #buttonAddToCart { border: 1px solid black; }
     #order-button
@@ -528,12 +513,12 @@
 </style>
 
 
-<body onload="loadSideCart(), setBackgroundGif()">
+<body onload="loadSideCart()">
     <script> setRestaurantLocalStorage('<%=restaurant.title %>'); </script>
 
     <!-- admin nav menu -->
     <% if(admin != null && admin == true) { %> 
-        <%- include('nav_menu_admin.ejs') %>
+        <%- include('nav-menu-admin.ejs') %>
 
     <!-- user nav menu -->
     <% } else if(loggedIn == true) { %>
@@ -562,9 +547,9 @@
         <h1 id="restaurantTitle"><%=restaurant.title %></h1>
 
         <div id="restaurantInfo">
-            <p class="restaurantInfoText">Type: <%=restaurant.type %></p>
-            <p class="restaurantInfoText">Phone: <%=restaurant.phone %></p>
-            <p class="restaurantInfoText">Address: <%=restaurant.address %></p>
+            <p id="restaurantType" class="restaurantInfoText">Type: <%=restaurant.type %></p>
+            <p id="restaurantPhone" class="restaurantInfoText">Phone: <%=restaurant.phone %></p>
+            <p id="restaurantAddress" class="restaurantInfoText">Address: <%=restaurant.address %></p>
             <!-- <p class="restaurantInfoText"><%= restaurant.description %></p> -->
 
             <!-- hours -->

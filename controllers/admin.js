@@ -5,7 +5,6 @@ const Order = require('../models/order');
 const Review = require('../models/review');
 const Admin = require('../models/admin');
 
-
 //get
 exports.getHome = (req, res) => {
     //debugging
@@ -91,7 +90,7 @@ exports.getRestaurants = (req, res, next) => {
 
 exports.getUsers = (req, res, next) => {
     
-    console.log('admin-users.ejs');
+    console.log('admins-users.ejs');
     let validation = res.locals.validation;
     
     //user is admin

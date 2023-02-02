@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/portal.css">
+    <link rel="stylesheet" href="/mobile.css">
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title>Statistics</title>
-    <link rel="stylesheet" href="/css/portalRestaurant.css">
-    <link rel="stylesheet" href="/css/mobile.css">
-    <link rel="shortcut icon" href="/pics/pizza-slice-single-transparent.png" type="image/x-icon">
 </head>
 
 <script>
@@ -175,11 +175,8 @@
 </style>
 
 <body onload="selectStatsType()">
-    <a href="/restaurantPortal">
-        <nav id="NavBar">
-            <b>❮</b>
-        </nav>
-    </a>
+    <!-- nav bar -->
+    <a href="/portal"><nav id="NavBar"><b>❮</b></nav></a>
 
     <!-- categories -->
     <div id="selectOrderType">
@@ -222,12 +219,13 @@
     <!-- title -->
     <!-- <h2 id="title">Statistics</h2> -->
     
-    <!-- calculate stats -->
+    <!-- set menu items -->
     <% var menuItems = [] %>
     <% for (let i in restaurant.menuItems) { %>
         <% menuItems.push({"id": restaurant.menuItems[i].id, "title": restaurant.menuItems[i].title, "price": restaurant.menuItems[i].price, "count": 0}) %>
-    <% } %>
-
+        <% } %>
+        
+    <!-- calculate stats -->
     <% for(var counter = 0; counter < orders.length; counter++) { %>
         <% var orderCustomer = orders[counter].user %>
         <% var orderTotalAmount = parseFloat((orders[counter].totalPrice.slice(1))); %>
