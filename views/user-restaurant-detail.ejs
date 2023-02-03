@@ -535,13 +535,16 @@
 
     <!-- menu -->
     <div id="restaurantInfoHeader">
+        <!-- set date -->
         <% var date = new Date().getDay() %>
         <% if (date == 0) { %>
             <% date = 7; %>
         <% } %>
         
+        <!-- title -->
         <h1 id="restaurantTitle"><%=restaurant.title %></h1>
 
+        <!-- info -->
         <div id="restaurantInfo">
             <p id="restaurantType" class="restaurantInfoText">Type: <%=restaurant.type %></p>
             <p id="restaurantPhone" class="restaurantInfoText">Phone: <%=restaurant.phone %></p>
@@ -588,9 +591,12 @@
             <% } %>
 
             
-            <!-- populate menu -->
+            <!-- menu -->
             <% for(let c = 0; c < restaurant.menuCategories.length; c++) { %>
+                <!-- catgory name -->
                 <% let restaurantCategory = restaurant.menuCategories[c].categoryName %>
+
+                <!-- category -->
                 <div id="menu-category-<%=restaurantCategory.charAt(0).toLowerCase() + restaurantCategory.slice(1) %>" class="menu-category">
                     <h2 class="menuCategoryTitle"><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></h2>
                     
@@ -605,16 +611,21 @@
                                 </div>
 
                                 <p hidden id="menu-item#<%=c + 1 %>-category"><%=restaurantCategory.charAt(0).toUpperCase() + restaurantCategory.slice(1) %></p>
-
+                                
+                                <!-- user logged in -->
                                 <% if(loggedIn == true && restaurant.open == true) { %>
                                     <div class="menu-item-add-to-cart-button">
                                         <% let buttonNumber = c %>
                                         <button id="buttonAddToCart" onclick="updateCart('<%=buttonNumber %>', '<%=restaurant.menuItems[c].title %>', '<%=restaurant.menuItems[c].price %>')" class="cart-add-to-cart-button">+</button></a>
                                     </div>
+
+                                <!-- anon -->
                                 <% } else if(loggedIn != true && restaurant.open == true) { %>
                                     <div class="menu-item-add-to-cart-button">
                                         <button onclick="InformAnonOpen()" class="cart-add-to-cart-button">+</button></a>
                                     </div>
+
+                                <!-- restaurant closed -->
                                 <% } else if(restaurant.open != true) { %>
                                     <div class="menu-item-add-to-cart-button">
                                         <button hidden onclick="" class="cart-add-to-cart-button">+</button></a>
@@ -641,9 +652,6 @@
                 </div>
             <% } %>
         </div>
-         
-        </div>
- 
     </main>
 </body>
 </html>

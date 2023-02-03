@@ -22,8 +22,6 @@ class Session
         let insertSuccessful = 1
         let insertFailed = 0
 
-        //let session = new Session(email, password, loginCookie, isLoggedIn)
-        
         //update db
         return db
                 .collection('sessions')
@@ -75,6 +73,7 @@ class Session
                 .catch(err => console.log(err))
     }
 }
+
 
 //exports
 module.exports = Session

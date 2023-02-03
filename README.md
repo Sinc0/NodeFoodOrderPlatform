@@ -15,7 +15,7 @@
 - [Google Maps](https://developers.google.com/maps)
 - [Stripe Payments](https://stripe.com/payments)
 
-### User Features
+### Features
 - User-Portal (Place/Pay/Review Order, Browse Restaurants)
 - Restaurant-Portal (Accept/Decline/Complete Orders, Edit Menu, Sale Statistics, Customer Reviews, Open/Close Restaurant)
 - Admin-Portal (User Statistics, Edit/Delete: Users, Restaurants, Reviews)

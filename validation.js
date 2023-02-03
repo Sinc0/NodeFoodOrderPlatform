@@ -9,7 +9,7 @@ function parseLoginCookie(cookieId)
     //variables
     let findLoginCookie = cookieId
     let regexFindLoginCookieId = /(?!\sloginCookie=id:)\d.\d*(?=email)/g
-    let loginCookieId = findLoginCookie.match(regexFindLoginCookieId)
+    let loginCookieId = null
     //let regexFindLoginCookieEmail = /(?!email:)[\w\d]*@.*\.\w*/g
     //let loginCookieEmail = findLoginCookie.match(regexFindLoginCookieEmail)
 
@@ -18,7 +18,8 @@ function parseLoginCookie(cookieId)
     if(regexFindLoginCookieId == null) { return null }
     
     //set cookieId
-    cookieId = parseFloat(loginCookieId)
+    loginCookieId = findLoginCookie.match(regexFindLoginCookieId);
+    cookieId = parseFloat(loginCookieId);   
 
     //null check
     if(cookieId != null) { return cookieId }

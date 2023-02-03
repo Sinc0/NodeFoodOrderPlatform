@@ -12,9 +12,11 @@ function parseLoginCookie(cookieId)
     //variables
     let findLoginCookie = cookieId
     let regexFindLoginCookieId = /(?!\sloginCookie=id:)\d.\d*(?=email)/g
-    let loginCookieId = findLoginCookie.match(regexFindLoginCookieId)
     //let regexFindLoginCookieEmail = /(?!email:)[\w\d]*@.*\.\w*/g
     //let loginCookieEmail = findLoginCookie.match(regexFindLoginCookieEmail)
+
+    //match cookie
+    let loginCookieId = findLoginCookie.match(regexFindLoginCookieId)
 
     //null check
     if(findLoginCookie == null || findLoginCookie == 'loginCookie=') { return null }
