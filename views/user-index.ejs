@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="/main.css">
     <link rel="stylesheet" href="/mobile.css">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
-    <!-- <title><%= pageTitle %></title> -->
+    <link rel="manifest" href="/manifest.json">
+    <script src="/service-worker.js"></script>
     <title>Food Ordering Platform</title>
 </head>
 
@@ -19,12 +20,15 @@
 
     function setBackgroundGif()
     {
+        //elements
         let html = document.querySelector("html")
-        let randomNumber = Math.floor(Math.random() * 16) + 1
 
+        //set random number
+        let randomNumber = Math.floor(Math.random() * 16) + 1
         if(randomNumber > 16) { randomNumber = 16 }
         else if(randomNumber == 0) { randomNumber = 1 }
 
+        //update elements
         html.style.backgroundImage = "url(/gifs/" + randomNumber + ".gif)"
     }
 </script>

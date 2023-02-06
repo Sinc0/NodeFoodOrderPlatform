@@ -7,25 +7,27 @@
     <link rel="stylesheet" href="/main.css">
     <link rel="stylesheet" href="/mobile.css">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
+    <link rel="manifest" href="/manifest.json">
     <title>Restaurants</title>
+    <script src="/service-worker.js"></script>
 </head>
 
 <script>
     function displayRestaurantReviews(menuItemNumber)
     {
         //elements
-        let review = document.getElementById("restaurantsRestaurantReview#" + menuItemNumber);
-        let item = document.getElementById("restaurantMenuItem#" + menuItemNumber);
+        let review = document.getElementById("restaurantsRestaurantReview#" + menuItemNumber)
+        let item = document.getElementById("restaurantMenuItem#" + menuItemNumber)
         
         //update elements
         if(review.style.display == "none")
         {
-            review.style = "overflow-y: auto;"
-            review.style.display = "block";
+            review.style = "overflow-y: auto"
+            review.style.display = "block"
         }
         else if(review.style.display == "block")
         {
-            review.style.display = "none";
+            review.style.display = "none"
             item.style.marginBottom = "0px"
         }
     }
@@ -33,41 +35,41 @@
     function setRestaurantNumberOfReviews(restaurantNumber, value)
     {
         //elements
-        let restaurantReviewHeader = document.getElementById("restaurantReviewHeader#" + restaurantNumber);
-        let restaurantReviewHeaderMobile = document.getElementById("restaurantReviewHeaderMobile#" + restaurantNumber);
+        let restaurantReviewHeader = document.getElementById("restaurantReviewHeader#" + restaurantNumber)
+        let restaurantReviewHeaderMobile = document.getElementById("restaurantReviewHeaderMobile#" + restaurantNumber)
 
         //update elements
         if(value == 0)
         {
-            restaurantReviewHeader.innerHTML = "0 Reviews";
-            restaurantReviewHeader.onclick = "";
-            restaurantReviewHeaderMobile.innerHTML = "0 Reviews";
-            restaurantReviewHeaderMobile.onclick = "";
+            restaurantReviewHeader.innerHTML = "0 Reviews"
+            restaurantReviewHeader.onclick = ""
+            restaurantReviewHeaderMobile.innerHTML = "0 Reviews"
+            restaurantReviewHeaderMobile.onclick = ""
         }
         else
         {
-            restaurantReviewHeader.innerHTML = value + " Reviews";
-            restaurantReviewHeaderMobile.innerHTML = value + " Reviews";
+            restaurantReviewHeader.innerHTML = value + " Reviews"
+            restaurantReviewHeaderMobile.innerHTML = value + " Reviews"
         }
     }
 
     function setRestaurantRating(restaurantNumber, rating)
     {
         //elements
-        let checkIfNaN = isNaN(parseFloat(rating));
-        let restaurantRating = document.getElementById("restaurantRating#" + restaurantNumber);
+        let checkIfNaN = isNaN(parseFloat(rating))
+        let restaurantRating = document.getElementById("restaurantRating#" + restaurantNumber)
 
         //update elements
         if(checkIfNaN == false)
         {
-            rating = Number(rating).toFixed(1);
-            restaurantRating.innerHTML = rating + " ★";
-            restaurantRating.hidden = false;
+            rating = Number(rating).toFixed(1)
+            restaurantRating.innerHTML = rating + " ★"
+            restaurantRating.hidden = false
         }
         else
         {
-            restaurantRating.innerHTML = "";
-            restaurantRating.hidden = false;
+            restaurantRating.innerHTML = ""
+            restaurantRating.hidden = false
         }
     }
 
@@ -75,8 +77,8 @@
     {
         //variables
         let searchBoxInput = document.getElementById("searchBoxInput").value
-        let searchString = String(searchBoxInput).toLowerCase();
-        let countItems = 0;
+        let searchString = String(searchBoxInput).toLowerCase()
+        let countItems = 0
 
         //update elements
         for(let c = 1; c <= totalMenuItems; c++)
@@ -86,12 +88,12 @@
 
             if(menuItemSearchText.innerHTML.toLowerCase().includes(searchString))
             {
-                menuItem.style.display = "block";
-                countItems++;
+                menuItem.style.display = "block"
+                countItems++
             }
             else
             {
-                menuItem.style.display = "none";
+                menuItem.style.display = "none"
             }
         }
     }

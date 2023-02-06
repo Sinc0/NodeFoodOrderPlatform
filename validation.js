@@ -40,7 +40,7 @@ module.exports = (req, res, next) => {
         next()
     }
 
-    //user is signed ins
+    //user is signed in
     else 
     {
         User
