@@ -3,6 +3,18 @@
 const CACHE = "pwabuilder-page"
 const offlineFallbackPage = "offline.html"
 
+//register
+if('serviceWorker' in navigator)
+{
+    navigator
+            .serviceWorker
+            .register('/service-worker.js')
+            .then((reg) => {
+            // registration worked
+                console.log('Registration succeeded. Scope is ' + reg.scope);
+            })
+}
+
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") 
   {
