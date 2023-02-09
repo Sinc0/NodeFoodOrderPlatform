@@ -3,12 +3,13 @@ const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 const helmet = require('helmet')
-const ws = require('ws').Server
+const ws = require('ws');
 const dotenv = require('dotenv')
-const app = express()
 const errorController = require('./controllers/error')
 const mongoConnect = require('./controllers/database').mongoConnect
 const routes = require("./routes.js")
+
+const app = express()
 
 //env
 dotenv.config()
@@ -35,19 +36,20 @@ app.use(errorController.get404ErrorPage) //error page
 //connect db
 mongoConnect(() => {})
 
-//connect websocket
-var webSocket = new ws({port: 65535})
 
-webSocket.on('connection', function(ws, req)
+//connect websocket
+const webSocket = new ws.Server({server: app });
+
+webSocket.on('connection', function(socket, req)
 {   
-    ws.on('message', function(message) {
+    socket.on('message', function(message) {
         webSocket.clients.forEach(function event(client) { client.send(message) /* client.close(); */ })
     })
 })
 
+
 //start app
 app.listen(process.env.PORT || 3000)
-
 //debugging
 //console.log(process.env);
 //var clientIp = req.socket.remoteAddress;
