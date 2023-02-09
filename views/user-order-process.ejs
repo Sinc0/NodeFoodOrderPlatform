@@ -72,11 +72,11 @@
     var socket = null
     if(location.protocol.includes("https"))
     {
-        socket = new WebSocket("wss://" + location.hostname);
+        socket = new WebSocket("wss://" + location.hostname + ":60000");
     }
     else
     {
-        socket = new WebSocket("ws://" + location.hostname);
+        socket = new WebSocket("ws://" + location.hostname + ":60000");
     }
 
     //send socket message

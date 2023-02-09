@@ -36,9 +36,11 @@ app.use(errorController.get404ErrorPage) //error page
 //connect db
 mongoConnect(() => {})
 
+//start app
+app.listen(process.env.PORT || 3000)
 
 //connect websocket
-const webSocket = new ws.Server({server: app });
+const webSocket = new ws.Server({server: app, port: 60000 });
 
 webSocket.on('connection', function(socket, req)
 {   
@@ -48,8 +50,7 @@ webSocket.on('connection', function(socket, req)
 })
 
 
-//start app
-app.listen(process.env.PORT || 3000)
+
 //debugging
 //console.log(process.env);
 //var clientIp = req.socket.remoteAddress;
