@@ -1,9 +1,9 @@
 
 /*** scrollbar ***/
 ::-webkit-scrollbar { height: 0px; width: 0px; }
-::-webkit-scrollbar-track { background: transparent; } /* Track */ 
-::-webkit-scrollbar-thumb { background: transparent; } /* Handle */
-::-webkit-scrollbar-thumb:hover { background: transparent; } /* Handle on hover */
+/* ::-webkit-scrollbar-track { background: transparent; }  /* Track */ 
+/* ::-webkit-scrollbar-thumb { background: transparent; }  /* Handle */
+/* ::-webkit-scrollbar-thumb:hover { background: transparent; } /* Handle on hover */
 
 
 /*** elements ***/

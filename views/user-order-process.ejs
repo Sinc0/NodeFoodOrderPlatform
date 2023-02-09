@@ -41,11 +41,13 @@
         
         if(type == "delivery")
         {
-            document.getElementById("orderProcessEstimatedTime").innerHTML = "Time Given " + estimatedTime + " Mins <br /> Delivered @" + date;
+            document.getElementById("orderProcessEstimatedTime").innerHTML = "Time Given " + estimatedTime + " Mins <br /> Delivery @" + date;
+            document.getElementById("skipWaitingGoToStart").innerHTML = "Continue"
         }
         else if(type == "pick up")
         {
             document.getElementById("orderProcessEstimatedTime").innerHTML = "Time Given " + estimatedTime + " Mins <br /> Pick Up @" + date;
+            document.getElementById("skipWaitingGoToStart").innerHTML = "Continue"
         }
         
         //update elements
@@ -62,11 +64,12 @@
         document.getElementById("orderProcessInfoText").innerHTML = "Order Declined";
         document.getElementById("orderProcessPaymentInfoText").hidden = true;
         document.getElementById("orderIdInfoText").hidden = true;
+        document.getElementById("skipWaitingGoToStart").innerHTML = "Continue"
         // document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false;
     }
 
     //websocket
-    var socket = new WebSocket("ws://localhost:65535");
+    var socket = new WebSocket("ws://" + location.hostname + ":65535");
 
     //send socket message
     socket.onmessage = function(message) {
@@ -141,7 +144,7 @@
         <!-- links -->
         <!-- <a href="/order-details/<%=order._id %>" hidden id="OrderProcessWhenConfirmedDetailsLink">Details</a> -->
         <!-- <a href="/" hidden id="OrderProcessWhenConfirmedStartLink">Start</a> -->
-        <a href="/restaurants" id="skipWaitingGoToStart">Skip</a>
+        <a href="/orders" id="skipWaitingGoToStart">Skip</a>
     </div>
 </body>
 </html>

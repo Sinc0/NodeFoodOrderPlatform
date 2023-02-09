@@ -253,7 +253,7 @@
     }
 
     
-    var socket = new WebSocket("ws://localhost:65535");
+    var socket = new WebSocket("ws://" + location.hostname + ":65535");
     
     setInterval(refreshPage, 60000);
 
