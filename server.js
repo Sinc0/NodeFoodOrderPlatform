@@ -36,14 +36,8 @@ app.use(errorController.get404ErrorPage) //error page
 mongoConnect(() => {})
 
 //connect websocket
-if(location.protocol.includes("https"))
-{
-    var webSocket = new ws("wss://" + location.hostname + ":65535")
-}
-else
-{
-    var webSocket = new ws("ws://" + location.hostname + ":65535")
-}
+var webSocket = new ws("wss://" + location.hostname + ":65535")
+// var webSocket = new ws("ws://" + location.hostname + ":65535")
 webSocket.on('connection', function(ws, req)
 {   
     ws.on('message', function(message) {
