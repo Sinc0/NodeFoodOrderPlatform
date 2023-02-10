@@ -17,6 +17,7 @@
 
     function showStats(type)
     {
+        //elements
         let restaurantSales = document.getElementById("restaurantSales")
         let restaurantOrders = document.getElementById("restaurantOrders")
         let restaurantCustomers = document.getElementById("restaurantCustomers")
@@ -26,6 +27,7 @@
         let buttonCustomers = document.getElementById("buttonCustomers")
         let buttonReviews = document.getElementById("buttonReviews")
 
+        //update elements
         restaurantSales.style.display = "none"
         restaurantOrders.style.display = "none"
         restaurantCustomers.style.display = "none"
@@ -35,6 +37,7 @@
         buttonCustomers.style.opacity = "0.4"
         buttonReviews.style.opacity = "0.4"
 
+        //check type
         if(type == "sales")
         {
             restaurantSales.style.display = "block"
@@ -67,19 +70,23 @@
 
     function selectStatsType()
     {
+        //elements
         let buttonSales = document.getElementById("buttonSales")
         let buttonOrders = document.getElementById("buttonOrders")
         let buttonCustomers = document.getElementById("buttonCustomers")
         let buttonReviews = document.getElementById("buttonReviews")
         
-        ls = localStorage.getItem("restaurant-stats")
+        //get local storage
+        selectedCategory = localStorage.getItem("restaurant-stats")
         
-        if(ls == "sales") { showStats('sales'); buttonSales.scrollIntoView() }
-        else if(ls == "orders") { showStats('orders'); buttonOrders.scrollIntoView() }
-        else if(ls == "customers") { showStats('customers'); buttonCustomers.scrollIntoView() }
-        else if(ls == "reviews") { showStats('reviews'); buttonReviews.scrollIntoView() }
+        //display selected category
+        if(selectedCategory == "sales") { showStats('sales'); buttonSales.scrollIntoView() }
+        else if(selectedCategory == "orders") { showStats('orders'); buttonOrders.scrollIntoView() }
+        else if(selectedCategory == "customers") { showStats('customers'); buttonCustomers.scrollIntoView() }
+        else if(selectedCategory == "reviews") { showStats('reviews'); buttonReviews.scrollIntoView() }
     }
 
+    //set refresh interval
     setInterval(refreshPage, 60000)
 </script>
 

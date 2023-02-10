@@ -6,151 +6,51 @@
     <link rel="stylesheet" href="/main.css">
     <link rel="stylesheet" href="/mobile.css" />
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="/stripe.js" defer></script>
     <title>Checkout</title>
 </head>
 
-<script src="https://js.stripe.com/v3/"></script>
-<script src="/stripe.js" defer></script>
-<script>
-    function GoogleMapsAdressAutocomplete() 
-    {
-        var map = new google.maps.Map(document.getElementById('map'), {
-            //center: {lat: -33.8688, lng: 151.2195},
-            //zoom: 13
-        });
-        
-        var input = document.getElementById('searchInput');
-        var autocomplete = new google.maps.places.Autocomplete(input);
-        var infowindow = new google.maps.InfoWindow();
-
-        autocomplete.addListener('place_changed', function() 
-        {
-            infowindow.close();
-            var place = autocomplete.getPlace();
-            
-            if (!place.geometry) 
-            {
-                return window.alert("Address not found");
-            }
-        
-            var address = '';
-            
-            if (place.address_components) 
-            {
-                address = [
-                    (place.address_components[0] && place.address_components[0].short_name || ''),
-                    (place.address_components[1] && place.address_components[1].short_name || ''),
-                    (place.address_components[2] && place.address_components[2].short_name || '')
-                ].join(' ');
-            }
-        
-            infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
-                
-            //location details
-            for (var i = 0; i < place.address_components.length; i++) 
-            {
-                if(place.address_components[i].types[0] == 'country')
-                {
-                    if(place.address_components[i].long_name == "Sweden")
-                    {
-                        var userAddress = document.getElementById('userAddress')
-                        var customerAdress = document.getElementById('customerAddress')
-
-                        if(userAddress != null)
-                        {
-                            userAddress.value = place.formatted_address;
-                        }
-
-                        if(customerAdress != null)
-                        {
-                            customerAdress.value = place.formatted_address;
-                        }
-                    }
-
-                    if(place.address_components[i].long_name != "Sweden")
-                    {
-                        alert("Location restricted to Sweden only");
-                    }
-                }
-            }
-        
-        });
-    }
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=GoogleMapsAdressAutocomplete" async defer></script>
 <script>
     function postOrder()
     {
-        let form = document.getElementById("post-order-form");
-        form.submit();
+        //elements
+        let form = document.getElementById("post-order-form")
+
+        //submit form
+        form.submit()
     }
 
     function customerDeliverySelector()
     {   
-        let text = document.querySelector('input[name="customerDelivery"]:checked').value;
-        let paymentSelector = document.getElementById('new-list-of-payment-options');
+        //elements
+        let text = document.querySelector('input[name="customerDelivery"]:checked').value
+        let paymentSelector = document.getElementById('stripe-payment-options')
         
-        document.getElementById("customerDelivery").value = text;
-        paymentSelector.hidden = false;
+        //update elements
+        document.getElementById("customerDelivery").value = text
+        paymentSelector.hidden = false
     }   
-    
-    function selectPaymentOption(value)
-    {
-        let paymentOptionStripe = document.getElementById("payment-option-stripe")
-
-        if(value == 0)
-        {
-            paymentOptionStripe.style.display = "none";
-        }
-        else if(value == 1)
-        {
-            paymentOptionStripe.style.display = "block";
-        }
-    }
 
     function removeBody()
     {
-        let loadSpinnerGif = document.getElementById("loadSpinnerGif");
-        let paymentOptionStripe = document.getElementById("payment-option-stripe");
-        let checkoutCartItems = document.getElementById("checkoutCartItems");
-        let orderFormDiv = document.getElementById("orderFormDiv");
-        let newListOfPaymentOptions = document.getElementById("new-list-of-payment-options");
-        let navBarGoBack = document.getElementById("navBarGoBack");
-        let checkoutTotalAmount = document.getElementById("checkoutTotalAmount");
+        //elements
+        let checkoutCartItems = document.getElementById("checkoutCartItems")
+        let orderFormDiv = document.getElementById("orderFormDiv")
+        let newListOfPaymentOptions = document.getElementById("stripe-payment-options")
+        let navBarGoBack = document.getElementById("navBarGoBack")
+        let checkoutTotalAmount = document.getElementById("checkoutTotalAmount")
 
-        paymentOptionStripe.hidden = true;
-        checkoutCartItems.hidden = true;
-        orderFormDiv.hidden = true;
-        newListOfPaymentOptions.hidden = true;
-        checkoutTotalAmount.hidden = true;
-
-        loadSpinnerGif.hidden = false;
-    }
-
-    function displayStripeBox()
-    {
-        let paymentOptionStripe = document.getElementById("payment-option-stripe");
-        let checkoutCartItems = document.getElementById("checkoutCartItems");
-        let orderFormDiv = document.getElementById("orderFormDiv");
-        let newListOfPaymentOptions = document.getElementById("new-list-of-payment-options");
-        let navBarGoBack = document.getElementById("navBarGoBack");
-        let checkoutTotalAmount = document.getElementById("checkoutTotalAmount");
-        let checkoutCenterDiv = document.getElementById("checkoutCenterDiv");
-        
-        paymentOptionStripe.hidden = false;
-        
-        // checkoutCartItems.hidden = true;
-        // orderFormDiv.hidden = true;
-        // navBarGoBack.hidden = true;
-        // checkoutTotalAmount.hidden = true;
-        
-        // checkoutCenterDiv.hidden = true;
-        // checkoutCenterDiv.style.display = "none"        
+        //update elements
+        checkoutCartItems.hidden = true
+        orderFormDiv.hidden = true
+        newListOfPaymentOptions.hidden = true
+        checkoutTotalAmount.hidden = true
     }
 
     function goBack()
     {
-        window.history.back();
+        window.history.back()
     }
 </script>
 
@@ -195,18 +95,6 @@
     #checkoutSendOrder button { border-radius: 0%; height: 40px; width: 300px; margin-top: 0px; padding: 0px; }
     #checkoutCommentToRestaurant { position: relative; width: 300px; margin: auto; text-align: center; background-color: green; }
     #checkoutCommentToRestaurant p { margin: 0px; padding: 0px; padding-left: 10px; padding-right: 10px; padding-bottom: 5px; }
-    #loadSpinnerGif
-    {
-        height: 250px; 
-        width: 250px; 
-        margin-top: 35%; 
-        user-drag: none; 
-        user-select: none;
-        -moz-user-select: none;
-        -webkit-user-drag: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-    }
     #cartAllItems { display: none; }
     #cartTotalPrice { display: none; }
     #choosenRestaurant { display: none; }
@@ -216,7 +104,7 @@
     #customerDeliveryRadioButton { display: inline; width: 10px; }
     #customerPickUpRadioButton { display: inline; width: 10px; }
     #title { margin-top: 0px; }
-    #new-list-of-payment-options { margin-top: 20px; }
+    #stripe-payment-options { margin-top: 20px; }
     #card-element { padding: 10px; border: 1px solid black; background-color: white; }
     #submit 
     { 
@@ -282,15 +170,16 @@
                 </form>
             </div>
     
-            <!-- payment -->
-            <div hidden id="new-list-of-payment-options">
+            <!-- stripe payment -->
+            <div hidden id="stripe-payment-options">
                 <p class="category">Payment</p>
+                
+                <!-- test card details -->
                 <span class="testCard">Number: 4242 4242 4242 4242</span> 
                 <span class="testCard">MM/YY: 12/34</span>
                 <span class="testCard">CVC: 123</span>
                 <span class="testCard">ZIP: 12345</span>
 
-                <!-- stripe -->
                 <div id="selected-payment-option">   
                     <div hidden id="payment-option-stripe">
                         <form id="payment-form">
@@ -307,8 +196,5 @@
             </div>
         </div>
     </div>
-
-    <!-- google maps api -->
-    <div hidden id="map"></div>
 </body>
 </html>

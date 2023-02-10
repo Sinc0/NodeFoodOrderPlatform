@@ -13,8 +13,8 @@
     function displayEditUser(number)
     {
         //elements
-        let userCard = document.getElementById("user#" + number);
-        let editCard = document.getElementById("edit-user#" + number);
+        let userCard = document.getElementById("user#" + number)
+        let editCard = document.getElementById("edit-user#" + number)
         let cards = document.getElementsByClassName("admin-card")
         
         //undisplay all cards
@@ -24,15 +24,15 @@
         }
         
         //update elements
-        userCard.hidden = true;
-        editCard.hidden = false;
+        userCard.hidden = true
+        editCard.hidden = false
     }
     
     function undisplayEditUser(number)
     {
         //elements
-        let userCard = document.getElementById("user#" + number);
-        let editCard = document.getElementById("edit-user#" + number);
+        let userCard = document.getElementById("user#" + number)
+        let editCard = document.getElementById("edit-user#" + number)
         let cards = document.getElementsByClassName("admin-card")
         let searchBoxInput = document.getElementById("searchBoxInput").value
 
@@ -64,15 +64,15 @@
         }
 
         //update elements
-        userCard.hidden = false;
-        editCard.hidden = true;
+        userCard.hidden = false
+        editCard.hidden = true
     }
 
     function search(totalUsers)
     {
         //elements
         let searchBoxInput = document.getElementById("searchBoxInput").value
-        let totalText = document.getElementById("totalText");
+        let totalText = document.getElementById("totalText")
         let cards = document.getElementsByClassName("admin-card")
         let searchHits = 0
 

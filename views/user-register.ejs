@@ -13,42 +13,43 @@
     function registerCustomer()
     {
         //elements
-        let customerForm = document.getElementById("registerCustomer");
-        let restaurantForm = document.getElementById("registerRestaurant");
-        let customerBtn = document.getElementById("registerCustomerBtn");
-        let restaurantBtn = document.getElementById("registerRestaurantBtn");
+        let customerForm = document.getElementById("registerCustomer")
+        let restaurantForm = document.getElementById("registerRestaurant")
+        let customerBtn = document.getElementById("registerCustomerBtn")
+        let restaurantBtn = document.getElementById("registerRestaurantBtn")
 
-        customerForm.style.display = "block";
-        restaurantForm.style.display = "none";
-        restaurantBtn.style.backgroundColor = "#f7f9f9";
-        restaurantBtn.style.color = "black";
-        customerBtn.style.backgroundColor = "black";
-        customerBtn.style.color = "#f7f9f9";
+        //update elements
+        customerForm.style.display = "block"
+        restaurantForm.style.display = "none"
+        restaurantBtn.style.backgroundColor = "#f7f9f9"
+        restaurantBtn.style.color = "black"
+        customerBtn.style.backgroundColor = "black"
+        customerBtn.style.color = "#f7f9f9"
     }
 
     function registerRestaurant()
     {
         //elements
-        let customerForm = document.getElementById("registerCustomer");
-        let restaurantForm = document.getElementById("registerRestaurant");
-        let customerBtn = document.getElementById("registerCustomerBtn");
-        let restaurantBtn = document.getElementById("registerRestaurantBtn");
+        let customerForm = document.getElementById("registerCustomer")
+        let restaurantForm = document.getElementById("registerRestaurant")
+        let customerBtn = document.getElementById("registerCustomerBtn")
+        let restaurantBtn = document.getElementById("registerRestaurantBtn")
         
         //update elements
-        customerForm.style.display = "none";
-        restaurantForm.style.display = "block";
-        customerBtn.style.backgroundColor = "#f7f9f9";
-        customerBtn.style.color = "black";
-        restaurantBtn.style.backgroundColor = "black";
-        restaurantBtn.style.color = "#f7f9f9";
+        customerForm.style.display = "none"
+        restaurantForm.style.display = "block"
+        customerBtn.style.backgroundColor = "#f7f9f9"
+        customerBtn.style.color = "black"
+        restaurantBtn.style.backgroundColor = "black"
+        restaurantBtn.style.color = "#f7f9f9"
     }
 
     function checkPassRestaurant()
     {
         //elements
-        let password = document.getElementById("passwordRestaurant");
-        let confirmPassword = document.getElementById("confirmPasswordRestaurant");
-        let submitFormButton = document.getElementById("submitFormBtnRegisterRestaurant");
+        let password = document.getElementById("passwordRestaurant")
+        let confirmPassword = document.getElementById("confirmPasswordRestaurant")
+        let submitFormButton = document.getElementById("submitFormBtnRegisterRestaurant")
 
         //update elements
         if(confirmPassword.value == "")
@@ -57,24 +58,24 @@
         }   
         else if(password.value != confirmPassword.value)
         {
-            password.style.color = "red";
+            password.style.color = "red"
             confirmPassword.style.color = "red"
-            submitFormButton.disabled = true;
+            submitFormButton.disabled = true
         }
         else if(password.value == confirmPassword.value)
         {
-            password.style.color = "lightgreen";
-            confirmPassword.style.color = "lightgreen";
-            submitFormButton.disabled = false;
+            password.style.color = "lightgreen"
+            confirmPassword.style.color = "lightgreen"
+            submitFormButton.disabled = false
         }
     }
 
     function checkPassCustomer()
     {
         //elements
-        let password = document.getElementById("passwordCustomer");
-        let confirmPassword = document.getElementById("confirmPasswordCustomer");
-        let submitFormButton = document.getElementById("submitFormBtnRegisterCustomer");
+        let password = document.getElementById("passwordCustomer")
+        let confirmPassword = document.getElementById("confirmPasswordCustomer")
+        let submitFormButton = document.getElementById("submitFormBtnRegisterCustomer")
 
         //update elements
         if(confirmPassword.value == "")
@@ -83,15 +84,15 @@
         }
         else if(password.value != confirmPassword.value)
         {
-            password.style.color = "red";
-            confirmPassword.style.color = "red";
-            submitFormButton.disabled = true;
+            password.style.color = "red"
+            confirmPassword.style.color = "red"
+            submitFormButton.disabled = true
         }
         else if(password.value == confirmPassword.value)
         {
-            password.style.color = "lightgreen";
-            confirmPassword.style.color = "lightgreen";
-            submitFormButton.disabled = false;
+            password.style.color = "lightgreen"
+            confirmPassword.style.color = "lightgreen"
+            submitFormButton.disabled = false
         }
     }
 </script>

@@ -18,8 +18,8 @@ function parseLoginCookie(cookieId)
     if(regexFindLoginCookieId == null) { return null }
     
     //set cookieId
-    loginCookieId = findLoginCookie.match(regexFindLoginCookieId);
-    cookieId = parseFloat(loginCookieId);   
+    loginCookieId = findLoginCookie.match(regexFindLoginCookieId)
+    cookieId = parseFloat(loginCookieId)
 
     //null check
     if(cookieId != null) { return cookieId }

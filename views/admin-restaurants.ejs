@@ -13,8 +13,8 @@
     function displayEditRestaurant(number)
     {
         //elements
-        let restaurantCard = document.getElementById("restaurant#" + number);
-        let editCard = document.getElementById("edit-restaurant#" + number);
+        let restaurantCard = document.getElementById("restaurant#" + number)
+        let editCard = document.getElementById("edit-restaurant#" + number)
         let cards = document.getElementsByClassName("admin-card")
         
         //undisplay all cards
@@ -24,15 +24,15 @@
         }
         
         //update elements
-        restaurantCard.hidden = true;
-        editCard.hidden = false;
+        restaurantCard.hidden = true
+        editCard.hidden = false
     }
 
     function undisplayEditRestaurant(number)
     {
         //elements
-        let restaurantCard = document.getElementById("restaurant#" + number);
-        let editCard = document.getElementById("edit-restaurant#" + number);
+        let restaurantCard = document.getElementById("restaurant#" + number)
+        let editCard = document.getElementById("edit-restaurant#" + number)
         let cards = document.getElementsByClassName("admin-card")
         
         //undisplay all cards
@@ -42,15 +42,15 @@
         }
         
         //update elements
-        restaurantCard.hidden = false;
-        editCard.hidden = true;
+        restaurantCard.hidden = false
+        editCard.hidden = true
     }
 
     function search(totalRestaurants)
     {
         //elements
         let searchBoxInput = document.getElementById("searchBoxInput").value
-        let totalText = document.getElementById("totalText");
+        let totalText = document.getElementById("totalText")
         let cards = document.getElementsByClassName("admin-card")
         let searchHits = 0
 

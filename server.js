@@ -27,11 +27,11 @@ app.use(bodyParser.text()) //parsing
 app.use(bodyParser.urlencoded({extended: false})) //parsing
 app.use(routes) //routes
 app.use(errorController.get404ErrorPage) //error page
-// app.use('/images', express.static(path.join(__dirname, 'images')));
-// app.use('/', (req, res, next) => { next(); });
-// app.use(adminRoutes);
-// app.use(userRoutes);
-// app.use(portalRoutes);
+// app.use('/images', express.static(path.join(__dirname, 'images')))
+// app.use('/', (req, res, next) => { next(); })
+// app.use(adminRoutes)
+// app.use(userRoutes)
+// app.use(portalRoutes)
 
 //connect db
 mongoConnect(() => {})
@@ -40,18 +40,18 @@ mongoConnect(() => {})
 server = app.listen(process.env.PORT || 3000)
 
 //connect websocket
-const webSocket = new ws.Server({ server });
+const webSocket = new ws.Server({ server })
 
 //handle websocket messages
 webSocket.on('connection', function(socket, req)
 {   
     socket.on('message', function(message) {
-        webSocket.clients.forEach(function event(client) { client.send(message) /* client.close(); */ })
+        webSocket.clients.forEach(function event(client) { client.send(message) })
     })
 })
 
 //debugging
-//console.log(process.env);
-//var clientIp = req.socket.remoteAddress;
-//var clientKey = req.headers['sec-websocket-key'];
-//var clientCount = webSocket.clients.size;
+//console.log(process.env)
+//var clientIp = req.socket.remoteAddress
+//var clientKey = req.headers['sec-websocket-key']
+//var clientCount = webSocket.clients.size

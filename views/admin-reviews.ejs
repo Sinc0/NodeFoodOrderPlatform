@@ -13,8 +13,8 @@
     function displayEditReview(number)
     {
         //elements
-        let reviewCard = document.getElementById("review#" + number);
-        let editCard = document.getElementById("edit-review#" + number);
+        let reviewCard = document.getElementById("review#" + number)
+        let editCard = document.getElementById("edit-review#" + number)
         let cards = document.getElementsByClassName("admin-card")
         
         //undisplay all cards
@@ -24,15 +24,15 @@
         }
         
         //update elements
-        reviewCard.hidden = true;
-        editCard.hidden = false;
+        reviewCard.hidden = true
+        editCard.hidden = false
     }
 
     function undisplayEditReview(number)
     {
         //elements
-        let reviewCard = document.getElementById("review#" + number);
-        let editCard = document.getElementById("edit-review#" + number);
+        let reviewCard = document.getElementById("review#" + number)
+        let editCard = document.getElementById("edit-review#" + number)
         let cards = document.getElementsByClassName("admin-card")
         
         //undisplay all cards
@@ -42,15 +42,15 @@
         }
         
         //update elements
-        reviewCard.hidden = false;
-        editCard.hidden = true;
+        reviewCard.hidden = false
+        editCard.hidden = true
     }
 
     function search(totalReviews)
     {
         //elements
         let searchBoxInput = document.getElementById("searchBoxInput").value
-        let totalText = document.getElementById("totalText");
+        let totalText = document.getElementById("totalText")
         let cards = document.getElementsByClassName("admin-card")
         let searchHits = 0
 

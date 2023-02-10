@@ -13,89 +13,92 @@
     function orderProcessOrderConfirmed(estimatedTime, type)
     {
         //elements
-        document.getElementById("orderProcessImgLoadingGif").remove();
-        document.getElementById("orderProcessImgCheckmarkPng").hidden = false;
-        document.getElementById("skipWaitingGoToStart").hidden = true;
-        document.getElementById("orderProcessPaymentInfoText").hidden = true;
-        document.getElementById("orderIdInfoText").hidden = true;
-        // document.getElementById("OrderProcessWhenConfirmedDetailsLink").hidden = false;
+        document.getElementById("orderProcessImgLoadingGif").remove()
+        document.getElementById("orderProcessImgCheckmarkPng").hidden = false
+        document.getElementById("skipWaitingGoToStart").hidden = true
+        document.getElementById("orderProcessPaymentInfoText").hidden = true
+        document.getElementById("orderIdInfoText").hidden = true
+        // document.getElementById("OrderProcessWhenConfirmedDetailsLink").hidden = false
 
         //variables
-        let date = new Date();
-        let hours = date.getHours();
-        let minutes = date.getMinutes(); + estimatedTime;
-        let seconds = date.getSeconds();
+        let date = new Date()
+        let hours = date.getHours()
+        let minutes = date.getMinutes(); + estimatedTime
+        let seconds = date.getSeconds()
         
+        //set minutes
         if(minutes + estimatedTime > 60)
         {
-            hours++;
-            minutes = parseInt(minutes) + parseInt(estimatedTime) - 60;
+            hours++
+            minutes = parseInt(minutes) + parseInt(estimatedTime) - 60
 
             if(minutes < 10)
             {
-                minutes = "0" + minutes;
+                minutes = "0" + minutes
             }
         }
 
-        date = hours + ":" + minutes;
+        //set date
+        date = hours + ":" + minutes
         
+        //check order type
         if(type == "delivery")
         {
-            document.getElementById("orderProcessEstimatedTime").innerHTML = "Time Given " + estimatedTime + " Mins <br /> Delivery @" + date;
+            document.getElementById("orderProcessEstimatedTime").innerHTML = "Time Given " + estimatedTime + " Mins <br /> Delivery @" + date
             document.getElementById("skipWaitingGoToStart").innerHTML = "Continue"
         }
         else if(type == "pick up")
         {
-            document.getElementById("orderProcessEstimatedTime").innerHTML = "Time Given " + estimatedTime + " Mins <br /> Pick Up @" + date;
+            document.getElementById("orderProcessEstimatedTime").innerHTML = "Time Given " + estimatedTime + " Mins <br /> Pick Up @" + date
             document.getElementById("skipWaitingGoToStart").innerHTML = "Continue"
         }
         
         //update elements
-        document.getElementById("orderProcessEstimatedTime").hidden = false;
-        document.getElementById("orderProcessInfoText").innerHTML = "Order Confirmed";
-        // document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false;
+        document.getElementById("orderProcessEstimatedTime").hidden = false
+        document.getElementById("orderProcessInfoText").innerHTML = "Order Confirmed"
+        // document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false
     }
 
     function orderProcessOrderDeclined(estimatedTime, delivery, pickUp)
     {
-        //update lements
-        document.getElementById("orderProcessImgLoadingGif").remove();
-        document.getElementById("orderProcessImgDeclineCrossPng").hidden = false;
-        document.getElementById("orderProcessInfoText").innerHTML = "Order Declined";
-        document.getElementById("orderProcessPaymentInfoText").hidden = true;
-        document.getElementById("orderIdInfoText").hidden = true;
+        //update elements
+        document.getElementById("orderProcessImgLoadingGif").remove()
+        document.getElementById("orderProcessImgDeclineCrossPng").hidden = false
+        document.getElementById("orderProcessInfoText").innerHTML = "Order Declined"
+        document.getElementById("orderProcessPaymentInfoText").hidden = true
+        document.getElementById("orderIdInfoText").hidden = true
         document.getElementById("skipWaitingGoToStart").innerHTML = "Continue"
-        // document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false;
+        // document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false
     }
 
     //websocket
     if(location.protocol.includes("https"))
     {
-        socket = new WebSocket(location.origin.replace(/^https/, 'wss'));;
+        socket = new WebSocket(location.origin.replace(/^https/, 'wss'))
     }
     else
     {
-        socket = new WebSocket(location.origin.replace(/^http/, 'ws'));
+        socket = new WebSocket(location.origin.replace(/^http/, 'ws'))
     }
 
-    //send socket message
+    //handle socket message
     socket.onmessage = function(message) {
-        let regex = new RegExp("^order:<%=order._id %>:accepted:time=\\d\\d$");
-        let str = message.data;
-        let regexMatch = regex.test(str);
-        let substringTime = str.substring(str.length - 2, str.length);
+        let regex = new RegExp("^order:<%=order._id %>:accepted:time=\\d\\d$")
+        let str = message.data
+        let regexMatch = regex.test(str)
+        let substringTime = str.substring(str.length - 2, str.length)
         
         if(regexMatch == true)
         {
-            orderProcessOrderConfirmed(substringTime, '<%=order.type %>');
-            socket.close();
+            orderProcessOrderConfirmed(substringTime, '<%=order.type %>')
+            socket.close()
         }
         else if(message.data == "order:<%=order._id %>:declined")
         {
-            orderProcessOrderDeclined();
-            socket.close();
+            orderProcessOrderDeclined()
+            socket.close()
         }
-    };
+    }
 </script>
 
 <style>

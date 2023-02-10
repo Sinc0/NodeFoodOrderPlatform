@@ -13,52 +13,60 @@
 <script>    
     function searchBoxOrders(totalOrders)
     {
+        //elements
         let searchBoxInput = document.getElementById("searchBoxInput").value
-        let searchString = String(searchBoxInput).toLowerCase();
+        
+        //variables
+        let searchString = String(searchBoxInput).toLowerCase()
 
+        //update elements
         for(let c = 1; c <= totalOrders; c++)
         {
             let orderItem = document.getElementById("order-item#" + c)
 
             if(orderItem.innerHTML.toLowerCase().includes(searchString))
             {
-                orderItem.style.display = "block";
+                orderItem.style.display = "block"
             }
-
             else
             {
-                orderItem.style.display = "none";
+                orderItem.style.display = "none"
             }
-
         }
-
     }
     
     function reviewOrder(totalOrders, orderNumber, orderId)
     {
-        let orderItem = document.getElementById("order-item#" + orderNumber);
-        let orderReview = document.getElementById("order-review#" + orderNumber);
+        //elements
+        let orderItem = document.getElementById("order-item#" + orderNumber)
+        let orderReview = document.getElementById("order-review#" + orderNumber)
         
+        //update elements
         if(orderReview.style.display == "none")
         {
-            orderReview.style.display = "block";
+            orderReview.style.display = "block"
         }
-
         else if(orderReview.style.display == "block")
         {
-            orderReview.style.display = "none";
+            orderReview.style.display = "none"
         }
     }
 
     function saveScrollPosition()
     {
-        let y = window.scrollY;
-        localStorage.setItem("scrollPositionY", y);
+        //variables
+        let y = window.scrollY
+
+        //set local storage
+        localStorage.setItem("scrollPositionY", y)
     }
 
     function loadSavedScrollPosition()
     {
-        let positionY = localStorage.getItem("scrollPositionY");
+        //variables
+        let positionY = localStorage.getItem("scrollPositionY")
+
+        //update scroll position
         window.scrollTo(0, positionY)
     }
 </script>

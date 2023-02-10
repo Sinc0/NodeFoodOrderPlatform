@@ -230,7 +230,7 @@
                 
                 let buttonRemove = document.createElement("button")
                 buttonRemove.className = "cart-item-remove-one-button"
-                buttonRemove.value = cartItem[c].id;
+                buttonRemove.value = cartItem[c].id
                 buttonRemove.onclick = function(){cartItemMinus(cartItem[c].id)}
                 buttonRemove.innerHTML = " - "
                 
@@ -356,7 +356,7 @@
         }
     }
 
-    //keybinds
+    //add keybinds
     shortcut.add("escape", function() {document.getElementById("modalButton").click()})
 </script>
 

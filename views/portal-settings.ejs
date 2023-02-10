@@ -12,18 +12,20 @@
 <script>
     function editProfileCredentials()
     {
-        let profileCredentials = document.getElementById("profileCredentials");
-        let editProfileCredentials = document.getElementById("editProfileCredentials");
+        //elements
+        let profileCredentials = document.getElementById("profileCredentials")
+        let editProfileCredentials = document.getElementById("editProfileCredentials")
 
+        //update elements
         if(profileCredentials.style.display == "block" || editProfileCredentials == "none")
         {
-            profileCredentials.style.display = "none";  
-            editProfileCredentials.style.display = "block";  
+            profileCredentials.style.display = "none"
+            editProfileCredentials.style.display = "block"
         }
         else
         {
-            profileCredentials.style.display = "block";
-            editProfileCredentials.style.display = "none";
+            profileCredentials.style.display = "block"
+            editProfileCredentials.style.display = "none"
         }
     }
 </script>
