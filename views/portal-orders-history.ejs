@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="/portal.css">
     <link rel="stylesheet" href="/mobile.css">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=initMap" async defer></script>
     <title>Order History</title>
 </head>
 
-<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=initMap" async defer></script>
 <script>
     function saveScrollPosition() { localStorage.setItem("scrollPositionY", window.scrollY) }
 
@@ -253,15 +253,14 @@
     }
 
     
-    //websocket
-    var socket = null
+    //websocket    
     if(location.protocol.includes("https"))
     {
-        socket = new WebSocket("wss://" + location.hostname + ":60000");
+        socket = new WebSocket(location.origin.replace(/^https/, 'wss'));;
     }
     else
     {
-        socket = new WebSocket("ws://" + location.hostname + ":60000");
+        socket = new WebSocket(location.origin.replace(/^http/, 'ws'));
     }
     
     setInterval(refreshPage, 60000);

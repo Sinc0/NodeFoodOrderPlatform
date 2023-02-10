@@ -69,14 +69,13 @@
     }
 
     //websocket
-    var socket = null
     if(location.protocol.includes("https"))
     {
-        socket = new WebSocket("wss://" + location.hostname + ":60000");
+        socket = new WebSocket(location.origin.replace(/^https/, 'wss'));;
     }
     else
     {
-        socket = new WebSocket("ws://" + location.hostname + ":60000");
+        socket = new WebSocket(location.origin.replace(/^http/, 'ws'));
     }
 
     //send socket message

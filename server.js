@@ -37,19 +37,18 @@ app.use(errorController.get404ErrorPage) //error page
 mongoConnect(() => {})
 
 //start app
-app.listen(process.env.PORT || 3000)
+server = app.listen(process.env.PORT || 3000)
 
 //connect websocket
-const webSocket = new ws.Server({server: app, port: 60000 });
+const webSocket = new ws.Server({ server });
 
+//handle websocket messages
 webSocket.on('connection', function(socket, req)
 {   
     socket.on('message', function(message) {
         webSocket.clients.forEach(function event(client) { client.send(message) /* client.close(); */ })
     })
 })
-
-
 
 //debugging
 //console.log(process.env);
