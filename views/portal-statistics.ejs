@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/portal.css">
-    <link rel="stylesheet" href="/mobile.css">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title>Statistics</title>
 </head>
@@ -92,7 +90,7 @@
 
 <style>
     /*** scrollbar ***/
-    ::-webkit-scrollbar { height: 0px; width: 0px; }
+    ::-webkit-scrollbar { height: 0px; width: 7px; }
     #selectOrderType::-webkit-scrollbar { height: 8px; width: 0px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: black; }
@@ -100,7 +98,15 @@
 
 
     /*** elements ***/
-    body { background-color: #3c41d6; }
+    body { background-color: #3c41d6; margin: 0px; padding: 0px; }
+    p { font-family: Arial, Helvetica, sans-serif; }
+    h3 { font-family: Arial, Helvetica, sans-serif; }
+    h2 { font-family: Arial, Helvetica, sans-serif; }
+    b { font-family: Arial, Helvetica, sans-serif; }
+    a { text-decoration: none; color: black; }
+    input { font-family: Arial, Helvetica, sans-serif; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+    input { width: 392px; }
 
     /*** classes ***/
     .categoryTitle 
@@ -150,6 +156,15 @@
     .reviewItem { margin: 0px; padding: 0px; }
 
     /*** ids ***/
+    #NavBar
+    {
+        margin: 0px;
+        padding: 0px;
+        color: black;
+        background-color: white;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
     /* #title { margin: 0px; padding: 0px; text-align: center; color: white; } */
     #salesTotal { margin-bottom: 14px; text-align: center; color: white; }
     #NavBar { margin: 0px; padding: 10px 0px 10px 7px; color: white; background-color: #3c41d6; }
@@ -173,17 +188,20 @@
     @media screen and (max-width: 1000px) {
         ::-webkit-scrollbar { display: none; }
         ::-webkit-scrollbar { height: 0px; width: 0px; }
-        .customerOrder { width: 84vw; }
-        
-        #completedCustomerOrders { height: 80vh; }
+
+        button:focus, button:hover { background-color: white; color: black; }
+
+        .restaurantReview { margin-top: 0px; margin-bottom: 5px; width: 90vw; }
+        .item { width: 100%; }
+
         #restaurantStatistics { width: 89vw; height: 75vh; }
         #selectOrderType { width: 90vw; }
     }
 </style>
 
 <body onload="selectStatsType()">
-    <!-- nav bar -->
-    <a href="/portal"><nav id="NavBar"><b>❮</b></nav></a>
+    <!-- nav menu -->
+    <%- include('nav-menu-portal.ejs') %>
 
     <!-- categories -->
     <div id="selectOrderType">

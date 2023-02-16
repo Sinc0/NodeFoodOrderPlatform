@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/portal.css">
-    <link rel="stylesheet" href="/mobile.css">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title>Settings</title>
 </head>
@@ -32,10 +30,16 @@
 
 <style>
     /*** scrollbar ***/
-    ::-webkit-scrollbar { height: 0px; width: 0px; }
+    ::-webkit-scrollbar { height: 0px; width: 7px; }
 
     /*** elements ***/
-    body { background-color: #3c41d6; }
+    body { background-color: #3c41d6; margin: 0px; padding: 0px; }
+    p { font-family: Arial, Helvetica, sans-serif; }
+    b { font-family: Arial, Helvetica, sans-serif; }
+    a { text-decoration: none; color: black; }
+    input { font-family: Arial, Helvetica, sans-serif; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+    input { width: 392px; }
 
     /*** classes ***/
     .statusItem { margin: 0px; padding: 10px 0px 10px 0px; border-bottom: 1px solid black; }
@@ -44,18 +48,24 @@
     .optionButton { width: 100%; padding: 10px 0px 10px 0px; font-weight: bold; font-size: 16px; border: 0px solid black; border-bottom: 1px solid black; }
 
     /*** ids ***/
-    #NavBar { margin: 0px; padding: 10px 0px 0px 0px; padding-left: 7px; color: white; background-color: #3c41d6; }
     #categoryStatus { text-align: center; }
     #settings { margin: auto; width: 400px; }
 
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
+        ::-webkit-scrollbar { display: none; }
+        ::-webkit-scrollbar { height: 0px; width: 0px; }
+
+        button:focus, button:hover { background-color: white; color: black; }
+        
         #settings { width: 90vw; }
+        #profileCredentials { width: 94vw; }
     }
 </style>
 
 <body>
-    <a href="/portal"><nav id="NavBar"><b>❮</b></nav></a>
+    <!-- nav menu -->
+    <%- include('nav-menu-portal.ejs') %>
 
     <div id="settings">
         <!-- status -->

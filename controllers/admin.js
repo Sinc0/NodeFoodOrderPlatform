@@ -286,12 +286,13 @@ exports.postEditReview = async (req, res, next) => {
     let user = req.body.user
     let items = req.body.items
     let comment = req.body.comment
+    let name = req.body.name
     
     //user is admin
     if(validation.status == true && validation.isAdmin == true)
     {
         //update db
-        await Review.updateAdmin(reviewId, date, restaurant, rating, user, items, comment)
+        await Review.updateAdmin(reviewId, date, restaurant, rating, user, items, comment, name)
 
         //render page
         res.redirect('/admin/reviews')

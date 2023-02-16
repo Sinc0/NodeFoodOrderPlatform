@@ -32,7 +32,7 @@ class Review
     }
 
     
-    static updateAdmin(reviewId, date, restaurant, rating, user, items, comment)
+    static updateAdmin(reviewId, date, restaurant, rating, user, items, comment, name)
     {       
         //get db
         const db = getDb()
@@ -48,7 +48,7 @@ class Review
                 .collection("reviews")
                 .updateOne({_id: ObjectId(reviewId)}, {$set: {
                     restaurant: restaurant,
-                    reviewObject: { date: date, rating: rating, user: user, items: items, comment: comment },
+                    reviewObject: { date: date, rating: rating, user: user, items: items, comment: comment, name: name },
                     updatedAt: dateFormatted
                 }})
                 .then(result => {

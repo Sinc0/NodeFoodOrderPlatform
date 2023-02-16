@@ -4,9 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/main.css">
-    <link rel="stylesheet" href="/portal.css">
-    <link rel="stylesheet" href="/mobile.css">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=initMap" async defer></script>
     <title>Order History</title>
@@ -298,14 +295,27 @@
 
 <style>
     /*** scrollbar ***/
-    ::-webkit-scrollbar { height: 0px; width: 0px; }
+    ::-webkit-scrollbar { height: 0px; width: 7px; }
     #selectOrderType::-webkit-scrollbar { height: 8px; width: 0px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: black; }
-    ::-webkit-scrollbar-thumb:hover {} 
+    ::-webkit-scrollbar-thumb:hover { } 
 
     /*** elements ***/
-    body { background-color: #3c41d6; }
+    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
+    body { margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6; }
+    h3 { margin: 0px; }
+    p { margin: 0px; font-family: Arial, Helvetica, sans-serif; }
+    b { font-family: Arial, Helvetica, sans-serif; }
+    a { text-decoration: none; color: black; }
+    button { color: black; }
+    input { width: 100%; font-family: Arial, Helvetica, sans-serif; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+    input { width: 392px; }
+    input::placeholder { color: white; }
+    input:focus { outline: none; }
+    button:focus { outline: none; }
+    option { font-weight: bold; }
 
     /*** classes ***/
     .customerOrder 
@@ -374,7 +384,6 @@
     }
 
     /*** ids ***/
-    #pageTitle { margin: 20px 0px 18px 0px; padding: 0px; text-align: center; text-shadow: 1px 1px black; color: white; }
     #selectOrderType 
     { 
         display: flex; 
@@ -395,7 +404,6 @@
     #orderStatusCompleted{ font-weight: bold; color: lightgreen; }
     #buttonOrdersCompleted { background-color: lightgreen; }
     #buttonOrdersDeclined { background-color: red; }
-    #NavBar { padding-left: 7px; text-align: left; color: white; text-shadow: 1px 1px black; background-color: #3c41d6; }
     #customerOrderSetTime 
     { 
         width: 100%; 
@@ -409,29 +417,41 @@
     }   
     #acceptOrDeclineButtons { display: inline-flex; width: 100%; margin: 20px 0px 10px 0px; justify-content: center; }
     #orderItems { margin: 20px 0px 20px 0px; }
+    #customerComment
+    {
+        font-size: medium;
+        text-align: center;
+        min-width: 346px;
+        max-width: 346px;
+        min-height: 100px;
+        max-height: 250px;
+        margin-left: 0px;
+        border: 0px;
+    }
+    #customerComment::placeholder { color: black; }
 
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
         ::-webkit-scrollbar { display: none; }
         ::-webkit-scrollbar { height: 0px; width: 0px; }
+
+        button:focus, button:hover { background-color: white; color: black; }
         
         .customerOrder { width: 84vw; }
         .completeCustomerOrder  { width: calc(84vw + 24px); }
         .acceptCustomerOrder { width: 142px; }
-        .declineCustomerOrder { width: 142px; } 
+        .declineCustomerOrder { width: 142px; }
+        .item { width: 100%; }
 
         #selectOrderType { width: 90vw; margin: auto; margin-top: 10px; margin-bottom: 26px; }
         #orders { height: 78vh; }
-        #ordersToMake { height: 81vh; }
+        #customerComment { min-width: 96.5vw; max-width: 96.5vw; }
     }
 </style>
 
 <body onload="loadSavedScrollPosition(), selectOrderType(), googleMapsCalculate()" onscroll="saveScrollPosition()">
-    <a href="/portal">
-        <nav id="NavBar">
-            <p><b>❮</b></p>
-        </nav>
-    </a>
+    <!-- nav menu -->
+    <%- include('nav-menu-portal.ejs') %>
     
     <!-- categories -->    
     <div id="selectOrderType">

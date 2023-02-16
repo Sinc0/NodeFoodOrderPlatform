@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Menu</title>
-    <link rel="stylesheet" href="/portal.css">
-    <link rel="stylesheet" href="/mobile.css">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=GoogleMapsAdressAutocomplete" async defer></script>
+    <title>Edit Menu</title>
 </head>
 
 <script>
@@ -928,16 +927,72 @@
         window.scrollTo(0, positionY)
     }
 
+    function GoogleMapsAdressAutocomplete() 
+    {
+        // let map = new google.maps.Map(document.getElementById('map'), {
+            //center: {lat: -33.8688, lng: 151.2195},
+            //zoom: 13
+        // })
+        
+        let input = document.getElementById('inputAddress')
+        let autocomplete = new google.maps.places.Autocomplete(input)
+        let infowindow = new google.maps.InfoWindow()
+
+        autocomplete.addListener('place_changed', function() 
+        {
+            infowindow.close()
+            let place = autocomplete.getPlace()
+            setAddressToLocalStorage()
+
+            // if (!place.geometry) 
+            // {
+            //     return window.alert("Address not found")
+            // }
+        
+            // var address = ''
+            
+            // if (place.address_components) 
+            // {
+            //     address = [
+            //         (place.address_components[0] && place.address_components[0].short_name || ''),
+            //         (place.address_components[1] && place.address_components[1].short_name || ''),
+            //         (place.address_components[2] && place.address_components[2].short_name || '')
+            //     ].join(' ')
+            // }
+        
+            // infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address)
+                
+            //location details
+            // for (let i = 0; i < place.address_components.length; i++) 
+            // {
+            //     if(place.address_components[i].types[0] == 'country')
+            //     {
+            //         let userAddress = document.getElementById('userAddress')
+            //         let customerAdress = document.getElementById('customerAddress')
+
+            //         if(userAddress != null)
+            //         {
+            //             userAddress.value = place.formatted_address
+            //         }
+            //         if(customerAdress != null)
+            //         {
+            //             customerAdress.value = place.formatted_address
+            //         }
+            //     }
+            // }          
+        })
+    }
+
     //reset local storage
     clearLocalStorage()
 </script>
 
 <style>
     /*** scrollbar ***/
-    ::-webkit-scrollbar { height: 0px; width: 0px; }
+    ::-webkit-scrollbar { height: 0px; width: 7px; }
 
     /*** elements ***/
-    body { background-color: #3c41d6; }
+    body { background-color: #3c41d6; margin: 0px; padding: 0px; }
     input 
     { 
         padding: 10px 4px 10px 8px; 
@@ -945,15 +1000,21 @@
         font-weight: bold;
         font-size: 20px; 
         text-align: left;
+        font-family: Arial, Helvetica, sans-serif;
         color: white; 
         border: 0px solid black; 
         border-bottom: 1px solid black; 
         background-color: black; 
     }
-    textarea { font-size: 20px; outline: none; color: white; border: 0px solid black; background-color: black; }
-    label { overflow-x: scroll; white-space: nowrap; max-width: 80%;}
+    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+    input { width: 392px; }
+    label { overflow-x: scroll; white-space: nowrap; max-width: 80%; font-family: Arial, Helvetica, sans-serif; }
+    p { font-family: Arial, Helvetica, sans-serif; }
+    b { font-family: Arial, Helvetica, sans-serif; }
+    a { text-decoration: none; color: black; }
 
     /*** classes ***/
+    .buttonRemoveItem { width: 408px; }
     .menuEditCategory { width: 400px; margin: auto; padding: 0px; text-align: center; border: 0px solid black; }
     .categoryTitle 
     { 
@@ -965,15 +1026,6 @@
         text-align: left;
         font-weight: normal;
         font-size: 20px;
-        text-shadow: 1px 1px black; 
-        color: white;
-    }
-    .menu-edit-hours 
-    { 
-        margin: 20px 0px 0px 0px; 
-        padding: 0px; 
-        font-weight: bold; 
-        font-size: 20px; 
         text-shadow: 1px 1px black; 
         color: white;
     }
@@ -1020,12 +1072,18 @@
     .addCategoryItemBtn { margin: 0px 16px 0px 21px; }
 
     /*** ids ***/
+    #NavBar
+    {
+        margin: 0px;
+        padding: 0px;
+        color: black;
+        background-color: white;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    #menu { width: 94vw; }
     #NavBar { padding-left: 7px; text-align: left; color: white; text-shadow: 1px 1px black; background-color: #3c41d6; }
     #editMenu { height: 86vh; margin: auto; margin: 0px; overflow-y: scroll; }
-    #inputDescription { }
-    #inputType { }
-    #inputPhone { }
-    #inputAdress { }
     #menuEditRestaurantHours { width: 400px; margin-bottom: 20px; text-align: left; }
     #menuEditCategories { width: 400px; margin: auto; }
     #menuEditRestaurantItems { width: 400px; margin: auto; }
@@ -1056,12 +1114,22 @@
 
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
-        input { width: 87vw; margin: auto; padding-right: 10px; }
+        ::-webkit-scrollbar { display: none; }
+        ::-webkit-scrollbar { height: 0px; width: 0px; }
 
-        .menu-edit-hours { display: block; margin: auto; width: 90vw;}
+        input { width: 87vw; margin: auto; padding-right: 10px; }
+        button:focus, button:hover { background-color: white; color: black; }
+
         .menuEditCategory { width: 90vw; }
         .menuCategoryHolder { width: 90vw; }
         .categoryTitle { width: 90vw; }
+        .categoryInput { width: 22vw; }
+        .categoryArrowUp { margin: 0px; }
+        .categoryArrows { margin: 0px; width: 50px; }
+        .menu-edit-category { width: 90vw; }
+        .itemInput { width: 50vw; }
+        .buttonRemoveItem { width: 52vw; }
+        .item { width: 100%; }
 
         #editMenu { height: 93vh; width: 90vw; margin: auto; }
         #menuEditCategories { width: 90vw; }
@@ -1069,15 +1137,15 @@
         #NavBarEdit { width: 100%; margin-bottom: 30px; }
         #menuEditRestaurantItems { width: 90vw; }
         #menuEditRestaurantCategory { width: 90vw; }
+        #menu { width: 98vw; }
+        #menu input { width: 98vw; }
+        #menu-edit-button-addCategory { width: 94vw; }
     }
 </style>
 
 <body onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
-    <a href="/portal">
-        <nav id="NavBar">
-            <b>❮</b>
-        </nav>
-    </a>
+    <!-- nav menu -->
+    <%- include('nav-menu-portal.ejs') %>
         
     <div id="editMenu">
         <!-- Type -->
@@ -1263,20 +1331,24 @@
             <div id="NavBarEdit" onclick="editMenuSubmitChanges()">Confirm Changes</div>
     </div>
 
-        <!-- hidden -->
-        <form hidden id="formMenuEditData" action="/portal/updateMenu" method="POST">
-            <input id="inputAllImg" name="inputAllImg" value="img"></input>
-            <input id="inputAllPhone" name="inputAllPhone" value="phone"></input>
-            <input id="inputAllAddress" name="inputAllAddress" value="address"></input>
-            <input id="inputAllDescription" name="inputAllDescription" value="description"></input>
-            <input id="inputAllHours" name="inputAllHours" value="hours"></input>
-            <input id="inputAllTypes" name="inputAllTypes" value="types"></input>
-            <input id="inputAllCategories" name="inputAllCategories" value=""></input>  
-            <input id="inputAllItems" name="inputAllItems" value=""></input>
-            <input id="inputAllCity" name="inputAllCity" value=""></input>
-            <button>Button</button>   
-        </form>
+    <!-- hidden -->
+    <form hidden id="formMenuEditData" action="/portal/updateMenu" method="POST">
+        <input id="inputAllImg" name="inputAllImg" value="img"></input>
+        <input id="inputAllPhone" name="inputAllPhone" value="phone"></input>
+        <input id="inputAllAddress" name="inputAllAddress" value="address"></input>
+        <input id="inputAllDescription" name="inputAllDescription" value="description"></input>
+        <input id="inputAllHours" name="inputAllHours" value="hours"></input>
+        <input id="inputAllTypes" name="inputAllTypes" value="types"></input>
+        <input id="inputAllCategories" name="inputAllCategories" value=""></input>  
+        <input id="inputAllItems" name="inputAllItems" value=""></input>
+        <input id="inputAllCity" name="inputAllCity" value=""></input>
+        <button>Button</button>   
+    </form>
 
-        <script>setFormWithCorrectData();</script>
-    </body>
+    <script>setFormWithCorrectData();</script>
+
+
+    <!-- google maps API -->
+    <div hidden id="map"></div>
+</body>
 </html>

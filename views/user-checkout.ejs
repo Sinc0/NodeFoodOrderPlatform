@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/main.css">
-    <link rel="stylesheet" href="/mobile.css" />
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <script src="https://js.stripe.com/v3/"></script>
     <script src="/stripe.js" defer></script>
@@ -59,18 +57,26 @@
     ::-webkit-scrollbar { height: 0px; width: 0px; }
 
     /*** elements ***/
-    body { height: 100vh; background-color: #3c41d6 }
+    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
+    body { height: 100vh; margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6 }
+    p { margin: 0px; padding: 0px; }
+    button { color: black; }
+    button:focus { outline: none; }
+    option { font-weight: bold; }
     input 
     { 
         display: block; 
         width: calc(100% - 7px); 
         padding: 0px 0px 7px 0px; 
-        font-size: 20px; 
+        font-size: 20px;
+        font-family: Arial, Helvetica, sans-serif;
         border: 0px solid black;
         color: black;
         background-color: white; 
     }
-    p { margin: 0px; padding: 0px; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+    input::placeholder { color: white; }
+    input:focus { outline: none; }
 
     /*** classes ***/
     .category { margin: 12px 0px 0px 0px; font-weight: bold; }
@@ -122,9 +128,24 @@
     #payment-option-stripe { display: block; margin-top: 3px; }
     #selected-payment-option { position: relative; display: block; width: auto; margin: auto; }
     #navBarGoBack { padding: 7px; font-weight: bold; text-shadow: 1px 1px black; color: white; }
+    #body-checkout h3 { padding: 0px; padding-top: 5px; margin: 0px; /* background-color: yellow; */ }
+    #customerComment
+    {
+        font-size: medium;
+        text-align: center;
+        min-width: 346px;
+        max-width: 346px;
+        min-height: 100px;
+        max-height: 250px;
+        margin-left: 0px;
+        border: 0px;
+    }
+    #customerComment::placeholder { color: black; }
 
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
+        button:focus, button:hover { background-color: white; color: black; }
+
         #checkoutCenterDiv { width: 86%; margin: auto; }
         #checkoutCartItems { width: auto; }
         #body-checkout { height: 90vh; width: 90vw; margin: auto; margin-top: 7px; overflow-y: scroll; }

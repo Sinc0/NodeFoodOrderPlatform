@@ -4,12 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/main.css">
-    <link rel="stylesheet" href="/mobile.css">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/pwa/manifest.json">
+    <script src="/pwa/service-worker.js"></script>
     <title>Restaurants</title>
-    <script src="/service-worker.js"></script>
 </head>
 
 <script>
@@ -103,15 +101,22 @@
     /*** scrollbar ***/
     ::-webkit-scrollbar { height: 0px; width: 0px; }
 
+
     /*** elements ***/
-    body { height: 100vh; background-color: #3c41d6; }
+    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
+    body { height: 100vh; margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6; }
+    h1 { margin: 0px; }
+    h3 { margin: 0px; }
     p { margin: 0px; }
+    img { height: 50px; width: 50px; }
+    input { width: 100%; font-family: arial; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+    input::placeholder { color: white; }
+    input:focus { outline: none; }
+
 
     /*** classes ***/
-    .restaurantMenuItemText { width: 64%; margin: 0px; padding: 3px 7px 0px 7px; }
-    .restaurantMenuItem img { height: 100%; width: inherit; margin: 0px; }
     .restaurantMenuItem { margin-top: 30px; background-color: #f7f9f9; }
-    .restaurantMenuItemImg { border-right: 1px solid black; background-color: transparent; }
     .restaurantReview 
     { 
         width: auto; 
@@ -131,22 +136,66 @@
         margin: auto; 
         border: 0px solid black; 
         border-left: 1px solid black; 
-        border-right: 1px solid black; 
+        border-right: 1px solid black;
     }
-    .restaurantReviewHeader { width: max-content; margin: -43px 0px 0px 236px; padding: 10px; user-select: none; }
+    .restaurantReviewHeader { width: max-content; margin: -43px 0px 0px 233px; padding: 10px; user-select: none; }
     .restaurantMenuItem img { margin: 0xp; padding: 0px; height: 196px; width: 100%; }
     .restaurantCity { margin: 0px; padding: 0px; }
     .restaurantTitle { margin: 0px; padding: 0px; }
     .restaurantType { margin: 0px; padding: 0px; }
     .restaurantRating { margin: 0px; padding: 0px; }
+    .restaurant-backgroundImage { display: block; }
+    .restaurant-backgroundImage-mobile { display: none; }
+    .restaurantReview
+    {
+        margin: auto;
+        background-color: #f7f9f9;
+        text-align: left;
+        width: 100%;
+    }
+    .restaurantMenuItem 
+    { 
+        display: block; 
+        width: 697px; 
+        margin: auto; 
+        margin-top: 20px; 
+        padding: 0px;
+        border: 2px solid black; 
+        background-color: white; 
+    }
+    .restaurantMenuItemText
+    {
+        margin: 0px;
+        margin-top: 3px;
+        margin-right: 2px;
+        margin-left: 6px;
+        padding: 0px;
+        height: 149px;
+        width: 454px;
+        text-align: left;
+    }
+    .restaurantMenuItemImg
+    {
+        display: inline-block;
+        margin: 0px;
+        padding: 0px;
+        vertical-align: top;
+        height: 197px;
+        width: 228px;
+        border-right: 1px solid black;
+        background-color: black;
+    }
     
+
     /*** ids ***/
-    #searchBoxInput { height: 40px; font-weight: normal; color: white; background-color: black; }
-    #grid-restaurants { height: 88vh; overflow-y: scroll; }
+    #searchBoxInput { height: 40px; font-weight: bold; font-size: 16px; color: white; border: 0px solid black; background-color: black; }
+    #grid-restaurants { height: 88vh; overflow-y: scroll; text-align: center; }
     #searchBoxRestaurants input { display: block; margin: auto; width: 698px; text-align: center; }
     #titleClosedRestaurants { margin-top: 24px; font-size: 26px; text-shadow: 1px 1px black; opacity: 40%; color: red; }
     #body-restaurants { width: 100vw; overflow-y: scroll; overflow-x: none; }
+    #searchBoxInput::placeholder { color: white; }
     
+
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
         .restaurantMenuItemText { width: 90%; padding: 0px; }
@@ -169,9 +218,13 @@
         .restaurantReviewModal { width: 100%; background-color: black; }
         .restaurant-backgroundImage-mobile { display: block; border: 1px solid black; background-size: cover;}
         .restaurantTitle { margin: 10px 0px 0px 0px; }
-        
+        .restaurantMenuItemImg { display: block; background-color: orange; }
+        .restaurantMenuItemImg { display: none; }
+        .restaurantReview { margin-top: 0px; margin-bottom: 5px; width: 90vw; }
+        .restaurantReviewModal::-webkit-scrollbar { display: none; }
+        .restaurant-backgroundImage { display: none; }
 
-        #searchBoxRestaurants input { width: 89vw; margin-top: 10px; }
+        #searchBoxRestaurants input { display: block; width: 89vw; margin: auto; margin-top: 10px; text-align: center; }
         #grid-restaurants { height: 82vh; width: 90vw; margin: auto; }
     }
 </style>

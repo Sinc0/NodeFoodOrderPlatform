@@ -41,9 +41,7 @@ server = app.listen(process.env.PORT || 3000)
 
 //connect websocket
 const webSocket = new ws.Server({ server })
-
-//handle websocket messages
-webSocket.on('connection', function(socket, req)
+webSocket.on('connection', function(socket, req) //handle websocket messages
 {   
     socket.on('message', function(message) {
         webSocket.clients.forEach(function event(client) { client.send(message) })

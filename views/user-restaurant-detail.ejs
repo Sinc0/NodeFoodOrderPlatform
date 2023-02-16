@@ -4,8 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/main.css">
-    <link rel="stylesheet" href="/mobile.css">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title><%= pageTitle %></title>
 </head>
@@ -366,7 +364,20 @@
 
 
     /*** elements ***/
-    body { height: 100vh; background-color: #3c41d6 }
+    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
+    body { height: 100vh; margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6 }
+    input { width: 100%; font-family: Arial, Helvetica, sans-serif; }
+    textarea { border: none; outline: none; font-family: arial; background-color: #EFEFEF; }
+    textarea::placeholder { color: black; }
+    button { color: black; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+    input::placeholder { color: white; }
+    input:focus { outline: none; }
+    button:focus { outline: none; }
+    p { margin: 0px; }
+    h1 { margin: 0px; }
+    h2 { margin: 0px; }
+    h3 { margin: 0px; }
 
 
     /*** classes ***/
@@ -393,7 +404,7 @@
         text-align: left;
         color: white; 
     }
-    .menu-item-texts { user-select: none; }
+    .menu-item-texts { display: inline-block; width: 84%; padding-bottom: 10px; user-select: none; }
     .cart-item { font-weight: bold; color: white; border-bottom: 1px solid white; background-color: black; }
     .cart-item div { display: inline-block; width: 70%; padding: 0px; margin: 0px; }
     .cart-item button
@@ -424,6 +435,10 @@
     }
     .modalText { margin: 20px 0px 12px 0px; font-weight: bold; }
     .modalButton { height: 30px; width: 100px; font-weight: bold; border-radius: 0%; border: 0px solid black; background-color: white; }
+    .centered { text-align: center; }
+    .menu-item p { text-align: left; margin-left: 10px; }
+    .menu-item-add-to-cart-button { margin: 0px; margin-top: -9px; padding: 0px; width: 15%; display: inline-block; vertical-align: top; }}
+
 
     /*** ids ***/
     #menu 
@@ -440,7 +455,7 @@
         /* background-color: white; */
         /* border: 1px solid black; */
     }
-    #main-menu { display: block; height: 63vh; margin: 0px; padding: 0px; overflow-y: scroll; }
+    #main-menu { display: block; width: 100%; height: 63vh; margin: 0px; padding: 0px; overflow-y: scroll; }
     #side-cart
     {
         display: block;
@@ -472,18 +487,6 @@
         border-style: none;
         border-radius: 0px;
     }
-    #order-button-mobile
-    {
-        display: none;
-        margin: 0px;
-        margin-bottom: 2px;
-        padding: 0px;
-        height: 50px;
-        width: 100%;
-        background-color: #f7f9f9;
-        border-style: none;
-        border-radius: 0px;
-    }
     #total-price
     {
         display: block;
@@ -509,7 +512,16 @@
         /* background-color: royalblue; */
     }
     #restaurantInfo { }
-    #searchBoxInput { height: 40px; font-weight: normal; color: white; background-color: black; }
+    #searchBoxInput 
+    { 
+        height: 40px;
+        font-weight: bold; 
+        font-size: 16px;
+        text-align: center;
+        color: white; 
+        border: 0px solid black; 
+        background-color: black; 
+    }
     #informAnonModal { padding: 0px 20px 20px 20px; }
     #informAnonModal a { text-decoration: none; color: black; }
     #modalButton { position: absolute; right: -1px; top: -1px; border-radius: 0%; border: 0px solid black; background-color: white; }
@@ -531,17 +543,37 @@
         border: 2px solid white;
         background-color: black;
     }
+    #customerComment
+    {
+        font-size: medium;
+        text-align: center;
+        min-width: 346px;
+        max-width: 346px;
+        min-height: 100px;
+        max-height: 250px;
+        margin-left: 0px;
+        border: 0px;
+    }
+    #resturantsSearchBar { width: 300px; margin: 0px; padding: 0px; padding-top: 25px; margin: auto; }
+    #customerComment::placeholder { color: black; }
+
 
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
+        button:focus, button:hover { background-color: white; color: black; }
+
         .menu-item p 
         {
             text-align: left;
             margin-left: -10px;
         }
-        .menu-item { width: 93vw; }
+        .menu-item { width: 93vw; margin-top: 5px; }
         .cart-item { width: 93vw; overflow-x: scroll; white-space: nowrap; }
         .cart-item div { vertical-align: middle; overflow-x: scroll; white-space: nowrap; }
+        .menu-item-texts { width: 70%; }
+        .cart-item button { width: 45px; }
+        .item { width: 100%; }
+
         
         #main-menu { height: 67vh; margin-left: 0px; }
         #searchBox { width: 93vw; margin-top: 10px; }
@@ -550,6 +582,12 @@
         #restaurantInfo { max-height: 10vh; overflow-y: scroll; }
         #side-cart{ position: relative; display: block; bottom: initial; right: initial; width: 92vw; margin: 40px 0px 0px 0px; }
         #informAnonModal { width: 80vw; }
+        #menu { width: 98vw; }
+        /* #customerComment { min-width: 96.5vw; max-width: 96.5vw; } */
+        #order-button { display: none; }
+        #total-price { display: none; }
+        #informAnonModal { width: 84vw; }
+        #menu input { width: 98vw; }
     }
 </style>
 

@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/main.css">
-    <link rel="stylesheet" href="/mobile.css">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=GoogleMapsAdressAutocomplete" async defer></script>
     <title>Restaurants</title>
 </head>
 
@@ -17,6 +16,9 @@
         let editCard = document.getElementById("edit-restaurant#" + number)
         let cards = document.getElementsByClassName("admin-card")
         
+        //set google maps autocomplete
+        GoogleMapsAdressAutocomplete("inputAddress" + number)
+                
         //undisplay all cards
         for(let i = 0; i < cards.length; i++)
         {
@@ -88,12 +90,47 @@
             totalText.innerText = searchHits.toString() + " Restaurants"
         }
     }
+
+    function GoogleMapsAdressAutocomplete(id) 
+    {
+        //variables
+        let input = document.getElementById(id)
+        let autocomplete = new google.maps.places.Autocomplete(input)
+        let infowindow = new google.maps.InfoWindow()
+
+        //set listener
+        autocomplete.addListener('place_changed', function() 
+        {
+            infowindow.close()
+            let place = autocomplete.getPlace()
+            
+            if (!place.geometry) 
+            {
+                return window.alert("Address not found")
+            }
+        
+            let address = ''
+            
+            infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address)
+        })
+    }
 </script>
 
 <style>
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { height: 0px; width: 0px; }
+
     /*** elements ***/
-    body { background-color: #3c41d6; }
-    input { color: white; border: 0px solid black; background-color: black; }
+    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
+    body { background-color: #3c41d6; margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; }
+    button { color: black; }
+    button:focus { outline: none; }
+    p { margin: 0px; }
+    h3 { margin: 0px; }
+    input { width: 100%; font-family: Arial, Helvetica, sans-serif; color: white; border: 0px solid black; background-color: black; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+    input::placeholder { color: white; }
+    input:focus { outline: none; }
 
     /*** classes ***/
     .admin-edit { width: auto; padding: 0px 10px 0px 10px; margin: auto; user-select: none; border: 1px solid black; background-color: white; }
@@ -123,8 +160,17 @@
     .label-admin { display: block; padding: 20px 0px 0px 7px; }
     
     /*** ids ***/
-    #searchBox { width: 400px; margin: auto; border: 0px solid black; }
-    #searchBoxInput { height: 40px; font-weight: normal; color: white; background-color: black; }
+    #searchBox { width: 391px; margin: auto; border: 0px solid black; }
+    #searchBoxInput 
+    { 
+        height: 40px; 
+        padding-left: 7px; 
+        font-size: 16px; 
+        font-weight: bold; 
+        font-family: Arial, Helvetica, sans-serif; 
+        color: white; 
+        background-color: black; 
+    }
     #totalText { margin: 20px 0px 20px 0px; font-size: 20px; text-align: center; text-shadow: 1px 1px black; user-select: none; color: white; }
     #orders { width: 400px; margin: auto; }
     #cardButtons { margin: 20px 0px 0px 0px;}
@@ -135,16 +181,21 @@
     #cancelButton { }
     #editButton { margin-left: 7px; background-color: lightgreen; }
     #deleteButton { background-color: red; }
+    #searchBoxInput::placeholder { color: white; }
 
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
+        button:focus, button:hover { background-color: white; color: black; }
+
         .input-admin { width: 90%; }
-        .input-label { width: 90%; }
         .admin-card-button { width: 30%; }
+        .admin-card { width: 90vw; }
+        .admin-edit { width: 95.5vw; }
+        .input-admin { width: 80vw; }
 
         #searchBox { display: block; width: 90vw; margin: auto; margin-top: 10px; }
         #restaurants { height: 70vh; width: 90vw; }
-    }
+        }
 </style>
 
 <body>
@@ -178,7 +229,7 @@
                     <label class="label-admin">Owner</label>
                     <input class="input-admin" name="owner" value="<%=restaurants[i].owner %>"></input>
                     <label class="label-admin">Address</label>
-                    <input class="input-admin" name="address" value="<%=restaurants[i].address %>"></input>
+                    <input id="inputAddress<%=i + 1%>" class="input-admin" name="address" value="<%=restaurants[i].address %>"></input>
                     <!-- edit -->
                     <button id="editButton" class="admin-card-button">Update</button>
                 </form>
@@ -194,5 +245,8 @@
             </div>
         <% } %>
     </div>
+
+    <!-- google maps API -->
+    <div hidden id="map"></div>
 </body>
 </html>

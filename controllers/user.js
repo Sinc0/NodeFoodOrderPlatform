@@ -100,21 +100,27 @@ exports.getIndex = async (req, res, next) => {
 
     //variables
     let validation = res.locals.validation
-    let email = res.locals.userEmail
+    let restaurantUrl = res.locals.restaurantUrl
 
-    //user is admin
+    //admin
     if(validation.status == true && validation.isAdmin == true) 
     {
-        res.render('user-index.ejs', { pageTitle: 'Home', path: '/', admin: validation.isAdmin, loggedIn: true })
+        res.redirect("/admin/users")
+    }
+    
+    //portal
+    else if(validation.status == true && restaurantUrl != null)
+    {
+        res.redirect("/portal")
     }
 
-    //logged in user
+    //user
     else if(validation.status == true) 
     {
-        res.render('user-index.ejs', { pageTitle: 'Home', path: '/', admin: false, loggedIn: true, adminPosts: null })
+        res.redirect("/restaurants")
     }
 
-    //anonymous user
+    //anon
     else 
     {
         res.render('user-index.ejs', { pageTitle: 'Food Ordering Platform', path: '/', admin: false, loggedIn: false })
@@ -587,7 +593,7 @@ exports.postLogin = async (req, res, next) => {
                                 .then(restaurantCheck => {
                                     res.setHeader('Set-Cookie', 'loginCookie=' + 'id:' + result.cookieId + 'email:' + result.email + ';path=/')
                                     
-                                    if(result.email == "admin@mail.com") { res.redirect('/admin') }
+                                    if(result.email == "admin@mail.com") { res.redirect('/admin/users') }
                                     else if(restaurantCheck != null) { res.redirect('/portal') }
                                     else if(restaurantCheck == null) { res.redirect('/restaurants') }
                                 })   

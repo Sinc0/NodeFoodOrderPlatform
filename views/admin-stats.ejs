@@ -3,21 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/main.css">
-    <link rel="stylesheet" href="/mobile.css">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title>Statistics</title>
 </head>
 
 <style>
-    /*** elements ***/
-    body { background-color: #3c41d6; }
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { height: 0px; width: 0px; }
     
+    /*** elements ***/
+    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
+    body { margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6; }
+    p { margin: 0px; }
+    h3 { margin: 0px; }
+    
+    /*** classes ***/
     .category { }
     .categoryTitle{ margin: 20px 0px 0px 0px; font-size: 20px; font-weight: bold; text-shadow: 1px 1px black; color: white; }
     .categoryItem { text-shadow: 1px 1px black; color: white; }
 
+    /*** ids ***/
     #stats { display: block; width: 400px; margin: auto; text-align: center; }
+    #searchBox { width: 391px; margin: auto; border: 0px solid black; }
+    #searchBoxInput 
+    { 
+        height: 40px; 
+        padding-left: 7px; 
+        font-size: 16px; 
+        font-weight: bold; 
+        font-family: Arial, Helvetica, sans-serif; 
+        color: white; 
+        background-color: black; 
+    }
 
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
