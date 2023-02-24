@@ -218,9 +218,9 @@
         .restaurantReviewModal { width: 100%; background-color: black; }
         .restaurant-backgroundImage-mobile { display: block; border: 1px solid black; background-size: cover;}
         .restaurantTitle { margin: 10px 0px 0px 0px; }
-        .restaurantMenuItemImg { display: block; background-color: orange; }
+        .restaurantMenuItemImg { display: block; }
         .restaurantMenuItemImg { display: none; }
-        .restaurantReview { margin-top: 0px; margin-bottom: 5px; width: 90vw; }
+        .restaurantReview { margin: 0px; width: 90vw; }
         .restaurantReviewModal::-webkit-scrollbar { display: none; }
         .restaurant-backgroundImage { display: none; }
 
@@ -443,7 +443,7 @@
                                         <% var dateFormatted = dateFormatted.toString().split(" ") %>
                                         <% var dateFormatted = dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] %>
     
-                                        <p><%=sortArray[i].reviewObject.rating %><b> ★ </b> · <%=dateFormatted %> by <%=sortArray[i].reviewObject.name %> <b><%=sortArray[i].reviewObject.comment %></b></p>
+                                        <p><b><%=sortArray[i].reviewObject.rating %> ★ </b> · <%=dateFormatted %> · <%=sortArray[i].reviewObject.name %> · <b><%=sortArray[i].reviewObject.comment %></b><span> &nbsp; </span></p>
                                     </div>                                
                                 <% } %> 
                             

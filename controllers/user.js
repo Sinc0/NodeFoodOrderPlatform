@@ -711,7 +711,7 @@ exports.postRestaurantReview = async (req, res, next) => {
     let name = req.body.customerName
     let rating = req.body.rating
     let items = req.body.items
-    let comment = req.body.comment.toLowerCase()
+    let comment = req.body.comment
     let reviewObject = {date: date, name: name, rating: rating, items: null, comment: comment}
 
     //get review data
