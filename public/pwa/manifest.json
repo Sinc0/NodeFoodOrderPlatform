@@ -1,11 +1,11 @@
 {
-	"name":"PWA Test",
-	"short_name":"PWA",
+	"name":"Food Ordering Platform",
+	"short_name":"FOP",
 	"start_url":"/",
 	"display":"standalone",
 	"background_color":"#000000",
 	"theme_color":"#000000",
-	"description":"This is a PWA test.",
+	"description":"This is a food ordering platform demo",
 	"icons":[
 		{
 			"src":"/pwa/pwa-icon-192x192.png",					

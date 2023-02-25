@@ -6,12 +6,16 @@ anon
 - register customer
 - register restaurant
 - restaurants
+- restaurants searchbar
 - restaurant details
+- restaurant details searchbar
+- restaurant details cart button
 - about
 
 user
 - login
 - order food
+- review order
 - update credentials
 - logout
 

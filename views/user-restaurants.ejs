@@ -135,8 +135,8 @@
         width: 699px; 
         margin: auto; 
         border: 0px solid black; 
-        border-left: 1px solid black; 
-        border-right: 1px solid black;
+        border-left: 1px;
+        border-right: 1px;  
     }
     .restaurantReviewHeader { width: max-content; margin: -43px 0px 0px 233px; padding: 10px; user-select: none; }
     .restaurantMenuItem img { margin: 0xp; padding: 0px; height: 196px; width: 100%; }
@@ -151,7 +151,7 @@
         margin: auto;
         background-color: #f7f9f9;
         text-align: left;
-        width: 100%;
+        width: auto;
     }
     .restaurantMenuItem 
     { 
@@ -216,11 +216,11 @@
         }
         .restaurantReviewHeaderMobile { margin: 0px; padding: 10px 0px 10px 0px; background-color: transparent; }
         .restaurantReviewModal { width: 100%; background-color: black; }
-        .restaurant-backgroundImage-mobile { display: block; border: 1px solid black; background-size: cover;}
+        .restaurant-backgroundImage-mobile { display: block; -webkit-tap-highlight-color: transparent; border: 1px solid black; background-size: cover;}
         .restaurantTitle { margin: 10px 0px 0px 0px; }
         .restaurantMenuItemImg { display: block; }
         .restaurantMenuItemImg { display: none; }
-        .restaurantReview { margin: 0px; width: 90vw; }
+        .restaurantReview { margin: 0px; }
         .restaurantReviewModal::-webkit-scrollbar { display: none; }
         .restaurant-backgroundImage { display: none; }
 
@@ -296,26 +296,27 @@
                                 
                                 <h3 id="restaurantReviewHeader#<%=counter %>" class="restaurantReviewHeader" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
                             </div>
+                            
+                            <div id="restaurant-backgroundImage-mobile<%=counter %>" class="restaurant-backgroundImage-mobile" style="background-image: url('<%=restaurant.imageUrl %>');">
+                               <a style="text-decoration: none; color: black;" href="/restaurant/<%= restaurant.url %>">
+                                   <div class="restaurantMenuItemImg">
+                                       <img src="<%=restaurant.imageUrl %>">
+                                   </div>                  
+                                   
+                                   <!-- restaurant info -->
+                                   <div class="restaurantMenuItemText">
+                                       <h1 class="restaurantTitle"><%=restaurant.title %></h1> <!-- title -->
+                                       <h3 class="restaurantCity"><%=restaurant.city %></h3> <!-- location -->
+                                       <h3 class="restaurantRating" hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
+                                       <h3 class="restaurantType"><%=restaurant.type %></h3> <!-- type -->
+                                   </div>
+                               </a>
+                                   
+                               <h3 id="restaurantReviewHeaderMobile#<%=counter %>" class="restaurantReviewHeaderMobile" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
+                           </div>
                         </div>
                                     
                          <!-- restaurant profile image mobile -->
-                         <div id="restaurant-backgroundImage-mobile<%=counter %>" class="restaurant-backgroundImage-mobile" style="background-image: url('<%=restaurant.imageUrl %>');">
-                            <a style="text-decoration: none; color: black;" href="/restaurant/<%= restaurant.url %>">
-                                <div class="restaurantMenuItemImg">
-                                    <img src="<%=restaurant.imageUrl %>">
-                                </div>                  
-                                
-                                <!-- restaurant info -->
-                                <div class="restaurantMenuItemText">
-                                    <h1 class="restaurantTitle"><%=restaurant.title %></h1> <!-- title -->
-                                    <h3 class="restaurantCity"><%=restaurant.city %></h3> <!-- location -->
-                                    <h3 class="restaurantRating" hidden id="restaurantRating#<%=counter %>"></h3> <!-- rating -->
-                                    <h3 class="restaurantType"><%=restaurant.type %></h3> <!-- type -->
-                                </div>
-                            </a>
-                                
-                            <h3 id="restaurantReviewHeaderMobile#<%=counter %>" class="restaurantReviewHeaderMobile" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
-                        </div>
                     
                         <!-- reviews -->
                         <div id="restaurantsRestaurantReview#<%=counter %>" class="restaurantReviewModal" style="display: none;">
@@ -414,6 +415,7 @@
                             </a>
                                 
                             <h3 id="restaurantReviewHeaderMobile#<%=counter %>" class="restaurantReviewHeaderMobile" onclick="displayRestaurantReviews('<%=counter %>')">Reviews</h3>
+                            </div>
                         </div>
     
                         <!-- reviews -->
@@ -438,7 +440,7 @@
                             <% if(sortArray.length != 0) { %>
                                 
                                 <% for(var i = 0; i < sortArray.length; i++) { %>
-                                    <div class="restaurantReview">
+                                    <div class="restaurantReview" style="opacity: 40%;">
                                         <% var dateFormatted = sortArray[i].reviewObject.date %>
                                         <% var dateFormatted = dateFormatted.toString().split(" ") %>
                                         <% var dateFormatted = dateFormatted[2] + " " + dateFormatted[1] + " " + dateFormatted[3] %>
