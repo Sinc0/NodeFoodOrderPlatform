@@ -58,6 +58,6 @@
 - [Set Background Gif](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/views/user-index.ejs#L19-L31)
 
 ### Releases
-- [Web](https://node-food-ordering-platform.herokuapp.com/)
+- [Web](https://node-fop.herokuapp.com/)
 - [Desktop]()
 - [Mobile]()
