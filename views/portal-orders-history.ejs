@@ -1,13 +1,14 @@
-<!-- resturantPortal/orders-declined.ejs -->
+<!-- portal/orders/history.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<%= googleMapsApiKey%>&callback=initMap" async defer></script>
     <title>Order History</title>
 </head>
+
 
 <script>
     function saveScrollPosition() 
@@ -16,12 +17,14 @@
         localStorage.setItem("scrollPositionY", window.scrollY) 
     }
 
+
     function loadSavedScrollPosition() 
     { 
         //update scroll position
         window.scrollTo(0, localStorage.getItem("scrollPositionY")) 
     }
     
+
     function showOrders(type)
     {
         //elements
@@ -71,10 +74,12 @@
         }
     }
 
+
     function refreshPage() 
     { 
         location.reload()
     }
+
 
     function selectOrderType()
     {
@@ -94,6 +99,7 @@
         else if(selectedCategory == "cook") { showOrders('cook') }
     }
 
+
     function orderCompleted(buttonValue, orderId) 
     { 
         //submit form
@@ -109,6 +115,7 @@
         //submit form
         document.getElementById("updateOrderWithTime#" + buttonValue).submit()
     }        
+
 
     function orderDeclined(buttonValue, orderId)
     {
@@ -128,6 +135,7 @@
         document.getElementById("acceptCustomerOrder#" + orderNumber).value = time
         document.getElementById("inputOrderTime#" + orderNumber).value = time
     }
+
 
     function initMapX(origin, destination) 
     {
@@ -173,13 +181,13 @@
                          
                         //set address values
                         document.getElementById("originAddress").hidden = true
-                        document.getElementById("destinationAddress").innerHTML = "address: " + destinationAddress + ""
+                        document.getElementById("destinationAddress").innerHTML = "Address: " + destinationAddress + ""
                         // document.getElementById("originAddress").innerHTML = "start: " + originAddress + ""
                         // document.getElementById("destinationAddress").hidden = true
 
                         //set driving values
-                        document.getElementById('travelDistance').innerHTML = "driving distance: " + travelDistance.replaceAll(",", "") + ""
-                        document.getElementById('travelETA').innerHTML = "driving time: " + travelETA + ""
+                        document.getElementById('travelDistance').innerHTML = "Distance: " + travelDistance.replaceAll(",", "") + ""
+                        document.getElementById('travelETA').innerHTML = "Time: " + travelETA + ""
                     }
                     else
                     {
@@ -195,6 +203,7 @@
             }
         })
     }
+
 
     function initMap() 
     {
@@ -274,11 +283,13 @@
         // })
     }
 
+
     function googleMapsCalculate() 
     { 
         document.getElementById("googleMapsCalculate").click() 
     }
     
+
     //websocket    
     if(location.protocol.includes("https"))
     {
@@ -292,6 +303,206 @@
     //set refresh interval
     setInterval(refreshPage, 60000)
 </script>
+
+
+<body onload="loadSavedScrollPosition(), selectOrderType(), googleMapsCalculate()" onscroll="saveScrollPosition()">
+    <!-- nav menu -->
+    <%- include('nav-menu-portal.ejs') %>
+    
+    <!-- categories -->    
+    <div id="selectOrderType">
+        <button id="buttonOrdersAccept" class="selectCategoryButton" onclick="showOrders('accept')">Accept (<%=ordersAccept.length %>)</button>
+        <button id="buttonOrdersCook" class="selectCategoryButton" onclick="showOrders('cook')">Cook (<%=ordersCook.length %>)</button>
+        <button id="buttonOrdersCompleted" class="selectCategoryButton" onclick="showOrders('completed')">Completed (<%=ordersCompleted.length %>)</button>
+        <button id="buttonOrdersDeclined" class="selectCategoryButton" onclick="showOrders('declined')">Declined (<%=ordersDeclined.length %>)</button>
+    </div>
+
+    <div id="orders">
+
+        <!-- accept orders -->
+        <div id="ordersAccept">
+            <div hidden id="mapGoogleMaps"></div> <!-- map for google maps api -->
+                
+            <!-- sort orders -->
+            <% orders = ordersAccept.sort((a, b) => b.date - a.date) %>
+                
+            <!-- order -->
+            <% for(var c = orders.length - 1; c >= 0; c--) { %>
+                
+                <% if(c == orders.length - 1) { %>
+                    <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
+                <% } else { %>
+                    <div hidden id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>" style="opacity: 50%;">
+                <% } %>
+
+                <p id=""><b>ESTIMATED TIME</b></p>
+                <select id="customerOrderSetTime" onchange="orderTime('<%=c %>', this.value)">
+                    <option value="60">60 min</option>
+                    <option value="50">50 min</option>
+                    <option value="40">40 min</option>
+                    <option value="30">30 min</option>
+                    <option value="20">20 min</option>
+                    <option value="15">10 min</option>
+                </select>
+                <br />
+                <br />
+
+                <p id="customerTitle"><b>CUSTOMER</b></p>
+        
+                <!-- google maps -->
+                <button hidden id="googleMapsCalculate" onclick="initMapX('<%=restaurant.address %>', '<%=orders[c].customerAddress %>')">Google Distance Matrix</button>
+                
+                <!-- details -->
+                <p id="orderPlaced">Ordered: <%=orders[c].placedAt.toString().substring(0, 8) %>-<%=orders[c].placedAt.toString().substring(15).replaceAll(" ", "-") %></p>
+                <p id="orderUser">Name: <%=orders[c].customerName.split("@")[0].toUpperCase() %></p>
+                <p id="orderPhone">Phone: <%=orders[c].customerPhone.toString().replace(" ", "") %></p>
+
+                <div id="orderItems">
+                    <p id="orderItemsTitle"><b>ITEMS</b></p>
+                    <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
+                        <p class="orderItem"> · <%= orders[c].products.items[x].quantity %> x <%= orders[c].products.items[x].name %></p>
+                    <% } %>
+                    <% if(orders[c].customerComment != '') { %><p id="orderComment"> · <%=orders[c].customerComment %></p><% } %>
+                </div>
+                
+                <!-- delivery details -->
+                <% if(orders[c].type == "delivery") { %>
+                    <div id="output">
+                        <!-- <p id="googleMapsEstimationTitle"><b>Google Maps Estimation</b></p> -->
+                        <p id="googleMapsEstimationTitle"><b><%=orders[c].type.toUpperCase() %></b></p>
+                        <p id="destinationAddress"></p>
+                        <p id="travelDistance"></p>
+                        <p id="travelETA"></p>
+                        <p id="originAddress"></p>
+                    </div>
+                <% } else { %>
+                    <p><b><%=orders[c].type.toUpperCase() %></b></p>
+                <% } %>
+                
+                <!-- accept or decline -->
+                <div id="acceptOrDeclineButtons">
+                    <form id="updateOrderWithTime#<%=c %>" action="/portal/order-update" method="POST">
+                        <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
+                        <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="60"></input>
+                        <input hidden id="inputOrderStatus#<%=c %>" name="status" value="confirmed"></input>
+                        <button id="acceptCustomerOrder#<%=c %>" class="acceptCustomerOrder" type="button" value="60" onclick="orderAccepted('<%=c %>', '<%= orders[c]._id %>', value)">ACCEPT</button> <!-- onclick = ws data to client, update db, ws data to restaurant -->
+                        <button id="declineCustomerOrder#<%=c %>" class="declineCustomerOrder" type="button" onclick="orderDeclined('<%=c %>', '<%= orders[c]._id %>')">DECLINE</button>
+                    </form>
+                </div>
+            </div>
+            <% } %>
+        </div>
+
+        <!-- cook orders -->
+        <div id="ordersCook">
+            <% for(var c = 0; c <= ordersCook.length - 1; c++) { %>
+                
+                <% if(c == 0) { %>
+                <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
+
+                    <!-- header -->
+                    <p id="">Type: <%=ordersCook[c].type.toUpperCase() %></p>
+                    <p id="">Confirmed: <%=ordersCook[c].confirmedAt.toString().substring(0, 5) %></p>
+                    <p id="">ETA: <%=ordersCook[c].estimatedCompletionTime %> min</p>
+                    
+
+                    <!-- details -->
+                    <div id="orderFooter">
+                        <% if(ordersCook[c].type == "delivery") { %>
+                            <p id="orderUser">Name: <%=ordersCook[c].customerName.split("@")[0].toUpperCase() %></p> 
+                            <!-- <p id="orderPhone">Phone: <%=ordersCook[c].customerPhone.toString().replace(" ", "") %></p> -->
+                            <!-- <p id="orderDeliveryAddress">Address: <%=ordersCook[c].customerAddress %></p> -->
+                        <% } else { %>
+                            <!-- <p id="orderUser">Name: <%=ordersCook[c].customerName.split("@")[0].toUpperCase() %></p>  -->
+                            <!-- <p id="orderPhone">Phone: <%=ordersCook[c].customerPhone.toString().replace(" ", "") %></p></p>  -->
+                        <% } %> 
+                    </div>
+                    
+                    <!-- items -->
+                    <div id="orderItems">
+                        <p>Items:</p>
+                        <% for(var x = 0; x < ordersCook[c].products.items.length; x++) { %>
+                            <p class="orderItem"> · <%= ordersCook[c].products.items[x].quantity %> x <%= ordersCook[c].products.items[x].name %></p>
+                        <% } %>
+
+                        <% if(ordersCook[c].customerComment != '') { %> <p id="orderComment"> · <%=ordersCook[c].customerComment %></p> <% } %>
+                    </div>
+                        
+                    <!-- mark as completed -->
+                    <form id="updateOrderCompletionTime#<%=c %>" action="/portal/order-update" method="POST">
+                        <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=ordersCook[c]._id %>'></input>
+                        <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="<%=ordersCook[c].estimatedCompletionTime %>"></input>
+                        <input hidden id="inputOrderStatus#<%=c %>" name="status" value="completed"></input>
+                        <button id="completeCustomerOrder#<%=c %>" class="completeCustomerOrder" type="button" onclick="orderCompleted('<%=c %>', '<%= ordersCook[c]._id %>')">&#10003;</button>
+                    </form>
+                </div>
+                <% } %>
+            <% } %>
+        </div>
+        
+        <!-- declined orders -->
+        <div id="ordersDeclined">
+            <% for(var c = ordersDeclined.length - 1; c >= 0; c--) { %>
+                <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
+                    <p id="orderStatusDeclined">#<%=c + 1%> <%=ordersDeclined[c].status %></p>
+                    <br />
+
+                    <p id="orderNumber"></p>
+                    <p>ID: <%=ordersDeclined[c]._id %></p>
+                    <p id="orderPlaced">Date: <%=ordersDeclined[c].placedAt.toString().substring(0, 8) %>-<%=ordersDeclined[c].placedAt.toString().substring(15).replaceAll(" ", "-") %></p>
+                    <p id="orderUser">Name: <%=ordersDeclined[c].customerName.split("@")[0] %></p>
+                    <p id="">Email: <%=ordersDeclined[c].customerName %></p>
+                    <p id="orderPhone">Phone: <%=ordersDeclined[c].customerPhone.toString().replace(" ", "") %></p>
+                    <p>Address: <%=ordersDeclined[c].customerAddress %></p>
+                    
+                    <br />
+                    <p id="">Items:</p>
+                    <div id="orderItemsDeclined">
+                    <% for(var x = 0; x < ordersDeclined[c].products.items.length; x++) { %>
+                        <p class="orderItem"> · <%= ordersDeclined[c].products.items[x].quantity %> x <%= ordersDeclined[c].products.items[x].name %></p>
+                    <% } %>
+                    <% if(ordersDeclined[c].customerComment != '') { %> <p id="orderComment"> · <%=ordersDeclined[c].customerComment %></p> <% } %>
+                    </div>
+                    <br />
+
+                    <p>Total: <%=ordersDeclined[c].totalPrice %></p>
+                </div>
+            <% } %>
+        </div>
+        
+        <!-- completed orders -->
+        <div id="ordersCompleted">
+            <% for(var c = ordersCompleted.length - 1; c >= 0; c--) { %>
+                <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
+                    <p id="orderStatusCompleted">#<%=c + 1%> <%=ordersCompleted[c].status %></p>
+                    <br />
+                    
+                    <p>ID: <%=ordersCompleted[c]._id %></p>
+
+                    <!-- order details -->
+                    <p id="orderPlaced">Date: <%=ordersCompleted[c].placedAt.toString().substring(0, 8) %>-<%=ordersCompleted[c].placedAt.toString().substring(15).replaceAll(" ", "-") %></p>
+                    <p id="orderUser">Name: <%=ordersCompleted[c].customerName.split("@")[0] %></p>
+                    <p>Email: <%=ordersCompleted[c].customerName %></p>
+                    <p id="orderUser">Phone: <%=ordersCompleted[c].customerPhone.toString().replace(" ", "") %></p>
+                    <p id="orderUser">Address: <%=ordersCompleted[c].customerAddress %></p>
+                    <br />
+
+                    <div id="orderItemsCompleted">
+                        <span>Items:</span>
+                        <% for(var x = 0; x < ordersCompleted[c].products.items.length; x++) { %>
+                            <p class="orderItem"> · <%= ordersCompleted[c].products.items[x].quantity %> x <%= ordersCompleted[c].products.items[x].name %></p>
+                        <% } %>
+                        <% if(ordersCompleted[c].customerComment != '') { %> <p id="orderComment"> · <%=ordersCompleted[c].customerComment %></p> <% } %>
+                    </div>
+                    <br />
+                    
+                    <p>Total: <%=ordersCompleted[c].totalPrice %></p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+
 
 <style>
     /*** scrollbar ***/
@@ -323,7 +534,8 @@
         width: 378px; 
         margin: auto; 
         /* margin-bottom: 20px;  */
-        padding: 12px; 
+        padding: 12px;
+        font-size: 18px;
         user-select: none; 
         border: 1px solid black;
         border-bottom: 2px solid black; 
@@ -335,7 +547,7 @@
         margin: 0px; 
         padding: 12px; 
         font-weight: bold;
-        font-size: 16px;
+        font-size: 18px;
         border: 1px solid black; 
     }
     .customerOrder 
@@ -357,7 +569,8 @@
         padding: 20px;
         text-align: center; 
         font-weight: bold; 
-        font-size: 16px; 
+        font-size: 24px;
+        text-transform: capitalize;
         border: 0px solid black;
         border-top: 1px solid black;
         background-color: lightgreen; 
@@ -400,23 +613,23 @@
     #ordersDeclined { display: none; }
     #ordersAccept { display: none; }
     #ordersDeclined { display: none; }
-    #orderStatusDeclined { font-weight: bold; color: red; }
-    #orderStatusCompleted{ font-weight: bold; color: lightgreen; }
+    #orderStatusDeclined { text-transform: uppercase; font-weight: bold; color: red; }
+    #orderStatusCompleted{ text-transform: uppercase; font-weight: bold; color: lightgreen; }
     #buttonOrdersCompleted { background-color: lightgreen; }
     #buttonOrdersDeclined { background-color: red; }
     #customerOrderSetTime 
     { 
         width: 100%; 
-        padding: 0px 0px 12px 0px;
-        text-align-last: center; 
-        font-size: 16px;
-        font-weight: bold; 
+        padding: 0px;
+        text-align-last: left; 
+        font-size: 18px;
+        font-weight: normal;
         outline: none;
         border: 0px solid black;
         background-color: white; 
-    }   
+    }
     #acceptOrDeclineButtons { display: inline-flex; width: 100%; margin: 20px 0px 10px 0px; justify-content: center; }
-    #orderItems { margin: 20px 0px 20px 0px; }
+    #orderItems { margin: 20px 0px 20px 0px; font-weight: normal; }
     #customerComment
     {
         font-size: medium;
@@ -448,184 +661,4 @@
         #customerComment { min-width: 96.5vw; max-width: 96.5vw; }
     }
 </style>
-
-<body onload="loadSavedScrollPosition(), selectOrderType(), googleMapsCalculate()" onscroll="saveScrollPosition()">
-    <!-- nav menu -->
-    <%- include('nav-menu-portal.ejs') %>
-    
-    <!-- categories -->    
-    <div id="selectOrderType">
-        <button id="buttonOrdersAccept" class="selectCategoryButton" onclick="showOrders('accept')">Accept (<%=ordersAccept.length %>)</button>
-        <button id="buttonOrdersCook" class="selectCategoryButton" onclick="showOrders('cook')">Cook (<%=ordersCook.length %>)</button>
-        <button id="buttonOrdersCompleted" class="selectCategoryButton" onclick="showOrders('completed')">Completed (<%=ordersCompleted.length %>)</button>
-        <button id="buttonOrdersDeclined" class="selectCategoryButton" onclick="showOrders('declined')">Declined (<%=ordersDeclined.length %>)</button>
-    </div>
-
-    <div id="orders">
-        <!-- accept orders -->
-        <div id="ordersAccept">
-            <div hidden id="mapGoogleMaps"></div> <!-- map for google maps api -->
-                
-            <!-- sort orders -->
-            <% orders = ordersAccept.sort((a, b) => b.date - a.date) %>
-                
-            <!-- order -->
-            <% for(var c = orders.length - 1; c >= 0; c--) { %>
-                <% if(c == orders.length - 1) { %>
-                    <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
-                <% } else { %>
-                    <div hidden id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>" style="opacity: 50%;">
-                <% } %>
-
-                <select id="customerOrderSetTime" onchange="orderTime('<%=c %>', this.value)">
-                    <option value="60">60 min</option>
-                    <option value="50">50 min</option>
-                    <option value="40">40 min</option>
-                    <option value="30">30 min</option>
-                    <option value="20">20 min</option>
-                    <option value="15">10 min</option>
-                </select>
-        
-                <!-- google maps -->
-                <button hidden id="googleMapsCalculate" onclick="initMapX('<%=restaurant.address %>', '<%=orders[c].customerAddress %>')">Google Distance Matrix</button>
-                
-                <!-- order details -->
-                <p id="orderPlaced">ordered at <%=orders[c].placedAt.toString().substring(0, 8) %>-<%=orders[c].placedAt.toString().substring(15).replaceAll(" ", "-") %></p>
-                <p id="orderUser">ordered by <%=orders[c].customerName.split("@")[0] %> / phone: <%=orders[c].customerPhone.toString().replace(" ", "") %></p>
-                
-                <div id="orderItems">
-                <% for(var x = 0; x < orders[c].products.items.length; x++) { %>
-                    <p class="orderItem"><%= orders[c].products.items[x].quantity %> <%= orders[c].products.items[x].name %></p>
-                <% } %>
-                <% if(orders[c].customerComment != null) { %> <p id="orderComment"><%=orders[c].customerComment %></p> <% } %>
-                </div>
-                <!-- <p><%=orders[c]._id %></p> -->
-                <!-- <p><%=orders[c].customerAddress %></p> -->
-                <!-- <p><%=orders[c].totalPrice %> total amount</p> -->
-                <!-- <p><%=orders[c].customerName %></p> -->
-                
-                <!-- order delivery details -->
-                <% if(orders[c].type == "delivery") { %>
-                    <div id="output">
-                        <!-- <p id="googleMapsEstimationTitle"><b>Google Maps Estimation</b></p> -->
-                        <p id="googleMapsEstimationTitle"><b><%=orders[c].type.toUpperCase() %></b></p>
-                        <p id="travelDistance"></p>
-                        <p id="travelETA"></p>
-                        <p id="originAddress"></p>
-                        <p id="destinationAddress"></p>
-                    </div>
-                <% } else { %>
-                    <p><b><%=orders[c].type.toUpperCase() %></b></p>
-                <% } %>
-                
-                <!-- accept or decline order -->
-                <div id="acceptOrDeclineButtons">
-                    <form id="updateOrderWithTime#<%=c %>" action="/portal/order-update" method="POST">
-                        <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=orders[c]._id %>'></input>
-                        <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="60"></input>
-                        <input hidden id="inputOrderStatus#<%=c %>" name="status" value="confirmed"></input>
-                        <button id="acceptCustomerOrder#<%=c %>" class="acceptCustomerOrder" type="button" value="60" onclick="orderAccepted('<%=c %>', '<%= orders[c]._id %>', value)">ACCEPT</button> <!-- onclick = ws data to client, update db, ws data to restaurant -->
-                        <button id="declineCustomerOrder#<%=c %>" class="declineCustomerOrder" type="button" onclick="orderDeclined('<%=c %>', '<%= orders[c]._id %>')">DECLINE</button>
-                    </form>
-                </div>
-            </div>
-            <% } %>
-        </div>
-
-        <!-- cook orders -->
-        <div id="ordersCook">
-            <% for(var c = 0; c <= ordersCook.length - 1; c++) { %> <!-- order -->
-                <% if(c == 0) { %>
-                <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
-                    <p id="orderHeader">
-                        <!-- #<%=c + 1%> ·  -->
-                        <%=ordersCook[c].type.toUpperCase() %> · 
-                        <%=ordersCook[c].confirmedAt.toString().substring(0, 5) %> · 
-                        <%=ordersCook[c].estimatedCompletionTime %> min
-                    </p>
-                    
-                    <div id="orderItems">
-                        <% for(var x = 0; x < ordersCook[c].products.items.length; x++) { %>
-                            <p class="orderItem"><%= ordersCook[c].products.items[x].quantity %> <%= ordersCook[c].products.items[x].name %></p>
-                        <% } %>
-                        <% if(ordersCook[c].customerComment != null) { %> <p id="orderComment"><%=ordersCook[c].customerComment %></p> <% } %>
-                    </div>
-            
-                    <!-- order details -->
-                    <div id="orderFooter">
-                        <% if(ordersCook[c].type == "delivery") { %>
-                            <p id="orderUser"><%=ordersCook[c].customerName.split("@")[0] %></p> 
-                            <p id="orderPhone"><%=ordersCook[c].customerPhone.toString().replace(" ", "") %></p>
-                            <p id="orderDeliveryAddress"><%=ordersCook[c].customerAddress %></p>
-                        <% } else { %>
-                                <p id="orderUser">ordered by <%=ordersCook[c].customerName.split("@")[0] %> / phone <%=ordersCook[c].customerPhone.toString().replace(" ", "") %></p> 
-                        <% } %> 
-                    </div>
-                    <!-- <p id="orderPlaced">confirmed at <%=ordersCook[c].confirmedAt.toString().substring(0, 5) %></p> -->
-                    <!-- <p>completion time <%=ordersCook[c].estimatedCompletionTime %> mins</p> -->
-                    <!-- <p><%=ordersCook[c]._id %></p> -->
-                    <!-- <p><%=ordersCook[c].totalPrice %> total amount</p> -->
-                    <!-- <p><%=ordersCook[c].customerName %></p> -->
-                        
-                    <!-- mark order as completed -->
-                    <form id="updateOrderCompletionTime#<%=c %>" action="/portal/order-update" method="POST">
-                        <input hidden id="inputOrderId#<%=c %>" name="orderId" value='<%=ordersCook[c]._id %>'></input>
-                        <input hidden id="inputOrderTime#<%=c %>" name="estimatedTime" value="<%=ordersCook[c].estimatedCompletionTime %>"></input>
-                        <input hidden id="inputOrderStatus#<%=c %>" name="status" value="completed"></input>
-                        <button id="completeCustomerOrder#<%=c %>" class="completeCustomerOrder" type="button" onclick="orderCompleted('<%=c %>', '<%= ordersCook[c]._id %>')">&#10003; mark as completed</button>
-                    </form>
-                </div>
-                <% } %>
-            <% } %>
-        </div>
-        
-        <!-- declined orders -->
-        <div id="ordersDeclined">
-            <% for(var c = ordersDeclined.length - 1; c >= 0; c--) { %>
-                <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
-                    <p id="orderStatusDeclined"><%=ordersDeclined[c].status %></p>
-                    <p id="orderNumber">completion number #<%=c + 1%></p>
-
-                    <!-- order details -->
-                    <p id="orderPlaced">ordered at <%=ordersDeclined[c].placedAt.toString().substring(0, 8) %>-<%=ordersDeclined[c].placedAt.toString().substring(15).replaceAll(" ", "-") %></p>
-                    <p id="orderUser">ordered by <%=ordersDeclined[c].customerName.split("@")[0] %> / phone: <%=ordersDeclined[c].customerPhone.toString().replace(" ", "") %></p>
-                    <div id="orderItemsDeclined">
-                    <% for(var x = 0; x < ordersDeclined[c].products.items.length; x++) { %>
-                        <p class="orderItem"><%= ordersDeclined[c].products.items[x].quantity %> <%= ordersDeclined[c].products.items[x].name %></p>
-                    <% } %>
-                    <% if(ordersDeclined[c].customerComment != null) { %> <p id="orderComment"><%=ordersDeclined[c].customerComment %></p> <% } %>
-                    </div>
-                    <p><%=ordersDeclined[c].customerAddress %></p>
-                    <p><%=ordersDeclined[c].totalPrice %> total amount</p>
-                    <p><%=ordersDeclined[c].customerName %></p>
-                    <p><%=ordersDeclined[c]._id %></p>
-                </div>
-            <% } %>
-        </div>
-        
-        <!-- completed orders -->
-        <div id="ordersCompleted">
-            <% for(var c = ordersCompleted.length - 1; c >= 0; c--) { %>
-                <div id="customerOrder#<%=c %>" class="customerOrder" data-value="<%=c %>">
-                    <p id="orderStatusCompleted"><%=ordersCompleted[c].status %></p>
-                    <p id="orderNumber">completion number #<%=c + 1%></p>
-
-                    <!-- order details -->
-                    <p id="orderPlaced">ordered at <%=ordersCompleted[c].placedAt.toString().substring(0, 8) %>-<%=ordersCompleted[c].placedAt.toString().substring(15).replaceAll(" ", "-") %></p>
-                    <p id="orderUser">ordered by <%=ordersCompleted[c].customerName.split("@")[0] %> / phone: <%=ordersCompleted[c].customerPhone.toString().replace(" ", "") %></p>
-                    <div id="orderItemsCompleted">
-                        <% for(var x = 0; x < ordersCompleted[c].products.items.length; x++) { %>
-                            <p class="orderItem"><%= ordersCompleted[c].products.items[x].quantity %> <%= ordersCompleted[c].products.items[x].name %></p>
-                        <% } %>
-                        <% if(ordersCompleted[c].customerComment != null) { %> <p id="orderComment"><%=ordersCompleted[c].customerComment %></p> <% } %>
-                    </div>
-                    <p><%=ordersCompleted[c].customerAddress %></p>
-                    <p><%=ordersCompleted[c].totalPrice %> total amount</p>
-                    <p><%=ordersCompleted[c].customerName %></p>
-                    <p><%=ordersCompleted[c]._id %></p>
-                </div>
-            <% } %>
-        </div>
-    </div>
-</body>
 </html>

@@ -7,14 +7,16 @@
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <link rel="manifest" href="/pwa/manifest.json">
     <script src="/service-worker.js"></script>
-    <title>Food Ordering Platform</title>
+    <title>Food Order Platform</title>
 </head>
+
 
 <script>
     function goBack()
     {
         window.history.back()
     }
+
 
     function setBackgroundGif()
     {
@@ -30,6 +32,30 @@
         html.style.backgroundImage = "url(/gifs/" + randomNumber + ".gif)"
     }
 </script>
+
+
+<body id="bodyIndex" onload="setBackgroundGif()">
+    <!-- admin view -->
+    <% if(admin != null && admin == true) { %>
+        <%- include('nav-menu-admin.ejs') %>
+        <h2 style="text-align: center;">Admin Portal</h2>
+
+    <!-- user view -->
+    <% } else if(loggedIn == true) { %>
+        <%- include('nav-menu-user.ejs') %>
+
+    <!-- anon view -->
+    <% } else { %> 
+        <div id="indexAnonMenu">
+            <div id="indexAnonMenuLoginButton" class="indexAnonMenuItem"><a href="/login"><b><p>Login</p></b></a></div>
+            <div id="indexAnonMenuRegisterButton" class="indexAnonMenuItem"></li><a href="/register"><b><p>Register</p></b></a></div>
+            <div id="indexAnonMenuRestaurantsButton" class="indexAnonMenuItem"></li><a href="/restaurants"><b><p>Restaurants</p></b></a></div>
+            <div id="indexAnonMenuAboutButton" class="indexAnonMenuItem"><a href="/about"><b><p>About</p></b></a></div>
+            <!-- <div id="indexAnonMenuContactButton" class="indexAnonMenuItem"><a href="/contact"><b><p>Contact</p></b></a></div> -->
+        </div>
+    <% } %>
+</body>
+
 
 <style>
     /*** scrollbar ***/
@@ -65,6 +91,7 @@
         position: absolute;
         top: 40%;
         left: 50%;
+        font-size: 20px;
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
         text-align: center;
@@ -79,26 +106,4 @@
         #indexAnonMenu { width: 94vw; top: 0; margin: auto; margin-top: 85%; text-align: center; }
     }
 </style>
-
-<body id="bodyIndex" onload="setBackgroundGif()">
-    <!-- admin view -->
-    <% if(admin != null && admin == true) { %>
-        <%- include('nav-menu-admin.ejs') %>
-        <h2 style="text-align: center;">Admin Portal</h2>
-
-    <!-- user view -->
-    <% } else if(loggedIn == true) { %>
-        <%- include('nav-menu-user.ejs') %>
-
-    <!-- anon view -->
-    <% } else { %> 
-        <div id="indexAnonMenu">
-            <div id="indexAnonMenuLoginButton" class="indexAnonMenuItem"><a href="/login"><b><p>Login</p></b></a></div>
-            <div id="indexAnonMenuRegisterButton" class="indexAnonMenuItem"></li><a href="/register"><b><p>Register</p></b></a></div>
-            <div id="indexAnonMenuRestaurantsButton" class="indexAnonMenuItem"></li><a href="/restaurants"><b><p>Restaurants</p></b></a></div>
-            <div id="indexAnonMenuAboutButton" class="indexAnonMenuItem"><a href="/about"><b><p>About</p></b></a></div>
-            <!-- <div id="indexAnonMenuContactButton" class="indexAnonMenuItem"><a href="/contact"><b><p>Contact</p></b></a></div> -->
-        </div>
-    <% } %>
-</body>
 </html>

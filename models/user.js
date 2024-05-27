@@ -605,5 +605,6 @@ class User
     }
 }
 
+
 //exports
 module.exports = User

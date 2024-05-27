@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=GoogleMapsAdressAutocomplete" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<%= googleMapsApiKey%>&callback=GoogleMapsAdressAutocomplete" async defer></script>
     <title><%=pageTitle %></title>
 </head>
+
 
 <script>
     function checkQueryParams()
@@ -36,6 +37,7 @@
         }
     }
 
+
     function editProfilePassword()
     {
         //elements
@@ -52,6 +54,7 @@
         }
     }
 
+
     function editProfileCredentials()
     {
         //elements
@@ -67,6 +70,7 @@
             editProfileCredentials.style.display = "none"
         }
     }
+
 
     function passwordMatch()
     {
@@ -92,6 +96,7 @@
             confirmButton.hidden = false
         }
     }
+
 
     function GoogleMapsAdressAutocomplete() 
     {
@@ -148,6 +153,66 @@
         })
     }
 </script>
+
+
+<body onload="checkQueryParams()">
+    <!-- admin nav menu -->
+    <% if(admin != null && admin == true) { %> 
+        <%- include('nav-menu-admin.ejs') %>
+
+    <!-- user nav menu -->
+    <% } else if(loggedIn == true) { %>
+        <%- include('nav-menu-user.ejs') %>
+
+    <!-- anon nav menu -->
+    <% } else { %> 
+        <%- include('nav-menu-anon.ejs') %>
+    <% } %>
+    
+    <div id="main-profile">
+        <!-- change credentials -->
+        <!-- <p class="categoryTitle">Credentials</p> -->
+        <!-- <button class="profile-buttons" onclick="editProfileCredentials()"><b>change credentials</b></button><br /> -->
+        <div id="editProfileCredentials">
+            <form action="/user-update-credentials" method="POST" onkeydown="return event.key != 'Enter';">
+                <input hidden value="<%=email %>" name="email"></input>
+                <input hidden id="userAddress" value="<%=address %>" name="address" placeholder="address"></input>
+                
+                <p class="categoryTitle">Name</p>
+                <input value="<%=name %>" maxlength="30" name="name" placeholder="name"></input><br/>
+                <p class="categoryTitle">Phone</p>
+                <input value="<%=phone %>" maxlength="12" name="phone" placeholder="phone"></input><br/>
+                <p class="categoryTitle">Address</p>
+                <input id="searchInput" maxlength="1000" value="<%=address %>"><br />
+                
+                <button id="buttonUpdateCredentials" class="profile-buttons confirm-button" type="submit"><b>Confirm Changes</b></button>
+            </form>
+        </div>
+
+        <!-- change password -->
+        <!-- <button class="profile-buttons" onclick="editProfilePassword()"><b>change password</b></button> -->
+        <!-- <p class="category">Password</p> -->
+        <!-- <div id="editProfilePassword">
+            <form action="/user-update-password" method="POST" onkeydown="return event.key != 'Enter';">
+                <p hidden id="errorText"></p>
+                <input hidden value="<%=email %>" name="email"></input>
+                
+                <p class="categoryTitle">Password Old</p>
+                <input required name="oldPassword" type="password"></input><br/>
+                <p class="categoryTitle">Password New</p>
+                <input required id="newPassword" name="newPassword" type="password" onkeyup="passwordMatch()"><br />
+                <p class="categoryTitle">Password New Confirm</p>
+                <input required id="confirmPassword" name="confirmPassword" type="password" onkeyup="passwordMatch()"><br />
+                
+                <button id="buttonUpdatePassword" class="profile-buttons confirm-button" type="submit"><b>Update Password</b></button>
+            </form>
+        </div> -->
+
+        <!-- google maps API -->
+        <div hidden id="map"></div>
+    </div>
+</body>
+
 
 <style>
     /*** scrollbar ***/
@@ -233,62 +298,4 @@
         #editProfileCredentials { width: inherit; }
     }
 </style>
-
-<body onload="checkQueryParams()">
-    <!-- admin nav menu -->
-    <% if(admin != null && admin == true) { %> 
-        <%- include('nav-menu-admin.ejs') %>
-
-    <!-- user nav menu -->
-    <% } else if(loggedIn == true) { %>
-        <%- include('nav-menu-user.ejs') %>
-
-    <!-- anon nav menu -->
-    <% } else { %> 
-        <%- include('nav-menu-anon.ejs') %>
-    <% } %>
-    
-    <div id="main-profile">
-        <!-- change credentials -->
-        <!-- <p class="categoryTitle">Credentials</p> -->
-        <!-- <button class="profile-buttons" onclick="editProfileCredentials()"><b>change credentials</b></button><br /> -->
-        <div id="editProfileCredentials">
-            <form action="/user-update-credentials" method="POST" onkeydown="return event.key != 'Enter';">
-                <input hidden value="<%=email %>" name="email"></input>
-                <input hidden id="userAddress" value="<%=address %>" name="address" placeholder="address"></input>
-                
-                <p class="categoryTitle">Name</p>
-                <input value="<%=name %>" maxlength="30" name="name" placeholder="name"></input><br/>
-                <p class="categoryTitle">Phone</p>
-                <input value="<%=phone %>" maxlength="12" name="phone" placeholder="phone"></input><br/>
-                <p class="categoryTitle">Address</p>
-                <input id="searchInput" maxlength="1000" value="<%=address %>"><br />
-                
-                <button id="buttonUpdateCredentials" class="profile-buttons confirm-button" type="submit"><b>Confirm Changes</b></button>
-            </form>
-        </div>
-
-        <!-- change password -->
-        <!-- <button class="profile-buttons" onclick="editProfilePassword()"><b>change password</b></button> -->
-        <!-- <p class="category">Password</p> -->
-        <!-- <div id="editProfilePassword">
-            <form action="/user-update-password" method="POST" onkeydown="return event.key != 'Enter';">
-                <p hidden id="errorText"></p>
-                <input hidden value="<%=email %>" name="email"></input>
-                
-                <p class="categoryTitle">Password Old</p>
-                <input required name="oldPassword" type="password"></input><br/>
-                <p class="categoryTitle">Password New</p>
-                <input required id="newPassword" name="newPassword" type="password" onkeyup="passwordMatch()"><br />
-                <p class="categoryTitle">Password New Confirm</p>
-                <input required id="confirmPassword" name="confirmPassword" type="password" onkeyup="passwordMatch()"><br />
-                
-                <button id="buttonUpdatePassword" class="profile-buttons confirm-button" type="submit"><b>Update Password</b></button>
-            </form>
-        </div> -->
-
-        <!-- google maps API -->
-        <div hidden id="map"></div>
-    </div>
-</body>
 </html>

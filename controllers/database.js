@@ -1,10 +1,13 @@
 //imports
 const mongodb = require('mongodb')
 const MongoClient = mongodb.MongoClient
-const connectionString = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@programmingprojects.cpk0g.mongodb.net/${process.env.MONGO_DEFAULT_DB}?retryWrites=true&w=majority&useUnifiedTopology=true`
+// const configs = require('../settings.json')
+const connectionString = `mongodb+srv://${process.env.MONGO_USER || configs.MONGO_USER}:${process.env.MONGO_PASSWORD || configs.MONGO_PASSWORD}@programmingprojects.cpk0g.mongodb.net/${process.env.MONGO_DEFAULT_DB || configs.MONGO_DEFAULT_DB}?retryWrites=true&w=majority&useUnifiedTopology=true`
+
 
 //variables
 let db
+
 
 //connect to db
 const mongoConnect = (callback) => {
@@ -21,11 +24,13 @@ const mongoConnect = (callback) => {
               })
 }
 
+
 //check db exists
 const getDb = () => {
     if(db) { return db }
     else { throw 'Database not found!' }
 }
+
 
 //exports
 exports.mongoConnect = mongoConnect

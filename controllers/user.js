@@ -3,7 +3,8 @@ const Restaurant = require('../models/restaurant')
 const User = require('../models/user')
 const Order = require('../models/order')
 const Review = require('../models/review')
-const stripe = require('stripe')('sk_test_51HEENaLFUjzCbJftCmqLgpLjLGgjY1OOI81cAAzEBmozVIetOISREohGCuuJq55KX3FGhFHvx9FENcU2zRdrIGmn00wIaynLwu')
+// const configs = require('../settings.json')
+const stripe = require('stripe')(process.env.STRIPE_PAYMENTS_API_KEY || configs.STRIPE_PAYMENTS_API_KEY)
 
 
 //functions
@@ -31,7 +32,7 @@ function parseLoginCookie(cookieId)
 }
 
 
-//get
+//gets
 exports.getRestaurantDetail = async (req, res, next) => {
     //variables
     let restaurantUrl = req.params.restaurantUrl
@@ -295,7 +296,8 @@ exports.getProfile = async (req, res, next) => {
             email: user.email,
             address: user.address,
             phone: user.phone,
-            update: update
+            update: update,
+            googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || configs.GOOGLE_MAPS_API_KEY
         })
     }
 
@@ -371,7 +373,7 @@ exports.getAbout = (req, res, next) => {
 }
 
 
-//post
+//posts
 exports.postOrder = async (req, res, next) => {
     //log
     process.stdout.write('post-order > ')

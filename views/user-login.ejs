@@ -1,3 +1,4 @@
+<!-- user/login.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,25 @@
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title><%= pageTitle %></title> 
 </head>
+
+
+<body>
+    <!-- nav menu -->
+    <%- include('nav-menu-anon.ejs') %>
+
+    <div id="main-login">
+        <!-- login error message -->
+        <p id="statusText"><%=statusText %></p>
+        
+        <!-- login form -->
+        <form action="/login-post" method="POST">
+            <input required type="email" id="email" name="email" placeholder="Email" value="">
+            <input required type="password" id="password" name="password" placeholder="Password" value="">
+            <button id="buttonLogin" class="btn" type="submit"><b>Login</b></button>
+        </form>
+    </div>
+</body>
+
 
 <style>
     /*** scrollbar ***/
@@ -32,7 +52,7 @@
         width: 382px;
         margin: 0px;
         padding: 7px 0px 7px 10px; 
-        font-size: 20px; 
+        font-size: 22px; 
         font-weight: bold;
         font-family: Arial, Helvetica, sans-serif;
         text-align: left; 
@@ -48,7 +68,7 @@
     /*** ids ***/
     #main-login {  margin: auto; width: 400px; text-align: center; }
     #title { margin: 0px; margin-bottom: 20px; text-shadow: 1px 1px black; color: white; }
-    #buttonLogin { margin-top: -1px; }
+    #buttonLogin { margin-top: -1px; font-size: 18px; }
     #statusText { margin: 10px 0px 20px 0px; font-size: 20px; font-weight: bold; text-shadow: 1px 1px black; color: white; }
     
     /*** mobile ***/
@@ -61,21 +81,4 @@
         #main-login { width: 93vw; }
     }
 </style>
-
-<body>
-    <!-- nav menu -->
-    <%- include('nav-menu-anon.ejs') %>
-
-    <div id="main-login">
-        <!-- login error message -->
-        <p id="statusText"><%=statusText %></p>
-        
-        <!-- login form -->
-        <form action="/login-post" method="POST">
-            <input required type="email" id="email" name="email" placeholder="Email" value="">
-            <input required type="password" id="password" name="password" placeholder="Password" value="">
-            <button id="buttonLogin" class="btn" type="submit"><b>Login</b></button>
-        </form>
-    </div>
-</body>
 </html>

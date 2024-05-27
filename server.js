@@ -8,15 +8,17 @@ const dotenv = require('dotenv')
 const errorController = require('./controllers/error')
 const mongoConnect = require('./controllers/database').mongoConnect
 const routes = require("./routes.js")
-
 const app = express()
+
 
 //env
 dotenv.config()
 
+
 //set
 app.set('view engine', 'ejs') //set templating engine
 app.set('views', 'views') //set views folder
+
 
 //use
 app.use(helmet()) //secure http headers
@@ -33,11 +35,14 @@ app.use(errorController.get404ErrorPage) //error page
 // app.use(userRoutes)
 // app.use(portalRoutes)
 
+
 //connect db
 mongoConnect(() => {})
 
+
 //start app
 server = app.listen(process.env.PORT || 3000)
+
 
 //connect websocket
 const webSocket = new ws.Server({ server })
@@ -47,6 +52,7 @@ webSocket.on('connection', function(socket, req) //handle websocket messages
         webSocket.clients.forEach(function event(client) { client.send(message) })
     })
 })
+
 
 //debugging
 //console.log(process.env)

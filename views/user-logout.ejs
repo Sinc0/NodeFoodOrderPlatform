@@ -8,6 +8,33 @@
     <title><%= pageTitle %></title>
 </head>
 
+
+<body>
+    <!-- nav menu -->
+    <% if(admin != null && admin == true) { %>  <!-- admin view -->
+        <%- include('nav-menu-admin.ejs') %>
+    <% } else if(loggedIn == true) { %> <!-- logged in user view -->
+        <%- include('nav-menu-user.ejs') %>
+    <% } %>
+    
+    <div id="main-logout">
+        <!-- logout error message-->
+        <p><%=statusText %></p>
+
+        <!-- logout confirm text -->
+        <h3 id="title">Are you sure you wanna logout?</h3>
+        
+        <!-- logout buttons -->
+        <div style="display: inline-block;"><button id="buttonNo" class="btn" onclick="window.history.back()"><b>No</b></button></div>
+        <div style="display: inline-block;">
+            <form action="/logout-post" method="POST">
+                <button id="buttonYes" class="btn" type="submit"><b>Yes</b></button>
+            </form>
+        </div>
+    </div>
+</body>
+
+
 <style>
     /*** scrollbar ***/
     ::-webkit-scrollbar { height: 0px; width: 0px; }
@@ -35,29 +62,4 @@
         #main-logout { width: 90vw; margin-top: 10px; }
     }
 </style>
-
-<body>
-    <!-- nav menu -->
-    <% if(admin != null && admin == true) { %>  <!-- admin view -->
-        <%- include('nav-menu-admin.ejs') %>
-    <% } else if(loggedIn == true) { %> <!-- logged in user view -->
-        <%- include('nav-menu-user.ejs') %>
-    <% } %>
-    
-    <div id="main-logout">
-        <!-- logout error message-->
-        <p><%=statusText %></p>
-
-        <!-- logout confirm text -->
-        <h3 id="title">Are you sure you wanna logout?</h3>
-        
-        <!-- logout buttons -->
-        <div style="display: inline-block;"><button id="buttonNo" class="btn" onclick="window.history.back()"><b>No</b></button></div>
-        <div style="display: inline-block;">
-            <form action="/logout-post" method="POST">
-                <button id="buttonYes" class="btn" type="submit"><b>Yes</b></button>
-            </form>
-        </div>
-    </div>
-</body>
 </html>

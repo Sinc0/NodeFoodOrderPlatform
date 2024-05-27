@@ -1,3 +1,4 @@
+<!-- user/order/process.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,7 @@
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title>Order Process</title>
 </head>
+
 
 <script>
     function orderProcessOrderConfirmed(estimatedTime, type)
@@ -57,6 +59,7 @@
         // document.getElementById("OrderProcessWhenConfirmedStartLink").hidden = false
     }
 
+
     function orderProcessOrderDeclined(estimatedTime, delivery, pickUp)
     {
         //update elements
@@ -99,6 +102,28 @@
     }
 </script>
 
+
+<body onload="">
+    <div id="order-process-content">
+        <!-- images -->
+        <img id="orderProcessImgLoadingGif" src="/loading.gif"></img>
+        <img hidden id="orderProcessImgCheckmarkPng" src="/checkmark.png"></img>
+        <img hidden id="orderProcessImgDeclineCrossPng" src="/crossmark.png"></img>
+
+        <!-- text -->
+        <p id="orderProcessPaymentInfoText">Payment Successful</p>
+        <p id="orderIdInfoText">Order <%=order._id %></p>
+        <p id="orderProcessInfoText">Awaiting Restaurant Response...</p>
+        <p hidden id="orderProcessEstimatedTime"></p>
+
+        <!-- links -->
+        <!-- <a href="/order-details/<%=order._id %>" hidden id="OrderProcessWhenConfirmedDetailsLink">Details</a> -->
+        <!-- <a href="/" hidden id="OrderProcessWhenConfirmedStartLink">Start</a> -->
+        <a href="/orders" id="skipWaitingGoToStart">Skip</a>
+    </div>
+</body>
+
+
 <style>
     /*** scrollbar ***/
     ::-webkit-scrollbar { width: 0px; }
@@ -137,24 +162,4 @@
         #order-process-content { width: 90vw; }
     }
 </style>
-
-<body onload="">
-    <div id="order-process-content">
-        <!-- images -->
-        <img id="orderProcessImgLoadingGif" src="/loading.gif"></img>
-        <img hidden id="orderProcessImgCheckmarkPng" src="/checkmark.png"></img>
-        <img hidden id="orderProcessImgDeclineCrossPng" src="/crossmark.png"></img>
-
-        <!-- text -->
-        <p id="orderProcessPaymentInfoText">Payment Successful</p>
-        <p id="orderIdInfoText">Order <%=order._id %></p>
-        <p id="orderProcessInfoText">Awaiting Restaurant Response...</p>
-        <p hidden id="orderProcessEstimatedTime"></p>
-
-        <!-- links -->
-        <!-- <a href="/order-details/<%=order._id %>" hidden id="OrderProcessWhenConfirmedDetailsLink">Details</a> -->
-        <!-- <a href="/" hidden id="OrderProcessWhenConfirmedStartLink">Start</a> -->
-        <a href="/orders" id="skipWaitingGoToStart">Skip</a>
-    </div>
-</body>
 </html>

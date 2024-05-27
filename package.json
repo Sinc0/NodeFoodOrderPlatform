@@ -1,5 +1,5 @@
 {
-  "name": "node-food-ordering-platform",
+  "name": "node-food-order-platform",
   "version": "1.0.0",
   "description": "This is a student project, made to learn about Node.js, EJS, Express.js, Mongodb, Payment APIs.",
   "main": "server.js",

@@ -26,6 +26,7 @@ function parseLoginCookie(cookieId)
     else { return null }
 }
 
+
 //exports
 module.exports = (req, res, next) => {
     //variables

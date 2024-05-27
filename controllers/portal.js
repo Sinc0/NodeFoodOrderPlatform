@@ -3,6 +3,7 @@ const Restaurant = require('../models/restaurant')
 const User = require('../models/user')
 const Order = require('../models/order')
 const Review = require('../models/review')
+// const configs = require('../settings.json')
 
 
 //functions
@@ -30,7 +31,7 @@ function parseLoginCookie(cookieId)
 }
 
 
-//get
+//gets
 exports.getRestaurantIndex = async (req, res, next) => {
     //log
     process.stdout.write('portal > index')
@@ -76,7 +77,8 @@ exports.getRestaurantOrdersHistory = async (req, res, next) => {
         ordersCook: ordersCook,
         ordersCompleted: ordersCompleted,
         ordersDeclined: ordersDeclined,
-        restaurant: restaurant
+        restaurant: restaurant,
+        googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || configs.GOOGLE_MAPS_API_KEY,
     })
 }
 
@@ -91,7 +93,8 @@ exports.getRestaurantMenuEdit = async (req, res, next) => {
     let restaurant = await Restaurant.findByUrl(restaurantUrl)
 
     //render page
-    res.render('portal-menu-edit.ejs', { 
+    res.render('portal-menu-edit.ejs', {
+        googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || configs.GOOGLE_MAPS_API_KEY, 
         restaurant: restaurant
     })
 }
@@ -104,13 +107,17 @@ exports.getRestaurantStats = async (req, res, next) => {
     //variables
     let userEmail = res.locals.userEmail
     let restaurantUrl = res.locals.restaurantUrl
-    let orders = await Order.fetchAllCompleted(restaurantUrl)
+    let ordersDeclined = await Order.fetchAllDeclined(restaurantUrl)
+    let ordersCompleted = await Order.fetchAllCompleted(restaurantUrl)
+    let ordersAll = await Order.fetchAllByRestaurantUrl(restaurantUrl)
     let restaurant = await Restaurant.findByUrl(restaurantUrl)
     var reviews = await Review.fetchAllByRestaurantUrl(restaurantUrl)
 
     //render page
     res.render('portal-statistics.ejs', {
-        orders: orders,
+        ordersAll: ordersAll,
+        ordersCompleted: ordersCompleted,
+        ordersDeclined: ordersDeclined,
         restaurant: restaurant,
         reviews: reviews
     })
@@ -192,7 +199,8 @@ exports.getRestaurantLogout = async (req, res, next) => {
 }
 
 
-//post
+
+//posts
 exports.postRestaurantUpdateMenu = async (req, res, next) => {
     //log
     process.stdout.write('portal > post > update-menu')

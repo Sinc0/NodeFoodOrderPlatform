@@ -4,6 +4,7 @@ const getDb = require('../controllers/database').getDb
 const mongodb = require('mongodb')
 const ObjectId = mongodb.ObjectId
 
+
 class Review
 {
     static create(user, restaurant, reviewObject, orderId)
@@ -132,6 +133,7 @@ class Review
                 .catch(err => console.log(err))
     }
 }
+
 
 //exports
 module.exports = Review

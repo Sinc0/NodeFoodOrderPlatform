@@ -1,3 +1,4 @@
+<!-- 404.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error 404</title>
 </head>
+
+
+<body>
+    <!-- nav bar -->
+    <%- include('nav-menu-anon.ejs') %>
+    
+    <!-- error message -->
+    <h1 id="errorMessage">Page does not exist</h1>
+</body>
+
 
 <style>
     /*** elements ***/
@@ -24,13 +35,4 @@
         text-shadow: 2px 1px black; 
     }
 </style>
-
-<body>
-    <!-- nav bar -->
-    <%- include('nav-menu-anon.ejs') %>
-    
-    <!-- error message -->
-    <h1 id="errorMessage">Page does not exist</h1>
-</body>
-
 </html>

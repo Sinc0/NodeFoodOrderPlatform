@@ -1,3 +1,4 @@
+<!-- portal/statistics.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,11 +8,13 @@
     <title>Statistics</title>
 </head>
 
+
 <script>
     function refreshPage()
     {
         location.reload()
     }
+
 
     function showStats(type)
     {
@@ -66,6 +69,7 @@
         }
     }
 
+
     function selectStatsType()
     {
         //elements
@@ -84,17 +88,272 @@
         else if(selectedCategory == "reviews") { showStats('reviews'); buttonReviews.scrollIntoView() }
     }
 
+
     //set refresh interval
     setInterval(refreshPage, 60000)
 </script>
 
+
+<body onload="selectStatsType()">
+    <!-- nav menu -->
+    <%- include('nav-menu-portal.ejs') %>
+
+
+    <!-- categories -->
+    <div id="selectOrderType">
+        <button id="buttonSales" class="selectStatsButton" onclick="showStats('sales')">Sales</button>
+        <button id="buttonOrders" class="selectStatsButton" onclick="showStats('orders')">Orders</button>
+        <button id="buttonCustomers" class="selectStatsButton" onclick="showStats('customers')">Customers</button>
+        <button id="buttonReviews" class="selectStatsButton" onclick="showStats('reviews')">Reviews</button>
+    </div>
+
+
+    <!-- variables -->
+    <% var thisYear = new Date().getFullYear() %>
+    <% var prevYear = (new Date().getFullYear() - 1) %>
+    <% var thisMonth = new Date().getMonth() %>
+    <% var thisMonthName = new Date().toLocaleString("en-US", { month: "long" }) %>
+
+    <% var totalSales = 0 %>
+    <% var totalSalesThisYear = 0 %>
+    <% var totalSalesPrevYear = 0 %>
+    <% var totalSalesThisMonth = 0 %>
+    
+    <% var totalSalesJanuary = 0 %>
+    <% var totalSalesFebruary = 0 %>
+    <% var totalSalesMars = 0 %>
+    <% var totalSalesApril = 0 %>
+    <% var totalSalesMay = 0 %>
+    <% var totalSalesJune = 0 %>
+    <% var totalSalesJuly = 0 %>
+    <% var totalSalesAugust = 0 %>
+    <% var totalSalesSeptember = 0 %>
+    <% var totalSalesOctober = 0 %>
+    <% var totalSalesNovember = 0 %>
+    <% var totalSalesDecember = 0 %>
+    
+    <% var totalSalesMondays = 0 %>
+    <% var totalSalesTuesdays = 0 %>
+    <% var totalSalesWednesdays = 0 %>
+    <% var totalSalesThursdays = 0 %>
+    <% var totalSalesFridays = 0 %>
+    <% var totalSalesSaturdays = 0 %>
+    <% var totalSalesSundays = 0 %>
+    <% var totalDeliveryCompleted = 0 %>
+    <% var totalDeliveryDeclined = 0 %>
+    <% var totalPickUpCompleted = 0 %>
+    <% var totalPickUpDeclined = 0 %>
+    
+    <% var customers = [] %>
+    <% var menuItems = [] %>
+
+    <% var orders = ordersAll %>
+    <% var totalOrders = ordersCompleted.length + ordersDeclined.length %>
+    <!-- <% var totalCompleted = ordersCompleted.length %> -->
+    <!-- <% var totalDeclined = ordersDeclined.length %> -->
+
+
+    <!-- title -->
+    <!-- <h2 id="title">Statistics</h2> -->
+    
+    
+    <!-- set menu items -->
+    <% for (let i in restaurant.menuItems) { %>
+        <% menuItems.push({"id": restaurant.menuItems[i].id, "title": restaurant.menuItems[i].title, "price": restaurant.menuItems[i].price, "count": 0}) %>
+    <% } %>
+        
+
+    <!-- calculate stats 1 -->
+    <% for (var i = 0; i < ordersCompleted.length; i++) { %>
+        <% let orderProductItems = JSON.stringify(ordersCompleted[i].products.items) %>
+        
+        <!-- <p><%= orderProductItems %></p> -->
+        
+        <% for (let p in ordersCompleted[i].products.items) { %>
+            <% let pname = ordersCompleted[i].products.items[p].name %>
+            <% let pquantity = ordersCompleted[i].products.items[p].quantity %>
+
+            <!-- <p>--- <%=pname %> x <%=pquantity %> ---</p> -->
+            
+            <% for (let n in menuItems) { %>
+                <% let miName = menuItems[n].title %>
+                <% let miQuantity = menuItems[n].count %>
+                
+                <% if(pname == miName) { %>
+                    <% menuItems[n].count += pquantity  %>
+                <% } %>
+
+                <!-- <p><%=miName %></p> -->
+            <% } %>
+        <% } %>
+
+        <!-- <% let productName = ordersCompleted[i].products %> -->
+        <!-- <% let productQuantity = ordersCompleted[i].products %> -->
+    <% } %>
+    
+
+    <!-- calculate stats 2 -->
+    <% for (var i = 0; i < ordersCompleted.length; i++) { %>
+        <% var orderTotalAmount = parseFloat((ordersCompleted[i].totalPrice.slice(1))); %>
+        <% totalSales += orderTotalAmount %>
+        <% var orderDate = Date.parse(ordersCompleted[i].date) %>
+        <% var dateObject = new Date(orderDate) %>
+        <% var orderDate = dateObject %>
+        
+        <!-- sales this year -->
+        <% if (orderDate.getFullYear() == thisYear) { %> <% totalSalesThisYear += orderTotalAmount %> <% } %>
+
+        <!-- sales prev year -->
+        <% if (orderDate.getFullYear() == prevYear) { %> <% totalSalesPrevYear += orderTotalAmount %> <% } %>
+        
+        <!-- sales this month -->
+        <% if (orderDate.getMonth() == thisMonth) { %> <% totalSalesThisMonth += orderTotalAmount %> <% } %>
+
+        <!-- sales weekdays -->
+        <% if (orderDate.getDay() == 1 && orderDate.getFullYear() == thisYear) { %> <% totalSalesMondays += orderTotalAmount %> <% } %>
+        <% if (orderDate.getDay() == 2 && orderDate.getFullYear() == thisYear) { %> <% totalSalesTuesdays += orderTotalAmount %> <% } %>
+        <% if (orderDate.getDay() == 3 && orderDate.getFullYear() == thisYear) { %> <% totalSalesWednesdays += orderTotalAmount %> <% } %> 
+        <% if (orderDate.getDay() == 4 && orderDate.getFullYear() == thisYear) { %> <% totalSalesThursdays += orderTotalAmount %> <% } %>
+        <% if (orderDate.getDay() == 5 && orderDate.getFullYear() == thisYear) { %> <% totalSalesFridays += orderTotalAmount %> <% } %> 
+        <% if (orderDate.getDay() == 6 && orderDate.getFullYear() == thisYear) { %> <% totalSalesSaturdays += orderTotalAmount %> <% } %>
+        <% if (orderDate.getDay() == 0 && orderDate.getFullYear() == thisYear) { %> <% totalSalesSundays += orderTotalAmount %> <% } %>
+
+        <!-- sales months -->
+        <% if (orderDate.getMonth() == 0 && orderDate.getFullYear() == thisYear) { %> <% totalSalesJanuary += orderTotalAmount %> <% } %>
+        <% if (orderDate.getMonth() == 1 && orderDate.getFullYear() == thisYear) { %> <% totalSalesFebruary+= orderTotalAmount %> <% } %>
+        <% if (orderDate.getMonth() == 2 && orderDate.getFullYear() == thisYear) { %> <% totalSalesMars += orderTotalAmount %> <% } %> 
+        <% if (orderDate.getMonth() == 3 && orderDate.getFullYear() == thisYear) { %> <% totalSalesApril += orderTotalAmount %> <% } %>
+        <% if (orderDate.getMonth() == 4 && orderDate.getFullYear() == thisYear) { %> <% totalSalesMay+= orderTotalAmount %> <% } %> 
+        <% if (orderDate.getMonth() == 5 && orderDate.getFullYear() == thisYear) { %> <% totalSalesJune += orderTotalAmount %> <% } %>
+        <% if (orderDate.getMonth() == 6 && orderDate.getFullYear() == thisYear) { %> <% totalSalesJuly += orderTotalAmount %> <% } %>
+        <% if (orderDate.getMonth() == 7 && orderDate.getFullYear() == thisYear) { %> <% totalSalesAugust += orderTotalAmount %> <% } %>
+        <% if (orderDate.getMonth() == 8 && orderDate.getFullYear() == thisYear) { %> <% totalSalesSeptember += orderTotalAmount %> <% } %>
+        <% if (orderDate.getMonth() == 9 && orderDate.getFullYear() == thisYear) { %> <% totalSalesOctober += orderTotalAmount %> <% } %>
+        <% if (orderDate.getMonth() == 10 && orderDate.getFullYear() == thisYear) { %> <% totalSalesNovember += orderTotalAmount %> <% } %>
+        <% if (orderDate.getMonth() == 11 && orderDate.getFullYear() == thisYear) { %> <% totalSalesDecember += orderTotalAmount %> <% } %>
+    <% } %>
+
+
+    <!-- calculate stats 3 -->
+    <% for(var counter = 0; counter < orders.length; counter++) { %>
+
+        <% var orderCustomer = orders[counter].user %>
+
+        <!-- orders -->
+        <% if(orders[counter].type == "delivery" && orders[counter].status == "completed") { %> <% totalDeliveryCompleted++; %> <% } %>
+        <% if(orders[counter].type == "delivery" && orders[counter].status == "declined") { %> <% totalDeliveryDeclined++; %> <% } %>
+        <% if(orders[counter].type == "pick up" && orders[counter].status == "completed") { %> <% totalPickUpCompleted++; %> <% } %>
+        <% if(orders[counter].type == "pick up" && orders[counter].status == "declined") { %> <% totalPickUpDeclined++; %> <% } %>
+
+        <!-- unique customers -->
+        <% customers.push(orderCustomer) %>  
+        
+    <% } %> 
+
+    <div id="restaurantStatistics">
+        <!-- sales -->
+        <div id="restaurantSales" class="statsCategory">
+            <h3 id="salesTotal" class="categoryTitle"><%=thisYear %> · Total · $<%=totalSalesThisYear %></h3>
+            <!-- <h3 id="salesTotal" class="categoryTitle">This Month: $<%=totalSalesThisMonth %></h3> -->
+            <!-- <h3 id="salesTotal" class="categoryTitle">AVG Per Order: $<%=totalSalesThisYear / ordersCompleted.length %></h3> -->
+            
+            <h3 class="categoryTitle">Weekdays</h3>
+            <p class="categoryItem">Mondays · $<%=totalSalesMondays %></p>
+            <p class="categoryItem">Tuesdays · $<%=totalSalesTuesdays %></p>
+            <p class="categoryItem">Wednesdays · $<%=totalSalesWednesdays %></p>
+            <p class="categoryItem">Thursdays · $<%=totalSalesThursdays %></p>
+            <p class="categoryItem">Fridays · $<%=totalSalesFridays %></p>
+            <p class="categoryItem">Saturdays · $<%=totalSalesSaturdays %></p>
+            <p class="categoryItem">Sundays · $<%=totalSalesSundays %></p>
+            
+            <h3 class="categoryTitle">Months</h3>
+            <p class="categoryItem">January · $<%=totalSalesJanuary%></p>
+            <p class="categoryItem">February · $<%=totalSalesFebruary%></p>
+            <p class="categoryItem">Mars · $<%=totalSalesMars %></p>
+            <p class="categoryItem">April · $<%=totalSalesApril %></p>
+            <p class="categoryItem">May · $<%=totalSalesMay %></p>
+            <p class="categoryItem">June · $<%=totalSalesJune %></p>
+            <p class="categoryItem">July · $<%=totalSalesJuly %></p>
+            <p class="categoryItem">August · $<%=totalSalesAugust %></p>
+            <p class="categoryItem">September · $<%=totalSalesSeptember %></p>
+            <p class="categoryItem">October · $<%=totalSalesOctober %></p>
+            <p class="categoryItem">November · $<%=totalSalesNovember %></p>
+            <p class="categoryItem">December · $<%=totalSalesDecember %></p>
+            
+            <h3 class="categoryTitle">Items</h3>
+            <% for (let i in menuItems.sort((a, b) => { if(a.count < b.count) return 1; if(a.count > b.count) return -1; return 0; })) { %>
+                <p class="categoryItem">
+                    <%=menuItems[i].count %> x $<%= menuItems[i].price %> · <%=menuItems[i].title %> · $<%=menuItems[i].price * menuItems[i].count%>
+                </p>
+            <% } %>
+            
+            <!-- <p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Sales Weekdays All Time</b></p> -->
+        </div>
+
+        <!-- orders -->
+        <div id="restaurantOrders" class="statsCategory">
+            <p class="categoryHeader categoryItem">Total · <%=totalOrders %></p>
+            
+            <p class="categoryHeader categoryItem">All Completed · <%=ordersCompleted.length %></p>
+            <p class="categoryItem">· Completed Delivery · <%=totalDeliveryCompleted %></p>
+            <p class="categoryItem">· Completed Pick Up · <%=totalPickUpCompleted %></p>
+            
+            <p class="categoryHeader categoryItem">All Declined · <%=ordersDeclined.length %></p>
+            <p class="categoryItem">· Declined Delivery · <%=totalDeliveryDeclined %></p>
+            <p class="categoryItem">· Declined Pick Up · <%=totalPickUpDeclined %></p>
+        </div>
+        
+        <!-- customers -->
+        <div id="restaurantCustomers" class="statsCategory">
+            <% customersNoDuplicates = Array.from(new Set(customers)); %>
+            <p class="categoryHeader categoryItem">Total · <%=customers.length %></p>
+            <p class="categoryItem">Unique · <%=customersNoDuplicates.length %></p>
+        </div>
+        
+        <!-- reviews -->
+        <div id="restaurantReviews" class="statsCategory">
+            <% let reviewsTotalScore = 0 %>
+            
+            <% for (let i in reviews) { %>
+                <% reviewsTotalScore += parseInt(reviews[i].reviewObject.rating) %>
+            <% } %>
+
+            <p class="categoryHeader categoryItem">Total · <%=reviews.length %></p>
+            <p class="categoryItem">Average ·
+                <% for (let c = 0; c < reviewsTotalScore / reviews.length; c++) { %>
+                    <span>★</span>
+                <% } %>
+            </p>
+            <p class="categoryHeader categoryItem"></p>
+
+
+            <% for (let i in reviews) { %>
+                <div class="review">
+                    <% for (let c = 0; c < reviews[i].reviewObject.rating; c++) { %>
+                        <span>★</span>
+                    <% } %>
+                        
+                    <% reviewsTotalScore += parseInt(reviews[i].reviewObject.rating) %>
+
+                    <p class="reviewItem"><%=reviews[i].reviewObject.name %></p>
+                    <p class="reviewItem"><%=reviews[i].reviewObject.comment %></p>
+                    <p class="reviewItem"><%=reviews[i].reviewObject.date.toString().substring(3, 15) %></p>
+                    <!-- <p class="reviewItem"><%=JSON.stringify(reviews[i].reviewObject.items) %></p> -->
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+
+
 <style>
     /*** scrollbar ***/
     ::-webkit-scrollbar { height: 0px; width: 7px; }
-    #selectOrderType::-webkit-scrollbar { height: 8px; width: 0px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: black; }
     ::-webkit-scrollbar-thumb:hover {} 
+    #selectOrderType::-webkit-scrollbar { height: 8px; width: 0px; }
+    #restaurantStatistics::-webkit-scrollbar { height: 8px; width: 0px; }
 
 
     /*** elements ***/
@@ -111,12 +370,11 @@
     /*** classes ***/
     .categoryTitle 
     { 
-        margin: 0px; 
-        /* margin-top: 20px;  */
+        margin: 26px 0px 0px 0px; 
         padding: 0px; 
         text-align: left; 
         text-decoration: none;
-        font-size: 24px; 
+        font-size: 26px; 
         font-weight: bold; 
         /* user-select: none; */
         text-shadow: 1px 1px black;
@@ -128,8 +386,10 @@
         padding: 0px; 
         text-align: left; 
         font-weight: normal;
-        font-size: 18px; 
+        font-size: 20px; 
         /* user-select: none; */
+        white-space: nowrap;
+        overflow-x: scroll;
         text-shadow: 1px 1px black;
         color: white; 
     }
@@ -138,7 +398,7 @@
         min-width: 120px; 
         margin: 0px; 
         padding: 12px; 
-        font-size: 16px;
+        font-size: 19px;
         opacity: 0.4;
         font-weight: bold;
         border: 1px solid black;
@@ -148,12 +408,16 @@
     .review 
     { 
         margin: 0px; 
-        padding: 10px; 
+        padding: 10px;
+        user-select: none;
         border: 1px solid black;
         border-bottom: 2px solid black; 
         background-color: white; 
     }
     .reviewItem { margin: 0px; padding: 0px; }
+    .salesCompleted { color: lightgreen; }
+    .salesZero { color: red; }
+    .categoryHeader { margin: 26px 0px 0px 0px; }
 
     /*** ids ***/
     #NavBar
@@ -173,8 +437,8 @@
     { 
         width: 449px; 
         margin: auto; 
-        margin-top: 12px; 
-        margin-bottom: 20px; 
+        /* margin-top: 12px;  */
+        /* margin-bottom: 20px;  */
         text-align: center; 
         user-select: none; 
         display: flex; 
@@ -195,188 +459,7 @@
         .item { width: 100%; }
 
         #restaurantStatistics { width: 89vw; height: 75vh; }
-        #selectOrderType { width: 90vw; }
+        #selectOrderType { width: 89vw; }
     }
 </style>
-
-<body onload="selectStatsType()">
-    <!-- nav menu -->
-    <%- include('nav-menu-portal.ejs') %>
-
-    <!-- categories -->
-    <div id="selectOrderType">
-        <button id="buttonSales" class="selectStatsButton" onclick="showStats('sales')">Sales</button>
-        <button id="buttonOrders" class="selectStatsButton" onclick="showStats('orders')">Orders</button>
-        <button id="buttonCustomers" class="selectStatsButton" onclick="showStats('customers')">Customers</button>
-        <button id="buttonReviews" class="selectStatsButton" onclick="showStats('reviews')">Reviews</button>
-    </div>
-
-    <!-- variables -->
-    <% var thisMonth = new Date().getMonth() %>
-    <% var totalSales = 0 %>
-    <% var totalSalesThisMonth = 0 %>
-    <% var totalSalesJanuary = 0 %>
-    <% var totalSalesFebruary = 0 %>
-    <% var totalSalesMars = 0 %>
-    <% var totalSalesApril = 0 %>
-    <% var totalSalesMay = 0 %>
-    <% var totalSalesJune = 0 %>
-    <% var totalSalesJuly = 0 %>
-    <% var totalSalesAugust = 0 %>
-    <% var totalSalesSeptember = 0 %>
-    <% var totalSalesOctober = 0 %>
-    <% var totalSalesNovember = 0 %>
-    <% var totalSalesDecember = 0 %>
-    <% var totalSalesMondays = 0 %>
-    <% var totalSalesTuesdays = 0 %>
-    <% var totalSalesWednesdays = 0 %>
-    <% var totalSalesThursdays = 0 %>
-    <% var totalSalesFridays = 0 %>
-    <% var totalSalesSaturdays = 0 %>
-    <% var totalSalesSundays = 0 %>
-    <% var totalOrders = orders.length %>
-    <% var totalCompleted = 0 %>
-    <% var totalDeclined = 0 %>
-    <% var totalDelivery = 0 %>
-    <% var totalPickUp = 0 %>
-    <% var customers = [] %>
-
-    <!-- title -->
-    <!-- <h2 id="title">Statistics</h2> -->
-    
-    <!-- set menu items -->
-    <% var menuItems = [] %>
-    <% for (let i in restaurant.menuItems) { %>
-        <% menuItems.push({"id": restaurant.menuItems[i].id, "title": restaurant.menuItems[i].title, "price": restaurant.menuItems[i].price, "count": 0}) %>
-        <% } %>
-        
-    <!-- calculate stats -->
-    <% for(var counter = 0; counter < orders.length; counter++) { %>
-        <% var orderCustomer = orders[counter].user %>
-        <% var orderTotalAmount = parseFloat((orders[counter].totalPrice.slice(1))); %>
-        <% totalSales += orderTotalAmount %>
-        <% var orderDate = Date.parse(orders[counter].date) %>
-        <% var dateObject = new Date(orderDate) %>
-        <% var orderDate = dateObject %>
-        
-        <% for (let i in orders[counter].products.items) { %>
-        <!-- <p><%=JSON.stringify(orders[counter].products.items[i]) %></p> -->
-        <% let n = orders[counter].products.items[i].name %>
-        <% let q = orders[counter].products.items[i].quantity %>
-            <% for (let x in menuItems) { %>
-                <% if (n == menuItems[x].title) { %>
-                    <% menuItems[x].count += q %>
-                <% } %>
-            <% } %>
-        <% } %>
-
-        <!-- orders -->
-        <% if(orders[counter].status == "completed") { %> <% totalCompleted++; %> <% } %>
-        <% if(orders[counter].status == "declined") { %> <% totalDeclined++; %> <% } %>
-        <% if(orders[counter].type == "delivery") { %> <% totalDelivery++; %> <% } %>
-        <% if(orders[counter].type == "pick up") { %> <% totalPickUp++; %> <% } %>
-        
-        <!-- sales this month -->
-        <!-- <% if (orderDate.getMonth() == thisMonth) { %> <% totalSalesThisMonth += orderTotalAmount %> <% } %> -->
-
-        <!-- sales weekdays -->
-        <% if (orderDate.getDay() == 1) { %> <% totalSalesMondays += orderTotalAmount %> <% } %>
-        <% if (orderDate.getDay() == 2) { %> <% totalSalesTuesdays += orderTotalAmount %> <% } %>
-        <% if (orderDate.getDay() == 3) { %> <% totalSalesWednesdays += orderTotalAmount %> <% } %> 
-        <% if (orderDate.getDay() == 4) { %> <% totalSalesThursdays += orderTotalAmount %> <% } %>
-        <% if (orderDate.getDay() == 5) { %> <% totalSalesFridays += orderTotalAmount %> <% } %> 
-        <% if (orderDate.getDay() == 6) { %> <% totalSalesSaturdays += orderTotalAmount %> <% } %>
-        <% if (orderDate.getDay() == 0) { %> <% totalSalesSundays += orderTotalAmount %> <% } %>
-
-        <!-- sales months -->
-        <% if (orderDate.getMonth() == 0) { %> <% totalSalesJanuary += orderTotalAmount %> <% } %>
-        <% if (orderDate.getMonth() == 1) { %> <% totalSalesFebruary+= orderTotalAmount %> <% } %>
-        <% if (orderDate.getMonth() == 2) { %> <% totalSalesMars += orderTotalAmount %> <% } %> 
-        <% if (orderDate.getMonth() == 3) { %> <% totalSalesApril += orderTotalAmount %> <% } %>
-        <% if (orderDate.getMonth() == 4) { %> <% totalSalesMay+= orderTotalAmount %> <% } %> 
-        <% if (orderDate.getMonth() == 5) { %> <% totalSalesJune += orderTotalAmount %> <% } %>
-        <% if (orderDate.getMonth() == 6) { %> <% totalSalesJuly += orderTotalAmount %> <% } %>
-        <% if (orderDate.getMonth() == 7) { %> <% totalSalesAugust += orderTotalAmount %> <% } %>
-        <% if (orderDate.getMonth() == 8) { %> <% totalSalesSeptember += orderTotalAmount %> <% } %>
-        <% if (orderDate.getMonth() == 9) { %> <% totalSalesOctober += orderTotalAmount %> <% } %>
-        <% if (orderDate.getMonth() == 10) { %> <% totalSalesNovember += orderTotalAmount %> <% } %>
-        <% if (orderDate.getMonth() == 11) { %> <% totalSalesDecember += orderTotalAmount %> <% } %>
-
-        <!-- unique customers -->
-        <% customers.push(orderCustomer) %>  
-        
-    <% } %> 
-
-    <div id="restaurantStatistics">
-        <!-- sales -->
-        <div id="restaurantSales" class="statsCategory">
-            <h3 id="salesTotal" class="categoryTitle">Total = $<%=totalSales %></h3>
-            <!-- <p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Sales Months All Time</b></p> -->
-            
-            <h3 class="categoryTitle">Weekdays</h3>
-            <p class="categoryItem">Mondays · $<%=totalSalesMondays %></p>
-            <p class="categoryItem">Tuesdays · $<%=totalSalesTuesdays %></p>
-            <p class="categoryItem">Wednesdays · $<%=totalSalesWednesdays %></p>
-            <p class="categoryItem">Thursdays · $<%=totalSalesThursdays %></p>
-            <p class="categoryItem">Fridays · $<%=totalSalesFridays %></p>
-            <p class="categoryItem">Saturdays · $<%=totalSalesSaturdays %></p>
-            <p class="categoryItem">Sundays · $<%=totalSalesSundays %></p>
-            
-            <br />
-
-            <h3 class="categoryTitle">Months</h3>
-            <p class="categoryItem">January · $<%=totalSalesJanuary%></p>
-            <p class="categoryItem">February · $<%=totalSalesFebruary%></p>
-            <p class="categoryItem">Mars · $<%=totalSalesMars %></p>
-            <p class="categoryItem">April · $<%=totalSalesApril %></p>
-            <p class="categoryItem">May · $<%=totalSalesMay %></p>
-            <p class="categoryItem">June · $<%=totalSalesJune %></p>
-            <p class="categoryItem">July · $<%=totalSalesJuly %></p>
-            <p class="categoryItem">August · $<%=totalSalesAugust %></p>
-            <p class="categoryItem">September · $<%=totalSalesSeptember %></p>
-            <p class="categoryItem">October · $<%=totalSalesOctober %></p>
-            <p class="categoryItem">November · $<%=totalSalesNovember %></p>
-            <p class="categoryItem">December · $<%=totalSalesDecember %></p>
-            
-            <br />
-
-            <h3 class="categoryTitle">Items</h3>
-            <% for (let i in menuItems.sort((a, b) => { if(a.count < b.count) return 1; if(a.count > b.count) return -1; return 0; })) { %>
-                <p class="categoryItem"><%=menuItems[i].count %> · <%=menuItems[i].title %> · $<%=menuItems[i].price * menuItems[i].count%></p>
-            <% } %>
-            
-            <!-- <p style="text-align: center; text-decoration: underline; margin-bottom: 5px; padding-bottom: 0px;"><b>Sales Weekdays All Time</b></p> -->
-        </div>
-
-        <!-- orders -->
-        <div id="restaurantOrders" class="statsCategory">
-            <p class="categoryItem">Total · <%=totalOrders %></p>
-            <p class="categoryItem">Completed · <%=totalCompleted %></p>
-            <p class="categoryItem">Declined · <%=totalDeclined %></p>
-            <p class="categoryItem">Delivery · <%=totalDelivery %></p>
-            <p class="categoryItem">Pick Up · <%=totalPickUp %></p>
-        </div>
-        
-        <!-- customers -->
-        <div id="restaurantCustomers" class="statsCategory">
-            <% customersNoDuplicates = Array.from(new Set(customers)); %>
-            <p class="categoryItem">Total Unique · <%=customersNoDuplicates.length %></p>
-        </div>
-        
-        <!-- reviews -->
-        <div id="restaurantReviews" class="statsCategory">
-            <% for (let i in reviews) { %>
-                <div class="review">
-                    <% for (let c = 0; c < reviews[i].reviewObject.rating; c++) { %>
-                        <span>★</span>
-                    <% } %>
-                    <p class="reviewItem"><%=reviews[i].reviewObject.name %></p>
-                    <p class="reviewItem"><%=reviews[i].reviewObject.comment %></p>
-                    <p class="reviewItem"><%=reviews[i].reviewObject.date.toString().substring(3, 15) %></p>
-                    <!-- <p class="reviewItem"><%=JSON.stringify(reviews[i].reviewObject.items) %></p> -->
-                </div>
-            <% } %>
-        </div>
-    </div>
-</body>
 </html>

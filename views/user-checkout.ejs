@@ -1,3 +1,4 @@
+<!-- user/checkout.ejs -->
 <!DOCTYPE html>
 <html id="html-checkout" lang="en">
 <head>
@@ -19,6 +20,7 @@
         form.submit()
     }
 
+
     function customerDeliverySelector()
     {   
         //elements
@@ -29,6 +31,7 @@
         document.getElementById("customerDelivery").value = text
         paymentSelector.hidden = false
     }   
+
 
     function removeBody()
     {
@@ -46,11 +49,81 @@
         checkoutTotalAmount.hidden = true
     }
 
+    
     function goBack()
     {
         window.history.back()
     }
 </script>
+
+
+<body>
+    <!-- nav menu -->
+    <div id="navBarGoBack"><p onclick="goBack()">❮</p></div>
+    
+    <div id="body-checkout">
+        <!-- checkout -->
+        <div id="checkoutCenterDiv">
+            <p id="checkoutTotalAmount">Total: $<%=cartTotalPrice %></p>
+            <p id="title" class="category">Items</p>
+
+            <div id="checkoutCartItems">
+                <% for(var c = 0; c < cartItemsParsed.items.length; c++) { %>
+                    <p><%=cartItemsParsed.items[c].quantity %> - <%=cartItemsParsed.items[c].name %> - $<%=(cartItemsParsed.items[c].price * cartItemsParsed.items[c].quantity) %></p>
+                <% } %>       
+            </div>
+            
+            <div id="orderFormDiv">
+                <form id="post-order-form" action="/order-post" method="POST">
+                    <input hidden id="cartAllItems" name="cartAllItems" value="<%=cartItems %>"></input>
+                    <input hidden id="cartTotalPrice" name="cartTotalPrice" value="<%=cartTotalPrice %>"></input>
+                    <input hidden id="choosenRestaurant" name="restaurant" value="<%=restaurant %>"></input>
+                    <input hidden id="customerDelivery"></input>
+                    <input hidden id="customerAddress" name="customerAddress" value='<%=customerAddress %>' placeholder="address"></input>
+                    <p class="category">Name</p>
+                    <input id="customerName" name="customerName" value='<%=customerName %>' placeholder="name"></input>
+                    <p class="category">Address</p>
+                    <input id="searchInput" value="<%=customerAddress %>">
+                    <p class="category">Phone</p>
+                    <input id="customerPhone" name="customerPhone" value='<%=customerPhone %>' type="tel" placeholder="phone"></input>
+                    <p class="category">Comment</p>
+                    <input id="customerCommentCheckout" name="customerComment" placeholder="..."><%=customerComment %></input>
+                    <p class="category">Type</p>
+                    <label>Delivery</label>
+                    <input id="customerDeliveryRadioButton" type="radio" onclick="customerDeliverySelector()" name="customerDelivery" value="delivery"></input>
+                    <label>Pick Up</label>
+                    <input id="customerPickUpRadioButton" type="radio" onclick="customerDeliverySelector()" name="customerDelivery" value="pickUp"></input>
+                </form>
+            </div>
+    
+            <!-- stripe payment -->
+            <div hidden id="stripe-payment-options">
+                <p class="category">Payment</p>
+                
+                <!-- test card details -->
+                <span class="testCard">Number: 4242 4242 4242 4242</span> 
+                <span class="testCard">MM/YY: 12/34</span>
+                <span class="testCard">CVC: 123</span>
+                <span class="testCard">ZIP: 12345</span>
+
+                <div id="selected-payment-option">   
+                    <div hidden id="payment-option-stripe">
+                        <form id="payment-form">
+                            <div id="card-errors" role="alert"></div>
+                            <div id="card-element"></div>
+                            <button id="submit" data-secret="<%=client_secret %>">
+                                <div class="spinner hidden" id="spinner"></div>
+                                <span id="button-text">Pay</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+
 
 <style>
     /*** scrollbar ***/
@@ -151,71 +224,4 @@
         #body-checkout { height: 90vh; width: 90vw; margin: auto; margin-top: 7px; overflow-y: scroll; }
     }
 </style>
-
-<body>
-    <!-- nav menu -->
-    <div id="navBarGoBack"><p onclick="goBack()">❮</p></div>
-    
-    <div id="body-checkout">
-        <!-- checkout -->
-        <div id="checkoutCenterDiv">
-            <p id="checkoutTotalAmount">Total: $<%=cartTotalPrice %></p>
-            <p id="title" class="category">Items</p>
-
-            <div id="checkoutCartItems">
-                <% for(var c = 0; c < cartItemsParsed.items.length; c++) { %>
-                    <p><%=cartItemsParsed.items[c].quantity %> - <%=cartItemsParsed.items[c].name %> - $<%=(cartItemsParsed.items[c].price * cartItemsParsed.items[c].quantity) %></p>
-                <% } %>       
-            </div>
-            
-            <div id="orderFormDiv">
-                <form id="post-order-form" action="/order-post" method="POST">
-                    <input hidden id="cartAllItems" name="cartAllItems" value="<%=cartItems %>"></input>
-                    <input hidden id="cartTotalPrice" name="cartTotalPrice" value="<%=cartTotalPrice %>"></input>
-                    <input hidden id="choosenRestaurant" name="restaurant" value="<%=restaurant %>"></input>
-                    <input hidden id="customerDelivery"></input>
-                    <input hidden id="customerAddress" name="customerAddress" value='<%=customerAddress %>' placeholder="address"></input>
-                    <p class="category">Name</p>
-                    <input id="customerName" name="customerName" value='<%=customerName %>' placeholder="name"></input>
-                    <p class="category">Address</p>
-                    <input id="searchInput" value="<%=customerAddress %>">
-                    <p class="category">Phone</p>
-                    <input id="customerPhone" name="customerPhone" value='<%=customerPhone %>' type="tel" placeholder="phone"></input>
-                    <p class="category">Comment</p>
-                    <input id="customerCommentCheckout" name="customerComment" placeholder="..."><%=customerComment %></input>
-                    <p class="category">Type</p>
-                    <label>Delivery</label>
-                    <input id="customerDeliveryRadioButton" type="radio" onclick="customerDeliverySelector()" name="customerDelivery" value="delivery"></input>
-                    <label>Pick Up</label>
-                    <input id="customerPickUpRadioButton" type="radio" onclick="customerDeliverySelector()" name="customerDelivery" value="pickUp"></input>
-                </form>
-            </div>
-    
-            <!-- stripe payment -->
-            <div hidden id="stripe-payment-options">
-                <p class="category">Payment</p>
-                
-                <!-- test card details -->
-                <span class="testCard">Number: 4242 4242 4242 4242</span> 
-                <span class="testCard">MM/YY: 12/34</span>
-                <span class="testCard">CVC: 123</span>
-                <span class="testCard">ZIP: 12345</span>
-
-                <div id="selected-payment-option">   
-                    <div hidden id="payment-option-stripe">
-                        <form id="payment-form">
-                            <div id="card-errors" role="alert"></div>
-                            <div id="card-element"></div>
-                            <button id="submit" data-secret="<%=client_secret %>">
-                                <div class="spinner hidden" id="spinner"></div>
-                                <span id="button-text">Pay</span>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-</body>
 </html>

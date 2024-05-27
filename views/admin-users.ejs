@@ -1,12 +1,14 @@
+<!-- admin/users.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=GoogleMapsAdressAutocomplete" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<%= googleMapsApiKey%>&callback=GoogleMapsAdressAutocomplete" async defer></script>
     <title>Users</title>
 </head>
+
 
 <script>
     function displayEditUser(number)
@@ -30,6 +32,7 @@
         editCard.hidden = false
     }
     
+
     function undisplayEditUser(number)
     {
         //elements
@@ -69,6 +72,7 @@
         userCard.hidden = false
         editCard.hidden = true
     }
+
 
     function search(totalUsers)
     {
@@ -113,6 +117,7 @@
         }
     }
 
+
     function GoogleMapsAdressAutocomplete(id) 
     {
         //variables
@@ -138,87 +143,6 @@
     }
 </script>
 
-<style>
-    /*** scrollbar ***/
-    ::-webkit-scrollbar { height: 0px; width: 0px; }
-
-    /*** elements ***/
-    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
-    body { margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6; }
-    button { color: black; }
-    button:focus { outline: none; }
-    p { margin: 0px; }
-    h3 { margin: 0px; }
-    input { width: 100%; font-family: Arial, Helvetica, sans-serif; color: white; border: 0px solid black; background-color: black; }
-    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
-    input::placeholder { color: white; }
-    input:focus { outline: none; }
-
-    /*** classes ***/
-    .admin-edit { width: auto; padding: 0px 10px 0px 10px; margin: auto; user-select: none; border: 1px solid black; background-color: white; }
-    .admin-card
-    {
-        margin: auto; 
-        padding: 10px; 
-        user-select: none;
-        font-weight: bold;
-        border-bottom: 1px solid black; 
-        background-color: white;
-    }
-    .admin-card-button
-    {
-        display: inline-block;
-        width: 119px;
-        margin: 30px 0px 30px 0px;
-        padding: 12px 0px 12px 0px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        border: 0px solid black;
-        background-color: transparent; 
-    }
-    .cardText { margin: 0px; }
-    .input-admin { width: 360px; margin-left: 7px; padding: 10px 0px 10px 7px; font-weight: bold; font-size: 16px; }
-    .label-admin { display: block; padding: 20px 0px 0px 7px; }
-    
-    /*** ids ***/
-    #searchBox { width: 391px; margin: auto; border: 0px solid black; }
-    #searchBoxInput 
-    { 
-        height: 40px; 
-        padding-left: 7px; 
-        font-size: 16px; 
-        font-weight: bold; 
-        font-family: Arial, Helvetica, sans-serif; 
-        color: white; 
-        background-color: black; 
-    }
-    #totalText { margin: 20px 0px 20px 0px; font-size: 20px; text-align: center; text-shadow: 1px 1px black; user-select: none; color: white; }
-    #orders { width: 400px; margin: auto; }
-    #cardButtons { margin: 20px 0px 0px 0px;}
-    #restaurantTitle { margin: 0px 0px 10px 0px; font-size: 20px; font-weight: bold; }
-    #users { height: 80vh; width: 400px; margin: auto; overflow-y: scroll; }
-    #formDelete { display: inline; }
-    #formEdit { display: inline; }
-    #cancelButton { }
-    #editButton { margin-left: 7px; background-color: lightgreen; }
-    #deleteButton { background-color: red; }
-    #searchBoxInput::placeholder { color: white; }
-
-    /*** mobile ***/
-    @media screen and (max-width: 1000px) {
-        button:focus, button:hover { background-color: white; color: black; }
-
-        .input-admin { width: 90%; }
-        .input-label { width: 90%; }
-        .admin-card-button { width: 30%; }
-        .admin-card { width: 90vw; }
-        .admin-edit { width: auto; }
-
-        #searchBox { display: block; width: 90vw; margin: auto; margin-top: 10px; }
-        #users { height: 70vh; width: 90vw; }
-    }
-</style>
 
 <body>
     <!-- nav menu -->
@@ -281,4 +205,88 @@
     <!-- google maps API -->
     <div hidden id="map"></div>
 </body>
+
+
+<style>
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { height: 0px; width: 0px; }
+
+    /*** elements ***/
+    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
+    body { margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6; }
+    button { color: black; }
+    button:focus { outline: none; }
+    p { margin: 0px; }
+    h3 { margin: 0px; }
+    input { width: 100%; font-family: Arial, Helvetica, sans-serif; color: white; border: 0px solid black; background-color: black; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+    input::placeholder { color: white; }
+    input:focus { outline: none; }
+
+    /*** classes ***/
+    .admin-edit { width: auto; padding: 0px 10px 0px 10px; margin: auto; user-select: none; border: 1px solid black; background-color: white; }
+    .admin-card
+    {
+        margin: auto; 
+        padding: 10px; 
+        user-select: none;
+        font-weight: bold;
+        border-bottom: 1px solid black; 
+        background-color: white;
+    }
+    .admin-card-button
+    {
+        display: inline-block;
+        width: 119px;
+        margin: 30px 0px 30px 0px;
+        padding: 12px 0px 12px 0px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        border: 0px solid black;
+        background-color: transparent; 
+    }
+    .cardText { margin: 0px; }
+    .input-admin { width: 360px; margin-left: 7px; padding: 10px 0px 10px 7px; font-weight: bold; font-size: 16px; }
+    .label-admin { display: block; padding: 20px 0px 0px 7px; }
+    
+    /*** ids ***/
+    #searchBox { width: 391px; margin: auto; border: 0px solid black; }
+    #searchBoxInput 
+    { 
+        height: 40px; 
+        padding-left: 7px; 
+        font-size: 18px; 
+        font-weight: bold; 
+        font-family: Arial, Helvetica, sans-serif; 
+        color: white; 
+        background-color: black; 
+    }
+    #totalText { margin: 20px 0px 20px 0px; font-size: 20px; text-align: center; text-shadow: 1px 1px black; user-select: none; color: white; }
+    #orders { width: 400px; margin: auto; }
+    #cardButtons { margin: 20px 0px 0px 0px;}
+    #restaurantTitle { margin: 0px 0px 10px 0px; font-size: 20px; font-weight: bold; }
+    #users { height: 80vh; width: 400px; margin: auto; overflow-y: scroll; }
+    #formDelete { display: inline; }
+    #formEdit { display: inline; }
+    #cancelButton { }
+    #editButton { margin-left: 7px; background-color: lightgreen; }
+    #deleteButton { background-color: red; }
+    #searchBoxInput::placeholder { color: white; }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        button:focus, button:hover { background-color: white; color: black; }
+
+        .input-admin { width: 90%; }
+        .input-label { width: 90%; }
+        .admin-card-button { width: 30%; }
+        .admin-card { width: 90vw; }
+        .admin-edit { width: auto; }
+
+        #searchBox { display: block; width: 90vw; margin: auto; margin-top: 10px; }
+        #users { height: 70vh; width: 90vw; }
+    }
+</style>
+
 </html>

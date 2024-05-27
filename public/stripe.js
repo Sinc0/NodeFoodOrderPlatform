@@ -1,6 +1,6 @@
-var stripe = Stripe("pk_test_51HEENaLFUjzCbJftRFS2Rr6IZZ9YD1a5sHHyD7oSfUgoMfLsDoy4pPMpWxxAo1m6CKhABHbnGfjFyoLrKv5bUpNH00AMoEbBAO");
-
 // Set up Stripe.js and Elements to use in checkout 
+// var configs = require('../settings.json')
+var stripe = Stripe(process.env.STRIPE_PAYMENTS_API_KEY || configs.STRIPE_PAYMENTS_API_KEY);
 var elements = stripe.elements();
 
 //document.querySelector("button").disabled = true;

@@ -1,3 +1,4 @@
+<!-- portal/index.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +9,7 @@
     <title>Home</title>
 </head>
 
+
 <script>
         //add keybinds
         shortcut.add("1", function() {document.getElementById("NavElementLink#1").click()});   
@@ -15,6 +17,48 @@
         shortcut.add("3", function() {document.getElementById("NavElementLink#3").click()});     
         shortcut.add("4", function() {document.getElementById("NavElementLink#4").click()});     
 </script>
+
+
+<body id="portal-index-body">
+    <!-- title -->
+    <!-- <h1 id="portal-index-title"><%=restaurant.title %></h1> -->
+
+    <!-- welcome message -->
+    <% if(restaurant.welcomeMessage == true) { %>
+        <div id="welcomeMessage">
+            <p class="welcomeMessageText">Welcome</p>
+            <p class="welcomeMessageText">Complete following steps to start taking orders:</p>
+            
+            <br />
+            
+            <a href="/portal/menu/edit"><p class="welcomeMessageStep"><b>1 · </b> edit your menu </p></a>
+            <a href="/portal/settings"><p class="welcomeMessageStep"><b>2 · </b> activate restaurant</p></a>
+            <a href="/portal/settings"><p class="welcomeMessageStep"><b>3 · </b> open restaurant</p></a>
+            
+            <br />
+
+            <!-- <p class="welcomeMessageText"><b>Options</b></p> -->
+            <form action="/portal/welcomeMessage" method="POST">
+                <input hidden name="welcomeMessage" value=false></input>
+                <input hidden name="page" value="home"></input>
+                <button class="welcomeMessageButton">Stop Showing This Message</button>
+            </form>
+            
+            <button class="welcomeMessageButton"><a href="/portal/logout">Logout</a></button>
+        </div>
+
+    <!-- nav menu -->
+    <% } else { %>
+        <nav id="PortalNav">
+            <a id="NavElementLink#1" href="/portal/orders/history"><div class="NavElement"><p>Orders</p></div></a>
+            <a id="NavElementLink#2" href="/portal/menu/edit"><div class="NavElement"><p>Menu</p></div></a>
+            <a id="NavElementLink#3" href="/portal/stats"><div class="NavElement"><p>Statistics</p></div></a>
+            <a id="NavElementLink#4" href="/portal/settings"><div class="NavElement"><p>Settings</p></div></a>
+            <a id="" href="/portal/logout"><div id="buttonLogout" class="NavElement"><p>Logout</p></div></a>    
+        </nav>   
+    <% } %>
+</body>
+
 
 <style>
     /*** scrollbar ***/
@@ -70,7 +114,7 @@
         text-shadow: 2px 1px black; 
         color: white; 
     }
-    #PortalNav { width: 400px; margin: auto; margin-top: 16vh; overflow-y: auto; text-align: center; }
+    #PortalNav { width: 400px; margin: auto; margin-top: 16vh; font-size: 20px; overflow-y: auto; text-align: center; }
     #welcomeMessage 
     { 
         width: 400px; 
@@ -106,44 +150,4 @@
         }
     }
 </style>
-
-<body id="portal-index-body">
-    <!-- title -->
-    <!-- <h1 id="portal-index-title"><%=restaurant.title %></h1> -->
-
-    <!-- welcome message -->
-    <% if(restaurant.welcomeMessage == true) { %>
-        <div id="welcomeMessage">
-            <p class="welcomeMessageText">Welcome</p>
-            <p class="welcomeMessageText">Complete following steps to start taking orders:</p>
-            
-            <br />
-            
-            <a href="/portal/menu/edit"><p class="welcomeMessageStep"><b>1 · </b> edit your menu </p></a>
-            <a href="/portal/settings"><p class="welcomeMessageStep"><b>2 · </b> activate restaurant</p></a>
-            <a href="/portal/settings"><p class="welcomeMessageStep"><b>3 · </b> open restaurant</p></a>
-            
-            <br />
-
-            <!-- <p class="welcomeMessageText"><b>Options</b></p> -->
-            <form action="/portal/welcomeMessage" method="POST">
-                <input hidden name="welcomeMessage" value=false></input>
-                <input hidden name="page" value="home"></input>
-                <button class="welcomeMessageButton">Stop Showing This Message</button>
-            </form>
-            
-            <button class="welcomeMessageButton"><a href="/portal/logout">Logout</a></button>
-        </div>
-
-    <!-- nav menu -->
-    <% } else { %>
-        <nav id="PortalNav">
-            <a id="NavElementLink#1" href="/portal/orders/history"><div class="NavElement"><p>Orders</p></div></a>
-            <a id="NavElementLink#2" href="/portal/menu/edit"><div class="NavElement"><p>Menu</p></div></a>
-            <a id="NavElementLink#3" href="/portal/stats"><div class="NavElement"><p>Statistics</p></div></a>
-            <a id="NavElementLink#4" href="/portal/settings"><div class="NavElement"><p>Settings</p></div></a>
-            <a id="" href="/portal/logout"><div id="buttonLogout" class="NavElement"><p>Logout</p></div></a>    
-        </nav>   
-    <% } %>
-</body>
 </html>

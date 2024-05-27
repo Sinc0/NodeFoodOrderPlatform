@@ -1,6 +1,6 @@
-stripe test card 
-4242424242424242
-11/24 123 12345
+Stripe Test Card
+· number: 4242424242424242
+· date: 11/24 123 12345
 
 anon
 - register customer

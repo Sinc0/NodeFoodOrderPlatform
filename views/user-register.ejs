@@ -1,3 +1,4 @@
+<!-- user/register.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,7 @@
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title><%= pageTitle %></title>
 </head>
+
 
 <script>       
     function registerCustomer()
@@ -25,6 +27,7 @@
         customerBtn.style.color = "#f7f9f9"
     }
 
+
     function registerRestaurant()
     {
         //elements
@@ -41,6 +44,7 @@
         restaurantBtn.style.backgroundColor = "black"
         restaurantBtn.style.color = "#f7f9f9"
     }
+
 
     function checkPassRestaurant()
     {
@@ -67,6 +71,7 @@
             submitFormButton.disabled = false
         }
     }
+
 
     function checkPassCustomer()
     {
@@ -95,71 +100,6 @@
     }
 </script>
 
-<style>
-    /*** scrollbar ***/
-    ::-webkit-scrollbar { height: 0px; width: 0px; }
-
-    /*** elements ***/
-    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
-    body { height: 100vh; margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6 }
-    button 
-    { 
-        width: 392px; 
-        margin: 0px; 
-        padding: 10px; 
-        font-size: 16px; 
-        border-radius: 0%; 
-        border: 1px solid black;
-        background-color: white;
-    }
-    button { color: black; }
-    button:focus { outline: none; }
-    p { margin: 0px; }
-    input 
-    { 
-        width: 382px;
-        margin: 0px;
-        padding: 7px 0px 7px 10px; 
-        font-size: 20px; 
-        font-weight: bold; 
-        text-align: left;
-        font-family: Arial, Helvetica, sans-serif;
-        color: white; 
-        border: 0px solid black;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.9);
-        background-color: black; 
-    }
-    input::placeholder { color: white; }
-    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
-    input:focus { outline: none; }
-
-    /*** ids ***/
-    #main-register 
-    { 
-        width: 400px; 
-        margin: auto; 
-        text-align: center;
-    }
-    #register-restaurant-post { width: 400px; }
-    #selectRegisterType { display: flex; width: 393px; margin: 20px 0px 0px 0px; margin-left: 3px; }
-    #statusText { margin: 20px 0px 0px 0px; font-size: 20px; font-weight: bold; text-shadow: 1px 1px black; color: white; }
-    #title { text-shadow: 1px 1px black; color: white; }
-    #registerCustomerBtn { width: 200px; }
-    #registerRestaurantBtn { width: 200px; }
-    #submitFormBtnRegisterRestaurant { margin-top: -1px; }
-    #submitFormBtnRegisterCustomer { margin-top: -1px; }
-    /* #main-register button { margin: -12px 0px 20px 0px; height: 30px; width: 125px; border: 1px solid gray; } */
-
-    /*** mobile ***/
-    @media screen and (max-width: 1000px) {
-        input { width: 87vw; }
-        button { width: 100%; }
-        button:focus, button:hover { background-color: white; color: black; }
-
-        #main-register { width: 90vw; }
-        #selectRegisterType { width: 100%; margin-left: 0px; }
-    }
-</style>
 
 <body>
     <!-- nav menu -->
@@ -206,4 +146,71 @@
         </div>
     </div>
 </body>
+
+
+<style>
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { height: 0px; width: 0px; }
+
+    /*** elements ***/
+    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
+    body { height: 100vh; margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6 }
+    button 
+    { 
+        width: 392px; 
+        margin: 0px; 
+        padding: 10px; 
+        font-size: 16px; 
+        border-radius: 0%; 
+        border: 1px solid black;
+        background-color: white;
+    }
+    button { color: black; }
+    button:focus { outline: none; }
+    p { margin: 0px; }
+    input 
+    { 
+        width: 382px;
+        margin: 0px;
+        padding: 7px 0px 7px 10px; 
+        font-size: 20px; 
+        font-weight: normal; 
+        text-align: left;
+        font-family: Arial, Helvetica, sans-serif;
+        color: white; 
+        border: 0px solid black;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        background-color: black; 
+    }
+    input::placeholder { color: white; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+    input:focus { outline: none; }
+
+    /*** ids ***/
+    #main-register 
+    { 
+        width: 400px; 
+        margin: auto; 
+        text-align: center;
+    }
+    #register-restaurant-post { width: 400px; }
+    #selectRegisterType { display: flex; width: 393px; margin: 20px 0px 0px 0px; margin-left: 3px; }
+    #statusText { margin: 20px 0px 0px 0px; font-size: 20px; font-weight: bold; text-shadow: 1px 1px black; color: white; }
+    #title { font-size: 20px; text-shadow: 1px 1px black; color: white; }
+    #registerCustomerBtn { width: 200px; font-size: 18px; }
+    #registerRestaurantBtn { width: 200px; font-size: 18px; }
+    #submitFormBtnRegisterRestaurant { margin-top: -1px; font-size: 18px; }
+    #submitFormBtnRegisterCustomer { margin-top: -1px; font-size: 18px; }
+    /* #main-register button { margin: -12px 0px 20px 0px; height: 30px; width: 125px; border: 1px solid gray; } */
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        input { width: 87vw; }
+        button { width: 100%; }
+        button:focus, button:hover { background-color: white; color: black; }
+
+        #main-register { width: 90vw; }
+        #selectRegisterType { width: 100%; margin-left: 0px; }
+    }
+</style>
 </html>

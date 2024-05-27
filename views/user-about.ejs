@@ -8,30 +8,6 @@
     <title>About</title>
 </head>
 
-<style>
-    /*** scrollbar ***/
-    ::-webkit-scrollbar { height: 0px; width: 0px; }
-
-    /*** elements ***/
-    body { height: 100vh; margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6; text-align: center; color: white; }
-    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
-    p { margin: 0px; }
-
-    /*** classes ***/
-    .categoryTitle { margin-top: 20px; font-weight: bold; font-size: 20px; }
-    .privacyPolicyItem { }
-    .yes { color: lightgreen; }
-    .no { color: red; }
-
-    /*** ids ***/
-    #main-about { width: 700px; margin-top: 0px; margin: auto; }
-    #categoryAbout { margin-top: 0px; }
-
-    /*** mobile ***/
-    @media screen and (max-width: 1000px) {        
-        #main-about { width: 94vw; margin-top: 0px; padding-bottom: 20px; }
-    }
-</style>
 
 <body>
     <!-- nav menu -->
@@ -40,7 +16,7 @@
     <div id="main-about">
         <!-- about -->
         <p id="categoryAbout" class="categoryTitle">About</p>
-        <p>This is a student project, made to learn about Node.js, EJS, Express.js, Mongodb, Payment APIs.</p>
+        <p class="categoryText">This is a student project, made to learn about Node.js, EJS, Express.js, Mongodb, Payment APIs.</p>
         
         <!-- privacy -->
         <p class="categoryTitle">Privacy Policy</p>
@@ -61,4 +37,31 @@
         </div>
     </div>
 </body>
+
+
+<style>
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { height: 0px; width: 0px; }
+
+    /*** elements ***/
+    body { height: 100vh; margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6; text-align: center; color: white; }
+    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
+    p { margin: 0px; }
+
+    /*** classes ***/
+    .categoryTitle { margin-top: 20px; font-weight: bold; font-size: 22px; }
+    .privacyPolicyItem {font-size: 18px; }
+    .yes { color: lightgreen; }
+    .no { color: red; }
+    .categoryText { font-size: 18px; }
+
+    /*** ids ***/
+    #main-about { width: 700px; margin-top: 0px; margin: auto; }
+    #categoryAbout { margin-top: 0px; }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {        
+        #main-about { width: 94vw; margin-top: 0px; padding-bottom: 20px; }
+    }
+</style>
 </html>

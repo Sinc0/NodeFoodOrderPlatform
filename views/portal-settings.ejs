@@ -1,3 +1,4 @@
+<!-- portal/settings.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,7 @@
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
     <title>Settings</title>
 </head>
+
 
 <script>
     function editProfileCredentials()
@@ -28,40 +30,6 @@
     }
 </script>
 
-<style>
-    /*** scrollbar ***/
-    ::-webkit-scrollbar { height: 0px; width: 7px; }
-
-    /*** elements ***/
-    body { background-color: #3c41d6; margin: 0px; padding: 0px; }
-    p { font-family: Arial, Helvetica, sans-serif; }
-    b { font-family: Arial, Helvetica, sans-serif; }
-    a { text-decoration: none; color: black; }
-    input { font-family: Arial, Helvetica, sans-serif; }
-    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
-    input { width: 392px; }
-
-    /*** classes ***/
-    .statusItem { margin: 0px; padding: 10px 0px 10px 0px; border-bottom: 1px solid black; }
-    .categoryTitle { margin: 20px 0px 0px 0px; padding: 0px; font-weight: normal; font-size: 20px; text-shadow: 1px 1px black; color: white; }
-    .credential { margin: 0px; padding: 0px; }
-    .optionButton { width: 100%; padding: 10px 0px 10px 0px; font-weight: bold; font-size: 16px; border: 0px solid black; border-bottom: 1px solid black; }
-
-    /*** ids ***/
-    #categoryStatus { text-align: center; }
-    #settings { margin: auto; width: 400px; }
-
-    /*** mobile ***/
-    @media screen and (max-width: 1000px) {
-        ::-webkit-scrollbar { display: none; }
-        ::-webkit-scrollbar { height: 0px; width: 0px; }
-
-        button:focus, button:hover { background-color: white; color: black; }
-        
-        #settings { width: 90vw; }
-        #profileCredentials { width: 94vw; }
-    }
-</style>
 
 <body>
     <!-- nav menu -->
@@ -161,4 +129,40 @@
         </div> -->
     </div>
 </body>
+
+
+<style>
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { height: 0px; width: 7px; }
+
+    /*** elements ***/
+    body { background-color: #3c41d6; margin: 0px; padding: 0px; }
+    p { font-family: Arial, Helvetica, sans-serif; }
+    b { font-family: Arial, Helvetica, sans-serif; }
+    a { text-decoration: none; color: black; }
+    input { font-family: Arial, Helvetica, sans-serif; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+    input { width: 392px; }
+
+    /*** classes ***/
+    .statusItem { margin: 0px; padding: 10px 0px 10px 0px; border-bottom: 1px solid black; }
+    .categoryTitle { margin: 20px 0px 0px 0px; padding: 0px; font-weight: normal; font-size: 20px; text-shadow: 1px 1px black; color: white; }
+    .credential { margin: 0px; padding: 0px; }
+    .optionButton { width: 100%; padding: 10px 0px 10px 0px; font-weight: bold; font-size: 16px; border: 0px solid black; border-bottom: 1px solid black; }
+
+    /*** ids ***/
+    #categoryStatus { text-align: center; }
+    #settings { margin: auto; width: 400px; }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        ::-webkit-scrollbar { display: none; }
+        ::-webkit-scrollbar { height: 0px; width: 0px; }
+
+        button:focus, button:hover { background-color: white; color: black; }
+        
+        #settings { width: 90vw; }
+        #profileCredentials { width: 94vw; }
+    }
+</style>
 </html>

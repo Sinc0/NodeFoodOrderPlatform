@@ -33,6 +33,7 @@
         }
     }
     
+
     function reviewOrder(totalOrders, orderNumber, orderId)
     {
         //elements
@@ -50,6 +51,7 @@
         }
     }
 
+
     function saveScrollPosition()
     {
         //variables
@@ -58,6 +60,7 @@
         //set local storage
         localStorage.setItem("scrollPositionY", y)
     }
+
 
     function loadSavedScrollPosition()
     {
@@ -69,133 +72,6 @@
     }
 </script>
 
-<style>
-    /*** scrollbar ***/
-    ::-webkit-scrollbar { width: 0px; }
-
-    /*** elements ***/
-    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
-    body { height: 100vh; margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6 }
-    input { width: 100%; font-family: Arial, Helvetica, sans-serif; color: white; background-color: black; }
-    button { color: black; }
-    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
-    input::placeholder { color: white; }
-    input:focus { outline: none; }
-    button:focus { outline: none; }
-    p { margin: 0px; }
-    h1 { margin: 0px; }
-    
-    /*** classes ***/
-    .order-item 
-    { 
-        margin: auto;
-        margin-bottom: 30px;
-        padding: 12px; 
-        user-select: none; 
-        border: 1px solid black;
-        width: 378px;
-        /* border: 1px solid black */
-        background-color: #f7f9f9;
-    }
-    .order-review 
-    { 
-        position: relative; 
-        display: block;
-        width: 378px; 
-        margin: auto;
-        margin-top: -40px;
-        margin-bottom: 30px;
-        padding: 0px 12px 0px 12px;
-        z-index: 1; 
-        text-align: center;
-        border-bottom: 1px solid black; 
-        border-left: 1px solid black; 
-        border-right: 1px solid black; 
-        background-color: #f7f9f9; 
-    }
-    .search-orders { width: 400px; }
-    .order-item p { margin: 0px; padding: 0px; }
-
-    /*** ids ***/
-    #searchBox { margin: 0px 0px 24px 0px; text-align: center; border: 0px solid black; }
-    #searchBoxInput { height: 40px; font-weight: bold; font-size: 16px; text-align: center; color: white; border: 0px solid black; background-color: black; }
-    #searchBox::-webkit-input-placeholder { color: white; }
-    #orders { height: 80vh; overflow-y: scroll; overflow-x: hidden; }
-    #orderReviewButtons { margin: 10px 0px 0px 0px; padding: 3px; border: 1px solid black; }
-    #orderStatusUnconfirmed { font-weight: bold; font-size: 20px; color: black; }
-    #orderStatusConfirmed { font-weight: bold; font-size: 20px; color: gold; }
-    #orderStatusCompleted { font-weight: bold; font-size: 20px; color: lightgreen; }
-    #orderStatusDeclined { font-weight: bold; font-size: 20px; color: red; }
-    #orderRestaurant { margin: 0px; font-weight: bold; font-size: 20px; }
-    #order-items { margin: 10px 0px 0px 0px; }
-    #order-count { font-size: 20px; }
-    #inputReviewComment
-    {   
-        display: block;
-        width: 356px;
-        margin: auto;
-        padding: 10px;
-        font-size: 16px;
-    }
-    #inputReviewRating { display: block; width: 356px; margin: -1px 0px 0px 0px; padding: 10px; text-align: left; font-size: 16px; }
-    #inputReviewName { display: block; width: 356px; margin: -1px 0px 0px 0px; padding: 10px; text-align: left; font-size: 16px; }
-    #reviewSubmitButton 
-    { 
-        display: block; 
-        width: 380px; 
-        margin: -2px 0px 16px 0px;
-        padding: 10px; 
-        font-size: 16px; 
-        font-weight: bold; 
-        border: 2px solid black;
-        background-color: lightgreen;
-    }
-    #reviewCancelButton { display: block; width: 356px; margin: 0px; padding: 10px; border: 0px solid black; background-color: transparent; }
-    #buttonAddReview 
-    { 
-        margin: 10px 0px 0px 0px; 
-        padding: 0px; 
-        font-size: 18px; 
-        color: black; 
-    }
-    #buttonEditReview 
-    { 
-        margin: 10px 0px 0px 0px; 
-        padding: 0px; 
-        font-size: 18px; 
-        color: black; 
-    }
-    #customerComment
-    {
-        font-size: medium;
-        text-align: center;
-        min-width: 346px;
-        max-width: 346px;
-        min-height: 100px;
-        max-height: 250px;
-        margin-left: 0px;
-        border: 0px;
-    }
-    #searchBoxInput::placeholder { color: white; }
-    #customerComment::placeholder { color: black; }
-    #orders-show-detail a { color: black; text-decoration: none; }
-    #orders-show-detail p:hover { color: white; }
-
-    /*** mobile ***/
-    @media screen and (max-width: 1000px) {
-        button:focus, button:hover { background-color: white; color: black; }
-
-        .order-review { width: 85vw; padding: 10px; }
-        .order-item { display: block; width: 84vw; }
-        
-        #reviewCancelButton { width: auto; }
-        #reviewSubmitButton { width: -webkit-fill-available; }
-        #inputReviewRating { width: -webkit-fill-available; }
-        #inputReviewName { width: -webkit-fill-available; }
-        #inputReviewComment { min-width: -webkit-fill-available; max-width: -webkit-fill-available; }
-        #searchBoxInput { width: 90vw; margin-top: 10px; }
-}
-</style>
 
 <body id="orders" onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
     <!-- admin nav menu -->
@@ -322,4 +198,142 @@
         <h1 style="text-align: center;"> No orders found</h1>
     <% } %>
 </body>
+
+
+<style>
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { width: 0px; }
+
+    /*** elements ***/
+    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
+    body { height: 100vh; margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6 }
+    input { width: 100%; font-family: Arial, Helvetica, sans-serif; color: white; background-color: black; }
+    button { color: black; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+    input::placeholder { color: white; }
+    input:focus { outline: none; }
+    button:focus { outline: none; }
+    p { margin: 0px; }
+    h1 { margin: 0px; }
+    
+    /*** classes ***/
+    .order-item 
+    { 
+        margin: auto;
+        margin-bottom: 30px;
+        padding: 12px; 
+        user-select: none; 
+        border: 1px solid black;
+        width: 378px;
+        /* border: 1px solid black */
+        background-color: #f7f9f9;
+    }
+    .order-review 
+    { 
+        position: relative; 
+        display: block;
+        width: 378px; 
+        margin: auto;
+        margin-top: -40px;
+        margin-bottom: 30px;
+        padding: 0px 12px 0px 12px;
+        z-index: 1; 
+        text-align: center;
+        border-bottom: 1px solid black; 
+        border-left: 1px solid black; 
+        border-right: 1px solid black; 
+        background-color: #f7f9f9; 
+    }
+    .search-orders { width: 400px; }
+    .order-item p { margin: 0px; padding: 0px; }
+
+    /*** ids ***/
+    #searchBox { margin: 0px 0px 24px 0px; text-align: center; border: 0px solid black; }
+    #searchBoxInput 
+    { 
+        height: 40px; 
+        font-weight: bold; 
+        font-size: 18px; 
+        text-align: center; 
+        color: white; 
+        border: 0px solid black; 
+        background-color: black; 
+    }
+    #searchBox::-webkit-input-placeholder { color: white; }
+    #orders { height: 80vh; overflow-y: scroll; overflow-x: hidden; }
+    #orderReviewButtons { margin: 10px 0px 0px 0px; padding: 3px; border: 1px solid black; }
+    #orderStatusUnconfirmed { font-weight: bold; font-size: 20px; color: black; }
+    #orderStatusConfirmed { font-weight: bold; font-size: 20px; color: gold; }
+    #orderStatusCompleted { font-weight: bold; font-size: 20px; color: lightgreen; }
+    #orderStatusDeclined { font-weight: bold; font-size: 20px; color: red; }
+    #orderRestaurant { margin: 0px; font-weight: bold; font-size: 20px; }
+    #order-items { margin: 10px 0px 0px 0px; }
+    #order-count { font-size: 20px; }
+    #inputReviewComment
+    {   
+        display: block;
+        width: 356px;
+        margin: auto;
+        padding: 10px;
+        font-size: 16px;
+    }
+    #inputReviewRating { display: block; width: 356px; margin: -1px 0px 0px 0px; padding: 10px; text-align: left; font-size: 16px; }
+    #inputReviewName { display: block; width: 356px; margin: -1px 0px 0px 0px; padding: 10px; text-align: left; font-size: 16px; }
+    #reviewSubmitButton 
+    { 
+        display: block; 
+        width: 380px; 
+        margin: -2px 0px 16px 0px;
+        padding: 10px; 
+        font-size: 16px; 
+        font-weight: bold; 
+        border: 2px solid black;
+        background-color: lightgreen;
+    }
+    #reviewCancelButton { display: block; width: 356px; margin: 0px; padding: 10px; border: 0px solid black; background-color: transparent; }
+    #buttonAddReview 
+    { 
+        margin: 10px 0px 0px 0px; 
+        padding: 0px; 
+        font-size: 18px; 
+        color: black; 
+    }
+    #buttonEditReview 
+    { 
+        margin: 10px 0px 0px 0px; 
+        padding: 0px; 
+        font-size: 18px; 
+        color: black; 
+    }
+    #customerComment
+    {
+        font-size: medium;
+        text-align: center;
+        min-width: 346px;
+        max-width: 346px;
+        min-height: 100px;
+        max-height: 250px;
+        margin-left: 0px;
+        border: 0px;
+    }
+    #searchBoxInput::placeholder { color: white; }
+    #customerComment::placeholder { color: black; }
+    #orders-show-detail a { color: black; text-decoration: none; }
+    #orders-show-detail p:hover { color: white; }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        button:focus, button:hover { background-color: white; color: black; }
+
+        .order-review { width: 85vw; padding: 10px; }
+        .order-item { display: block; width: 84vw; }
+        
+        #reviewCancelButton { width: auto; }
+        #reviewSubmitButton { width: -webkit-fill-available; }
+        #inputReviewRating { width: -webkit-fill-available; }
+        #inputReviewName { width: -webkit-fill-available; }
+        #inputReviewComment { min-width: -webkit-fill-available; max-width: -webkit-fill-available; }
+        #searchBoxInput { width: 90vw; margin-top: 10px; }
+}
+</style>
 </html>

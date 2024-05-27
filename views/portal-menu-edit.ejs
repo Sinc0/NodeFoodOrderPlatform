@@ -1,10 +1,11 @@
+<!-- portal/menu/edit.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCHDajHZ7clx29MBJQ2omXfEprzsRw5n6Y&callback=GoogleMapsAdressAutocomplete" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<%= googleMapsApiKey%>&callback=GoogleMapsAdressAutocomplete" async defer></script>
     <title>Edit Menu</title>
 </head>
 
@@ -987,161 +988,6 @@
     clearLocalStorage()
 </script>
 
-<style>
-    /*** scrollbar ***/
-    ::-webkit-scrollbar { height: 0px; width: 7px; }
-
-    /*** elements ***/
-    body { background-color: #3c41d6; margin: 0px; padding: 0px; }
-    input 
-    { 
-        padding: 10px 4px 10px 8px; 
-        outline: none; 
-        font-weight: bold;
-        font-size: 20px; 
-        text-align: left;
-        font-family: Arial, Helvetica, sans-serif;
-        color: white; 
-        border: 0px solid black; 
-        border-bottom: 1px solid black; 
-        background-color: black; 
-    }
-    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
-    input { width: 392px; }
-    label { overflow-x: scroll; white-space: nowrap; max-width: 80%; font-family: Arial, Helvetica, sans-serif; }
-    p { font-family: Arial, Helvetica, sans-serif; }
-    b { font-family: Arial, Helvetica, sans-serif; }
-    a { text-decoration: none; color: black; }
-
-    /*** classes ***/
-    .buttonRemoveItem { width: 408px; }
-    .menuEditCategory { width: 400px; margin: auto; padding: 0px; text-align: center; border: 0px solid black; }
-    .categoryTitle 
-    { 
-        display: block; 
-        width: 400px; 
-        margin: auto; 
-        margin-top: 30px; 
-        padding: 0px; 
-        text-align: left;
-        font-weight: normal;
-        font-size: 20px;
-        text-shadow: 1px 1px black; 
-        color: white;
-    }
-    .menuCategory { margin: 0px; border-bottom: 0px solid white; background-color: black; }
-    .menuCategoryRemoveButton 
-    { 
-        width: auto;
-        padding: 0px 26px 0px 18px;
-        font-size: 30px;
-        font-weight: bold;
-        text-align: center;
-        color: white;
-        border: 0px solid black;
-        background-color: black; 
-    }
-    .categoryInput { width: 60%; text-align: left; }
-    .categoryArrows { font-size: 30px; color: white; border: 0px solid white; background-color: black; }
-    .menuCategoryHolder 
-    { 
-        display: flex; 
-        padding: 4px 0px 2px 0px; 
-        user-select: none; 
-        border-top: 1px solid white; 
-        background-color: black; 
-    }
-    .categoryArrowDown { margin: 0px; padding: 0px; margin-top: 1px; }
-    .categoryArrowUp { margin: 0px; padding: 0px; }
-    .menu-edit-category 
-    { 
-        padding: 0px; 
-        font-size: 20px; 
-        user-select: none; 
-        text-align: left;
-        font-weight: bold;
-        color: white; 
-        border-bottom: 1px solid white; 
-        background-color: black; 
-    }
-    .itemInput { width: 393px; padding: 7px 0px 7px 7px; font-weight: normal; text-align: left; border: 0px solid black; }
-    .buttonRemoveItem { width: auto; text-align: center; background-color: red; }
-    .menuCategoryName { display: inline-flex; margin: 12px 0px 12px 0px; }
-    .categoryNumber { padding: 13px 0px 0px 16px; color: white; }
-    .inputHours { border-bottom: 1px solid white; }
-    .addCategoryItemBtn { margin: 0px 16px 0px 21px; }
-
-    /*** ids ***/
-    #NavBar
-    {
-        margin: 0px;
-        padding: 0px;
-        color: black;
-        background-color: white;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-    #menu { width: 94vw; }
-    #NavBar { padding-left: 7px; text-align: left; color: white; text-shadow: 1px 1px black; background-color: #3c41d6; }
-    #editMenu { height: 86vh; margin: auto; margin: 0px; overflow-y: scroll; }
-    #menuEditRestaurantHours { width: 400px; margin-bottom: 20px; text-align: left; }
-    #menuEditCategories { width: 400px; margin: auto; }
-    #menuEditRestaurantItems { width: 400px; margin: auto; }
-    #NavBarEdit 
-    { 
-        width: 400px; 
-        margin: auto;
-        margin-top: 40px;
-        padding: 12px 0px 12px 0px; 
-        text-align: center; 
-        font-weight: bold;
-        font-size: 17px;
-        font-family: Arial, Helvetica, sans-serif;
-        background-color: lightgreen; 
-    }
-    #categoryTitleCuisine { margin-top: 10px; }
-    #menu-edit-button-addCategory 
-    { 
-        display: block; 
-        width: 100%; 
-        padding: 10px 0px 10px 0px; 
-        font-weight: bold; 
-        font-size: 17px; 
-        font-family: Arial, Helvetica, sans-serif;
-        text-align: center;
-        background-color: white; 
-    }
-
-    /*** mobile ***/
-    @media screen and (max-width: 1000px) {
-        ::-webkit-scrollbar { display: none; }
-        ::-webkit-scrollbar { height: 0px; width: 0px; }
-
-        input { width: 87vw; margin: auto; padding-right: 10px; }
-        button:focus, button:hover { background-color: white; color: black; }
-
-        .menuEditCategory { width: 90vw; }
-        .menuCategoryHolder { width: 90vw; }
-        .categoryTitle { width: 90vw; }
-        .categoryInput { width: 22vw; }
-        .categoryArrowUp { margin: 0px; }
-        .categoryArrows { margin: 0px; width: 50px; }
-        .menu-edit-category { width: 90vw; }
-        .itemInput { width: 50vw; }
-        .buttonRemoveItem { width: 52vw; }
-        .item { width: 100%; }
-
-        #editMenu { height: 93vh; width: 90vw; margin: auto; }
-        #menuEditCategories { width: 90vw; }
-        #menuEditRestaurantHours { width: 90vw; }
-        #NavBarEdit { width: 100%; margin-bottom: 30px; }
-        #menuEditRestaurantItems { width: 90vw; }
-        #menuEditRestaurantCategory { width: 90vw; }
-        #menu { width: 98vw; }
-        #menu input { width: 98vw; }
-        #menu-edit-button-addCategory { width: 94vw; }
-    }
-</style>
 
 <body onload="loadSavedScrollPosition()" onscroll="saveScrollPosition()">
     <!-- nav menu -->
@@ -1351,4 +1197,161 @@
     <!-- google maps API -->
     <div hidden id="map"></div>
 </body>
+
+
+<style>
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { height: 0px; width: 7px; }
+
+    /*** elements ***/
+    body { background-color: #3c41d6; margin: 0px; padding: 0px; }
+    input 
+    { 
+        padding: 10px 4px 10px 8px; 
+        outline: none; 
+        font-weight: bold;
+        font-size: 20px; 
+        text-align: left;
+        font-family: Arial, Helvetica, sans-serif;
+        color: white; 
+        border: 0px solid black; 
+        border-bottom: 1px solid black; 
+        background-color: black; 
+    }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+    input { width: 392px; }
+    label { overflow-x: scroll; white-space: nowrap; max-width: 80%; font-family: Arial, Helvetica, sans-serif; }
+    p { font-family: Arial, Helvetica, sans-serif; }
+    b { font-family: Arial, Helvetica, sans-serif; }
+    a { text-decoration: none; color: black; }
+
+    /*** classes ***/
+    .buttonRemoveItem { width: 408px; }
+    .menuEditCategory { width: 400px; margin: auto; padding: 0px; text-align: center; border: 0px solid black; }
+    .categoryTitle 
+    { 
+        display: block; 
+        width: 400px; 
+        margin: auto; 
+        margin-top: 30px; 
+        padding: 0px; 
+        text-align: left;
+        font-weight: normal;
+        font-size: 20px;
+        text-shadow: 1px 1px black; 
+        color: white;
+    }
+    .menuCategory { margin: 0px; border-bottom: 0px solid white; background-color: black; }
+    .menuCategoryRemoveButton 
+    { 
+        width: auto;
+        padding: 0px 26px 0px 18px;
+        font-size: 30px;
+        font-weight: bold;
+        text-align: center;
+        color: white;
+        border: 0px solid black;
+        background-color: black; 
+    }
+    .categoryInput { width: 60%; text-align: left; }
+    .categoryArrows { font-size: 30px; color: white; border: 0px solid white; background-color: black; }
+    .menuCategoryHolder 
+    { 
+        display: flex; 
+        padding: 4px 0px 2px 0px; 
+        user-select: none; 
+        border-top: 1px solid white; 
+        background-color: black; 
+    }
+    .categoryArrowDown { margin: 0px; padding: 0px; margin-top: 1px; }
+    .categoryArrowUp { margin: 0px; padding: 0px; }
+    .menu-edit-category 
+    { 
+        padding: 0px; 
+        font-size: 20px; 
+        user-select: none; 
+        text-align: left;
+        font-weight: bold;
+        color: white; 
+        border-bottom: 1px solid white; 
+        background-color: black; 
+    }
+    .itemInput { width: 393px; padding: 7px 0px 7px 7px; font-weight: normal; text-align: left; border: 0px solid black; }
+    .buttonRemoveItem { width: auto; text-align: center; background-color: red; }
+    .menuCategoryName { display: inline-flex; margin: 12px 0px 12px 0px; }
+    .categoryNumber { padding: 13px 0px 0px 16px; color: white; }
+    .inputHours { border-bottom: 1px solid white; }
+    .addCategoryItemBtn { margin: 0px 16px 0px 21px; }
+
+    /*** ids ***/
+    #NavBar
+    {
+        margin: 0px;
+        padding: 0px;
+        color: black;
+        background-color: white;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    #menu { width: 94vw; }
+    #NavBar { padding-left: 7px; text-align: left; color: white; text-shadow: 1px 1px black; background-color: #3c41d6; }
+    #editMenu { height: 86vh; margin: auto; margin: 0px; overflow-y: scroll; }
+    #menuEditRestaurantHours { width: 400px; margin-bottom: 20px; text-align: left; }
+    #menuEditCategories { width: 400px; margin: auto; }
+    #menuEditRestaurantItems { width: 400px; margin: auto; }
+    #NavBarEdit 
+    { 
+        width: 400px; 
+        margin: auto;
+        margin-top: 40px;
+        padding: 12px 0px 12px 0px; 
+        text-align: center; 
+        font-weight: bold;
+        font-size: 17px;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: lightgreen; 
+    }
+    #categoryTitleCuisine { margin-top: 10px; }
+    #menu-edit-button-addCategory 
+    { 
+        display: block; 
+        width: 100%; 
+        padding: 10px 0px 10px 0px; 
+        font-weight: bold; 
+        font-size: 17px; 
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+        background-color: white; 
+    }
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        ::-webkit-scrollbar { display: none; }
+        ::-webkit-scrollbar { height: 0px; width: 0px; }
+
+        input { width: 87vw; margin: auto; padding-right: 10px; }
+        button:focus, button:hover { background-color: white; color: black; }
+
+        .menuEditCategory { width: 90vw; }
+        .menuCategoryHolder { width: 90vw; }
+        .categoryTitle { width: 90vw; }
+        .categoryInput { width: 22vw; }
+        .categoryArrowUp { margin: 0px; }
+        .categoryArrows { margin: 0px; width: 50px; }
+        .menu-edit-category { width: 90vw; }
+        .itemInput { width: 50vw; }
+        .buttonRemoveItem { width: 52vw; }
+        .item { width: 100%; }
+
+        #editMenu { height: 93vh; width: 90vw; margin: auto; }
+        #menuEditCategories { width: 90vw; }
+        #menuEditRestaurantHours { width: 90vw; }
+        #NavBarEdit { width: 100%; margin-bottom: 30px; }
+        #menuEditRestaurantItems { width: 90vw; }
+        #menuEditRestaurantCategory { width: 90vw; }
+        #menu { width: 98vw; }
+        #menu input { width: 98vw; }
+        #menu-edit-button-addCategory { width: 94vw; }
+    }
+</style>
 </html>

@@ -3,9 +3,9 @@ const Restaurant = require('../models/restaurant')
 const User = require('../models/user')
 const Order = require('../models/order')
 const Review = require('../models/review')
+// const configs = require('../settings.json')
 
-
-//get
+//gets
 exports.getHome = (req, res) => {
     //log
     process.stdout.write('admin > home')
@@ -83,7 +83,8 @@ exports.getRestaurants = (req, res, next) => {
                         loggedIn: true,
                         restaurants: restaurants,
                         path: '/restaurants',
-                        pageTitle: 'Admin Restaurants'
+                        pageTitle: 'Admin Restaurants',
+                        googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || configs.GOOGLE_MAPS_API_KEY
                     })
                 })
                 .catch(err => console.log(err))
@@ -113,7 +114,8 @@ exports.getUsers = (req, res, next) => {
                     loggedIn: true,
                     users: users,
                     path: '/users',
-                    pageTitle: 'Admin Users'
+                    pageTitle: 'Admin Users',
+                    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || configs.GOOGLE_MAPS_API_KEY
                 })
             })
             .catch(err => console.log(err))
@@ -188,7 +190,7 @@ exports.getStats = async (req, res, next) => {
 }
 
 
-//post
+//posts
 exports.postEditOrder = async (req, res, next) => {
     //log
     process.stdout.write('admin > post > edit-order')

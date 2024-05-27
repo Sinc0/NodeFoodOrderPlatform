@@ -6,6 +6,7 @@ const restaurant = require('./controllers/portal')
 const user = require('./controllers/user')
 const validation = require('./validation.js')
 
+
 //admin
 router.get('/admin', validation, admin.getStats)
 router.get('/admin/restaurants', validation, admin.getRestaurants)
@@ -19,7 +20,8 @@ router.post('/admin/delete-review', validation, admin.postDeleteReview)
 router.post('/admin/edit-review', validation, admin.postEditReview)
 router.post('/admin/delete-user', validation, admin.postDeleteUser)
 
-//portal
+
+//restaurant portal
 router.get('/portal', validation, restaurant.getRestaurantIndex)
 router.get('/portal/orders/accept', validation, restaurant.getRestaurantOrdersAccept)
 router.get('/portal/orders/history', validation, restaurant.getRestaurantOrdersHistory)
@@ -35,7 +37,8 @@ router.post('/portal/menuListed', validation, restaurant.postRestaurantMenuListe
 router.post('/portal/menuOnline', validation, restaurant.postRestaurantMenuOnline)
 router.post('/portal/welcomeMessage', validation, restaurant.postRestaurantWelcomeMessage)
 
-//user
+
+//user portal
 router.get('/login', user.getLogin)
 router.get('/about', user.getAbout)
 router.get('/privacy', user.getAbout)
@@ -57,6 +60,7 @@ router.post('/webhook', validation, user.postWebhook)
 router.post('/review-post', validation, user.postRestaurantReview)
 router.all('/order-process/:orderId', validation, user.getOrderProcess)
 router.all('/checkout', validation, user.getCheckout)
+
 
 //exports
 module.exports = router

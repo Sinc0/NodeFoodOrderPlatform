@@ -10,6 +10,7 @@
     <title>Restaurants</title>
 </head>
 
+
 <script>
     function displayRestaurantReviews(menuItemNumber)
     {
@@ -29,6 +30,7 @@
             item.style.marginBottom = "0px"
         }
     }
+
 
     function setRestaurantNumberOfReviews(restaurantNumber, value)
     {
@@ -51,6 +53,7 @@
         }
     }
 
+
     function setRestaurantRating(restaurantNumber, rating)
     {
         //elements
@@ -70,6 +73,7 @@
             restaurantRating.hidden = false
         }
     }
+
 
     function searchBoxRestaurants(totalMenuItems)
     {
@@ -97,137 +101,6 @@
     }
 </script>
 
-<style>
-    /*** scrollbar ***/
-    ::-webkit-scrollbar { height: 0px; width: 0px; }
-
-
-    /*** elements ***/
-    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
-    body { height: 100vh; margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6; }
-    h1 { margin: 0px; }
-    h3 { margin: 0px; }
-    p { margin: 0px; }
-    img { height: 50px; width: 50px; }
-    input { width: 100%; font-family: arial; }
-    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
-    input::placeholder { color: white; }
-    input:focus { outline: none; }
-
-
-    /*** classes ***/
-    .restaurantMenuItem { margin-top: 30px; background-color: #f7f9f9; }
-    .restaurantReview 
-    { 
-        width: auto; 
-        margin: 0px; 
-        padding: 10px; 
-        text-align: left; 
-        overflow-x: scroll; 
-        white-space: nowrap;
-        user-select: none;
-        border-bottom: 1px solid black; 
-        background-color: lightgray; 
-    }
-    .restaurantReviewModal 
-    { 
-        max-height: 300px; 
-        width: 699px; 
-        margin: auto; 
-        border: 0px solid black; 
-        border-left: 1px;
-        border-right: 1px;  
-    }
-    .restaurantReviewHeader { width: max-content; margin: -43px 0px 0px 233px; padding: 10px; user-select: none; }
-    .restaurantMenuItem img { margin: 0xp; padding: 0px; height: 196px; width: 100%; }
-    .restaurantCity { margin: 0px; padding: 0px; }
-    .restaurantTitle { margin: 0px; padding: 0px; }
-    .restaurantType { margin: 0px; padding: 0px; }
-    .restaurantRating { margin: 0px; padding: 0px; }
-    .restaurant-backgroundImage { display: block; }
-    .restaurant-backgroundImage-mobile { display: none; }
-    .restaurantReview
-    {
-        margin: auto;
-        background-color: #f7f9f9;
-        text-align: left;
-        width: auto;
-    }
-    .restaurantMenuItem 
-    { 
-        display: block; 
-        width: 697px; 
-        margin: auto; 
-        margin-top: 20px; 
-        padding: 0px;
-        border: 2px solid black; 
-        background-color: white; 
-    }
-    .restaurantMenuItemText
-    {
-        margin: 0px;
-        margin-top: 3px;
-        margin-right: 2px;
-        margin-left: 6px;
-        padding: 0px;
-        height: 149px;
-        width: 454px;
-        text-align: left;
-    }
-    .restaurantMenuItemImg
-    {
-        display: inline-block;
-        margin: 0px;
-        padding: 0px;
-        vertical-align: top;
-        height: 197px;
-        width: 228px;
-        border-right: 1px solid black;
-        background-color: black;
-    }
-    
-
-    /*** ids ***/
-    #searchBoxInput { height: 40px; font-weight: bold; font-size: 16px; color: white; border: 0px solid black; background-color: black; }
-    #grid-restaurants { height: 88vh; overflow-y: scroll; text-align: center; }
-    #searchBoxRestaurants input { display: block; margin: auto; width: 698px; text-align: center; }
-    #titleClosedRestaurants { margin-top: 24px; font-size: 26px; text-shadow: 1px 1px black; opacity: 40%; color: red; }
-    #body-restaurants { width: 100vw; overflow-y: scroll; overflow-x: none; }
-    #searchBoxInput::placeholder { color: white; }
-    
-
-    /*** mobile ***/
-    @media screen and (max-width: 1000px) {
-        .restaurantMenuItemText { width: 90%; padding: 0px; }
-        .restaurantMenuItem { margin: 24px 0px 0px 0px; width: 100%; border: 0px solid black; }
-        .restaurantMenuItemText
-        {
-            display: block;
-            height: 130px;
-            width: 100%;
-            min-height: 136px;
-            max-height: 136px;
-            margin: 0px;
-            padding: 0px;
-            text-align: center;
-            color: black;
-            border: 0px solid black;
-            background-color: transparent;
-        }
-        .restaurantReviewHeaderMobile { margin: 0px; padding: 10px 0px 10px 0px; background-color: transparent; }
-        .restaurantReviewModal { width: 100%; background-color: black; }
-        .restaurant-backgroundImage-mobile { display: block; -webkit-tap-highlight-color: transparent; border: 1px solid black; background-size: cover;}
-        .restaurantTitle { margin: 10px 0px 0px 0px; }
-        .restaurantMenuItemImg { display: block; }
-        .restaurantMenuItemImg { display: none; }
-        .restaurantReview { margin: 0px; }
-        .restaurantReviewModal::-webkit-scrollbar { display: none; }
-        .restaurant-backgroundImage { display: none; }
-
-        #searchBoxRestaurants input { display: block; width: 89vw; margin: auto; margin-top: 10px; text-align: center; }
-        #grid-restaurants { height: 82vh; width: 90vw; margin: auto; }
-    }
-</style>
 
 <body id="body-restaurants">
     <!-- admin nav menu -->
@@ -280,9 +153,9 @@
                     <div id="restaurantMenuItem#<%=counter %>" class="restaurantMenuItem">
                         <!-- restaurant profile image -->
                         <div id="restaurant-backgroundImage#<%=counter %>" class="restaurant-backgroundImage">
-                            <a style="text-decoration: none; color: black;" href="/restaurant/<%= restaurant.url %>">
+                            <a class="restaurantMenuItemRestaurantUrl" href="/restaurant/<%= restaurant.url %>">
                                 <div class="restaurantMenuItemImg">
-                                    <img src="<%=restaurant.imageUrl %>">
+                                    <img class="restaurantMenuItemImgSrc" src="<%=restaurant.imageUrl %>">
                                 </div>                  
                                 
                                 <!-- restaurant info -->
@@ -472,4 +345,152 @@
         </div>
     </div>
 </body>
+
+
+<style>
+    /*** scrollbar ***/
+    ::-webkit-scrollbar { height: 0px; width: 0px; }
+
+
+    /*** elements ***/
+    html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
+    body { height: 100vh; margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6; }
+    h1 { margin: 0px; }
+    h3 { margin: 0px; }
+    p { margin: 0px; }
+    img { height: 50px; width: 50px; }
+    input { width: 100%; font-family: arial; }
+    input[type=number]::-webkit-inner-spin-button { opacity: 1 }
+    input::placeholder { color: white; }
+    input:focus { outline: none; }
+
+
+    /*** classes ***/
+    .restaurantMenuItem { margin-top: 30px; background-color: #f7f9f9; }
+    .restaurantReview 
+    { 
+        width: auto; 
+        margin: 0px; 
+        padding: 10px; 
+        text-align: left; 
+        overflow-x: scroll; 
+        white-space: nowrap;
+        user-select: none;
+        border-bottom: 1px solid black; 
+        background-color: lightgray; 
+    }
+    .restaurantReviewModal 
+    { 
+        max-height: 300px; 
+        width: 699px; 
+        margin: auto; 
+        border: 0px solid black; 
+        border-left: 1px;
+        border-right: 1px;  
+    }
+    .restaurantReviewHeader { width: max-content; margin: -43px 0px 0px 233px; padding: 10px; user-select: none; }
+    .restaurantMenuItem img { margin: 0xp; padding: 0px; height: 196px; width: 100%; }
+    .restaurantCity { margin: 0px; padding: 0px; }
+    .restaurantTitle { margin: 0px; padding: 0px; }
+    .restaurantType { margin: 0px; padding: 0px; }
+    .restaurantRating { margin: 0px; padding: 0px; }
+    .restaurant-backgroundImage { display: block; }
+    .restaurant-backgroundImage-mobile { display: none; }
+    .restaurantReview
+    {
+        margin: auto;
+        background-color: #f7f9f9;
+        text-align: left;
+        width: auto;
+    }
+    .restaurantMenuItem 
+    { 
+        display: block; 
+        width: 697px; 
+        margin: auto; 
+        margin-top: 20px; 
+        padding: 0px;
+        border: 2px solid black; 
+        background-color: white; 
+    }
+    .restaurantMenuItemText
+    {
+        margin: 0px;
+        margin-top: 3px;
+        margin-right: 2px;
+        margin-left: 6px;
+        padding: 0px;
+        height: 149px;
+        width: 454px;
+        text-align: left;
+    }
+    .restaurantMenuItemImg
+    {
+        display: inline-block;
+        height: 197px;
+        width: 228px;
+        margin: 0px;
+        padding: 0px;
+        vertical-align: top;
+        border-right: 1px solid black;
+        background-color: black;
+    }
+    .restaurantMenuItemImgSrc
+    {
+        -webkit-user-drag: none;
+        user-drag: none;
+        user-select: none;
+    }
+    
+    .restaurantMenuItemRestaurantUrl
+    {
+        text-decoration: none;
+        -webkit-user-drag: none;
+        user-drag: none;
+        user-select: none;
+        color: black;
+    }
+    
+
+    /*** ids ***/
+    #searchBoxInput { height: 40px; font-weight: bold; font-size: 18px; color: white; border: 0px solid black; background-color: black; }
+    #grid-restaurants { height: 88vh; overflow-y: scroll; text-align: center; }
+    #searchBoxRestaurants input { display: block; margin: auto; width: 698px; text-align: center; }
+    #titleClosedRestaurants { margin-top: 24px; font-size: 26px; text-shadow: 1px 1px black; opacity: 40%; color: red; }
+    #body-restaurants { width: 100vw; overflow-y: scroll; overflow-x: none; }
+    #searchBoxInput::placeholder { color: white; }
+    
+
+    /*** mobile ***/
+    @media screen and (max-width: 1000px) {
+        .restaurantMenuItemText { width: 90%; padding: 0px; }
+        .restaurantMenuItem { margin: 24px 0px 0px 0px; width: 100%; border: 0px solid black; }
+        .restaurantMenuItemText
+        {
+            display: block;
+            height: 130px;
+            width: 100%;
+            min-height: 136px;
+            max-height: 136px;
+            margin: 0px;
+            padding: 0px;
+            text-align: center;
+            color: black;
+            border: 0px solid black;
+            background-color: transparent;
+        }
+        .restaurantReviewHeaderMobile { margin: 0px; padding: 10px 0px 10px 0px; background-color: transparent; }
+        .restaurantReviewModal { width: 100%; background-color: black; }
+        .restaurant-backgroundImage-mobile { display: block; -webkit-tap-highlight-color: transparent; border: 1px solid black; background-size: cover;}
+        .restaurantTitle { margin: 10px 0px 0px 0px; }
+        .restaurantMenuItemImg { display: block; }
+        .restaurantMenuItemImg { display: none; }
+        .restaurantReview { margin: 0px; }
+        .restaurantReviewModal::-webkit-scrollbar { display: none; }
+        .restaurant-backgroundImage { display: none; }
+
+        #searchBoxRestaurants input { display: block; width: 89vw; margin: auto; margin-top: 10px; text-align: center; }
+        #grid-restaurants { height: 82vh; width: 90vw; margin: auto; }
+    }
+</style>
 </html>
