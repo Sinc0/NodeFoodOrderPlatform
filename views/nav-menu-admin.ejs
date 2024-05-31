@@ -9,8 +9,6 @@
                 <button id="navButtonAdminLogout" type="submit"><b>Logout</b></button>
             </form>
         </li>
-        <!-- <li id="navButtonAdminHome" class="main-header__item"><a href="/admin/home">Home</a></li> -->
-        <!-- <li id="navButtonAdminOrders" class="main-header__item"><a href="/admin/orders">Orders</a></li> -->
     </ul>
 
     <ul class="main-header__item-list_right">
@@ -19,6 +17,7 @@
 
 
 <style>
+   /*** ids ***/
    #navButtonAdminLogout 
    { 
         font-size: 16px; 
@@ -29,6 +28,8 @@
         background-color: transparent; 
     }
     
+
+    /*** classes ***/
     .main-header { margin: 0px; padding: 0px; font-size: 18px; }
     .main-header__nav { display: flex; margin: 0px; padding: 0px 0px 0px 7px; text-shadow: 1px 1px black; color: white; }
     .main-header__item { padding: 0px; padding-top: 11px; padding-bottom: 11px; }
@@ -38,6 +39,7 @@
     .main-header__item a { text-decoration: none; font-weight: bold; color: white; }
     .main-header__item a:hover { color: white; }
 
+    
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
         .main-header__nav { overflow-x: scroll; }

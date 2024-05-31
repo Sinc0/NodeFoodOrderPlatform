@@ -1,6 +1,5 @@
 // Set up Stripe.js and Elements to use in checkout 
-// var configs = require('../settings.json')
-var stripe = Stripe(process.env.STRIPE_PAYMENTS_API_KEY || configs.STRIPE_PAYMENTS_API_KEY);
+var stripe = Stripe('');
 var elements = stripe.elements();
 
 //document.querySelector("button").disabled = true;
@@ -65,14 +64,14 @@ form.addEventListener('submit', function(ev) {
     if (result.error) {
       // Show error to your customer (e.g., insufficient funds)
       showError(result.error.message);
-      console.log(result.error.message);
+      // console.log(result.error.message);
     } else {
       // The payment has been processed!
       if (result.paymentIntent.status === 'succeeded') {
         // Show a success message to your customer
         orderComplete(result.paymentIntent.id);
-        console.log(result.paymentIntent);
-        console.log("payment successful");
+        // console.log(result.paymentIntent);
+        // console.log("payment successful");
         postOrder();
         clearCart();
         

@@ -39,58 +39,24 @@
         <!-- status -->
         <p class="categoryTitle">Status</p>
         <div id="categoryStatus" class="category">
-            <% if(restaurant.menuListed == false) { %>
-                <p class="statusItem" style="background-color: red;"><b>restaurant</b> is inactive</p>
-            <% } %>
-            
-            <% if(restaurant.menuListed == true) { %>
-                <p class="statusItem" style="background-color: green;"><b>restaurant</b> is active</p>
-            <% } %>
+            <% if(restaurant.menuListed == false) { %> <p class="statusItem red"><b>restaurant</b> is inactive</p> <% } %>
+            <% if(restaurant.menuListed == true) { %> <p class="statusItem green"><b>restaurant</b> is active</p><% } %>
 
-            <% if(restaurant.menuOnline == false) { %>
-                <p class="statusItem" style="background-color: red;"><b>restaurant</b> is closed</p>
-            <% } %>
-                
-            <% if(restaurant.menuOnline == true) { %>
-                <p class="statusItem" style="background-color: green;"><b>restaurant</b> is open</p>
-            <% } %>
+            <% if(restaurant.menuOnline == false) { %> <p class="statusItem red"><b>restaurant</b> is closed</p> <% } %>
+            <% if(restaurant.menuOnline == true) { %> <p class="statusItem green"><b>restaurant</b> is open</p> <% } %>
         </div>
 
-        <!-- credentials -->
-        <!-- <p class="categoryTitle">Credentials</p>
-        <div id="profileCredentials" class="category" style="display: block;">
-            <p class="credential">email: <%=email %></p>
-            <p class="credential">name: <%=name %></p>
-            <p class="credential">phone: <%=phone %></p>
-            <p class="credential">address: <%=address %></p>
-            <p class="credential">city: <%=restaurant.city %></p>
-        </div> -->
-
-        <!-- options -->
-        <p class="categoryTitle">Options</p>
-        <div id="categoryOptions" class="category">
-            <form action="/portal/welcomeMessage" method="POST">
-                <!-- <% if(restaurant.welcomeMessage == false) { %>
-                    <input hidden name="welcomeMessage" value=true></input>
-                    <button class="profile-buttons">show welcome message</button><br />
-                <% } %> -->
-                <!-- <% if(restaurant.welcomeMessage == true) { %>
-                    <input hidden name="welcomeMessage" value=false></input>
-                    <button class="profile-buttons optionButton">dont show welcome message</button><br />
-                <% } %> -->
-            </form>
-        </div>
-        
         <!-- activate/deactivate restaurant -->
+        <p class="categoryTitle">Options</p>
         <form action="/portal/menuListed" method="POST">
             <% if(restaurant.menuListed == false) { %>
                 <input hidden name="menuListed" value=true></input>
-                <button class="profile-buttons optionButton">activate restaurant</button><br />
+                <button class="profile-buttons optionButton">activate</button><br />
             <% } %>
             
             <% if(restaurant.menuListed == true) { %>
                 <input hidden name="menuListed" value=false></input>
-                <button class="profile-buttons optionButton">deactivate restaurant</button><br />
+                <button class="profile-buttons optionButton">deactivate</button><br />
             <% } %>
         </form>
 
@@ -98,35 +64,14 @@
         <form action="/portal/menuOnline" method="POST">
             <% if(restaurant.menuOnline == false) { %>
                 <input hidden name="menuOnline" value="true"></input>
-                <button class="profile-buttons optionButton">open restaurant</button><br />
+                <button class="profile-buttons optionButton">open</button><br />
             <% } %>
-                
+            
             <% if(restaurant.menuOnline == true) { %>
                 <input hidden name="menuOnline" value="false"></input>
-                <button class="profile-buttons optionButton">close restaurant</button><br />
+                <button class="profile-buttons optionButton">close</button><br />
             <% } %>
         </form>
-
-        <!-- edit credentials -->
-        <!-- <div id="editProfileCredentials" style="display: none">
-            <form action="" method="POST" onkeydown="return event.key != 'Enter';">
-                <input hidden value="<%=email %>" name="oldEmail"></input>
-                <input hidden value="<%=email %>" name="newEmail" placeholder="email"></input>
-                <b>name: </b><input value="<%=name %>" name="name" placeholder="name"></input>
-                <br/>
-                <b>phone: </b><input value="<%=phone %>" name="phone" placeholder="phone"></input>
-                <br/>
-                <b>adress: </b><input id="searchInput" value="<%=address %>">
-                <input hidden id="userAddress" value="<%=address %>" name="address" placeholder="address"></input>
-                <br/>
-                <b>city: </b><input id="" value="<%=restaurant.city %>">
-                <input hidden id="userCity" value="<%=restaurant.city %>" name="city" placeholder="city"></input>
-                <br/>
-                <button class="profile-buttons" type="submit" onclick="">confirm</button>
-            </form>
-            
-            <button class="profile-buttons"  onclick="editProfileCredentials()">decline</button>
-        </div> -->
     </div>
 </body>
 
@@ -134,6 +79,7 @@
 <style>
     /*** scrollbar ***/
     ::-webkit-scrollbar { height: 0px; width: 7px; }
+
 
     /*** elements ***/
     body { background-color: #3c41d6; margin: 0px; padding: 0px; }
@@ -144,16 +90,30 @@
     input[type=number]::-webkit-inner-spin-button { opacity: 1 }
     input { width: 392px; }
 
+
     /*** classes ***/
-    .statusItem { margin: 0px; padding: 10px 0px 10px 0px; border-bottom: 1px solid black; }
+    .statusItem { margin: 0px; padding: 20px 0px 20px 0px; text-transform: capitalize; font-size: 18px; border-bottom: 1px solid black; }
     .categoryTitle { margin: 20px 0px 0px 0px; padding: 0px; font-weight: normal; font-size: 20px; text-shadow: 1px 1px black; color: white; }
     .credential { margin: 0px; padding: 0px; }
-    .optionButton { width: 100%; padding: 10px 0px 10px 0px; font-weight: bold; font-size: 16px; border: 0px solid black; border-bottom: 1px solid black; }
+    .optionButton 
+    { 
+        width: 100%; 
+        padding: 20px 0px 20px 0px; 
+        font-weight: bold; 
+        font-size: 18px;
+        text-transform: capitalize;
+        border: 0px solid black; 
+        border-bottom: 1px solid black; 
+    }
+    .red { background-color: red; }
+    .green { background-color: green; }
+
 
     /*** ids ***/
     #categoryStatus { text-align: center; }
     #settings { margin: auto; width: 400px; }
 
+    
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
         ::-webkit-scrollbar { display: none; }

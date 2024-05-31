@@ -11,7 +11,7 @@ if('serviceWorker' in navigator)
             .register('/service-worker.js')
             .then((reg) => {
             // registration worked
-                console.log('Registration succeeded. Scope is ' + reg.scope);
+                // console.log('Registration succeeded. Scope is ' + reg.scope);
             })
 }
 

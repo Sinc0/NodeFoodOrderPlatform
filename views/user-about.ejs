@@ -13,8 +13,10 @@
     <!-- nav menu -->
     <%- include('nav-menu-anon.ejs') %>
 
+    <!-- about -->
     <div id="main-about">
-        <!-- about -->
+
+        <!-- description -->
         <p id="categoryAbout" class="categoryTitle">About</p>
         <p class="categoryText">This is a student project, made to learn about Node.js, EJS, Express.js, Mongodb, Payment APIs.</p>
         
@@ -33,7 +35,7 @@
             <p class="privacyPolicyItem">Uses Cookies: <span class="yes">Yes</span></p>
             <p class="privacyPolicyItem">Uses Local Storage: <span class="yes">Yes</span></p>
             <p class="privacyPolicyItem">Links to Other Websites: <span class="no">No</span></p>
-            <p class="privacyPolicyItem">Policy Might Change in the Future: <span class="yes">Yes</span></p>
+            <p class="privacyPolicyItem">Policy Might Change: <span class="yes">Yes</span></p>
         </div>
     </div>
 </body>
@@ -43,21 +45,25 @@
     /*** scrollbar ***/
     ::-webkit-scrollbar { height: 0px; width: 0px; }
 
+
     /*** elements ***/
     body { height: 100vh; margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6; text-align: center; color: white; }
     html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
     p { margin: 0px; }
 
+
     /*** classes ***/
-    .categoryTitle { margin-top: 20px; font-weight: bold; font-size: 22px; }
+    .categoryTitle { margin-top: 30px; font-weight: bold; font-size: 22px; }
     .privacyPolicyItem {font-size: 18px; }
     .yes { color: lightgreen; }
     .no { color: red; }
     .categoryText { font-size: 18px; }
 
+
     /*** ids ***/
     #main-about { width: 700px; margin-top: 0px; margin: auto; }
     #categoryAbout { margin-top: 0px; }
+
 
     /*** mobile ***/
     @media screen and (max-width: 1000px) {        

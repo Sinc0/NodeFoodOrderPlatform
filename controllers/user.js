@@ -3,7 +3,7 @@ const Restaurant = require('../models/restaurant')
 const User = require('../models/user')
 const Order = require('../models/order')
 const Review = require('../models/review')
-// const configs = require('../settings.json')
+// const configs = require('../settings.json') || null
 const stripe = require('stripe')(process.env.STRIPE_PAYMENTS_API_KEY || configs.STRIPE_PAYMENTS_API_KEY)
 
 
@@ -229,7 +229,7 @@ exports.getCheckout = async (req, res, next) => {
         {
             path: '/checkout',
             pageTitle: 'Checkout',
-            customerName: user.email,
+            customerName: user.name,
             customerAddress: user.address,
             customerPhone: user.phone,
             customerComment: customerComment,

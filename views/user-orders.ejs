@@ -108,7 +108,10 @@
         <% for (let order of orders.reverse()) { %>
             <% counter-- %>
             <div id="order-item#<%=counter %>" class="order-item">
+
+                <!-- header -->
                 <b id="order-count">#<%=counter %></b><span> · </span>
+
                 <b id="orderRestaurant"><%=order.restaurant %></b><span> · </span>
                 <% if (order.status == "unconfirmed") { %>
                     <b id="orderStatusUnconfirmed">Unconfirmed</b>
@@ -119,38 +122,28 @@
                 <% } else if (order.status == "declined") { %>
                     <b id="orderStatusDeclined">Declined</b>
                 <% } %>
-                        
-                        
-                <p id="order-items"><% for(let c = 0; c < order.products.items.length; c++) { %>
-                    <p><%=order.products.items[c].quantity %> <%=order.products.items[c].name %>: $<%=order.products.items[c].quantity * order.products.items[c].price %></p>
-                <% } %>
+                <br />
 
-                <% if (order.customerComment != "") { %> <p id="order-comment"><%=order.customerComment.toUpperCase() %></p> <% } %>
-                <p id="order-total"><%=order.totalPrice %> total amount</p>
+                <!-- details -->
+                <br />
+                <p id="order-id">ID: <%=order._id %></p>
+                <p id="order-type">Type: <%=order.type %></p>
+                <p id="order-date">Ordered: <%=order.date.toString().substring(4, 21).replaceAll(" ", "-") %></p>
+                <!-- <p id="order-rating">Rating: <%=order.rating %></p> -->
+                <% if(order.confirmedAt == null) { %> <p>ETA: waiting for restaurant...</p> 
+                <% } else if(order.confirmedAt != null) { %> <p>ETA: <%=order.estimatedCompletionTime %> mins</p> <% } %>
                 
-                <% if(order.confirmedAt == null) { %> <p>waiting for restaurant...</p> 
-                    <% } else if(order.confirmedAt != null) { %> <p><%=order.estimatedCompletionTime %> mins until complete</p> <% } %>
-                    
-                    <p id="order-rating"><%=order.rating %></p>
-                    <p id="order-type"><%=order.type.toUpperCase() %></p>
-                    <p id="order-date"><%=order.date.toString().substring(4, 21).replaceAll(" ", "-") %></p>
-                    <p id="order-id"><%=order._id %></p>
-                    
-                    <% if(order.rating != null) { %> <p><b>rating:</b> <%=order.rating %></p> <% } %>
-                    <% if(order.comment != null) { %> <p><b>comment:</b> <%=order.comment %></p> <% } %>
-                    <!-- <p>placed: <%=order.placedAt.toString().substring(0, 8) %></p> -->
-                    <!-- <% if(order.confirmedAt != null) { %> <p>confirmed: <%=order.confirmedAt.toString().substring(0, 8) %></p> <% } %> -->
-                    <!-- <% if(order.completedAt != null) { %> <p>completed: <%=order.completedAt.toString().substring(0, 8) %></p> <% } %> -->
-                    <!-- <p><%=order.user %></p> -->
-                    <!-- <p><%=order.restaurantUrl %></p> -->
-                    <!-- <p><%=order.customerName %></p> -->
-                    <!-- <p><%=order.customerPhone %></p> -->
-                    <!-- <p><%=order.customerAddress %></p> -->
-                    <!-- <div id="orders-show-detail">
-                    <a href='/order-details/<%=order._id %>'>
-                        <p><b>show details</b></p>
-                    </a>
-                </div> -->
+                <!-- items -->
+                <p id="order-items">Items: 
+                <% for(let c = 0; c < order.products.items.length; c++) { %>
+                    <p> · <%=order.products.items[c].quantity %> x <%=order.products.items[c].name %>: $<%=order.products.items[c].quantity * order.products.items[c].price %></p>
+                <% } %>
+                <% if (order.customerComment != "") { %> <p id="order-comment"> · <%=order.customerComment %></p> <% } %>
+                <br/> 
+                
+                <!-- total -->
+                <p id="order-total">Total: <%=order.totalPrice %></p>
+                <br />
 
                 <!-- review buttons -->
                 <% if(order.review == null) { %>
@@ -159,11 +152,11 @@
                     <p id="buttonEditReview" value="<%=order._id%>" onclick="reviewOrder('<%=totalOrders %>', '<%=counter %>', this.value)"><b>Review</b></p>
                 <% } %>
             </div>
-
+            
+            <!-- variables -->
             <% var customerNameSplit = order.customerName.split("@"); %>
             <% var customerName = customerNameSplit[0]; %>
             <% var orderItems = [] %>
-            
             <% for(let c = 0; c < order.products.items.length; c++) { %>
                 <% orderItems.push(order.products.items[c].name + ", ") %>
             <% } %>
@@ -174,8 +167,6 @@
                     <input hidden name="orderId" value="<%=order._id %>"></input>
                     <input hidden name="restaurant" value="<%=order.restaurantUrl %>"></input>
                     <input hidden name="items" value="<%=orderItems.toString() %>"></input>
-                    
-                    <!-- <b id="reviewCancelButton" onclick="reviewOrder('<%=totalOrders %>', '<%=counter %>', this.value)">cancel</b> -->
                     
                     <% if(order.review == null) { %>
                         <input id="inputReviewRating" required name="rating" type="number" min="1" max="5" placeholder="1" value=""></input>
@@ -195,7 +186,7 @@
     </div>
     
     <% } else { %>
-        <h1 style="text-align: center;"> No orders found</h1>
+        <h1 id="ordersNotFound"> No orders found</h1>
     <% } %>
 </body>
 
@@ -203,6 +194,7 @@
 <style>
     /*** scrollbar ***/
     ::-webkit-scrollbar { width: 0px; }
+
 
     /*** elements ***/
     html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
@@ -216,16 +208,17 @@
     p { margin: 0px; }
     h1 { margin: 0px; }
     
+
     /*** classes ***/
     .order-item 
     { 
+        width: 378px;
         margin: auto;
         margin-bottom: 30px;
-        padding: 12px; 
+        padding: 12px;
+        font-size: 18px; 
         user-select: none; 
         border: 1px solid black;
-        width: 378px;
-        /* border: 1px solid black */
         background-color: #f7f9f9;
     }
     .order-review 
@@ -246,6 +239,7 @@
     }
     .search-orders { width: 400px; }
     .order-item p { margin: 0px; padding: 0px; }
+
 
     /*** ids ***/
     #searchBox { margin: 0px 0px 24px 0px; text-align: center; border: 0px solid black; }
@@ -295,7 +289,7 @@
     { 
         margin: 10px 0px 0px 0px; 
         padding: 0px; 
-        font-size: 18px; 
+        font-size: 20px; 
         color: black; 
     }
     #buttonEditReview 
@@ -320,7 +314,9 @@
     #customerComment::placeholder { color: black; }
     #orders-show-detail a { color: black; text-decoration: none; }
     #orders-show-detail p:hover { color: white; }
+    #ordersNotFound { text-align: center; }
 
+    
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
         button:focus, button:hover { background-color: white; color: black; }

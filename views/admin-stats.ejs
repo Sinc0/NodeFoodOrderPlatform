@@ -13,9 +13,6 @@
     <!-- nav menu -->
     <%- include('nav-menu-admin.ejs') %>
 
-    <!-- title -->
-    <!-- <h3>Statistics</h3> -->
-
     <!-- variables -->
     <% var thisMonth = new Date().getMonth() %>
     <% var totalSales = 0 %>
@@ -40,6 +37,7 @@
     
     <!-- set orders -->
     <% for(var counter = 0; counter < orders.length; counter++) { %>
+        
         <!-- variables -->
         <% var orderCustomer = orders[counter].user %>
         <% var orderTotalAmount = parseFloat((orders[counter].totalPrice.slice(1))); %>
@@ -82,6 +80,7 @@
     <% } %>
 
     <div id="stats">
+        
         <!-- sales -->
         <p class="categoryTitle">Sales</p>
         <div class="category">
@@ -132,16 +131,19 @@
     /*** scrollbar ***/
     ::-webkit-scrollbar { height: 0px; width: 0px; }
     
+
     /*** elements ***/
     html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
     body { margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6; }
     p { margin: 0px; }
     h3 { margin: 0px; }
     
+
     /*** classes ***/
     .category { }
     .categoryTitle{ margin: 20px 0px 0px 0px; font-size: 20px; font-weight: bold; text-shadow: 1px 1px black; color: white; }
     .categoryItem { text-shadow: 1px 1px black; color: white; }
+
 
     /*** ids ***/
     #stats { display: block; width: 400px; margin: auto; text-align: center; }
@@ -157,6 +159,7 @@
         background-color: black; 
     }
 
+    
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
         #stats { height: 70vh; width: 90vw; }

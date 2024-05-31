@@ -312,21 +312,23 @@
         
         <!-- reviews -->
         <div id="restaurantReviews" class="statsCategory">
+
+            <!-- variables -->
             <% let reviewsTotalScore = 0 %>
-            
             <% for (let i in reviews) { %>
                 <% reviewsTotalScore += parseInt(reviews[i].reviewObject.rating) %>
             <% } %>
-
+            <% let reviewsAvgScore = reviewsTotalScore / reviews.length || 0 %>
+            
+            <!-- total reviews -->
             <p class="categoryHeader categoryItem">Total · <%=reviews.length %></p>
-            <p class="categoryItem">Average ·
-                <% for (let c = 0; c < reviewsTotalScore / reviews.length; c++) { %>
-                    <span>★</span>
-                <% } %>
-            </p>
-            <p class="categoryHeader categoryItem"></p>
+                
+            <!-- review AVG score -->
+            <% if(reviewsAvgScore == 0) { %>  <p class="categoryItem">Average · <%=reviewsTotalScore %> </p> <% } %>
+            <% if(reviewsAvgScore > 0) { %> <p class="categoryItem">Average · <% for (let c = 0; c < reviewsAvgScore; c++) { %> <span>★</span> <% } %></p> <% } %>
+            <br />
 
-
+            <!-- reviews -->
             <% for (let i in reviews) { %>
                 <div class="review">
                     <% for (let c = 0; c < reviews[i].reviewObject.rating; c++) { %>
@@ -366,6 +368,7 @@
     input { font-family: Arial, Helvetica, sans-serif; }
     input[type=number]::-webkit-inner-spin-button { opacity: 1 }
     input { width: 392px; }
+
 
     /*** classes ***/
     .categoryTitle 
@@ -419,6 +422,7 @@
     .salesZero { color: red; }
     .categoryHeader { margin: 26px 0px 0px 0px; }
 
+
     /*** ids ***/
     #NavBar
     {
@@ -448,6 +452,7 @@
     #restaurantSales { display: block; }
     #restaurantReviews { overflow-y: scroll; }
 
+    
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
         ::-webkit-scrollbar { display: none; }

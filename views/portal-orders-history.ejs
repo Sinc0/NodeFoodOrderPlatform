@@ -354,7 +354,7 @@
                 
                 <!-- details -->
                 <p id="orderPlaced">Ordered: <%=orders[c].placedAt.toString().substring(0, 8) %>-<%=orders[c].placedAt.toString().substring(15).replaceAll(" ", "-") %></p>
-                <p id="orderUser">Name: <%=orders[c].customerName.split("@")[0].toUpperCase() %></p>
+                <p id="orderUser">Name: <%=orders[c].customerName %></p>
                 <p id="orderPhone">Phone: <%=orders[c].customerPhone.toString().replace(" ", "") %></p>
 
                 <div id="orderItems">
@@ -368,7 +368,6 @@
                 <!-- delivery details -->
                 <% if(orders[c].type == "delivery") { %>
                     <div id="output">
-                        <!-- <p id="googleMapsEstimationTitle"><b>Google Maps Estimation</b></p> -->
                         <p id="googleMapsEstimationTitle"><b><%=orders[c].type.toUpperCase() %></b></p>
                         <p id="destinationAddress"></p>
                         <p id="travelDistance"></p>
@@ -404,19 +403,7 @@
                     <p id="">Type: <%=ordersCook[c].type.toUpperCase() %></p>
                     <p id="">Confirmed: <%=ordersCook[c].confirmedAt.toString().substring(0, 5) %></p>
                     <p id="">ETA: <%=ordersCook[c].estimatedCompletionTime %> min</p>
-                    
-
-                    <!-- details -->
-                    <div id="orderFooter">
-                        <% if(ordersCook[c].type == "delivery") { %>
-                            <p id="orderUser">Name: <%=ordersCook[c].customerName.split("@")[0].toUpperCase() %></p> 
-                            <!-- <p id="orderPhone">Phone: <%=ordersCook[c].customerPhone.toString().replace(" ", "") %></p> -->
-                            <!-- <p id="orderDeliveryAddress">Address: <%=ordersCook[c].customerAddress %></p> -->
-                        <% } else { %>
-                            <!-- <p id="orderUser">Name: <%=ordersCook[c].customerName.split("@")[0].toUpperCase() %></p>  -->
-                            <!-- <p id="orderPhone">Phone: <%=ordersCook[c].customerPhone.toString().replace(" ", "") %></p></p>  -->
-                        <% } %> 
-                    </div>
+                    <p id="orderUser">Name: <%=ordersCook[c].customerName %></p> 
                     
                     <!-- items -->
                     <div id="orderItems">
@@ -450,8 +437,8 @@
                     <p id="orderNumber"></p>
                     <p>ID: <%=ordersDeclined[c]._id %></p>
                     <p id="orderPlaced">Date: <%=ordersDeclined[c].placedAt.toString().substring(0, 8) %>-<%=ordersDeclined[c].placedAt.toString().substring(15).replaceAll(" ", "-") %></p>
-                    <p id="orderUser">Name: <%=ordersDeclined[c].customerName.split("@")[0] %></p>
-                    <p id="">Email: <%=ordersDeclined[c].customerName %></p>
+                    <p id="orderUser">Name: <%=ordersDeclined[c].customerName %></p>
+                    <p id="">Email: <%=ordersDeclined[c].user %></p>
                     <p id="orderPhone">Phone: <%=ordersDeclined[c].customerPhone.toString().replace(" ", "") %></p>
                     <p>Address: <%=ordersDeclined[c].customerAddress %></p>
                     
@@ -481,8 +468,8 @@
 
                     <!-- order details -->
                     <p id="orderPlaced">Date: <%=ordersCompleted[c].placedAt.toString().substring(0, 8) %>-<%=ordersCompleted[c].placedAt.toString().substring(15).replaceAll(" ", "-") %></p>
-                    <p id="orderUser">Name: <%=ordersCompleted[c].customerName.split("@")[0] %></p>
-                    <p>Email: <%=ordersCompleted[c].customerName %></p>
+                    <p id="orderUser">Name: <%=ordersCompleted[c].customerName %></p>
+                    <p>Email: <%=ordersCompleted[c].user %></p>
                     <p id="orderUser">Phone: <%=ordersCompleted[c].customerPhone.toString().replace(" ", "") %></p>
                     <p id="orderUser">Address: <%=ordersCompleted[c].customerAddress %></p>
                     <br />
@@ -512,6 +499,7 @@
     ::-webkit-scrollbar-thumb { background: black; }
     ::-webkit-scrollbar-thumb:hover { } 
 
+
     /*** elements ***/
     html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
     body { margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6; }
@@ -527,6 +515,7 @@
     input:focus { outline: none; }
     button:focus { outline: none; }
     option { font-weight: bold; }
+
 
     /*** classes ***/
     .customerOrder 
@@ -548,6 +537,7 @@
         padding: 12px; 
         font-weight: bold;
         font-size: 18px;
+        white-space: nowrap;
         border: 1px solid black; 
     }
     .customerOrder 
@@ -596,6 +586,7 @@
         background-color: red; 
     }
 
+
     /*** ids ***/
     #selectOrderType 
     { 
@@ -642,6 +633,7 @@
         border: 0px;
     }
     #customerComment::placeholder { color: black; }
+
 
     /*** mobile ***/
     @media screen and (max-width: 1000px) {

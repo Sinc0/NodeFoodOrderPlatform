@@ -168,6 +168,7 @@
     <div id="users">
         <% for(var i = 0; i < users.length; i++) { %>
             <% if(users[i].admin != true && users[i].restaurantName == null) { %>
+                
                 <!-- user card -->
                 <div id="user#<%=i + 1%>" class="admin-card" onclick="displayEditUser('<%=i + 1%>')">      
                     <p class="cardText"><%=users[i].email %></p> 
@@ -175,6 +176,7 @@
                 
                 <!-- edit card -->
                 <div class="admin-edit" hidden id="edit-user#<%=i + 1%>">
+                    
                     <!-- edit -->
                     <form id="formEdit" action="/admin/edit-user" method="POST">
                         <input hidden class="input-admin" name="id" value="<%=users[i]._id %>"></input>
@@ -211,6 +213,7 @@
     /*** scrollbar ***/
     ::-webkit-scrollbar { height: 0px; width: 0px; }
 
+
     /*** elements ***/
     html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
     body { margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; background-color: #3c41d6; }
@@ -222,6 +225,7 @@
     input[type=number]::-webkit-inner-spin-button { opacity: 1 }
     input::placeholder { color: white; }
     input:focus { outline: none; }
+
 
     /*** classes ***/
     .admin-edit { width: auto; padding: 0px 10px 0px 10px; margin: auto; user-select: none; border: 1px solid black; background-color: white; }
@@ -250,6 +254,7 @@
     .input-admin { width: 360px; margin-left: 7px; padding: 10px 0px 10px 7px; font-weight: bold; font-size: 16px; }
     .label-admin { display: block; padding: 20px 0px 0px 7px; }
     
+
     /*** ids ***/
     #searchBox { width: 391px; margin: auto; border: 0px solid black; }
     #searchBoxInput 
@@ -274,6 +279,7 @@
     #deleteButton { background-color: red; }
     #searchBoxInput::placeholder { color: white; }
 
+
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
         button:focus, button:hover { background-color: white; color: black; }
@@ -288,5 +294,4 @@
         #users { height: 70vh; width: 90vw; }
     }
 </style>
-
 </html>

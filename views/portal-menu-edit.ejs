@@ -680,7 +680,7 @@
                 {                    
                     if(a[c].id.includes(idInputValue))
                     {
-                        console.log("item " + c + " contains id")
+                        // console.log("item " + c + " contains id")
                         a[c] = object
                     }
                 }
@@ -930,57 +930,19 @@
 
     function GoogleMapsAdressAutocomplete() 
     {
-        // let map = new google.maps.Map(document.getElementById('map'), {
-            //center: {lat: -33.8688, lng: 151.2195},
-            //zoom: 13
-        // })
-        
+        //variables        
         let input = document.getElementById('inputAddress')
         let autocomplete = new google.maps.places.Autocomplete(input)
         let infowindow = new google.maps.InfoWindow()
-
+        
+        //autocomplete listener
         autocomplete.addListener('place_changed', function() 
         {
             infowindow.close()
-            let place = autocomplete.getPlace()
-            setAddressToLocalStorage()
-
-            // if (!place.geometry) 
-            // {
-            //     return window.alert("Address not found")
-            // }
-        
-            // var address = ''
             
-            // if (place.address_components) 
-            // {
-            //     address = [
-            //         (place.address_components[0] && place.address_components[0].short_name || ''),
-            //         (place.address_components[1] && place.address_components[1].short_name || ''),
-            //         (place.address_components[2] && place.address_components[2].short_name || '')
-            //     ].join(' ')
-            // }
-        
-            // infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address)
-                
-            //location details
-            // for (let i = 0; i < place.address_components.length; i++) 
-            // {
-            //     if(place.address_components[i].types[0] == 'country')
-            //     {
-            //         let userAddress = document.getElementById('userAddress')
-            //         let customerAdress = document.getElementById('customerAddress')
-
-            //         if(userAddress != null)
-            //         {
-            //             userAddress.value = place.formatted_address
-            //         }
-            //         if(customerAdress != null)
-            //         {
-            //             customerAdress.value = place.formatted_address
-            //         }
-            //     }
-            // }          
+            let place = autocomplete.getPlace()
+            
+            setAddressToLocalStorage()        
         })
     }
 
@@ -1203,6 +1165,7 @@
     /*** scrollbar ***/
     ::-webkit-scrollbar { height: 0px; width: 7px; }
 
+
     /*** elements ***/
     body { background-color: #3c41d6; margin: 0px; padding: 0px; }
     input 
@@ -1225,6 +1188,7 @@
     b { font-family: Arial, Helvetica, sans-serif; }
     a { text-decoration: none; color: black; }
 
+
     /*** classes ***/
     .buttonRemoveItem { width: 408px; }
     .menuEditCategory { width: 400px; margin: auto; padding: 0px; text-align: center; border: 0px solid black; }
@@ -1233,7 +1197,7 @@
         display: block; 
         width: 400px; 
         margin: auto; 
-        margin-top: 30px; 
+        margin-top: 40px; 
         padding: 0px; 
         text-align: left;
         font-weight: normal;
@@ -1283,6 +1247,7 @@
     .inputHours { border-bottom: 1px solid white; }
     .addCategoryItemBtn { margin: 0px 16px 0px 21px; }
 
+
     /*** ids ***/
     #NavBar
     {
@@ -1304,7 +1269,7 @@
         width: 400px; 
         margin: auto;
         margin-top: 40px;
-        padding: 12px 0px 12px 0px; 
+        padding: 20px 0px 20px 0px; 
         text-align: center; 
         font-weight: bold;
         font-size: 17px;
@@ -1324,6 +1289,7 @@
         background-color: white; 
     }
 
+    
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
         ::-webkit-scrollbar { display: none; }

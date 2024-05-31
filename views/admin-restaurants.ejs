@@ -144,6 +144,8 @@
     
             <!-- edit modal -->
             <div class="admin-edit" hidden id="edit-restaurant#<%=i + 1%>">
+                
+                <!-- edit -->
                 <form id="formEdit" action="/admin/edit-restaurant" method="POST">
                     <input hidden class="input-admin" name="id" value="<%=restaurants[i]._id %>"></input>
                     <label class="label-admin">Email</label>
@@ -154,7 +156,6 @@
                     <input class="input-admin" name="owner" value="<%=restaurants[i].owner %>"></input>
                     <label class="label-admin">Address</label>
                     <input id="inputAddress<%=i + 1%>" class="input-admin" name="address" value="<%=restaurants[i].address %>"></input>
-                    <!-- edit -->
                     <button id="editButton" class="admin-card-button">Update</button>
                 </form>
 
@@ -179,6 +180,7 @@
     /*** scrollbar ***/
     ::-webkit-scrollbar { height: 0px; width: 0px; }
 
+
     /*** elements ***/
     html { height: 100vh; width: 100vw; background-size: cover; background-repeat: no-repeat; }
     body { background-color: #3c41d6; margin: 0px; padding: 0px; overflow: hidden; font-family: Arial, Helvetica, sans-serif; }
@@ -190,6 +192,7 @@
     input[type=number]::-webkit-inner-spin-button { opacity: 1 }
     input::placeholder { color: white; }
     input:focus { outline: none; }
+
 
     /*** classes ***/
     .admin-edit { width: auto; padding: 0px 10px 0px 10px; margin: auto; user-select: none; border: 1px solid black; background-color: white; }
@@ -218,6 +221,7 @@
     .input-admin { width: 360px; margin-left: 7px; padding: 10px 0px 10px 7px; font-weight: bold; font-size: 16px; }
     .label-admin { display: block; padding: 20px 0px 0px 7px; }
     
+
     /*** ids ***/
     #searchBox { width: 391px; margin: auto; border: 0px solid black; }
     #searchBoxInput 
@@ -242,6 +246,7 @@
     #deleteButton { background-color: red; }
     #searchBoxInput::placeholder { color: white; }
 
+    
     /*** mobile ***/
     @media screen and (max-width: 1000px) {
         button:focus, button:hover { background-color: white; color: black; }

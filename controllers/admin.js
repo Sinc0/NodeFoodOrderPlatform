@@ -3,7 +3,7 @@ const Restaurant = require('../models/restaurant')
 const User = require('../models/user')
 const Order = require('../models/order')
 const Review = require('../models/review')
-// const configs = require('../settings.json')
+// const configs = require('../settings.json') || null
 
 //gets
 exports.getHome = (req, res) => {

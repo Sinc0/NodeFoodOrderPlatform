@@ -1,7 +1,7 @@
 //imports
 const mongodb = require('mongodb')
 const MongoClient = mongodb.MongoClient
-// const configs = require('../settings.json')
+// const configs = require('../settings.json') || null
 const connectionString = `mongodb+srv://${process.env.MONGO_USER || configs.MONGO_USER}:${process.env.MONGO_PASSWORD || configs.MONGO_PASSWORD}@programmingprojects.cpk0g.mongodb.net/${process.env.MONGO_DEFAULT_DB || configs.MONGO_DEFAULT_DB}?retryWrites=true&w=majority&useUnifiedTopology=true`
 
 
