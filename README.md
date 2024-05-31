@@ -54,10 +54,19 @@
 - [File - Database](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/controllers/database.js)
 ###
 - [Directory - Models](https://github.com/Sinc0/NodeFoodOrderingPlatform/tree/master/models)
-- [Directory - Controllers](https://github.com/Sinc0/NodeFoodOrderingPlatform/tree/master/controllers)
 - [Directory - Views](https://github.com/Sinc0/NodeFoodOrderingPlatform/tree/master/views)
+- [Directory - Controllers](https://github.com/Sinc0/NodeFoodOrderingPlatform/tree/master/controllers)
 ###
-- [General Set Background Gif](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/views/user-index.ejs#L19-L31)
+- [General - Login](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/controllers/user.js#L579-L623)
+- [General - Register User](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/controllers/user.js#L488-L526)
+- [General - Register Restaurant](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/controllers/user.js#L529-L576)
+- [General - Random Background Gif](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/views/user-index.ejs#L21-L33)
 ###
-- [Register - User](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/controllers/user.js#L486-L524)
-- [Register - Restaurant](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/controllers/user.js#L527-L574)
+- [Restaurant - Update Menu](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/controllers/portal.js#L204-L225)
+- [Restaurant - Respond to Order](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/controllers/portal.js#L291-L305)
+- [Restaurant - Logout](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/controllers/portal.js#L174-L199)
+###
+- [User - Update Credentials](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/controllers/user.js#L653-L670)
+- [User - Review Restaurant](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/controllers/user.js#L704-L738)
+- [User - Submit Order](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/controllers/user.js#L377-L443)
+- [User - Logout](https://github.com/Sinc0/NodeFoodOrderingPlatform/blob/master/controllers/user.js#L446-L485)
